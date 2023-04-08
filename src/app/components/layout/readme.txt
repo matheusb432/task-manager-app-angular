@@ -1,3 +1,0 @@
-==	Place layout components in this folder
-
---	e.g. form-layout, list-layout, page-layout...

@@ -1,3 +1,0 @@
-==	Place custom components in this folder
-
---	e.g. breadcrumb, buttons, inputs, navbar, toast...
