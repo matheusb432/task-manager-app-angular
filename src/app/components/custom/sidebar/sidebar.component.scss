@@ -1,0 +1,21 @@
+.sidebar-container {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  background: var(--primary);
+  // background: rgba(255, 0, 0, 0.5);
+  border-right: 1.5px solid var(--primary-dark);
+}
+
+.main-content {
+  background-color: var(--secondary);
+}

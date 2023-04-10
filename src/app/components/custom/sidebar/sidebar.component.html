@@ -1,1 +1,24 @@
-<p>sidebar works!</p>
+<mat-sidenav-container class="sidebar-container">
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    opened
+    class="sidebar"
+    [fixedInViewport]="false"
+    [fixedTopGap]="0"
+    [fixedBottomGap]="0"
+  >
+    <span>LOGO</span>
+    <ul>
+      <li>Item1</li>
+      <li>Item2</li>
+      <li>Item3</li>
+    </ul>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <app-main-header></app-main-header>
+    <ng-content></ng-content>
+    <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p>
+  </mat-sidenav-content>
+</mat-sidenav-container>
