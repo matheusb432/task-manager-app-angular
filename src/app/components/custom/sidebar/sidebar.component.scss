@@ -1,3 +1,5 @@
+@use 'src/_mixins.scss' as mxs;
+
 .sidebar-container {
   top: 0;
   bottom: 0;
@@ -12,10 +14,19 @@
   justify-content: center;
   width: 200px;
   background: var(--primary);
-  // background: rgba(255, 0, 0, 0.5);
   border-right: 1.5px solid var(--primary-dark);
+  padding: 0 16px;
 }
 
 .main-content {
-  background-color: var(--secondary);
+  background:  var(--bg-color);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  font-size: 1rem;
+  @include mxs.dash(bottom, 4px, 2px);
 }

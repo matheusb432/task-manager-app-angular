@@ -1,0 +1,4 @@
+@mixin dash($position, $padding: 32px, $width: 1px, $color: #BDBDBD) {
+  border-#{$position}: $width solid $color;
+  padding-#{$position}: $padding;
+}

@@ -9,6 +9,8 @@
   --primary-dark: #640a29;
   --secondary: #607d8b;
   --accent: #b0bec5;
+  --bg-color: #212c31;
+  --text-icons: #fff;
 }
 
 * {
@@ -24,11 +26,13 @@ html * {
 body {
   margin: 0;
   overflow-x: auto;
-  background-color: var(--secondary);
+  background-color: var(--bg-color);
 }
 
 h1 {
+  font-family: 'Poppins', sans-serif;
   font-weight: 700;
+  margin: 0;
 }
 
 .container {
