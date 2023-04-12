@@ -1,0 +1,6 @@
+  <!-- <mat-grid-list class="cards-grid" cols="5" rowHeight="2:1"> -->
+  <mat-grid-list class="cards-grid" cols="5" rowHeight="1:1">
+    <mat-grid-tile *ngFor="let c of cards">
+      <app-card [titleText]="c.title" [content]="c.content"></app-card>
+    </mat-grid-tile>
+  </mat-grid-list>

@@ -1,18 +1,8 @@
-.card {
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: 0px 0px 5px #ccc;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-
-  .card-body {
-    padding: 10px;
-  }
+.card-title {
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 
-
+.card-content {
+  opacity: 0.6;
+}

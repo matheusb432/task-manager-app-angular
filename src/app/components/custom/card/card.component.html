@@ -1,7 +1,7 @@
-<section class="card">
-  <!-- TODO ngSrc? -->
-  <img [src]="imageUrl" [alt]="imageAlt">
-  <article class="card-body">
-    <ng-content></ng-content>
-  </article>
-</section>
+<app-card-layout>
+  <h2 class="card-title">{{titleText}}</h2>
+  <span class="card-content">
+    <!-- TODO clean -->
+   {{content}}
+  </span>
+</app-card-layout>

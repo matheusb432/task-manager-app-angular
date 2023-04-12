@@ -1,3 +1,2 @@
-import { ApiRequest, ResCallback } from './api-request';
-
-export { ApiRequest, ResCallback };
+export { Card } from './card';
+export { ApiRequest, ResCallback } from './api-request';

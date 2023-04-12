@@ -1,17 +1,11 @@
 header {
-  // @apply mb-4;
   margin-bottom: 1rem;
 
   .title {
-    // @apply text-3xl text-purple-100 font-bold tracking-wide -ml-1 mb-1;
-    // SCSS Equivalent to above tailwind css
     font-size: 1.875rem;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: 0.05rem;
-    // margin-left: -4px;
-    // margin-bottom: 4px;
-
   }
 
   .subtitle {
