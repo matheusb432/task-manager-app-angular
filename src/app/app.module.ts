@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { HomeModule } from './pages/home/home.module';
 import { PageModule } from './shared';
+import { NavItemsComponent } from './components/custom/nav-items/nav-items.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [

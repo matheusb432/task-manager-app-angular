@@ -8,7 +8,20 @@ import { Card } from 'src/app/models/configs';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent  {
-
+  cards: Card[] = [
+    {
+      title: 'Timesheets',
+      content: 'Your registered timesheets',
+    },
+    {
+      title: 'Profiles',
+      content: 'Create and edit your productivity profiles',
+    },
+    {
+      title: 'Metrics',
+      content: 'Your weekly productivity metrics',
+    },
+  ];
 
   constructor(private router: Router) {}
 

@@ -1,4 +1,6 @@
+@use 'src/_mixins.scss' as mxs;
+
 .cards-grid {
-  // TODO style grid background
-  background-color: pink;
+
+  @include mxs.dash(bottom, 32px, 2px);
 }

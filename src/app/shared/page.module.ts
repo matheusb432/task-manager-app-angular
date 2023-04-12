@@ -12,6 +12,11 @@ import { CardLayoutComponent } from '../components/layout/card-layout/card-layou
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
+import { NavItemsComponent } from '../components/custom/nav-items/nav-items.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from '../app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     SidebarComponent,
@@ -23,8 +28,14 @@ import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.c
     ImageComponent,
     GridLayoutComponent,
     CardsGridComponent,
+    NavItemsComponent,
   ],
-  imports: [CommonModule, MatSidenavModule, MatGridListModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatSidenavModule,
+    MatGridListModule,
+  ],
   exports: [
     SidebarComponent,
     PageLayoutComponent,
@@ -35,6 +46,7 @@ import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.c
     ImageComponent,
     GridLayoutComponent,
     CardsGridComponent,
+    NavItemsComponent,
     MatSidenavModule,
     MatGridListModule,
   ],
