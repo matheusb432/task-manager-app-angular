@@ -9,10 +9,14 @@ import { AppRoutingModule } from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { PageModule } from './shared';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { TitleComponent } from './components/custom/title/title.component';
+import { CardComponent } from './components/custom/card/card.component';
+import { ImageComponent } from './components/custom/image/image.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ImageComponent,
   ],
   imports: [
     BrowserModule,
