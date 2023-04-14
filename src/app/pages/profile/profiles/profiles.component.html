@@ -1,0 +1,10 @@
+<app-page-layout>
+  <app-title title="Profiles"></app-title>
+  <ul>
+    <li [routerLink]="paths.profiles">Profiles</li>
+    <li [routerLink]="paths.profilesCreate">Profiles Create</li>
+    <li [routerLink]="paths.profilesDetails">Profiles Details</li>
+  </ul>
+  <app-profile-list></app-profile-list>
+  <router-outlet></router-outlet>
+</app-page-layout>

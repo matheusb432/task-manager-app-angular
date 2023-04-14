@@ -1,3 +1,0 @@
-==	Place feature-specific components in this folder
-
---	e.g. entity-form, entity-list...
