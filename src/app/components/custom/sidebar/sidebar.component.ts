@@ -1,3 +1,4 @@
+import { Pages } from 'src/app/utils';
 import { Component } from '@angular/core';
 import { NavItem } from 'src/app/models/configs';
 
@@ -10,15 +11,19 @@ export class SidebarComponent {
   navItems: NavItem[] = [
     {
       label: 'Home',
-      link: '/home',
+      link: Pages.Home,
     },
     {
       label: 'Timesheets',
-      link: '/timesheets',
+      link: Pages.Timesheets,
     },
     {
       label: 'Profiles',
-      link: '/profiles',
+      link: Pages.Profiles,
+    },
+    {
+      label: 'Metrics',
+      link: Pages.Metrics,
     },
   ]
 }

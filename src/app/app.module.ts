@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { HomeModule } from './pages/home/home.module';
 import { PageModule } from './shared';
+import { ProfileFormComponent } from './components/profile/profile-form/profile-form.component';
+import { ProfileListComponent } from './components/profile/profile-list/profile-list.component';
 
 @NgModule({
   declarations: [

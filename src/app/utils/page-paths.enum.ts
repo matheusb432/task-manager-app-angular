@@ -1,6 +1,8 @@
 export enum Pages {
   Home = 'home',
-  Teams = 'teams',
+  Timesheets = 'timesheets',
+  Profiles = 'profiles',
+  Metrics = 'metrics',
 }
 
 export enum PageStates {
@@ -16,7 +18,11 @@ export enum DetailsTypes {
 
 export const paths = Object.freeze({
   home: `/${Pages.Home}`,
-  teams: `/${Pages.Teams}`,
-  teamsCreate: `/${Pages.Teams}/${PageStates.Create}`,
-  teamsDetails: `/${Pages.Teams}/${PageStates.Details}`,
+  timesheets: `/${Pages.Timesheets}`,
+  timesheetsCreate: `/${Pages.Timesheets}/${PageStates.Create}`,
+  timesheetsDetails: `/${Pages.Timesheets}/${PageStates.Details}`,
+  profiles: `/${Pages.Profiles}`,
+  profilesCreate: `/${Pages.Profiles}/${PageStates.Create}`,
+  profilesDetails: `/${Pages.Profiles}/${PageStates.Details}`,
+  metrics: `/${Pages.Metrics}`,
 });
