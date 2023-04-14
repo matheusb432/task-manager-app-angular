@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./card-layout.component.scss'],
 })
 export class CardLayoutComponent {
-  @Input() imageUrl = '/assets/img/placeholder.png';
-  @Input() imageAlt = '';
+  @Input() imgUrl = '/assets/img/placeholder.png';
+  @Input() imgAlt = '';
 }

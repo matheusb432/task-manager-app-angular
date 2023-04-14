@@ -12,14 +12,21 @@ export class HomeComponent  {
     {
       title: 'Timesheets',
       content: 'Your registered timesheets',
+      imgUrl: '/assets/img/timesheets.png',
+      url: '/timesheets',
+
     },
     {
       title: 'Profiles',
       content: 'Create and edit your productivity profiles',
+      imgUrl: '/assets/img/profiles.png',
+      url: '/profiles'
     },
     {
       title: 'Metrics',
       content: 'Your weekly productivity metrics',
+      imgUrl: '/assets/img/metrics.png',
+      url: '/metrics'
     },
   ];
 
