@@ -1,22 +1,25 @@
-import { GridLayoutComponent } from './../components/layout/grid-layout/grid-layout.component';
-import { PageLayoutComponent } from './../components/layout/page-layout/page-layout.component';
-import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { SidebarComponent } from '../components/custom/sidebar/sidebar.component';
-import { MainHeaderComponent } from '../components/custom/main-header/main-header.component';
-import { TitleComponent } from '../components/custom/title/title.component';
+import { NgModule } from '@angular/core';
 import { CardComponent } from '../components/custom/card/card.component';
 import { ImageComponent } from '../components/custom/image/image.component';
+import { MainHeaderComponent } from '../components/custom/main-header/main-header.component';
+import { SidebarComponent } from '../components/custom/sidebar/sidebar.component';
+import { TitleComponent } from '../components/custom/title/title.component';
 import { CardLayoutComponent } from '../components/layout/card-layout/card-layout.component';
+import { GridLayoutComponent } from './../components/layout/grid-layout/grid-layout.component';
+import { PageLayoutComponent } from './../components/layout/page-layout/page-layout.component';
 
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
 import { NavItemsComponent } from '../components/custom/nav-items/nav-items.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from '../app-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { ButtonComponent } from '../components/custom/buttons/button/button.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     SidebarComponent,
@@ -29,12 +32,18 @@ import { RouterModule } from '@angular/router';
     GridLayoutComponent,
     CardsGridComponent,
     NavItemsComponent,
+    ButtonComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatSidenavModule,
     MatGridListModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -48,8 +57,14 @@ import { RouterModule } from '@angular/router';
     GridLayoutComponent,
     CardsGridComponent,
     NavItemsComponent,
+    ButtonComponent,
     MatSidenavModule,
     MatGridListModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class PageModule {}

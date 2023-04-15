@@ -11,21 +11,24 @@ import { HomeModule } from './pages/home/home.module';
 import { PageModule } from './shared';
 import { ProfileFormComponent } from './components/profile/profile-form/profile-form.component';
 import { ProfileListComponent } from './components/profile/profile-list/profile-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     HomeModule,
     PageModule,
     AppRoutingModule,
+    HttpClientModule,
     NgOptimizedImage,
   ],
   exports: [PageModule],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

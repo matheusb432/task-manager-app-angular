@@ -1,1 +1,42 @@
-<p>input works!</p>
+<!-- TODO clean -->
+<!-- <div class="input-grid relative" [formGroup]="fg">
+  <label *ngIf="labelText"
+    >{{ labelText }} <span *ngIf="isRequired" class="text-red-600 text-2xl">*</span>
+  </label>
+  <input
+    [type]="type"
+    class="custom-input {{ invalid ? 'error' : '' }} {{ styleClass }}"
+    formControlName="{{ fcName }}"
+  />
+
+  <small
+    class="{{ invalid ? 'text-red-600' : 'text-gray-400' }} transition-all duration-300"
+    *ngIf="helperText"
+  >
+    {{ invalid ? invalidText() : '' }}
+    {{ helperText }}
+  </small>
+</div> -->
+<mat-form-field [formGroup]="fg" class="input-grid">
+  <mat-label *ngIf="labelText">
+    {{ labelText }} <span *ngIf="isRequired" class="text-red-600 text-2xl">*</span>
+  </mat-label>
+  <input
+    matInput
+    [type]="type"
+    [formControlName]="fcName"
+    [ngClass]="{
+      'error': invalid,
+      '{{ styleClass }}': styleClass
+    }"
+  />
+  <mat-error *ngIf="invalid">
+    {{ invalidText() }}
+  </mat-error>
+  <small
+    class="text-gray-400"
+    *ngIf="helperText && !invalid"
+  >
+    {{ helperText }}
+  </small>
+</mat-form-field>

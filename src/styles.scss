@@ -3,12 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600&display=swap');
 
 :root {
-  // TODO clean
-  // --primary: #e91e63;
   --primary: #b51249;
   --primary-hover: #c2185b;
   --primary-active: #ad1457;
-  // --primary-dark: #640a29;
   --primary-dark: #ca1453;
 
   --secondary: #607d8b;
@@ -34,12 +31,13 @@ body {
   background-color: var(--bg-color);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   margin: 0;
 }
-
 
 .container {
   padding: 2rem 2rem;

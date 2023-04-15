@@ -1,1 +1,39 @@
-<p>profile-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit ? onSubmit($event) : null">
+  Value: {{ form.value | json }}
+
+  <div class="form-grid">
+    <app-input
+      fcName="name"
+      [control]="name"
+      [fg]="form"
+      labelText="Name"
+      helperText="This field is required and can be up to 50 characters long"
+      [isRequired]="true"
+    ></app-input>
+
+    <!-- TODO implement SCSS style equivalent & remove old styles -->
+    <div *ngIf="canRenderButtons()" class="flex justify-end items-center mt-2 space-x-4">
+      <div class="flex-grow space-x-4">
+        <app-button
+          *ngIf="true"
+          styleClass="p-button-danger"
+          (onClick)="onDelete?.()"
+          label="Delete"
+        ></app-button>
+      </div>
+
+      <app-button
+        *ngIf="onCancel"
+        styleClass="p-button-outlined"
+        (onClick)="(onCancel)"
+        text="Cancel"
+      ></app-button>
+      <app-button
+        *ngIf="onSubmit"
+        type="submit"
+        [disabled]="form.invalid"
+        text="Submit"
+      ></app-button>
+    </div>
+  </div>
+</form>

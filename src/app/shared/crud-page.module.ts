@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { InputComponent } from '../components/custom/inputs/input/input.component';
 import { SelectComponent } from '../components/custom/inputs/select/select.component';
+import { PageModule } from './page.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [InputComponent, SelectComponent],
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, PageModule, NgOptimizedImage],
   exports: [InputComponent, SelectComponent],
 })
 export class CrudPageModule {}

@@ -1,3 +1,1 @@
-import { teamForm } from './club-team-validations';
-
-export { teamForm };
+export { profileForm } from './profile-validations';
