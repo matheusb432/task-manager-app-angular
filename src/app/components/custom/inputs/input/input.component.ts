@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-input [fcName] [control] [fg]',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  styleUrls: ['./input.component.scss'],
 })
 export class InputComponent {
   @Input() fcName!: string;
@@ -13,21 +13,23 @@ export class InputComponent {
 
   @Input() type = 'text';
 
-  @Input() styleClass = '';
-
   @Input() fg!: FormGroup;
 
   @Input() labelText?: string;
 
   @Input() helperText?: string;
 
-  @Input() isRequired = false;
+  @Input() errText?: string;
 
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
-  invalidText = () => `${this.isRequired ? 'Required field' : 'Invalid field'}  | `;
+  getErrText = (): string => this.errText || 'Invalid field';
 
   get invalid(): boolean {
+    console.log(this.control);
+    if (!this.control) return false;
+
+    console.warn(!!this.control, this.control.invalid, this.control.touched);
     return this.isInvalid();
   }
 }

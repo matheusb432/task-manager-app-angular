@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ProfileFormGroup } from 'src/app/components/profile';
 import { profileForm } from 'src/app/helpers/validations';
 import { ProfileService } from 'src/app/services/profile.service';
+import { Pages } from 'src/app/utils';
 
 @Component({
   selector: 'app-create-profile',
@@ -28,4 +29,32 @@ export class CreateProfileComponent implements OnInit {
   initForm(): void {
     this.profileForm = this.formBuilder.group(profileForm) as unknown as ProfileFormGroup;
   }
+
+  submitForm(): () => Promise<void> {
+
+    return () => console.log(this.profileForm.value) as any;
+    // TODO uncomment & remove above
+    // return () => this.create();
+  }
+
+  async create(): Promise<void> {
+    const item = this.profileForm.value;
+
+    const { id } = await this.service.insert(item);
+
+    console.warn(`Created profile id => ${id}`);
+    // TODO implement toast & details page
+    // this.toastService.success();
+    // this.service.goToDetails(id, DetailsTypes.View);
+  }
+
+  cancel(): () => void {
+    return () => this.goToList();
+    // TODO clean
+    // return () => {
+    //   this.router.navigateByUrl(`/${Pages.Profiles}`);
+    // };
+  }
+
+  goToList = () => this.router.navigateByUrl(`/${Pages.Profiles}`);
 }

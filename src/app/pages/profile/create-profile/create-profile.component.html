@@ -1,3 +1,7 @@
 <p>create-profile works!</p>
 <!-- // TODO implement  -->
-<!-- <app-profile-form></app-profile-form> -->
+<app-profile-form
+  [form]="profileForm"
+  [onCancel]="cancel()"
+  [onSubmit]="submitForm()"
+></app-profile-form>

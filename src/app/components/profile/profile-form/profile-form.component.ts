@@ -16,24 +16,25 @@ export class ProfileFormComponent {
 
   @Input() onDelete?: () => any;
 
+
   get name(): AbstractControl {
-    return this.form.name;
+    return this.form.get('name')!;
   }
 
   get timeTarget(): AbstractControl {
-    return this.form.timeTarget;
+    return this.form.get('timeTarget')!;
   }
 
   get tasksTarget(): AbstractControl {
-    return this.form.tasksTarget;
+    return this.form.get('tasksTarget')!;
   }
 
   get priority(): AbstractControl {
-    return this.form.priority;
+    return this.form.get('priority')!;
   }
 
   get profileTypeId(): AbstractControl {
-    return this.form.profileTypeId;
+    return this.form.get('profileTypeId')!;
   }
 
   canRenderButtons = () => this.onDelete != null || this.onCancel != null || this.onSubmit != null;
