@@ -1,9 +1,9 @@
 <app-page-layout>
   <app-title title="Profiles"></app-title>
   <ul>
-    <li [routerLink]="paths.profiles">Profiles</li>
-    <li [routerLink]="paths.profilesCreate">Profiles Create</li>
-    <li [routerLink]="paths.profilesDetails">Profiles Details</li>
+    <button [routerLink]="paths.profiles">Profiles</button>
+    <button [routerLink]="paths.profilesCreate">Profiles Create</button>
+    <button [routerLink]="paths.profilesDetails">Profiles Details</button>
   </ul>
   <app-profile-list></app-profile-list>
   <router-outlet></router-outlet>

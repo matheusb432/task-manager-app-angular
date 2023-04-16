@@ -42,3 +42,30 @@ h3 {
 .container {
   padding: 2rem 2rem;
 }
+
+.form-layout {
+  margin: 0 auto;
+  width: 50%;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.5rem;
+  gap: 1.5rem;
+}
+
+.left-buttons {
+  flex-grow: 1;
+  gap: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  row-gap: 2px;
+  column-gap: 1rem;
+
+}
+

@@ -1,1 +1,17 @@
-<p>select works!</p>
+<mat-form-field class="input-container" [formGroup]="fg">
+  <mat-label *ngIf="labelText">{{ labelText }}</mat-label>
+  <mat-select
+    [placeholder]="placeholder"
+    [formControlName]="fcName"
+    [multiple]="multiple"
+    [compareWith]="compareWithFn"
+  >
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="invalid">{{ getErrText() }}</mat-error>
+  <small class="helper" *ngIf="helperText && !invalid">
+    {{ helperText }}
+  </small>
+</mat-form-field>

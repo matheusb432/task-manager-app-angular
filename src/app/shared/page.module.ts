@@ -13,11 +13,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+
 import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
 import { NavItemsComponent } from '../components/custom/nav-items/nav-items.component';
 import { ButtonComponent } from '../components/custom/buttons/button/button.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -42,6 +45,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSidenavModule,
     MatGridListModule,
     MatInputModule,
+    MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
     NgOptimizedImage,
@@ -61,6 +65,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSidenavModule,
     MatGridListModule,
     MatInputModule,
+    MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
     FormsModule,

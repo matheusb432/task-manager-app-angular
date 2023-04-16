@@ -37,5 +37,7 @@ export class ProfileFormComponent {
     return this.form.get('profileTypeId')!;
   }
 
+  constructor() {}
+
   canRenderButtons = () => this.onDelete != null || this.onCancel != null || this.onSubmit != null;
 }

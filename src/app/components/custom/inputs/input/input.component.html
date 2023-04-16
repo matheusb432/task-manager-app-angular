@@ -1,4 +1,4 @@
-<mat-form-field [formGroup]="fg">
+<mat-form-field class="input-container" [formGroup]="fg">
   <mat-label *ngIf="labelText">
     {{ labelText }}
   </mat-label>
@@ -6,6 +6,7 @@
     matInput
     [type]="type"
     [formControlName]="fcName"
+    [placeholder]="placeholder"
   />
   <mat-error *ngIf="invalid">
     {{ getErrText() }}

@@ -2,34 +2,30 @@ import { Component, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-input [fcName] [control] [fg]',
+  selector: 'app-input [fcName] [control] [fg] [labelText]',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
 })
 export class InputComponent {
   @Input() fcName!: string;
-
   @Input() control!: AbstractControl;
-
-  @Input() type = 'text';
-
   @Input() fg!: FormGroup;
-
-  @Input() labelText?: string;
-
+  @Input() labelText!: string;
+  @Input() type = 'text';
   @Input() helperText?: string;
-
   @Input() errText?: string;
-
+  @Input() placeholder = '';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
-  getErrText = (): string => this.errText || 'Invalid field';
+  getErrText(): string {
+    const errors = this.control.errors;
+
+    if (errors == null) return this.errText || 'Invalid field';
+    if (errors['required']) return 'This field is required';
+    return 'Invalid input';
+  }
 
   get invalid(): boolean {
-    console.log(this.control);
-    if (!this.control) return false;
-
-    console.warn(!!this.control, this.control.invalid, this.control.touched);
     return this.isInvalid();
   }
 }

@@ -16,14 +16,19 @@ export class ProfileService {
 
   constructor(private api: ApiService, private router: Router) {}
 
-  async getItem(id: number): Promise<any> {
-    return this.api.getById<Profile>(ApiRequest.getById<Profile>(this.url, Profile, id));
+  async getItem(id: number): Promise<Profile[]> {
+    return this.api.getById<Profile>(ApiRequest.getById<Profile>(this.url, Profile, id)) as Promise<
+      Profile[]
+    >;
   }
 
-  async getItems(): Promise<any> {
-    return this.api.getAll<Profile>(ApiRequest.getAll<Profile>(this.url, Profile));
+  async getItems(): Promise<Profile[]> {
+    return this.api.getAll<Profile>(ApiRequest.getAll<Profile>(this.url, Profile)) as Promise<
+      Profile[]
+    >;
   }
 
+  // TODO in mapping, convert timeTarget's "15:35" to "1535", or "03:30" to "330" and such
   insert = async (ct: Profile): Promise<any> =>
     this.api.insert(ApiRequest.post(this.url, ct, ProfilePostDto));
 

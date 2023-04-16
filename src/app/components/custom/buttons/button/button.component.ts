@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-button',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() disabled: boolean = false;
-  @Input() color: string = 'primary';
+  @Input() color: ThemePalette = 'primary';
   @Input() type: string = 'button';
   @Input() label: string = '';
   @Input() styleClass: string = '';

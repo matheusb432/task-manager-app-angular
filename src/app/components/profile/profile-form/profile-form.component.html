@@ -1,28 +1,59 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit ? onSubmit($event) : null">
+<form class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit ? onSubmit($event) : null">
   Value: {{ form.value | json }}
 
   <div class="form-grid">
+    <app-input fcName="name" [control]="name" [fg]="form" labelText="Name" placeholder="Profile Name"></app-input>
+
     <app-input
-      fcName="name"
-      [control]="name"
+      fcName="timeTarget"
+      [control]="timeTarget"
       [fg]="form"
-      labelText="Name"
+      labelText="Time Target"
+      type="time"
+      ></app-input>
+
+    <app-input
+      fcName="tasksTarget"
+      [control]="tasksTarget"
+      [fg]="form"
+      labelText="Tasks Target"
+      type="number"
     ></app-input>
 
+    <app-input
+      fcName="priority"
+      [control]="priority"
+      [fg]="form"
+      labelText="Priority"
+      type="number"
+    ></app-input>
+
+    <!-- TODO implement Profile Type select -->
+    <app-select
+    fcName="profileTypeId"
+    [control]="profileTypeId"
+    [fg]="form"
+    labelText="Type"
+    [options]="[
+      { label: 'Type 1', value: 1 },
+      { label: 'Type 2', value: 2 },
+      { label: 'Type 3', value: 3 },
+      { label: 'Type 4', value: 4 },
+      { label: 'Type 5', value: 5 },
+    ]"
+  ></app-select>
+
     <!-- TODO implement SCSS style equivalent & remove old styles -->
-    <div *ngIf="canRenderButtons()" class="flex justify-end items-center mt-2 space-x-4">
-      <div class="flex-grow space-x-4">
-        <app-button
-          *ngIf="onDelete"
-          (onClick)="onDelete()"
-          label="Delete"
-        ></app-button>
+    <div *ngIf="canRenderButtons()" class="form-buttons">
+      <div *ngIf="onDelete" class="left-buttons">
+        <app-button (onClick)="onDelete()" label="Delete" color="warn"></app-button>
       </div>
 
       <app-button
         *ngIf="onCancel"
         (onClick)="onCancel()"
         label="Cancel"
+        color="accent"
       ></app-button>
       <app-button
         *ngIf="onSubmit"
