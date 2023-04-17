@@ -12,7 +12,6 @@ import { Pages } from 'src/app/utils';
   styleUrls: ['./create-profile.component.scss'],
 })
 export class CreateProfileComponent implements OnInit {
-  // TODO implement form
   profileForm!: ProfileFormGroup;
 
   constructor(
@@ -23,7 +22,6 @@ export class CreateProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    console.log(this.profileForm);
   }
 
   initForm(): void {
@@ -37,6 +35,7 @@ export class CreateProfileComponent implements OnInit {
     // return () => this.create();
   }
 
+  // TODO implement create
   async create(): Promise<void> {
     const item = this.profileForm.value;
 
@@ -50,10 +49,6 @@ export class CreateProfileComponent implements OnInit {
 
   cancel(): () => void {
     return () => this.goToList();
-    // TODO clean
-    // return () => {
-    //   this.router.navigateByUrl(`/${Pages.Profiles}`);
-    // };
   }
 
   goToList = () => this.router.navigateByUrl(`/${Pages.Profiles}`);

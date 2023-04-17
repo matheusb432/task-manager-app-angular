@@ -3,7 +3,8 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { ProfileType } from '../models/entities/profile-type';
-import { ApiRequest } from '../models/configs';
+import { ApiRequest, SelectOption } from '../models/configs';
+import { us } from '../helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +24,20 @@ export class ProfileTypeService {
     return this.api.getAll<ProfileType>(
       ApiRequest.getAll<ProfileType>(this.url, ProfileType)
     ) as Promise<ProfileType[]>;
+  }
+
+  static toOptions(items: ProfileType[]): SelectOption[] {
+    return items.map(
+      ({ id, name, dateRangeEnd, dateRangeStart }) => {
+        const hasDates = dateRangeStart && dateRangeEnd;
+        const dateSuffix =
+          ' (' + us.formatDate(dateRangeStart!) + ' - ' + us.formatDate(dateRangeEnd!) + ')';
+
+        return {
+          value: id,
+          label: `${name}${hasDates ? dateSuffix: ''}`,
+        };
+      }
+    );
   }
 }
