@@ -7,6 +7,15 @@ import { ApiRequest } from '../models/configs/api-request';
 import { ProfilePostDto, ProfilePutDto } from '../models/dtos/profile';
 import { Profile } from '../models/entities';
 import { ApiService } from './api.service';
+import { DetailsTypes, Pages, paths } from '../utils';
+import { HttpParams } from '@angular/common/http';
+import { profileForm } from '../helpers/validations';
+import { us } from '../helpers';
+import { ProfileType } from '../models/entities/profile-type';
+import { ProfileTypeService } from './profile-type.service';
+import { ToastService } from './toast.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +23,34 @@ import { ApiService } from './api.service';
 export class ProfileService {
   private url = `${environment.apiUrl}/profiles`;
 
-  constructor(private api: ApiService, private router: Router) {}
+  item?: Profile;
+  private _types: ProfileType[] = [];
 
-  async getItem(id: number): Promise<Profile[]> {
-    return this.api.getById<Profile>(ApiRequest.getById<Profile>(this.url, Profile, id)) as Promise<
-      Profile[]
-    >;
+  private _typesSet = new BehaviorSubject<void>(undefined);
+
+  get types(): ProfileType[] {
+    return this._types;
+  }
+
+  private set types(value: ProfileType[]) {
+    this._types = value;
+
+    this._typesSet.next();
+  }
+
+  get typesSet$(): Observable<void> {
+    return this._typesSet.asObservable();
+  }
+
+  constructor(
+    private api: ApiService,
+    private profileTypeService: ProfileTypeService,
+    private ts: ToastService,
+    private router: Router
+  ) {}
+
+  async getItem(id: number): Promise<Profile> {
+    return this.api.getById<Profile>(ApiRequest.getById<Profile>(this.url, Profile, id));
   }
 
   async getItems(): Promise<Profile[]> {
@@ -28,35 +59,67 @@ export class ProfileService {
     >;
   }
 
-  // TODO in mapping, convert timeTarget's "15:35" to "1535", or "03:30" to "330" and such
   insert = async (ct: Profile): Promise<any> =>
-    this.api.insert(ApiRequest.post(this.url, ct, ProfilePostDto));
+    this.api.insert(ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto));
 
   update = async (ct: Profile): Promise<any> =>
-    this.api.update(ApiRequest.put(this.url, ct.id ?? 0, ct, ProfilePutDto));
+    this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
 
   remove = async (id: number): Promise<any> => this.api.remove(ApiRequest.delete(this.url, id));
 
-  convertToForm(
-    fg: ProfileFormGroup,
-    // TODO test & clean
-    // { name, timeTarget, tasksTarget, priority, profileTypeId }: Profile
-    item: Profile
-  ) {
-    // return {
-    //   name: [name, [Validators.required, Validators.maxLength(50)]],
-    //   description: [description, [Validators.required, Validators.maxLength(200)]],
-    //   badge,
-    //   primary: [primary, [Validators.required, Validators.maxLength(10)]],
-    //   secondary: [secondary, [Validators.required, Validators.maxLength(10)]],
-    // };
-    // fg.name.setValue(name);
-    // fg.timeTarget.setValue(timeTarget);
-    // fg.tasksTarget.setValue(tasksTarget);
-    // fg.priority.setValue(priority);
-    // fg.profileTypeId.setValue(profileTypeId);
+  loadCreateData = async () => {
+    await this.loadProfileTypes();
+  };
 
-    const keys = ProfileFormGroup.getFormKeys();
-    for (const key of keys) fg[key].setValue(item[key]);
+  loadEditData = async (id: string | null | undefined): Promise<Profile | null> => {
+    await this.loadProfileTypes();
+    return this.loadItem(id);
+  };
+
+  async loadItem(id: string | null | undefined): Promise<Profile | null> {
+    if (!id) {
+      this.ts.error("Couldn't fetch ID!");
+
+      return null;
+    }
+    this.item = await this.getItem(+id);
+
+    if (!this.item) {
+      this.ts.error("Couldn't fetch data!");
+
+      return null;
+    }
+
+    return this.item;
   }
+
+  // TODO only load if types is empty?
+  loadProfileTypes = async () => {
+    try {
+      this.types = await this.profileTypeService.getItems();
+    } catch (ex) {
+      this.ts.error('Error loading profile types');
+    }
+  };
+
+  private mapProps = (item: Profile): Profile => {
+    const mapped = us.deepClone(item);
+
+    mapped.timeTarget = us.timeToNumber(mapped.timeTarget as string);
+    // TODO eventually remove, should be automatically set from API
+    mapped.userId = 1;
+
+    return mapped;
+  };
+
+  convertToForm(fg: ProfileFormGroup, item: Profile): void {
+    const keys = ProfileFormGroup.getFormKeys();
+    for (const key of keys) fg.get(key)!.setValue(item[key]);
+  }
+
+  goToList = () => this.router.navigateByUrl(paths.profiles);
+  goToCreate = () => this.router.navigateByUrl(paths.profilesCreate);
+  goToDetails = async (id: number, type: DetailsTypes) => {
+    this.router.navigate([paths.profilesDetails], { queryParams: { id, type } });
+  };
 }

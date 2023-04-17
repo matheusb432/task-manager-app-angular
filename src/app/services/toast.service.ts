@@ -18,23 +18,23 @@ export class ToastService {
 
   constructor(private _snackBar: MatSnackBar) {}
 
-  success(data: ToastData): void {
-    this.open(data, AlertTypes.Success);
+  success(message: string): void {
+    this.open({ message }, AlertTypes.Success);
   }
 
-  error(data: ToastData): void {
-    this.open(data, AlertTypes.Error);
+  error(message: string): void {
+    this.open({ message }, AlertTypes.Error);
   }
 
-  info(data: ToastData): void {
-    this.open(data, AlertTypes.Info);
+  info(message: string): void {
+    this.open({ message }, AlertTypes.Info);
   }
 
-  warning(data: ToastData): void {
-    this.open(data, AlertTypes.Warning);
+  warning(message: string): void {
+    this.open({ message }, AlertTypes.Warning);
   }
 
-  private open({ message, action, positionX, positionY, duration }: ToastData, type: AlertTypes): void {
+  open({ message, action, positionX, positionY, duration }: ToastData, type: AlertTypes): void {
     const actionToUse = action === null ? undefined : action || this.actionDefault;
     const durationToUse = duration === 0 ? undefined : duration || this.durationDefault;
     const typeClass = ['toast', type];

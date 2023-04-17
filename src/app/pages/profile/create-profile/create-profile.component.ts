@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Mapper } from 'mapper-ts/lib-esm';
 import { ProfileFormGroup } from 'src/app/components/profile';
 import { profileForm } from 'src/app/helpers/validations';
-import { ToastService } from 'src/app/services';
+import { Profile } from 'src/app/models/entities';
+import { ProfileType } from 'src/app/models/entities/profile-type';
+import { PageService, ToastService } from 'src/app/services';
 import { ProfileService } from 'src/app/services/profile.service';
-import { FormTypes, Pages } from 'src/app/utils';
+import { DetailsTypes, FormTypes, Pages } from 'src/app/utils';
 
 @Component({
   selector: 'app-create-profile',
@@ -13,42 +16,46 @@ import { FormTypes, Pages } from 'src/app/utils';
   styleUrls: ['./create-profile.component.scss'],
 })
 export class CreateProfileComponent implements OnInit {
-  profileForm!: ProfileFormGroup;
+  form!: ProfileFormGroup;
 
   formTypes = FormTypes;
 
+  get types(): ProfileType[] {
+    return this.service.types;
+  }
+
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder,
+    private pageService: PageService,
     private service: ProfileService,
     private ts: ToastService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+
+    this.loadData();
   }
 
   initForm(): void {
-    this.profileForm = this.formBuilder.group(profileForm) as unknown as ProfileFormGroup;
+    this.form = this.pageService.buildForm(profileForm);
+  }
+
+  async loadData(): Promise<void> {
+    await this.service.loadCreateData();
   }
 
   submitForm(): Promise<void> {
-    console.log('ultra test1');
     return this.create();
   }
 
-  // TODO implement create
   async create(): Promise<void> {
-    const item = this.profileForm.value;
+    const item = this.form.value as Profile;
 
-    this.ts.success({ message: 'Profile created successfully', duration: 0 });
+    const { id } = await this.service.insert(item);
 
-    // const { id } = await this.service.insert(item);
-
-    // console.warn(`Created profile id => ${id}`);
-    // TODO implement toast & details page
-    // this.toastService.success();
-    // this.service.goToDetails(id, DetailsTypes.View);
+    this.ts.success('Profile created successfully');
+    this.service.goToDetails(id, DetailsTypes.View);
   }
 
   cancel(): void {

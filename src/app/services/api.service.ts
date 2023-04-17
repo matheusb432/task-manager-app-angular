@@ -20,7 +20,7 @@ export class ApiService {
       return Promise.reject(ErrorMessages.InvalidURLRequest);
     }
 
-    const req$ = this._getRequest<T>({...apiReq, url: `${apiReq.url}/odata`});
+    const req$ = this._getRequest({ ...apiReq, url: `${apiReq.url}/odata` });
 
     return this._returnAsync<T>(req$, apiReq.resCallback);
   }
@@ -33,7 +33,10 @@ export class ApiService {
     }
 
     // TODO Utility class to build OData queries
-    const req$ = this._getRequest<T>({...apiReq, url: `${apiReq.url}/odata?$filter=id eq ${apiReq.id}`});
+    const req$ = this._getRequest<T>({
+      ...apiReq,
+      url: `${apiReq.url}/odata?$filter=id eq ${apiReq.id}`,
+    }).pipe(map((res: any) => res?.[0]));
 
     return this._returnAsync<T>(req$, apiReq.resCallback);
   }

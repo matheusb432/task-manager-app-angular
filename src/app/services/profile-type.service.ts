@@ -14,10 +14,10 @@ export class ProfileTypeService {
 
   constructor(private api: ApiService) {}
 
-  async getItem(id: number): Promise<ProfileType[]> {
+  async getItem(id: number): Promise<ProfileType> {
     return this.api.getById<ProfileType>(
       ApiRequest.getById<ProfileType>(this.url, ProfileType, id)
-    ) as Promise<ProfileType[]>;
+    );
   }
 
   async getItems(): Promise<ProfileType[]> {
@@ -27,17 +27,15 @@ export class ProfileTypeService {
   }
 
   static toOptions(items: ProfileType[]): SelectOption[] {
-    return items.map(
-      ({ id, name, dateRangeEnd, dateRangeStart }) => {
-        const hasDates = dateRangeStart && dateRangeEnd;
-        const dateSuffix =
-          ' (' + us.formatDate(dateRangeStart!) + ' - ' + us.formatDate(dateRangeEnd!) + ')';
+    return items.map(({ id, name, dateRangeEnd, dateRangeStart }) => {
+      const hasDates = dateRangeStart && dateRangeEnd;
+      const dateSuffix =
+        ' (' + us.formatDate(dateRangeStart!) + ' - ' + us.formatDate(dateRangeEnd!) + ')';
 
-        return {
-          value: id,
-          label: `${name}${hasDates ? dateSuffix: ''}`,
-        };
-      }
-    );
+      return {
+        value: id,
+        label: `${name}${hasDates ? dateSuffix : ''}`,
+      };
+    });
   }
 }
