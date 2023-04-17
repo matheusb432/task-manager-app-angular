@@ -1,4 +1,4 @@
-@use './utils' as utils;
+@use 'src/_mixins.scss' as mxs;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600&display=swap');
 
@@ -66,6 +66,26 @@ h3 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
   row-gap: 2px;
   column-gap: 1rem;
-
 }
 
+.toast {
+  &.success div {
+    @include mxs.set-background(#4caf50);
+  }
+
+  &.error div {
+    @include mxs.set-background(#f44336);
+  }
+
+  &.info div {
+    @include mxs.set-background(#2196f3);
+  }
+
+  &.warning div {
+    @include mxs.set-background(#ff9800);
+  }
+
+  .mdc-button__label {
+    color: #fff;
+  }
+}

@@ -1,4 +1,4 @@
-<form class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit ? onSubmit($event) : null">
+<form class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit.emit(form)">
   Value: {{ form.value | json }}
 
   <div class="form-grid">
@@ -42,23 +42,22 @@
       [options]="typeOptions"
     ></app-select>
 
-    <div *ngIf="canRenderButtons()" class="form-buttons">
-      <div *ngIf="onDelete" class="left-buttons">
-        <app-button (onClick)="onDelete()" label="Delete" color="warn"></app-button>
+    <div class="form-buttons">
+      <div *ngIf="showDelete()" class="left-buttons">
+        <app-button (onClick)="onDelete.emit()" label="Delete" color="warn"></app-button>
       </div>
 
       <app-button
-        *ngIf="onCancel"
-        (onClick)="onCancel()"
+        (onClick)="onCancel.emit()"
         label="Cancel"
         color="accent"
       ></app-button>
       <app-button
-        *ngIf="onSubmit"
+        *ngIf="showSubmit()"
         type="submit"
-        [disabled]="form.invalid"
         label="Submit"
-      ></app-button>
+        ></app-button>
+        <!-- [disabled]="form.invalid" -->
     </div>
   </div>
 </form>

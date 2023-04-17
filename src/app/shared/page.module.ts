@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
@@ -48,6 +49,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
+    MatSnackBarModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -68,6 +70,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
   ],
