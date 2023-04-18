@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileFormGroup } from 'src/app/components/profile';
+import { FormGroup } from '@angular/forms';
+import { ProfileFormGroup, profileForm } from 'src/app/components/profile';
 import { us } from 'src/app/helpers';
-import { profileForm } from 'src/app/helpers/validations';
 import { PageConfig } from 'src/app/models/configs';
 import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
@@ -57,7 +57,7 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.pageService.buildForm(profileForm);
+    this.form = new FormGroup(profileForm);
   }
 
   initPage(): void {
@@ -71,10 +71,13 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   async editItem(): Promise<void> {
-    const item = this.form.value;
+    const id = this.pageData?.id;
+    const item = this.form.value as Profile;
+
+    if (id == null) return;
 
     // TODO test update logic
-    await this.service.update({ id: this.pageData?.id, ...item });
+    await this.service.update({ id: +id, ...item });
 
     this.ts.success('Profile updated successfully');
   }

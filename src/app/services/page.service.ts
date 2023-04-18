@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormItem, PageData } from '../models';
 import { DetailsTypes } from '../utils';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TypedForm } from '../models/types';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +22,6 @@ export class PageService {
       id: this.getParam('id'),
       type: this.getParam('type') as DetailsTypes,
     };
-  }
-
-  buildForm<T>(formItem: FormItem): T {
-    return this.formBuilder.group(formItem) as unknown as T;
   }
 
   getUrlTree = () => this.router.parseUrl(this.router.url);

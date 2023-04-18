@@ -7,7 +7,7 @@ import { ProfileType } from 'src/app/models/entities/profile-type';
 import { ProfileTypeService } from 'src/app/services/profile-type.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { FormTypes } from 'src/app/utils';
-import { ProfileFormGroup } from '../profile-form-group';
+import { ProfileForm, ProfileFormGroup } from '../profile-form-group';
 
 @Component({
   selector: 'app-profile-form [form] [formType] [cancel]',
@@ -18,32 +18,32 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   @Input() form!: ProfileFormGroup;
   @Input() formType!: FormTypes;
 
-  // @Input() submit?: (e: any) => any;
-  // @Input() cancel!: () => any;
-  // @Input() remove?: () => any;
-
   @Output() save = new EventEmitter<ProfileFormGroup>();
   @Output() cancel = new EventEmitter<void>();
   @Output() remove = new EventEmitter<void>();
 
-  get name(): AbstractControl | null {
-    return this.form.get('name');
+  get controls(): ProfileForm {
+    return this.form.controls;
   }
 
-  get timeTarget(): AbstractControl | null {
-    return this.form.get('timeTarget');
+  get name(): AbstractControl {
+    return this.controls.name;
   }
 
-  get tasksTarget(): AbstractControl | null {
-    return this.form.get('tasksTarget');
+  get timeTarget(): AbstractControl {
+    return this.controls.timeTarget;
   }
 
-  get priority(): AbstractControl | null {
-    return this.form.get('priority');
+  get tasksTarget(): AbstractControl {
+    return this.controls.tasksTarget;
   }
 
-  get profileTypeId(): AbstractControl | null {
-    return this.form.get('profileTypeId');
+  get priority(): AbstractControl {
+    return this.controls.priority;
+  }
+
+  get profileTypeId(): AbstractControl {
+    return this.controls.profileTypeId;
   }
 
   typeOptions: SelectOption[] = [];

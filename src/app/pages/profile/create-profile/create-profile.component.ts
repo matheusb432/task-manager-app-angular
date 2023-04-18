@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ProfileFormGroup } from 'src/app/components/profile';
-import { profileForm } from 'src/app/helpers/validations';
+import { ProfileFormGroup, profileForm } from 'src/app/components/profile';
 import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { PageService, ToastService } from 'src/app/services';
@@ -36,7 +36,7 @@ export class CreateProfileComponent implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.pageService.buildForm(profileForm);
+    this.form = new FormGroup(profileForm);
   }
 
   async loadData(): Promise<void> {

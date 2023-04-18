@@ -15,6 +15,7 @@ import { DetailsTypes, paths } from '../utils';
 import { ApiService } from './api.service';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -107,11 +108,12 @@ export class ProfileService {
   convertToForm(fg: ProfileFormGroup, item: Profile): void {
     const keys = ProfileFormGroup.getFormKeys();
     for (const key of keys) {
-      const control = fg.get(key);
+      const control = fg.get(key) as AbstractControl<unknown>;
 
       if (control == null) continue;
 
-      control.setValue(item[key]);}
+      control.setValue(item[key] == null ? '' : item[key]);
+    }
   }
 
   goToList = () => this.router.navigateByUrl(paths.profiles);

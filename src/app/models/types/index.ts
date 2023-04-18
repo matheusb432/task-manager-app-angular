@@ -1,3 +1,4 @@
+export { TypedForm } from './typed-form';
 export { PostReturn } from './post-return';
 export { PageData } from './page-data';
 export { Entity } from './entity';
