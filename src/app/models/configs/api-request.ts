@@ -1,7 +1,7 @@
-export class ApiRequest<T> {
+export class ApiRequest<T = unknown> {
   itemType?: Ctor<T>;
-  postDto?: Ctor<any>;
-  putDto?: Ctor<any>;
+  postDto?: Ctor<unknown>;
+  putDto?: Ctor<unknown>;
   item?: T;
   id?: number;
   resCallback?: ResCallback;
@@ -16,11 +16,11 @@ export class ApiRequest<T> {
     return { url, itemType, id };
   }
 
-  static post<T>(url: string, item: T, postDto: Ctor<any>): ApiRequest<T> {
+  static post<T>(url: string, item: T, postDto: Ctor<unknown>): ApiRequest<T> {
     return { url, item, postDto };
   }
 
-  static put<T>(url: string, id: number, item: T, putDto: Ctor<any>): ApiRequest<T> {
+  static put<T>(url: string, id: number, item: T, putDto: Ctor<unknown>): ApiRequest<T> {
     return { url, id, item, putDto };
   }
 
@@ -29,6 +29,6 @@ export class ApiRequest<T> {
   }
 }
 
-export type ResCallback = (...args: any[]) => any;
+export type ResCallback = (...args: unknown[]) => unknown;
 
-export type Ctor<T> = new (...args: any[]) => T;
+export type Ctor<T> = new (...args: unknown[]) => T;

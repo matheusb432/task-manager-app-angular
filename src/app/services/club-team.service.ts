@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { paths } from 'src/app/utils/page-paths.enum';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 import { ApiRequest } from '../models/configs/api-request';
 import { ClubTeamPostDto, ClubTeamPutDto } from '../models/dtos';
 import { ClubTeam } from '../models/entities/club-team';
 import { FormItem } from '../models/types';
-import { DetailsTypes } from './../utils/page-paths.enum';
 import { ApiService } from './api.service';
 
 @Injectable({

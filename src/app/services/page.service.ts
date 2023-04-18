@@ -24,7 +24,7 @@ export class PageService {
   }
 
   buildForm<T>(formItem: FormItem): T {
-    return this.formBuilder.group(formItem)! as unknown as T;
+    return this.formBuilder.group(formItem) as unknown as T;
   }
 
   getUrlTree = () => this.router.parseUrl(this.router.url);

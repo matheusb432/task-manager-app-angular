@@ -8,7 +8,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 })
 export class InputComponent {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl;
+  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() type = 'text';
@@ -18,7 +18,7 @@ export class InputComponent {
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   getErrText(): string {
-    const errors = this.control.errors;
+    const errors = this.control?.errors;
 
     if (errors == null) return this.errText || 'Invalid field';
     if (errors['required']) return 'This field is required';

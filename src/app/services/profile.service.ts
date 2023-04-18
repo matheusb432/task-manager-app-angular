@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
+import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ProfileFormGroup } from '../components/profile';
+import { us } from '../helpers';
 import { ApiRequest } from '../models/configs/api-request';
 import { ProfilePostDto, ProfilePutDto } from '../models/dtos/profile';
 import { Profile } from '../models/entities';
-import { ApiService } from './api.service';
-import { DetailsTypes, Pages, paths } from '../utils';
-import { HttpParams } from '@angular/common/http';
-import { profileForm } from '../helpers/validations';
-import { us } from '../helpers';
 import { ProfileType } from '../models/entities/profile-type';
+import { PostReturn } from '../models/types';
+import { DetailsTypes, paths } from '../utils';
+import { ApiService } from './api.service';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -59,13 +58,13 @@ export class ProfileService {
     >;
   }
 
-  insert = async (ct: Profile): Promise<any> =>
+  insert = async (ct: Profile): Promise<PostReturn> =>
     this.api.insert(ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto));
 
-  update = async (ct: Profile): Promise<any> =>
+  update = async (ct: Profile): Promise<void> =>
     this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
 
-  remove = async (id: number): Promise<any> => this.api.remove(ApiRequest.delete(this.url, id));
+  remove = async (id: number): Promise<void> => this.api.remove(ApiRequest.delete(this.url, id));
 
   loadCreateData = async () => {
     await this.loadProfileTypes();
@@ -84,22 +83,15 @@ export class ProfileService {
     }
     this.item = await this.getItem(+id);
 
-    if (!this.item) {
-      this.ts.error("Couldn't fetch data!");
-
-      return null;
-    }
+    if (!this.item) this.ts.error("Couldn't fetch data!");
 
     return this.item;
   }
 
-  // TODO only load if types is empty?
-  loadProfileTypes = async () => {
-    try {
-      this.types = await this.profileTypeService.getItems();
-    } catch (ex) {
-      this.ts.error('Error loading profile types');
-    }
+  loadProfileTypes = async (): Promise<void> => {
+    if (this.types?.length > 0) return;
+
+    this.types = await this.profileTypeService.getItems();
   };
 
   private mapProps = (item: Profile): Profile => {
@@ -114,7 +106,12 @@ export class ProfileService {
 
   convertToForm(fg: ProfileFormGroup, item: Profile): void {
     const keys = ProfileFormGroup.getFormKeys();
-    for (const key of keys) fg.get(key)!.setValue(item[key]);
+    for (const key of keys) {
+      const control = fg.get(key);
+
+      if (control == null) continue;
+
+      control.setValue(item[key]);}
   }
 
   goToList = () => this.router.navigateByUrl(paths.profiles);

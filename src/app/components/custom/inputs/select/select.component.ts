@@ -9,7 +9,7 @@ import { SelectOption } from 'src/app/models/configs';
 })
 export class SelectComponent {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl;
+  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() options!: SelectOption[];
@@ -18,14 +18,11 @@ export class SelectComponent {
   @Input() helperText?: string;
   @Input() errText?: string;
   @Input() multiple?: boolean = false;
-  @Input() compareWithFn: (o1: any, o2: any) => boolean = (o1: any, o2: any) => o1 === o2;
+  @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) => o1 === o2;
 
-  constructor() {}
-
-  ngOnInit() {}
 
   getErrText(): string {
-    const errors = this.control.errors;
+    const errors = this.control?.errors;
 
     if (errors == null) return this.errText || 'Invalid field';
     if (errors['required']) return 'This field is required';

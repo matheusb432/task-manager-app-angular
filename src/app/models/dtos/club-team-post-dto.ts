@@ -1,4 +1,4 @@
-import { AddMap, IgnoreMap } from 'mapper-ts/lib-esm';
+import { IgnoreMap } from 'mapper-ts/lib-esm';
 
 @IgnoreMap('id')
 export class ClubTeamPostDto {

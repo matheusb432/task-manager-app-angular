@@ -5,7 +5,7 @@ export class TaskItem {
   id?: number;
   title?: string;
   time?: number;
-  rating?: any;
+  rating?: number;
   importance?: number;
   timesheetId?: number;
   @AddMap(TaskItemNote)

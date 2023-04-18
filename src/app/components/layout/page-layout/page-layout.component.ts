@@ -1,16 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-page-layout',
   templateUrl: './page-layout.component.html',
   styleUrls: ['./page-layout.component.scss']
 })
-export class PageLayoutComponent implements OnInit {
+export class PageLayoutComponent  {
 
-  @ViewChild('pageContent') pageContent: any;
+  @ViewChild('pageContent') pageContent?: TemplateRef<unknown>;
 
-  constructor() {}
 
-  ngOnInit() {}
 
 }

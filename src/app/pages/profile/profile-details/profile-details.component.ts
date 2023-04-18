@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ProfileFormGroup } from 'src/app/components/profile';
 import { us } from 'src/app/helpers';
 import { profileForm } from 'src/app/helpers/validations';
 import { PageConfig } from 'src/app/models/configs';
 import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
-import { FormItem, PageData } from 'src/app/models/types';
+import { PageData } from 'src/app/models/types';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
 
 @Component({

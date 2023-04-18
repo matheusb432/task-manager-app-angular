@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ApiService } from './api.service';
-import { Router } from '@angular/router';
-import { ProfileType } from '../models/entities/profile-type';
-import { ApiRequest, SelectOption } from '../models/configs';
 import { us } from '../helpers';
+import { ApiRequest, SelectOption } from '../models/configs';
+import { ProfileType } from '../models/entities/profile-type';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,13 +27,14 @@ export class ProfileTypeService {
 
   static toOptions(items: ProfileType[]): SelectOption[] {
     return items.map(({ id, name, dateRangeEnd, dateRangeStart }) => {
-      const hasDates = dateRangeStart && dateRangeEnd;
-      const dateSuffix =
-        ' (' + us.formatDate(dateRangeStart!) + ' - ' + us.formatDate(dateRangeEnd!) + ')';
+      const hasDates = !!dateRangeStart && !!dateRangeEnd;
+      const dateSuffix = hasDates
+        ? ' (' + us.formatDate(dateRangeStart) + ' - ' + us.formatDate(dateRangeEnd) + ')'
+        : '';
 
       return {
         value: id,
-        label: `${name}${hasDates ? dateSuffix : ''}`,
+        label: `${name}${dateSuffix}`,
       };
     });
   }

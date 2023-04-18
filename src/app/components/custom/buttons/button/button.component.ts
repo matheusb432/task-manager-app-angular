@@ -7,11 +7,11 @@ import { ThemePalette } from '@angular/material/core';
   styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
   @Input() color: ThemePalette = 'primary';
-  @Input() type: string = 'button';
-  @Input() label: string = '';
-  @Input() styleClass: string = '';
+  @Input() type = 'button';
+  @Input() label = '';
+  @Input() styleClass = '';
 
-  @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 }

@@ -1,50 +1,49 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ProfileFormGroup } from '../profile-form-group';
-import { ProfileType } from 'src/app/models/entities/profile-type';
-import { SelectOption } from 'src/app/models/configs';
-import { ProfileTypeService } from 'src/app/services/profile-type.service';
-import { FormTypes, PageStates } from 'src/app/utils';
-import { ProfileService } from 'src/app/services/profile.service';
-import { UtilsService } from 'src/app/helpers/utils.service';
-import { us } from 'src/app/helpers';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { us } from 'src/app/helpers';
+import { SelectOption } from 'src/app/models/configs';
+import { ProfileType } from 'src/app/models/entities/profile-type';
+import { ProfileTypeService } from 'src/app/services/profile-type.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { FormTypes } from 'src/app/utils';
+import { ProfileFormGroup } from '../profile-form-group';
 
 @Component({
-  selector: 'app-profile-form [form] [formType] [onCancel]',
+  selector: 'app-profile-form [form] [formType] [cancel]',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
 })
-export class ProfileFormComponent implements OnInit {
+export class ProfileFormComponent implements OnInit, OnDestroy {
   @Input() form!: ProfileFormGroup;
   @Input() formType!: FormTypes;
 
-  // @Input() onSubmit?: (e: any) => any;
-  // @Input() onCancel!: () => any;
-  // @Input() onDelete?: () => any;
+  // @Input() submit?: (e: any) => any;
+  // @Input() cancel!: () => any;
+  // @Input() remove?: () => any;
 
-  @Output() onSubmit = new EventEmitter<ProfileFormGroup>();
-  @Output() onCancel = new EventEmitter<void>();
-  @Output() onDelete = new EventEmitter<void>();
+  @Output() save = new EventEmitter<ProfileFormGroup>();
+  @Output() cancel = new EventEmitter<void>();
+  @Output() remove = new EventEmitter<void>();
 
-  get name(): AbstractControl {
-    return this.form.get('name')!;
+  get name(): AbstractControl | null {
+    return this.form.get('name');
   }
 
-  get timeTarget(): AbstractControl {
-    return this.form.get('timeTarget')!;
+  get timeTarget(): AbstractControl | null {
+    return this.form.get('timeTarget');
   }
 
-  get tasksTarget(): AbstractControl {
-    return this.form.get('tasksTarget')!;
+  get tasksTarget(): AbstractControl | null {
+    return this.form.get('tasksTarget');
   }
 
-  get priority(): AbstractControl {
-    return this.form.get('priority')!;
+  get priority(): AbstractControl | null {
+    return this.form.get('priority');
   }
 
-  get profileTypeId(): AbstractControl {
-    return this.form.get('profileTypeId')!;
+  get profileTypeId(): AbstractControl | null {
+    return this.form.get('profileTypeId');
   }
 
   typeOptions: SelectOption[] = [];

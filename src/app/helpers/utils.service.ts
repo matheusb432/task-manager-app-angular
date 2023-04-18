@@ -14,7 +14,7 @@ export class UtilsService {
 
     const formattedDate = datePipe.transform(date, 'dd/MM/yyyy');
 
-    return formattedDate!;
+    return formattedDate || '';
   };
 
   static capitalize = (word: string | undefined): string => {

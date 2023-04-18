@@ -1,4 +1,10 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,32 +16,48 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(private ts: ToastService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      catchError((err: HttpErrorResponse) => {
-        const code = err.status;
+    return next.handle(request).pipe(catchError((err) => this.handleHttpError(err)));
+  }
 
-        if (!environment.production) {
-          console.table(err?.error?.errors);
+  handleHttpError(err: HttpErrorResponse): Observable<HttpEvent<unknown>> {
+    const code = err.status;
 
-          console.log(err);
-        }
+    this.logErrors(err);
+    this.notifyErrorByCode(code);
 
-        switch (code) {
-          case 401:
-            this.ts.error('Unauthorized access');
-            break;
-          case 404:
-            this.ts.error('Resource not found');
-            break;
-          case 400:
-            this.ts.error('Bad request');
-            break;
-          default:
-            this.ts.error('Internal Server error');
-            break;
-        }
-        return new Observable<HttpEvent<any>>();
-      })
-    );
+    return new Observable<HttpEvent<unknown>>();
+  }
+
+  notifyErrorByCode(code: number): void {
+    // switch (code) {
+    //   case 401:
+    //     this.ts.error('Unauthorized access');
+    //     break;
+    //   case 404:
+    //     this.ts.error('Resource not found');
+    //     break;
+    //   case 400:
+    //     this.ts.error('Bad request');
+    //     break;
+    //   default:
+    //     this.ts.error('Internal Server error');
+    // }
+    // TODO test refactored code
+    const errorMessages: { [key: number]: string; default: string } = {
+      401: 'Unauthorized access',
+      404: 'Resource not found',
+      400: 'Bad request',
+      default: 'Internal Server error',
+    };
+
+    this.ts.error(errorMessages[code] || errorMessages.default);
+  }
+
+  logErrors(err: HttpErrorResponse): void {
+    if (environment.production) return;
+
+    console.table(err?.error?.errors);
+
+    console.log(err);
   }
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Mapper } from 'mapper-ts/lib-esm';
 import { ProfileFormGroup } from 'src/app/components/profile';
 import { profileForm } from 'src/app/helpers/validations';
 import { Profile } from 'src/app/models/entities';
@@ -63,5 +61,6 @@ export class CreateProfileComponent implements OnInit {
   }
 
   goToList = () => {
-    this.router.navigateByUrl(`/${Pages.Profiles}`);}
+    this.router.navigateByUrl(`/${Pages.Profiles}`);
+  };
 }

@@ -1,8 +1,7 @@
-import { PageData } from './page-data';
-import { Entity } from './entity';
-import { ErrorMessages } from './error-messages.enum';
-import { FormItem, FormValue } from './form-types';
-import { PaginatorEvent } from './paginator-event';
-import { Requests } from './requests.enum';
-
-export { PageData, Entity, FormValue, FormItem, ErrorMessages, Requests, PaginatorEvent };
+export { PostReturn } from './post-return';
+export { PageData } from './page-data';
+export { Entity } from './entity';
+export { ErrorMessages } from './error-messages.enum';
+export { FormItem, FormValue } from './form-types';
+export { PaginatorEvent } from './paginator-event';
+export { Requests } from './requests.enum';
