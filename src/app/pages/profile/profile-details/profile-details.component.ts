@@ -7,7 +7,7 @@ import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { PageData } from 'src/app/models/types';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
-import { FormTypes } from 'src/app/utils';
+import { DetailsTypes, FormTypes } from 'src/app/utils';
 
 @Component({
   selector: 'app-profile-details',
@@ -33,8 +33,8 @@ export class ProfileDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initUrlParams();
-    this.initPage();
     this.initForm();
+    this.initPage();
 
     this.loadData();
   }
@@ -53,7 +53,6 @@ export class ProfileDetailsComponent implements OnInit {
 
     this.item = loadedItem;
 
-    // TODO test
     this.service.convertToForm(this.form, this.item);
   }
 
@@ -67,10 +66,18 @@ export class ProfileDetailsComponent implements OnInit {
 
     this.formType = type as unknown as FormTypes;
     this.detailsPage = new PageConfig(`${us.capitalize(type)} Profile`);
+
+    // TODO better way to handle this?
+    if (type === DetailsTypes.View) this.form.disable();
   }
 
   submitForm(): Promise<void> {
-    return this.editItem();
+    const submitFns: { [key: string]: () => Promise<void> } = {
+      [FormTypes.Edit]: () => this.editItem(),
+      [FormTypes.Duplicate]: () => this.duplicateItem(),
+    };
+
+    return submitFns[this.formType]();
   }
 
   async editItem(): Promise<void> {
@@ -79,10 +86,22 @@ export class ProfileDetailsComponent implements OnInit {
 
     if (id == null) return;
 
-    // TODO test update logic
     await this.service.update({ id: +id, ...item });
 
     this.ts.success('Profile updated successfully');
+  }
+
+  async duplicateItem(): Promise<void> {
+    const id = this.pageData?.id;
+    const item = this.form.value as Profile;
+
+    if (id == null) return;
+
+    const { id: createdId } = await this.service.duplicate(item);
+
+    this.ts.success('Profile duplicated successfully');
+    // this.service.goToList();
+    this.service.goToDetails(createdId, DetailsTypes.View);
   }
 
   async onRemove(): Promise<void> {
@@ -92,7 +111,6 @@ export class ProfileDetailsComponent implements OnInit {
 
     await this.service.remove(+id);
 
-    // TODO test
     this.ts.success('Profile removed successfully');
     this.service.goToList();
   }

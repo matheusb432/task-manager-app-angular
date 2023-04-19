@@ -22,6 +22,10 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   @Output() cancel = new EventEmitter<void>();
   @Output() remove = new EventEmitter<void>();
 
+  typeOptions: SelectOption[] = [];
+
+  subscriptions: Subscription[] = [];
+
   get controls(): ProfileForm {
     return this.form.controls;
   }
@@ -46,19 +50,22 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     return this.controls.profileTypeId;
   }
 
-  typeOptions: SelectOption[] = [];
-
-  subscriptions: Subscription[] = [];
-
   get types(): ProfileType[] {
     return this.service.types;
+  }
+
+  get submitLabel(): string {
+    return us.getSubmitLabel(this.formType);
+  }
+
+  get canEdit(): boolean {
+    return !us.isViewForm(this.formType);
   }
 
   constructor(private service: ProfileService) {}
 
   ngOnInit(): void {
     this.initSubs();
-    console.log('init!');
   }
 
   ngOnDestroy(): void {
@@ -76,9 +83,5 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
   showDelete(): boolean {
     return us.isEditForm(this.formType);
-  }
-
-  showSubmit(): boolean {
-    return !us.isViewForm(this.formType);
   }
 }

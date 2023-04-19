@@ -10,8 +10,8 @@
       {{ option.label }}
     </mat-option>
   </mat-select>
-  <mat-error *ngIf="invalid">{{ getErrText() }}</mat-error>
-  <small class="helper" *ngIf="helperText && !invalid">
+  <mat-error *ngIf="invalid && !!disabled">{{ getErrText() }}</mat-error>
+  <small class="helper" *ngIf="helperText && !invalid && !!disabled">
     {{ helperText }}
   </small>
 </mat-form-field>

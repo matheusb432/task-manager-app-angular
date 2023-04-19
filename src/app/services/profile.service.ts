@@ -62,6 +62,9 @@ export class ProfileService {
   insert = async (ct: Profile): Promise<PostReturn> =>
     this.api.insert(ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto));
 
+  duplicate = async (ct: Profile): Promise<PostReturn> =>
+    this.insert(ct);
+
   update = async (ct: Profile): Promise<void> =>
     this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
 

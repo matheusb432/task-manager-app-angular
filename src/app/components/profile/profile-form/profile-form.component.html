@@ -1,6 +1,4 @@
 <form class="form-layout" [formGroup]="form" (ngSubmit)="save.emit(form)">
-  Value: {{ form.value | json }}
-
   <div class="form-grid">
     <app-input
       fcName="name"
@@ -42,22 +40,14 @@
       [options]="typeOptions"
     ></app-select>
 
+    <!-- TODO implement modal confirmation for deletion and submission -->
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
         <app-button (clicked)="remove.emit()" label="Delete" color="warn"></app-button>
       </div>
 
-      <app-button
-        (clicked)="cancel.emit()"
-        label="Cancel"
-        color="accent"
-      ></app-button>
-      <app-button
-        *ngIf="showSubmit()"
-        type="submit"
-        label="Submit"
-        ></app-button>
-        <!-- [disabled]="form.invalid" -->
+      <app-button (clicked)="cancel.emit()" label="Cancel" color="accent"></app-button>
+      <app-button *ngIf="canEdit" type="submit" [label]="submitLabel"></app-button>
     </div>
   </div>
 </form>

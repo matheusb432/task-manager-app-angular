@@ -18,8 +18,8 @@ export class SelectComponent {
   @Input() helperText?: string;
   @Input() errText?: string;
   @Input() multiple?: boolean = false;
-  @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) => o1 === o2;
-
+  @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) =>
+    o1 === o2;
 
   getErrText(): string {
     const errors = this.control?.errors;
@@ -27,5 +27,9 @@ export class SelectComponent {
     if (errors == null) return this.errText || 'Invalid field';
     if (errors['required']) return 'This field is required';
     return 'Invalid input';
+  }
+
+  get disabled(): boolean {
+    return !!this.control?.disabled;
   }
 }

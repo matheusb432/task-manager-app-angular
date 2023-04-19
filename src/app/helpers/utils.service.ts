@@ -31,12 +31,22 @@ export class UtilsService {
 
     const [hours, minutes] = splitTime;
     return Number(hours + minutes);
-  }
+  };
 
   static isCreateForm = (type: FormTypes) => type === FormTypes.Create;
   static isViewForm = (type: FormTypes) => type === FormTypes.View;
   static isEditForm = (type: FormTypes) => type === FormTypes.Edit;
   static isDuplicateForm = (type: FormTypes) => type === FormTypes.Duplicate;
+
+  static getSubmitLabel = (type: FormTypes): string => {
+    const submitLabels: { [key: string]: string } = {
+      [FormTypes.Create]: 'Create',
+      [FormTypes.Edit]: 'Update',
+      [FormTypes.Duplicate]: 'Duplicate',
+    };
+
+    return submitLabels[type] || '';
+  };
 
   static unsub(subscriptions: Subscription[]): void {
     if (!subscriptions?.length) return;

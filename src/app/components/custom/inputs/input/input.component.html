@@ -8,12 +8,12 @@
     [formControlName]="fcName"
     [placeholder]="placeholder"
   />
-  <mat-error *ngIf="invalid">
+  <mat-error *ngIf="invalid && !disabled">
     {{ getErrText() }}
   </mat-error>
   <small
     class="helper"
-    *ngIf="helperText && !invalid"
+    *ngIf="helperText && !invalid && !disabled"
   >
     {{ helperText }}
   </small>

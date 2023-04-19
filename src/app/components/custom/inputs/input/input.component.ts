@@ -28,4 +28,8 @@ export class InputComponent {
   get invalid(): boolean {
     return this.isInvalid();
   }
+
+  get disabled(): boolean {
+    return !!this.control?.disabled;
+  }
 }
