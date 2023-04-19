@@ -1,1 +1,1 @@
-export { ProfileFormGroup, ProfileForm, profileForm  } from "./profile-form-group";
+export { ProfileFormGroup, ProfileForm, getProfileForm  } from "./profile-form-group";

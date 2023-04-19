@@ -58,6 +58,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSubs();
+    console.log('init!');
   }
 
   ngOnDestroy(): void {

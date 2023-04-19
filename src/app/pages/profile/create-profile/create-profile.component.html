@@ -1,7 +1,7 @@
 <p>create-profile works!</p>
 <app-profile-form
   [form]="form"
-  [formType]="formTypes.Create"
-  (cancel)="cancel()"
+  [formType]="formType"
+  (cancel)="onCancel()"
   (save)="submitForm()"
 ></app-profile-form>

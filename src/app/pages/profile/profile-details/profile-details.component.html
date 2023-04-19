@@ -1,3 +1,9 @@
 <p>profile-details works!</p>
-<!-- TODO implement  -->
-<!-- <app-profile-form></app-profile-form> -->
+<!-- TODO test  -->
+<app-profile-form
+  [form]="form"
+  [formType]="formType"
+  (cancel)="onCancel()"
+  (save)="submitForm()"
+  (remove)="onRemove()"
+></app-profile-form>

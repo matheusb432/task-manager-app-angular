@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ProfileFormGroup, profileForm } from 'src/app/components/profile';
+import { ProfileFormGroup, getProfileForm } from 'src/app/components/profile';
 import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
-import { PageService, ToastService } from 'src/app/services';
+import { ToastService } from 'src/app/services';
 import { ProfileService } from 'src/app/services/profile.service';
-import { DetailsTypes, FormTypes, Pages } from 'src/app/utils';
+import { DetailsTypes, FormTypes } from 'src/app/utils';
 
 @Component({
   selector: 'app-create-profile',
@@ -16,15 +15,13 @@ import { DetailsTypes, FormTypes, Pages } from 'src/app/utils';
 export class CreateProfileComponent implements OnInit {
   form!: ProfileFormGroup;
 
-  formTypes = FormTypes;
+  formType = FormTypes.Create;
 
   get types(): ProfileType[] {
     return this.service.types;
   }
 
   constructor(
-    private router: Router,
-    private pageService: PageService,
     private service: ProfileService,
     private ts: ToastService
   ) {}
@@ -36,7 +33,8 @@ export class CreateProfileComponent implements OnInit {
   }
 
   initForm(): void {
-    this.form = new FormGroup(profileForm);
+    console.log(getProfileForm());
+    this.form = new FormGroup(getProfileForm());
   }
 
   async loadData(): Promise<void> {
@@ -56,11 +54,8 @@ export class CreateProfileComponent implements OnInit {
     this.service.goToDetails(id, DetailsTypes.View);
   }
 
-  cancel(): void {
-    return this.goToList();
+  onCancel(): Promise<boolean> {
+    return this.service.goToList();
   }
 
-  goToList = () => {
-    this.router.navigateByUrl(`/${Pages.Profiles}`);
-  };
 }

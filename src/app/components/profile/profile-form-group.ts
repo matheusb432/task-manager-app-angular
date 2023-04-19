@@ -1,4 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { us } from 'src/app/helpers';
 import { Profile } from 'src/app/models/entities';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {
@@ -15,7 +16,7 @@ export interface ProfileForm {
   profileTypeId: FormControl<number | undefined>;
 }
 
-export const profileForm: ProfileForm = {
+export const getProfileForm = (): ProfileForm => ({
   name: new FormControl('', {
     nonNullable: true,
     validators: [Validators.required, Validators.maxLength(250)],
@@ -30,4 +31,4 @@ export const profileForm: ProfileForm = {
     nonNullable: true,
     validators: [Validators.required, Validators.min(0)],
   }),
-};
+});

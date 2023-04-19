@@ -29,20 +29,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   notifyErrorByCode(code: number): void {
-    // switch (code) {
-    //   case 401:
-    //     this.ts.error('Unauthorized access');
-    //     break;
-    //   case 404:
-    //     this.ts.error('Resource not found');
-    //     break;
-    //   case 400:
-    //     this.ts.error('Bad request');
-    //     break;
-    //   default:
-    //     this.ts.error('Internal Server error');
-    // }
-    // TODO test refactored code
     const errorMessages: { [key: number]: string; default: string } = {
       401: 'Unauthorized access',
       404: 'Resource not found',

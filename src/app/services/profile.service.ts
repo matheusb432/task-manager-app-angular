@@ -84,7 +84,7 @@ export class ProfileService {
     }
     this.item = await this.getItem(+id);
 
-    if (!this.item) this.ts.error("Couldn't fetch data!");
+    if (this.item == null) this.ts.error("Couldn't fetch data!");
 
     return this.item;
   }
@@ -98,7 +98,6 @@ export class ProfileService {
   private mapProps = (item: Profile): Profile => {
     const mapped = us.deepClone(item);
 
-    mapped.timeTarget = us.timeToNumber(mapped.timeTarget as string);
     // TODO eventually remove, should be automatically set from API
     mapped.userId = 1;
 
