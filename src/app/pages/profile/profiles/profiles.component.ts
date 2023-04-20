@@ -5,7 +5,7 @@ import { paths } from 'src/app/utils';
 @Component({
   selector: 'app-profiles',
   templateUrl: './profiles.component.html',
-  styleUrls: ['./profiles.component.scss']
+  styleUrls: ['./profiles.component.scss'],
 })
 export class ProfilesComponent implements OnInit {
   paths = paths;
@@ -14,11 +14,10 @@ export class ProfilesComponent implements OnInit {
     return this.service.listItems;
   }
 
-  constructor(private service: ProfileService) {
-  }
+  constructor(private service: ProfileService) {}
 
   ngOnInit(): void {
-      this.service.loadListItems();
+    this.service.loadListItems();
   }
 
   goToCreate() {

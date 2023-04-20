@@ -1,10 +1,60 @@
-<button
-  mat-raised-button
-  [disabled]="disabled"
-  [color]="color"
-  [type]="type"
-  [class]="styleClass"
-  (click)="clicked.emit()"
->
-  {{ label }}
-</button>
+<ng-container [ngSwitch]="model">
+  <button
+    *ngSwitchCase="'raised'"
+    mat-raised-button
+    [color]="color"
+    [type]="type"
+    (click)="emitClick()"
+  >
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+  <button
+    *ngSwitchCase="'stroked'"
+    mat-stroked-button
+    [color]="color"
+    [type]="type"
+    (click)="emitClick()"
+  >
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+  <button
+    *ngSwitchCase="'flat'"
+    mat-flat-button
+    [color]="color"
+    [type]="type"
+    (click)="emitClick()"
+  >
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+  <button
+    *ngSwitchCase="'icon'"
+    mat-icon-button
+    [color]="color"
+    [type]="type"
+    (click)="emitClick()"
+  >
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+  <button *ngSwitchCase="'fab'" mat-fab [color]="color" [type]="type" (click)="emitClick()">
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+  <button
+    *ngSwitchCase="'mini-fab'"
+    mat-mini-fab
+    [color]="color"
+    [type]="type"
+    (click)="emitClick()"
+  >
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+  <a *ngSwitchCase="'link'" mat-button [color]="color" [routerLink]="url"
+    ><ng-container *ngTemplateOutlet="labelTemplate"></ng-container
+  ></a>
+  <button *ngSwitchDefault mat-button [color]="color" [type]="type" (click)="emitClick()">
+    <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+  </button>
+</ng-container>
+
+<ng-template #labelTemplate>
+  <ng-content></ng-content>
+</ng-template>

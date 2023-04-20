@@ -1,12 +1,7 @@
 <app-page-layout>
   <app-title title="Profiles"></app-title>
-  <ul>
-    <button [routerLink]="paths.profiles">Profiles</button>
-    <button [routerLink]="paths.profilesCreate">Profiles Create</button>
-    <button [routerLink]="paths.profilesDetails">Profiles Details</button>
-  </ul>
   <header class="list-header">
-    <app-button model="link" label="Create Profile" (clicked)="goToCreate()"></app-button>
+    <app-button model="link" [url]="paths.profilesCreate"> Create Profile </app-button>
   </header>
   <app-profile-list [items]="listItems"></app-profile-list>
   <router-outlet></router-outlet>

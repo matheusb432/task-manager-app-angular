@@ -9,9 +9,11 @@ import { ThemePalette } from '@angular/material/core';
 export class ButtonComponent {
   @Input() disabled = false;
   @Input() color: ThemePalette = 'primary';
-  @Input() type = 'button';
-  @Input() label = '';
-  @Input() styleClass = '';
+  @Input() type: 'submit' | 'button' = 'button';
+  @Input() url?: string;
+  @Input() model: 'raised' | 'stroked' | 'flat' | 'icon' | 'fab' | 'mini-fab' | 'link' | '' = '';
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+
+  emitClick = (): void => this.clicked.emit();
 }

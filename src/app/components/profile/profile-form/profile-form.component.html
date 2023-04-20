@@ -43,11 +43,11 @@
     <!-- TODO implement modal confirmation for deletion and submission -->
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
-        <app-button (clicked)="remove.emit()" label="Delete" color="warn"></app-button>
+        <app-button model="raised" (clicked)="remove.emit()" color="warn">Delete</app-button>
       </div>
 
-      <app-button (clicked)="cancel.emit()" label="Cancel" color="accent"></app-button>
-      <app-button *ngIf="canEdit" type="submit" [label]="submitLabel"></app-button>
+      <app-button model="raised" (clicked)="cancel.emit()" color="accent">Cancel</app-button>
+      <app-button model="raised" *ngIf="canEdit" type="submit">{{ submitLabel }}</app-button>
     </div>
   </div>
 </form>
