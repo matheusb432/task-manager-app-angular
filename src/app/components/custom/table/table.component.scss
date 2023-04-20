@@ -1,8 +1,9 @@
-.data-table {
+table.data-table {
   width: 100%;
-  border-radius: 0.75rem;
+  border-radius: 0.25rem;
   overflow: hidden;
   margin-bottom: 1.5rem;
+  border-spacing: 0;
 }
 
 .table-header {
@@ -25,6 +26,8 @@
 th,
 td {
   text-transform: capitalize;
+  text-align: start;
+  border-right: none !important;
 }
 
 .table-item {

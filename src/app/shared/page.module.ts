@@ -6,7 +6,6 @@ import { MainHeaderComponent } from '../components/custom/main-header/main-heade
 import { SidebarComponent } from '../components/custom/sidebar/sidebar.component';
 import { TitleComponent } from '../components/custom/title/title.component';
 import { CardLayoutComponent } from '../components/layout/card-layout/card-layout.component';
-import { GridLayoutComponent } from './../components/layout/grid-layout/grid-layout.component';
 import { PageLayoutComponent } from './../components/layout/page-layout/page-layout.component';
 
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -17,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
@@ -26,6 +26,8 @@ import { ButtonComponent } from '../components/custom/buttons/button/button.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconComponent } from '../components/custom/icon/icon.component';
 import { TableComponent } from '../components/custom/table/table.component';
+import { ModalFeedbackComponent, ModalConfirmComponent } from '../components/custom/modals';
+import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
 
 @NgModule({
   declarations: [
@@ -36,12 +38,14 @@ import { TableComponent } from '../components/custom/table/table.component';
     CardComponent,
     CardLayoutComponent,
     ImageComponent,
-    GridLayoutComponent,
     CardsGridComponent,
     NavItemsComponent,
     ButtonComponent,
     TableComponent,
     IconComponent,
+    ModalLayoutComponent,
+    ModalConfirmComponent,
+    ModalFeedbackComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +60,7 @@ import { TableComponent } from '../components/custom/table/table.component';
     MatButtonModule,
     MatSnackBarModule,
     MatIconModule,
+    MatDialogModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -66,12 +71,14 @@ import { TableComponent } from '../components/custom/table/table.component';
     CardComponent,
     CardLayoutComponent,
     ImageComponent,
-    GridLayoutComponent,
     CardsGridComponent,
     NavItemsComponent,
     ButtonComponent,
     TableComponent,
     IconComponent,
+    ModalLayoutComponent,
+    ModalConfirmComponent,
+    ModalFeedbackComponent,
     MatSidenavModule,
     MatGridListModule,
     MatInputModule,
@@ -80,6 +87,7 @@ import { TableComponent } from '../components/custom/table/table.component';
     MatButtonModule,
     MatSnackBarModule,
     MatIconModule,
+    MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
   ],

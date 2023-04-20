@@ -8,7 +8,8 @@ import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { PageData } from 'src/app/models/types';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
-import { DetailsTypes, FormTypes } from 'src/app/utils';
+import { ModalService } from 'src/app/services/modal.service';
+import { DetailsTypes, FormTypes, cancelData } from 'src/app/utils';
 
 @Component({
   selector: 'app-profile-details',
@@ -30,7 +31,8 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private service: ProfileService,
     private ts: ToastService,
-    private pageService: PageService
+    private pageService: PageService,
+    private modalService: ModalService,
   ) {}
 
   ngOnInit(): void {
@@ -132,10 +134,23 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     this.service.goToList();
   }
 
-  onCancel(): Promise<boolean> {
+  private onCancel(): Promise<boolean> {
     return this.service.goToList();
   }
 
+  handleCancel() {
+    this.openCancelModal();
+  }
+
+  openCancelModal(): void {
+    const ref = this.modalService.confirmation(cancelData());
+
+    ref.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      this.onCancel();
+    });
+  }
   disableFormIfView(): void {
     if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
 

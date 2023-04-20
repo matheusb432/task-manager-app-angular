@@ -6,7 +6,7 @@
     <button [routerLink]="paths.profilesDetails">Profiles Details</button>
   </ul>
   <header class="list-header">
-    <app-button label="Create Profile" (clicked)="goToCreate()"></app-button>
+    <app-button model="link" label="Create Profile" (clicked)="goToCreate()"></app-button>
   </header>
   <app-profile-list [items]="listItems"></app-profile-list>
   <router-outlet></router-outlet>

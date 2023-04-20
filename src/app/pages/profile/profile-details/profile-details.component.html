@@ -1,9 +1,8 @@
 <p>profile-details works!</p>
-<!-- TODO test  -->
 <app-profile-form
   [form]="form"
   [formType]="formType"
-  (cancel)="onCancel()"
+  (cancel)="handleCancel()"
   (save)="submitForm()"
   (remove)="onRemove()"
 ></app-profile-form>

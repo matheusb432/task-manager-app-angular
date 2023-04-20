@@ -1,0 +1,16 @@
+<!-- <h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.message}}</p>
+</div>
+<div class="modal-actions" mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{data.confirmText ?? 'OK'}}</button>
+</div> -->
+<app-modal-layout>
+  <ng-container titleContent> Confirm </ng-container>
+  <p>Are you sure you want to delete this profile?</p>
+  <ng-container actions>
+    <app-button label="Cancel" (clicked)="onNoClick()"></app-button>
+    <app-button [mat-dialog-close]="true" cdkFocusInitial>OK</app-button>
+  </ng-container>
+</app-modal-layout>
