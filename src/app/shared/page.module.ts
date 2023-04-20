@@ -15,7 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
@@ -23,6 +24,8 @@ import { NavItemsComponent } from '../components/custom/nav-items/nav-items.comp
 import { ButtonComponent } from '../components/custom/buttons/button/button.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconComponent } from '../components/custom/icon/icon.component';
+import { TableComponent } from '../components/custom/table/table.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CardsGridComponent,
     NavItemsComponent,
     ButtonComponent,
+    TableComponent,
+    IconComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +55,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatIconModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -64,6 +70,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CardsGridComponent,
     NavItemsComponent,
     ButtonComponent,
+    TableComponent,
+    IconComponent,
     MatSidenavModule,
     MatGridListModule,
     MatInputModule,
@@ -71,6 +79,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatIconModule,
     FormsModule,
     ReactiveFormsModule,
   ],

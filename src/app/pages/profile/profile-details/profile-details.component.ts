@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { ProfileFormGroup, getProfileForm } from 'src/app/components/profile';
 import { us } from 'src/app/helpers';
 import { PageConfig } from 'src/app/models/configs';
@@ -14,12 +15,13 @@ import { DetailsTypes, FormTypes } from 'src/app/utils';
   templateUrl: './profile-details.component.html',
   styleUrls: ['./profile-details.component.scss'],
 })
-export class ProfileDetailsComponent implements OnInit {
+export class ProfileDetailsComponent implements OnInit, OnDestroy {
   detailsPage!: PageConfig;
   item?: Profile;
   form!: ProfileFormGroup;
   pageData?: PageData;
   formType = FormTypes.Edit;
+  subscriptions: Subscription[] = [];
 
   get types(): ProfileType[] {
     return this.service.types;
@@ -32,11 +34,30 @@ export class ProfileDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initSubscriptions();
+
+    this.runInitMethods();
+  }
+
+  ngOnDestroy(): void {
+    us.unsub(this.subscriptions);
+  }
+
+  runInitMethods(): void {
     this.initUrlParams();
     this.initForm();
     this.initPage();
+    this.disableFormIfView();
 
     this.loadData();
+  }
+
+  initSubscriptions(): void {
+    this.subscriptions.push(
+      this.pageService.getQueryParamsObservable().subscribe(() => {
+        this.runInitMethods();
+      })
+    );
   }
 
   initUrlParams(): void {
@@ -66,9 +87,6 @@ export class ProfileDetailsComponent implements OnInit {
 
     this.formType = type as unknown as FormTypes;
     this.detailsPage = new PageConfig(`${us.capitalize(type)} Profile`);
-
-    // TODO better way to handle this?
-    if (type === DetailsTypes.View) this.form.disable();
   }
 
   submitForm(): Promise<void> {
@@ -100,7 +118,6 @@ export class ProfileDetailsComponent implements OnInit {
     const { id: createdId } = await this.service.duplicate(item);
 
     this.ts.success('Profile duplicated successfully');
-    // this.service.goToList();
     this.service.goToDetails(createdId, DetailsTypes.View);
   }
 
@@ -117,5 +134,11 @@ export class ProfileDetailsComponent implements OnInit {
 
   onCancel(): Promise<boolean> {
     return this.service.goToList();
+  }
+
+  disableFormIfView(): void {
+    if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
+
+    this.form?.disable();
   }
 }

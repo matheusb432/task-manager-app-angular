@@ -1,3 +1,4 @@
+export { IconConfig } from './icon-config';
 export { ToastData } from './toast-data';
 export { PageConfig } from './page-config';
 export { NavItem } from './nav-item';

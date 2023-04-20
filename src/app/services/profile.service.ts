@@ -25,8 +25,10 @@ export class ProfileService {
 
   item?: Profile;
   private _types: ProfileType[] = [];
+  private _listItems: Profile[] = [];
 
   private _typesSet = new BehaviorSubject<void>(undefined);
+  private _listItemsSet = new BehaviorSubject<void>(undefined);
 
   get types(): ProfileType[] {
     return this._types;
@@ -40,6 +42,20 @@ export class ProfileService {
 
   get typesSet$(): Observable<void> {
     return this._typesSet.asObservable();
+  }
+
+  get listItems(): Profile[] {
+    return this._listItems;
+  }
+
+  private set listItems(value: Profile[]) {
+    this._listItems = value;
+
+    this._listItemsSet.next();
+  }
+
+  get listItemsSet$(): Observable<void> {
+    return this._listItemsSet.asObservable();
   }
 
   constructor(
@@ -70,6 +86,10 @@ export class ProfileService {
 
   remove = async (id: number): Promise<void> => this.api.remove(ApiRequest.delete(this.url, id));
 
+  loadListData = async (): Promise<void> => {
+    await this.loadListItems();
+  }
+
   loadCreateData = async () => {
     await this.loadProfileTypes();
   };
@@ -78,6 +98,14 @@ export class ProfileService {
     await this.loadProfileTypes();
     return this.loadItem(id);
   };
+
+  async loadListItems(): Promise<void> {
+    if (this.listItems?.length > 0) return;
+
+    this.listItems = await this.getItems();
+
+    return;
+  }
 
   async loadItem(id: string | null | undefined): Promise<Profile | null> {
     if (!id) {

@@ -1,4 +1,4 @@
-export abstract class Entity {
+export abstract class TableItem {
   id?: number;
 
   static tableHeaders: () => string[];

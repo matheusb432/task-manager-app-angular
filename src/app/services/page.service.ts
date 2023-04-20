@@ -17,6 +17,10 @@ export class PageService {
 
   getParam = (param: string) => this.getUrlTree().queryParams[param];
 
+  getQueryParamsObservable() {
+    return this.activatedRoute.queryParams;
+  }
+
   getDetailsUrlParams(): PageData {
     return {
       id: this.getParam('id'),

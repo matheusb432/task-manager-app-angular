@@ -5,6 +5,9 @@
     <button [routerLink]="paths.profilesCreate">Profiles Create</button>
     <button [routerLink]="paths.profilesDetails">Profiles Details</button>
   </ul>
-  <app-profile-list></app-profile-list>
+  <header class="list-header">
+    <app-button label="Create Profile" (clicked)="goToCreate()"></app-button>
+  </header>
+  <app-profile-list [items]="listItems"></app-profile-list>
   <router-outlet></router-outlet>
 </app-page-layout>

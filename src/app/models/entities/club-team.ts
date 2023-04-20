@@ -1,6 +1,6 @@
-import { Entity } from './../types/entity';
+import { TableItem } from '../types/table-item';
 
-export class ClubTeam implements Entity {
+export class ClubTeam implements TableItem {
   id?: number;
   name?: string;
   description?: string;

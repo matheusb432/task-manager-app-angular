@@ -7,12 +7,15 @@
   --primary-hover: #c2185b;
   --primary-active: #ad1457;
   --primary-dark: #ca1453;
+  --primary-light: #f386ab;
+  --primary-lighter: #faccdc;
 
   --secondary: #607d8b;
   --secondary-dark: #43484b;
   --accent: #b0bec5;
   --bg-color: #212c31;
   --text-icons: #fff;
+  --scrollbar-radius: 10px;
 }
 
 * {
@@ -88,4 +91,33 @@ h3 {
   .mdc-button__label {
     color: #fff;
   }
+}
+
+.list-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+
+::-webkit-scrollbar {
+  height: 12px;
+  width: 10px;
+  background: var(--secondary);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background: var(--primary);
+  border-radius: var(--scrollbar-radius);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  background: var(--primary);
+  border-radius: var(--scrollbar-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
 }

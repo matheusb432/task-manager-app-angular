@@ -1,0 +1,50 @@
+.data-table {
+  width: 100%;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.table-header {
+  color: #fff;
+  background-color: var(--secondary);
+}
+
+.table-row {
+  color: #000;
+
+  &:nth-child(odd) {
+    background: #fff;
+  }
+
+  &:nth-child(even) {
+    background: var(--primary-lighter);
+  }
+}
+
+th,
+td {
+  text-transform: capitalize;
+}
+
+.table-item {
+  padding: 1rem 1.5rem;
+}
+
+.actions {
+  text-align: right;
+
+  app-icon {
+    transition: all 0.2s;
+    opacity: 0.7;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-right: 1.5rem;
+    cursor: pointer;
+    font-weight: bold;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
