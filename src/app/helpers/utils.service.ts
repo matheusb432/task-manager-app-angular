@@ -53,4 +53,16 @@ export class UtilsService {
 
     subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
+  static async delayHtmlRender(timeMs = 0): Promise<unknown> {
+    return this.sleep(timeMs);
+  }
+
+  static async sleep(ms: number): Promise<unknown> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  static hasItems(items: unknown[]): boolean {
+    return items?.length > 0;
+  }
 }

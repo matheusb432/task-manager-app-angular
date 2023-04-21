@@ -28,6 +28,7 @@ import { IconComponent } from '../components/custom/icon/icon.component';
 import { TableComponent } from '../components/custom/table/table.component';
 import { ModalFeedbackComponent, ModalConfirmComponent } from '../components/custom/modals';
 import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
+import { FocusInitialDirective } from '../directives';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-la
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
+    FocusInitialDirective,
   ],
   imports: [
     CommonModule,
@@ -89,6 +91,7 @@ import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-la
     MatIconModule,
     MatDialogModule,
     FormsModule,
+    FocusInitialDirective,
     ReactiveFormsModule,
   ],
 })

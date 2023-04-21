@@ -1,7 +1,14 @@
-<mat-icon
-  aria-hidden="false"
-  [ariaLabel]="ariaLabelText"
-  [fontIcon]="icon"
-  [color]="color"
-  (click)="clicked.emit()"
-></mat-icon>
+
+<a *ngIf="url; else iconTemplate" [routerLink]="url" [queryParams]="queryParams">
+  <ng-container *ngTemplateOutlet="iconTemplate"></ng-container>
+</a>
+
+<ng-template #iconTemplate>
+  <mat-icon
+    aria-hidden="false"
+    [ariaLabel]="ariaLabelText"
+    [fontIcon]="icon"
+    [color]="color"
+    (click)="clicked.emit()"
+  ></mat-icon>
+</ng-template>

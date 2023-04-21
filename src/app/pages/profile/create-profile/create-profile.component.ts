@@ -6,7 +6,7 @@ import { ProfileType } from 'src/app/models/entities/profile-type';
 import { ToastService } from 'src/app/services';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { DetailsTypes, FormTypes, cancelData } from 'src/app/utils';
+import { DetailsTypes, FormTypes } from 'src/app/utils';
 
 @Component({
   selector: 'app-create-profile',
@@ -35,7 +35,6 @@ export class CreateProfileComponent implements OnInit {
   }
 
   initForm(): void {
-    console.log(getProfileForm());
     this.form = new FormGroup(getProfileForm());
   }
 
@@ -56,21 +55,8 @@ export class CreateProfileComponent implements OnInit {
     this.service.goToDetails(id, DetailsTypes.View);
   }
 
-  private onCancel(): Promise<boolean> {
+  onCancel(): Promise<boolean> {
     return this.service.goToList();
   }
 
-  handleCancel() {
-    this.openCancelModal();
-  }
-
-  openCancelModal(): void {
-    const ref = this.modalService.confirmation(cancelData());
-
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      this.onCancel();
-    });
-  }
 }

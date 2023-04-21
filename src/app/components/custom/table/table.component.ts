@@ -1,32 +1,35 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { us } from 'src/app/helpers';
 import { InvalidTableConfigError } from 'src/app/helpers/errors';
 import { IconConfig } from 'src/app/models/configs';
+import { TableConfig } from 'src/app/models/configs/table-config';
 import { TableItem } from 'src/app/models/types';
-import { Icons } from 'src/app/utils';
+import { DetailsTypes, Icons } from 'src/app/utils';
 
 @Component({
-  selector: 'app-table [items] [tableHeaders] [tableKeys]',
+  selector: 'app-table [items] [config]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() items!: T[];
-  @Input() tableHeaders!: string[];
-  @Input() tableKeys!: (keyof T)[];
-  // @Input() tableHeaders!: () => string[];
+  @Input() config!: TableConfig<T>;
 
-  // @Input() tableKeys!: () => (keyof T)[];
-
-  // @Input() copyItem?: (id: number) => void;
-  // @Input() viewItem?: (id: number) => void;
-  // @Input() editItem?: (id: number) => void;
-  // @Input() deleteItem?: (id: number) => void;
-  @Output() copyItem = new EventEmitter<number>();
-  @Output() viewItem = new EventEmitter<number>();
-  @Output() editItem = new EventEmitter<number>();
   @Output() deleteItem = new EventEmitter<number>();
 
   icons: IconConfig<number>[] = [];
+
+  get tableHeaders(): string[] {
+    return this.config.headers;
+  }
+
+  get tableKeys(): (keyof T)[] {
+    return this.config.keys;
+  }
+
+  get detailsUrl(): string {
+    return this.config.detailsUrl;
+  }
 
   ngOnInit(): void {
     this.initIcons();
@@ -37,23 +40,34 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   }
 
   initIcons(): void {
-    this.icons = [
-      // TODO links as [routerLink] on icon?
-      new IconConfig(Icons.ContentCopy, (id: number) => this.copyItem.emit(id)),
-      new IconConfig(Icons.Edit, (id: number) => this.editItem.emit(id)),
-      // TODO configure more colors in theme?
-      // new IconConfig(Icons.PageView, (id: number) => this.viewItem.emit(id), 'accent'),
-      new IconConfig(Icons.PageView, (id: number) => this.viewItem.emit(id)),
-      new IconConfig(Icons.Delete, (id: number) => this.deleteItem.emit(id), 'warn'),
-    ].filter((i) => i.onClick != null);
+    const { hasCopy, hasDelete, hasEdit, hasView } = this.config;
+    const icons = [
+      !!hasCopy && IconConfig.withUrlType(Icons.ContentCopy, DetailsTypes.Duplicate),
+      !!hasEdit && IconConfig.withUrlType(Icons.Edit, DetailsTypes.Edit),
+      !!hasView && IconConfig.withUrlType(Icons.PageView, DetailsTypes.View),
+      !!hasDelete &&
+        IconConfig.withClick(Icons.Delete, (id: number) => this.deleteItem.emit(id), 'warn'),
+    ].filter((i) => !!i);
+
+    this.icons = icons as IconConfig<number>[];
   }
 
+  buildUrl = (): string => this.detailsUrl;
+  buildQueryParams = (id: number, type: DetailsTypes): { id: string; type: DetailsTypes } => ({
+    id: id.toString(),
+    type,
+  });
+
   validateList(): void {
-    if (this.tableHeaders?.length > 0 && this.tableHeaders.length === this.tableKeys?.length)
+    if (us.hasItems(this.tableHeaders) && this.tableHeaders.length === this.tableKeys?.length)
       return;
 
     throw new InvalidTableConfigError(this.tableHeaders, this.tableKeys);
   }
 
-  canShowActions = () => this.copyItem != null || this.editItem != null || this.deleteItem != null;
+  canShowActions = () => us.hasItems(this.icons);
+
+  getItemId(index: number, item: T): number {
+    return item?.id ?? index;
+  }
 }

@@ -1,4 +1,4 @@
-<form class="form-layout" [formGroup]="form" (ngSubmit)="save.emit(form)">
+<form class="form-layout" [formGroup]="form" (ngSubmit)="openSaveModal()">
   <div class="form-grid">
     <app-input
       fcName="name"
@@ -40,13 +40,12 @@
       [options]="typeOptions"
     ></app-select>
 
-    <!-- TODO implement modal confirmation for deletion and submission -->
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
-        <app-button model="raised" (clicked)="remove.emit()" color="warn">Delete</app-button>
+        <app-button model="raised" (clicked)="openDeleteModal()" color="warn">Delete</app-button>
       </div>
 
-      <app-button model="raised" (clicked)="cancel.emit()" color="accent">Cancel</app-button>
+      <app-button model="raised" (clicked)="openCancelModal()" color="accent">Cancel</app-button>
       <app-button model="raised" *ngIf="canEdit" type="submit">{{ submitLabel }}</app-button>
     </div>
   </div>

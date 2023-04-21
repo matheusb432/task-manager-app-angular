@@ -6,14 +6,20 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of items; let itemIndex = index" class="table-row">
+    <tr *ngFor="let item of items; let itemIndex = index; trackBy: getItemId" class="table-row">
       <td *ngFor="let key of tableKeys" class="table-item">{{ item[key] }}</td>
       <td *ngIf="canShowActions()" class="text-right actions">
         <app-icon
           *ngFor="let icon of icons"
           [icon]="icon.icon"
           [color]="icon.color"
-          (clicked)="icon.onClick?.(item.id ?? itemIndex)"
+          [url]="icon.urlType != null ? buildUrl() : undefined"
+          [queryParams]="
+            icon.urlType != null
+              ? buildQueryParams(getItemId(itemIndex, item), icon.urlType)
+              : undefined
+          "
+          (clicked)="icon.onClick?.(getItemId(itemIndex, item))"
         ></app-icon>
       </td>
     </tr>

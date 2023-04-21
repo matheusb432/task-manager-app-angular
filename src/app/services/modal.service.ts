@@ -16,8 +16,9 @@ export class ModalService {
 
   private open(cmp: ComponentType<unknown>, data: unknown): MatDialogRef<unknown> {
     const dialogRef = this.dialog.open(cmp, {
-      // width: '250px',
       data,
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     return dialogRef;

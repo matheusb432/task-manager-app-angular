@@ -100,7 +100,7 @@ export class ProfileService {
   };
 
   async loadListItems(): Promise<void> {
-    if (this.listItems?.length > 0) return;
+    if (us.hasItems(this.listItems)) return;
 
     this.listItems = await this.getItems();
 
@@ -121,7 +121,7 @@ export class ProfileService {
   }
 
   loadProfileTypes = async (): Promise<void> => {
-    if (this.types?.length > 0) return;
+    if (us.hasItems(this.types)) return;
 
     this.types = await this.profileTypeService.getItems();
   };

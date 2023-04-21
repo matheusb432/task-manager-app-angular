@@ -1,13 +1,5 @@
 <article>
-  <app-table
-    [items]="items"
-    [tableHeaders]="tableHeaders"
-    [tableKeys]="tableKeys"
-    (copyItem)="copyItem($event)"
-    (viewItem)="viewItem($event)"
-    (editItem)="editItem($event)"
-    (deleteItem)="deleteItem($event)"
-  ></app-table>
+  <app-table [items]="items" [config]="config" (deleteItem)="openDeleteModal($event)"></app-table>
 </article>
 
 <!-- TODO implement pagination -->

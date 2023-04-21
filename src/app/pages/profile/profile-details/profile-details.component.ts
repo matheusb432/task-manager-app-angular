@@ -9,7 +9,7 @@ import { ProfileType } from 'src/app/models/entities/profile-type';
 import { PageData } from 'src/app/models/types';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
 import { ModalService } from 'src/app/services/modal.service';
-import { DetailsTypes, FormTypes, cancelData } from 'src/app/utils';
+import { DetailsTypes, FormTypes, cancelModalData } from 'src/app/utils';
 
 @Component({
   selector: 'app-profile-details',
@@ -143,7 +143,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   openCancelModal(): void {
-    const ref = this.modalService.confirmation(cancelData());
+    const ref = this.modalService.confirmation(cancelModalData());
 
     ref.afterClosed().subscribe((result) => {
       if (!result) return;
@@ -151,6 +151,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
       this.onCancel();
     });
   }
+
   disableFormIfView(): void {
     if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
 

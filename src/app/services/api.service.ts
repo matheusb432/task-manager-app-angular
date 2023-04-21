@@ -35,10 +35,12 @@ export class ApiService {
     }
 
     // TODO Utility class to build OData queries
-    const req$ = (this._getRequest<T>({
-      ...apiReq,
-      url: `${apiReq.url}/odata?$filter=id eq ${apiReq.id}`,
-    }) as unknown as Observable<T[]>).pipe(map((res: T[]) => res?.[0]));
+    const req$ = (
+      this._getRequest<T>({
+        ...apiReq,
+        url: `${apiReq.url}/odata?$filter=id eq ${apiReq.id}`,
+      }) as unknown as Observable<T[]>
+    ).pipe(map((res: T[]) => res?.[0]));
 
     return this._returnAsync<T>(req$, apiReq.resCallback) as Promise<T>;
   }
@@ -88,9 +90,7 @@ export class ApiService {
   }
 
   handleHttpError(err: HttpErrorResponse, req: Observable<unknown>): void {
-    if (!environment.production) {
-      console.log(err, req);
-    }
+    if (!environment.production) console.log(err, req);
   }
 
   private _getRequest<T>({ url, itemType }: ApiRequest<T>): Observable<T> {

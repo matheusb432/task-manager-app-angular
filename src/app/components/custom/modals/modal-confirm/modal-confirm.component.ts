@@ -5,7 +5,6 @@ import { ModalConfirmData } from 'src/app/models/configs/modals';
 @Component({
   selector: 'app-modal-confirm',
   templateUrl: './modal-confirm.component.html',
-  styleUrls: ['./modal-confirm.component.scss'],
 })
 export class ModalConfirmComponent {
   constructor(

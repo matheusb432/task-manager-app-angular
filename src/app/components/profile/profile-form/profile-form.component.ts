@@ -6,8 +6,9 @@ import { SelectOption } from 'src/app/models/configs';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { ProfileTypeService } from 'src/app/services/profile-type.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { FormTypes } from 'src/app/utils';
+import { FormTypes, cancelModalData, deleteModalData, saveModalData } from 'src/app/utils';
 import { ProfileForm, ProfileFormGroup } from '../profile-form-group';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-profile-form [form] [formType] [cancel]',
@@ -62,7 +63,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     return !us.isViewForm(this.formType);
   }
 
-  constructor(private service: ProfileService) {}
+  constructor(private service: ProfileService, private modalService: ModalService) {}
 
   ngOnInit(): void {
     this.initSubs();
@@ -83,5 +84,35 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
   showDelete(): boolean {
     return us.isEditForm(this.formType);
+  }
+
+  openCancelModal(): void {
+    const ref = this.modalService.confirmation(cancelModalData());
+
+    ref.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      this.cancel.emit();
+    });
+  }
+
+  openDeleteModal(): void {
+    const ref = this.modalService.confirmation(deleteModalData());
+
+    ref.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      this.remove.emit();
+    });
+  }
+
+  openSaveModal(): void {
+    const ref = this.modalService.confirmation(saveModalData());
+
+    ref.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      this.save.emit(this.form);
+    });
   }
 }

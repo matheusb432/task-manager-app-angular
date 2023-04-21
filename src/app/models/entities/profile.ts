@@ -6,7 +6,7 @@ import { TableItem } from '../types';
 export class Profile implements TableItem {
   id?: number;
   name?: string;
-  timeTarget?: number | string;
+  timeTarget?: string;
   tasksTarget?: number;
   priority?: number;
   userId?: number;

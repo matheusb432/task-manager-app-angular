@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormItem, PageData } from '../models';
+import { PageData } from '../models';
 import { DetailsTypes } from '../utils';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TypedForm } from '../models/types';
 
 @Injectable({
   providedIn: 'root',
@@ -36,4 +35,8 @@ export class PageService {
     this.getUrlTree()
       .root.children['primary'].segments.map((it) => it.path)
       .join('/');
+
+  buildDetailsUrl = (url: string, id: number, type: DetailsTypes) =>
+    `${url}?id=${id}&type=${type}`;
+
 }
