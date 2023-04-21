@@ -14,10 +14,14 @@ export class ProfilesComponent implements OnInit {
     return this.service.listItems;
   }
 
+  get total() {
+    return this.service.total;
+  }
+
   constructor(private service: ProfileService) {}
 
   ngOnInit(): void {
-    this.service.loadListItems();
+    this.service.loadListData();
   }
 
   goToCreate() {

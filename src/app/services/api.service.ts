@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { Observable, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests, ResCallback } from 'src/app/models';
+import { PaginatedResult, PostReturn } from '../models/types';
 import { environment } from './../../environments/environment';
-import { PostReturn } from '../models/types';
-import { SourceType } from 'mapper-ts/lib-esm/types';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ import { SourceType } from 'mapper-ts/lib-esm/types';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-  async getAll<T>(apiReq: ApiRequest<T>): Promise<T[]> {
+  async get<T>(apiReq: ApiRequest<T>): Promise<T[]> {
     if (!this.isValidRequest[Requests.Get](apiReq)) {
       this.handleInvalidRequestError(apiReq);
 
@@ -24,7 +24,19 @@ export class ApiService {
 
     const req$ = this._getRequest({ ...apiReq, url: `${apiReq.url}/odata` });
 
-    return this._returnAsync<T>(req$, apiReq.resCallback) as Promise<T[]>;
+    return this._returnAsync(req$, apiReq.resCallback) as Promise<T[]>;
+  }
+
+  async getPaginated<T>(apiReq: ApiRequest<T>): Promise<PaginatedResult<T>> {
+    if (!this.isValidRequest[Requests.Get](apiReq)) {
+      this.handleInvalidRequestError(apiReq);
+
+      return Promise.reject(ErrorMessages.InvalidServiceRequest);
+    }
+
+    const req$ = this._getPaginatedRequest<T>(apiReq);
+
+    return this._returnAsync(req$, apiReq.resCallback) as Promise<PaginatedResult<T>>;
   }
 
   async getById<T>(apiReq: ApiRequest<T>): Promise<T> {
@@ -34,15 +46,14 @@ export class ApiService {
       return Promise.reject(ErrorMessages.InvalidServiceRequest);
     }
 
-    // TODO Utility class to build OData queries
-    const req$ = (
-      this._getRequest<T>({
-        ...apiReq,
-        url: `${apiReq.url}/odata?$filter=id eq ${apiReq.id}`,
-      }) as unknown as Observable<T[]>
-    ).pipe(map((res: T[]) => res?.[0]));
+    const url = us.buildODataQuery(apiReq.url, { filter: `id eq ${apiReq.id}` });
 
-    return this._returnAsync<T>(req$, apiReq.resCallback) as Promise<T>;
+    const req$ = this._getRequest<T>({
+      ...apiReq,
+      url,
+    }).pipe(map((res: T[]) => res?.[0]));
+
+    return this._returnAsync(req$, apiReq.resCallback) as Promise<T>;
   }
 
   async insert<T>(apiReq: ApiRequest<T>): Promise<PostReturn> {
@@ -93,14 +104,31 @@ export class ApiService {
     if (!environment.production) console.log(err, req);
   }
 
-  private _getRequest<T>({ url, itemType }: ApiRequest<T>): Observable<T> {
-    return this.http.get<T>(url).pipe(
-      map((data: unknown) => {
+  private _getRequest<T>({ url, itemType, params }: ApiRequest<T>): Observable<T[]> {
+    return this.http.get<T[]>(url, { params }).pipe(
+      map((data) => {
         if (!itemType) return data;
 
-        return new Mapper(itemType).map(data as SourceType[]);
+        return new Mapper(itemType).map(data);
       })
-    ) as unknown as Observable<T>;
+    ) as unknown as Observable<T[]>;
+  }
+
+  private _getPaginatedRequest<T>({
+    url,
+    itemType,
+    params,
+  }: ApiRequest): Observable<PaginatedResult<T>> {
+    return this.http.get<PaginatedResult<T>>(url, { params }).pipe(
+      map((data) => {
+        if (!itemType) return data;
+
+        return {
+          total: data.total,
+          items: new Mapper(itemType).map(data.items),
+        };
+      })
+    ) as unknown as Observable<PaginatedResult<T>>;
   }
 
   private _postRequest<T>({ url, item, postDto }: ApiRequest<T>): Observable<T> {
@@ -123,9 +151,12 @@ export class ApiService {
     return this.http.delete<T>(url);
   }
 
-  private async _returnAsync<T>(req$: Observable<T>, resCallback?: ResCallback): Promise<unknown> {
+  private async _returnAsync(
+    req$: Observable<unknown>,
+    resCallback?: ResCallback
+  ): Promise<unknown> {
     return lastValueFrom(req$)
-      .then((res: T) => {
+      .then((res) => {
         return resCallback?.(res) ?? res;
       })
       .catch((err: HttpErrorResponse) => this.handleHttpError(err, req$));

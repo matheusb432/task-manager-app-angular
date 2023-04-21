@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { PaginationOptions } from 'src/app/helpers/pagination-options';
 import { TableConfig } from 'src/app/models/configs/table-config';
 import { Profile } from 'src/app/models/entities';
 import { ProfileService, ToastService } from 'src/app/services';
@@ -12,6 +14,7 @@ import { deleteModalData, paths } from 'src/app/utils';
 })
 export class ProfileListComponent {
   @Input() items!: Profile[];
+  @Input() totalItems = 0;
 
   config: TableConfig<Profile> = {
     headers: Profile.tableHeaders(),
@@ -30,10 +33,16 @@ export class ProfileListComponent {
   ) {}
 
   // TODO implement
-  async paginate(event: any): Promise<void> {
-    console.log(event);
+  async paginate(event: PageEvent): Promise<void> {
+    if (event == null){
+      this.ts.error('Error while paginating');
+      return;}
+
+    const {pageIndex, pageSize} = event;
+    this.service.loadListItems(PaginationOptions.from(pageIndex, pageSize));
   }
 
+  // TODO refactor to service?
   private deleteItem = async (id: number) => {
     await this.service.remove(id);
 

@@ -20,8 +20,8 @@ export class ProfileTypeService {
   }
 
   async getItems(): Promise<ProfileType[]> {
-    return this.api.getAll<ProfileType>(
-      ApiRequest.getAll<ProfileType>(this.url, ProfileType)
+    return this.api.get<ProfileType>(
+      ApiRequest.get<ProfileType>(this.url, ProfileType)
     ) as Promise<ProfileType[]>;
   }
 

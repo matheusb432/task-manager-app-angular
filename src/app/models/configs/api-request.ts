@@ -1,15 +1,23 @@
+
 export class ApiRequest<T = unknown> {
   itemType?: Ctor<T>;
   postDto?: Ctor<unknown>;
   putDto?: Ctor<unknown>;
   item?: T;
   id?: number;
+  params?: Record<string, string>;
   resCallback?: ResCallback;
 
-  constructor(public url: string) {}
 
-  static getAll<T>(url: string, itemType: Ctor<T>): ApiRequest<T> {
-    return { url, itemType };
+
+  constructor(public url: string) {
+    this.params = {
+      "$count": "true",
+    }
+  }
+
+  static get<T>(url: string, itemType: Ctor<T>, params?: Record<string, string>): ApiRequest<T> {
+    return { url, itemType, params };
   }
 
   static getById<T>(url: string, itemType: Ctor<T>, id: number): ApiRequest<T> {

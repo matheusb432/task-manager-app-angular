@@ -3,6 +3,6 @@
   <header class="list-header">
     <app-button model="link" [url]="paths.profilesCreate"> Create Profile </app-button>
   </header>
-  <app-profile-list [items]="listItems"></app-profile-list>
+  <app-profile-list [items]="listItems" [totalItems]="total"></app-profile-list>
   <router-outlet></router-outlet>
 </app-page-layout>

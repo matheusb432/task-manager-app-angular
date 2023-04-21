@@ -2,10 +2,13 @@ import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { FormTypes } from '../utils';
 import { Subscription } from 'rxjs';
+import { ODataBuilder, ODataOptions } from './odata';
+import { PaginationOptions } from './pagination-options';
 
 @Injectable({
   providedIn: 'root',
 })
+// TODO implement unit tests for all theses methods
 export class UtilsService {
   static formatDate = (date: Date): string => {
     const datePipe = new DatePipe('en-US');
@@ -65,4 +68,21 @@ export class UtilsService {
   static hasItems(items: unknown[]): boolean {
     return items?.length > 0;
   }
+
+  static buildODataQuery = (url: string, options?: ODataOptions): string => {
+    return new ODataBuilder(url).buildUrl(options);
+  };
+
+  static buildPaginatedODataQuery = (
+    url: string,
+    {page,itemsPerPage,options}: PaginationOptions,
+  ): string => {
+    page ??= 0;
+    itemsPerPage ??= 10;
+
+    const skip = page * itemsPerPage;
+    const top = itemsPerPage;
+
+    return UtilsService.buildODataQuery(url, { count: true, skip, top, ...options });
+  };
 }

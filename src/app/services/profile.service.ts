@@ -10,12 +10,14 @@ import { ApiRequest } from '../models/configs/api-request';
 import { ProfilePostDto, ProfilePutDto } from '../models/dtos/profile';
 import { Profile } from '../models/entities';
 import { ProfileType } from '../models/entities/profile-type';
-import { PostReturn } from '../models/types';
+import { PaginatedResult, PostReturn } from '../models/types';
 import { DetailsTypes, paths } from '../utils';
 import { ApiService } from './api.service';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
 import { AbstractControl } from '@angular/forms';
+import { ODataOptions } from '../helpers/odata';
+import { PaginationOptions } from '../helpers/pagination-options';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +25,16 @@ import { AbstractControl } from '@angular/forms';
 export class ProfileService {
   private url = `${environment.apiUrl}/profiles`;
 
+  // TODO remove?
   item?: Profile;
+
   private _types: ProfileType[] = [];
   private _listItems: Profile[] = [];
+  private _total = 0;
 
   private _typesSet = new BehaviorSubject<void>(undefined);
   private _listItemsSet = new BehaviorSubject<void>(undefined);
+  private _totalSet = new BehaviorSubject<number>(0);
 
   get types(): ProfileType[] {
     return this._types;
@@ -48,6 +54,7 @@ export class ProfileService {
     return this._listItems;
   }
 
+  // TODO research on different ways to encapsulate rxjs observables
   private set listItems(value: Profile[]) {
     this._listItems = value;
 
@@ -56,6 +63,20 @@ export class ProfileService {
 
   get listItemsSet$(): Observable<void> {
     return this._listItemsSet.asObservable();
+  }
+
+  get total(): number {
+    return this._total;
+  }
+
+  private set total(value: number) {
+    this._total = value;
+
+    this._totalSet.next(value);
+  }
+
+  get totalSet$(): Observable<number> {
+    return this._totalSet.asObservable();
   }
 
   constructor(
@@ -70,16 +91,19 @@ export class ProfileService {
   }
 
   async getItems(): Promise<Profile[]> {
-    return this.api.getAll<Profile>(ApiRequest.getAll<Profile>(this.url, Profile)) as Promise<
-      Profile[]
-    >;
+    return this.api.get<Profile>(ApiRequest.get<Profile>(this.url, Profile));
+  }
+
+  async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
+    const queryUrl = us.buildPaginatedODataQuery(this.url, options);
+
+    return this.api.getPaginated<Profile>(ApiRequest.get<Profile>(queryUrl, Profile));
   }
 
   insert = async (ct: Profile): Promise<PostReturn> =>
     this.api.insert(ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto));
 
-  duplicate = async (ct: Profile): Promise<PostReturn> =>
-    this.insert(ct);
+  duplicate = async (ct: Profile): Promise<PostReturn> => this.insert(ct);
 
   update = async (ct: Profile): Promise<void> =>
     this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
@@ -87,8 +111,8 @@ export class ProfileService {
   remove = async (id: number): Promise<void> => this.api.remove(ApiRequest.delete(this.url, id));
 
   loadListData = async (): Promise<void> => {
-    await this.loadListItems();
-  }
+    await this.loadListItems(PaginationOptions.default());
+  };
 
   loadCreateData = async () => {
     await this.loadProfileTypes();
@@ -99,12 +123,11 @@ export class ProfileService {
     return this.loadItem(id);
   };
 
-  async loadListItems(): Promise<void> {
-    if (us.hasItems(this.listItems)) return;
+  async loadListItems(options: PaginationOptions): Promise<void> {
+    const res = await this.getPaginated(options);
 
-    this.listItems = await this.getItems();
-
-    return;
+    this.total = res.total;
+    this.listItems = res.items;
   }
 
   async loadItem(id: string | null | undefined): Promise<Profile | null> {

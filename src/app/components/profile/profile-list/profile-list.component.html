@@ -2,7 +2,6 @@
   <app-table [items]="items" [config]="config" (deleteItem)="openDeleteModal($event)"></app-table>
 </article>
 
-<!-- TODO implement pagination -->
-<!-- <footer>
-  <app-pagination (changePage)="paginate($event)"></app-pagination>
-</footer> -->
+<footer>
+  <app-pagination [totalItems]="totalItems" (pageChanged)="paginate($event)"></app-pagination>
+</footer>

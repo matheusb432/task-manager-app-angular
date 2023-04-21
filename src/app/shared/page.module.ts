@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
@@ -29,6 +30,7 @@ import { TableComponent } from '../components/custom/table/table.component';
 import { ModalFeedbackComponent, ModalConfirmComponent } from '../components/custom/modals';
 import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
 import { FocusInitialDirective } from '../directives';
+import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { FocusInitialDirective } from '../directives';
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
+    PaginationComponent,
     FocusInitialDirective,
   ],
   imports: [
@@ -63,6 +66,7 @@ import { FocusInitialDirective } from '../directives';
     MatSnackBarModule,
     MatIconModule,
     MatDialogModule,
+    MatPaginatorModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -81,6 +85,7 @@ import { FocusInitialDirective } from '../directives';
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
+    PaginationComponent,
     MatSidenavModule,
     MatGridListModule,
     MatInputModule,
@@ -90,6 +95,7 @@ import { FocusInitialDirective } from '../directives';
     MatSnackBarModule,
     MatIconModule,
     MatDialogModule,
+    MatPaginatorModule,
     FormsModule,
     FocusInitialDirective,
     ReactiveFormsModule,
