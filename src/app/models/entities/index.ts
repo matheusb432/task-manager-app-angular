@@ -1,4 +1,3 @@
-export { ClubTeam } from './club-team';
 export { Goal } from "./goal";
 export { GoalStep } from "./goal-step";
 export { GoalTaskItem } from "./goal-task-item";

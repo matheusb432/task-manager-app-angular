@@ -1,3 +1,4 @@
+export { PaginatedResult } from './paginated-result';
 export { TypedForm } from './typed-form';
 export { PostReturn } from './post-return';
 export { PageData } from './page-data';
