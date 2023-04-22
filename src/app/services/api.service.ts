@@ -46,7 +46,7 @@ export class ApiService {
       return Promise.reject(ErrorMessages.InvalidServiceRequest);
     }
 
-    const url = us.buildODataQuery(apiReq.url, { filter: `id eq ${apiReq.id}` });
+    const url = us.buildODataQuery(apiReq.url, { filter: {id: apiReq.id } });
 
     const req$ = this._getRequest<T>({
       ...apiReq,

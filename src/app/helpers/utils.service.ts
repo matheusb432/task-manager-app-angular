@@ -8,12 +8,11 @@ import { PaginationOptions } from './pagination-options';
 @Injectable({
   providedIn: 'root',
 })
-// TODO implement unit tests for all theses methods
 export class UtilsService {
   static formatDate = (date: Date): string => {
-    const datePipe = new DatePipe('en-US');
-
     if (!date) return '';
+
+    const datePipe = new DatePipe('en-US');
 
     const formattedDate = datePipe.transform(date, 'dd/MM/yyyy');
 
@@ -77,10 +76,10 @@ export class UtilsService {
     url: string,
     {page,itemsPerPage,options}: PaginationOptions,
   ): string => {
-    page ??= 0;
+    page ??= 1;
     itemsPerPage ??= 10;
 
-    const skip = page * itemsPerPage;
+    const skip = (page - 1) * itemsPerPage;
     const top = itemsPerPage;
 
     return UtilsService.buildODataQuery(url, { count: true, skip, top, ...options });

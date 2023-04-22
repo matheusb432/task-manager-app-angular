@@ -29,16 +29,16 @@ export class ProfileListComponent {
   constructor(
     private service: ProfileService,
     private ts: ToastService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {}
 
-  // TODO implement
   async paginate(event: PageEvent): Promise<void> {
-    if (event == null){
+    if (event == null) {
       this.ts.error('Error while paginating');
-      return;}
+      return;
+    }
 
-    const {pageIndex, pageSize} = event;
+    const { pageIndex, pageSize } = event;
     this.service.loadListItems(PaginationOptions.from(pageIndex, pageSize));
   }
 

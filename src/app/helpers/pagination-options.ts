@@ -12,7 +12,7 @@ export class PaginationOptions {
   }
 
   static default(): PaginationOptions {
-    return new PaginationOptions(0, 10);
+    return new PaginationOptions(1, 10);
   }
 
   static from(page: number, itemsPerPage: number, options?: ODataOptions): PaginationOptions {
