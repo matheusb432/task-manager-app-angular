@@ -25,7 +25,11 @@ export class UtilsService {
     return word[0].toUpperCase() + word.substring(1).toLowerCase();
   };
 
-  static deepClone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj));
+  static deepClone<T>(obj: T): T  {
+    if (obj == null || obj instanceof Function) return obj;
+
+    return JSON.parse(JSON.stringify(obj));
+  }
 
   static timeToNumber = (timeHhMm: string): number => {
     const splitTime = timeHhMm?.split(':');

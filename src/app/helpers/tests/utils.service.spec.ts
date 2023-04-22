@@ -48,6 +48,30 @@ describe('Service: Utils', () => {
       expect(clone).not.toBe(obj);
       expect(clone.b).not.toBe(obj.b);
     });
+
+    it('should create a deep clone of an array', () => {
+      const arr = [1, 2, 3, { a: 1, b: 2 }];
+      const clone = UtilsService.deepClone(arr);
+      expect(clone).toEqual(arr);
+      expect(clone).not.toBe(arr);
+      expect(clone[3]).not.toBe(arr[3]);
+    });
+
+    it('should not throw an error when given a falsy value', () => {
+      expect(() => UtilsService.deepClone(null)).not.toThrow();
+      expect(() => UtilsService.deepClone(undefined)).not.toThrow();
+    });
+
+    it('should return the same value when given a primitive', () => {
+      expect(UtilsService.deepClone(1)).toEqual(1);
+      expect(UtilsService.deepClone('hello')).toEqual('hello');
+      expect(UtilsService.deepClone(true)).toEqual(true);
+    });
+
+    it('should return the same value when given a function', () => {
+      const fn = () => 'hello';
+      expect(UtilsService.deepClone(fn)).toEqual(fn);
+    });
   });
 
   describe('timeToNumber', () => {
@@ -175,7 +199,8 @@ describe('Service: Utils', () => {
   describe('buildODataQuery', () => {
     it('should build an OData query string', () => {
       const result = UtilsService.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] }, orderBy: ['name asc'],
+        filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] },
+        orderBy: ['name asc'],
       });
 
       const expectedParams = {
@@ -183,7 +208,10 @@ describe('Service: Utils', () => {
         orderBy: '$orderby=name asc',
       };
 
-      expect(result.length).toEqual("https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=name asc".length);
+      expect(result.length).toEqual(
+        "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=name asc"
+          .length
+      );
       for (const param of Object.values(expectedParams)) {
         expect(result).toContain(param);
       }
@@ -203,7 +231,9 @@ describe('Service: Utils', () => {
         filter: "$filter=(name eq 'John') and (height le 180)",
       };
 
-      expect(result.length).toEqual("https://example.com/odata?$filter=(name eq 'John') and (height le 180)".length);
+      expect(result.length).toEqual(
+        "https://example.com/odata?$filter=(name eq 'John') and (height le 180)".length
+      );
       for (const param of Object.values(expectedParams)) {
         expect(result).toContain(param);
       }

@@ -8,8 +8,7 @@ import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { PageData } from 'src/app/models/types';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
-import { ModalService } from 'src/app/services/modal.service';
-import { DetailsTypes, FormTypes, cancelModalData } from 'src/app/utils';
+import { DetailsTypes, FormTypes } from 'src/app/utils';
 
 @Component({
   selector: 'app-profile-details',
@@ -18,7 +17,6 @@ import { DetailsTypes, FormTypes, cancelModalData } from 'src/app/utils';
 })
 export class ProfileDetailsComponent implements OnInit, OnDestroy {
   detailsPage!: PageConfig;
-  item?: Profile;
   form!: ProfileFormGroup;
   pageData?: PageData;
   formType = FormTypes.Edit;
@@ -32,13 +30,11 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     private service: ProfileService,
     private ts: ToastService,
     private pageService: PageService,
-    private modalService: ModalService,
   ) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
 
-    this.runInitMethods();
   }
 
   ngOnDestroy(): void {
@@ -74,9 +70,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.item = loadedItem;
-
-    this.service.convertToForm(this.form, this.item);
+    this.service.convertToForm(this.form, loadedItem);
   }
 
   initForm(): void {
@@ -124,32 +118,11 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   async onRemove(): Promise<void> {
-    const id = this.pageData?.id;
-
-    if (id == null) return;
-
-    await this.service.remove(+id);
-
-    this.ts.success('Profile removed successfully');
-    this.service.goToList();
+    this.service.deleteItem(this.pageData?.id);
   }
 
-  private onCancel(): Promise<boolean> {
+  onCancel(): Promise<boolean> {
     return this.service.goToList();
-  }
-
-  handleCancel() {
-    this.openCancelModal();
-  }
-
-  openCancelModal(): void {
-    const ref = this.modalService.confirmation(cancelModalData());
-
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      this.onCancel();
-    });
   }
 
   disableFormIfView(): void {

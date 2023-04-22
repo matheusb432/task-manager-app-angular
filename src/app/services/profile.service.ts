@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -25,16 +26,15 @@ import { PaginationOptions } from '../helpers/pagination-options';
 export class ProfileService {
   private url = `${environment.apiUrl}/profiles`;
 
-  // TODO remove?
-  item?: Profile;
+  private item?: Profile;
 
   private _types: ProfileType[] = [];
   private _listItems: Profile[] = [];
   private _total = 0;
 
   private _typesSet = new BehaviorSubject<void>(undefined);
-  private _listItemsSet = new BehaviorSubject<void>(undefined);
-  private _totalSet = new BehaviorSubject<number>(0);
+
+  typeOptions$ = this._typesSet.pipe(map(() => ProfileTypeService.toOptions(this.types)));
 
   get types(): ProfileType[] {
     return this._types;
@@ -46,23 +46,12 @@ export class ProfileService {
     this._typesSet.next();
   }
 
-  get typesSet$(): Observable<void> {
-    return this._typesSet.asObservable();
-  }
-
   get listItems(): Profile[] {
     return this._listItems;
   }
 
-  // TODO research on different ways to encapsulate rxjs observables
   private set listItems(value: Profile[]) {
     this._listItems = value;
-
-    this._listItemsSet.next();
-  }
-
-  get listItemsSet$(): Observable<void> {
-    return this._listItemsSet.asObservable();
   }
 
   get total(): number {
@@ -71,12 +60,6 @@ export class ProfileService {
 
   private set total(value: number) {
     this._total = value;
-
-    this._totalSet.next(value);
-  }
-
-  get totalSet$(): Observable<number> {
-    return this._totalSet.asObservable();
   }
 
   constructor(
@@ -108,7 +91,32 @@ export class ProfileService {
   update = async (ct: Profile): Promise<void> =>
     this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
 
-  remove = async (id: number): Promise<void> => this.api.remove(ApiRequest.delete(this.url, id));
+  private remove = async (id: number): Promise<void> =>
+    this.api.remove(ApiRequest.delete(this.url, id));
+
+  private removeFromMemory = (id: number): void => {
+    if (this.item?.id === id) this.item = undefined;
+
+    if (!this.listItems?.some((x) => x.id === id)) return;
+
+    this.listItems = this.listItems.filter((x) => x.id !== id);
+  };
+
+  deleteItem = async (id: string | number | null | undefined): Promise<void> => {
+    if (!id) {
+      this.ts.error("Couldn't fetch ID!");
+
+      return;
+    }
+    const parsedId = +id;
+
+    await this.remove(parsedId);
+    this.removeFromMemory(parsedId);
+
+    this.ts.success('Profile deleted successfully!');
+
+    this.goToList();
+  };
 
   loadListData = async (): Promise<void> => {
     await this.loadListItems(PaginationOptions.default());
@@ -136,11 +144,16 @@ export class ProfileService {
 
       return null;
     }
-    this.item = await this.getItem(+id);
+
+    const parsedId = +id;
+
+    if (this.item?.id === parsedId) return us.deepClone(this.item);
+
+    this.item = await this.getItem(parsedId);
 
     if (this.item == null) this.ts.error("Couldn't fetch data!");
 
-    return this.item;
+    return us.deepClone(this.item);
   }
 
   loadProfileTypes = async (): Promise<void> => {

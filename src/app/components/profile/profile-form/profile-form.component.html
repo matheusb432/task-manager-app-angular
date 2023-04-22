@@ -37,7 +37,7 @@
       [control]="profileTypeId"
       [fg]="form"
       labelText="Type"
-      [options]="typeOptions"
+      [options]="typeOptions$ | async"
     ></app-select>
 
     <div class="form-buttons">

@@ -1,4 +1,4 @@
-<mat-form-field class="input-container" [formGroup]="fg">
+<mat-form-field *ngIf="options != null" class="input-container" [formGroup]="fg">
   <mat-label *ngIf="labelText">{{ labelText }}</mat-label>
   <mat-select
     [placeholder]="placeholder"

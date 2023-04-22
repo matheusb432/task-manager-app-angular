@@ -20,20 +20,20 @@ export class ProfileTypeService {
   }
 
   async getItems(): Promise<ProfileType[]> {
-    return this.api.get<ProfileType>(
-      ApiRequest.get<ProfileType>(this.url, ProfileType)
-    ) as Promise<ProfileType[]>;
+    return this.api.get<ProfileType>(ApiRequest.get<ProfileType>(this.url, ProfileType)) as Promise<
+      ProfileType[]
+    >;
   }
 
-  static toOptions(items: ProfileType[]): SelectOption[] {
-    return items.map(({ id, name, dateRangeEnd, dateRangeStart }) => {
+  static toOptions(items: ProfileType[]): SelectOption<number>[] {
+    return items.map(({ id, name, dateRangeEnd, dateRangeStart }, index) => {
       const hasDates = !!dateRangeStart && !!dateRangeEnd;
       const dateSuffix = hasDates
         ? ' (' + us.formatDate(dateRangeStart) + ' - ' + us.formatDate(dateRangeEnd) + ')'
         : '';
 
       return {
-        value: id,
+        value: id ?? index,
         label: `${name}${dateSuffix}`,
       };
     });

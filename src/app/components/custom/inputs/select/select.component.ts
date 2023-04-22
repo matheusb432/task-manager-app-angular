@@ -12,7 +12,7 @@ export class SelectComponent {
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
-  @Input() options!: SelectOption[];
+  @Input() options!: SelectOption[] | null;
   @Input() placeholder = '';
   @Input() invalid?: boolean;
   @Input() helperText?: string;

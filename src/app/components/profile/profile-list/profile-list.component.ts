@@ -42,13 +42,8 @@ export class ProfileListComponent {
     this.service.loadListItems(PaginationOptions.from(pageIndex, pageSize));
   }
 
-  // TODO refactor to service?
   private deleteItem = async (id: number) => {
-    await this.service.remove(id);
-
-    this.items = this.items.filter((t) => t.id !== id);
-
-    this.ts.success('Profile deleted successfully');
+    await this.service.deleteItem(id);
   };
 
   openDeleteModal(id: number): void {
