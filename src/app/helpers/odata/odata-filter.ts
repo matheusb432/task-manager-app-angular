@@ -1,3 +1,4 @@
+import { ODataOperators } from "./odata-operators.enum";
 import { ODataFilterValue } from "./odata-types";
 
 /**
@@ -7,6 +8,5 @@ import { ODataFilterValue } from "./odata-types";
   * e.g. { name: 'John Doe', age: ['ge', 20] }
   */
 export interface ODataFilter {
-  // TODO refactor so first param can only be an OData operator
-  [key: string]: ODataFilterValue | [string, ODataFilterValue];
+  [key: string]: ODataFilterValue | [ODataOperators, ODataFilterValue];
 }

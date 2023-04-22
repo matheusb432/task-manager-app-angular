@@ -1,3 +1,10 @@
-<p>
-  modal-feedback works!
-</p>
+<app-modal-layout>
+  <ng-container titleContent>{{ data.title }}</ng-container>
+  <p>{{ data.message }}</p>
+  <ng-container actions>
+    <!-- <app-button  appFocusInitial [focusChild]="true">{{ -->
+    <app-button [mat-dialog-close] appFocusInitial [focusChild]="true">{{
+      data.confirmText ?? 'OK'
+    }}</app-button>
+  </ng-container>
+</app-modal-layout>

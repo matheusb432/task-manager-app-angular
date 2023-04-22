@@ -36,6 +36,12 @@ const routes: Routes = [
     },
     loadChildren: () => import('./pages/metrics/metrics.module').then((m) => m.MetricsModule),
   },
+  // TODO implement 404 page
+  {
+    path: '**',
+    redirectTo: 'home',
+    // redirectTo: 'not-found',
+  }
 ];
 
 @NgModule({

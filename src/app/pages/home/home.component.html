@@ -1,4 +1,11 @@
 <app-page-layout>
   <app-title title="Home"></app-title>
+  <!-- TODO remove dev code -->
+  <app-button
+  model="stroked"
+  color="accent"
+  (clicked)="openFeedbackModal()"
+  >Feedback Modal</app-button>
+  <!-- TODO remove dev code -->
   <app-cards-grid [cards]="cards"></app-cards-grid>
 </app-page-layout>

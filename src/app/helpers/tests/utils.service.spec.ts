@@ -3,6 +3,7 @@ import { UtilsService } from '../utils.service';
 
 import { TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
+import { ODataOperators } from '../odata';
 
 describe('Service: Utils', () => {
   let service: UtilsService;
@@ -174,7 +175,7 @@ describe('Service: Utils', () => {
   describe('buildODataQuery', () => {
     it('should build an OData query string', () => {
       const result = UtilsService.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: ['ge', 20] }, orderBy: ['name asc'],
+        filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] }, orderBy: ['name asc'],
       });
 
       const expectedParams = {
@@ -195,7 +196,7 @@ describe('Service: Utils', () => {
 
     it('should ignore undefined filters', () => {
       const result = UtilsService.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: undefined, height: ['le', 180] },
+        filter: { name: 'John', age: undefined, height: [ODataOperators.LessThanOrEqualTo, 180] },
       });
 
       const expectedParams = {

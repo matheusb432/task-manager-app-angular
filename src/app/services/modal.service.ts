@@ -2,7 +2,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalConfirmData } from '../models/configs/modals';
-import { ModalConfirmComponent } from '../components/custom/modals';
+import { ModalConfirmComponent, ModalFeedbackComponent } from '../components/custom/modals';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,10 @@ export class ModalService {
 
   confirmation(data: ModalConfirmData): MatDialogRef<unknown, boolean> {
     return this.open(ModalConfirmComponent, data);
+  }
+
+  feedback(data: ModalConfirmData): MatDialogRef<unknown, boolean> {
+    return this.open(ModalFeedbackComponent, data);
   }
 
   private open(cmp: ComponentType<unknown>, data: unknown): MatDialogRef<unknown> {

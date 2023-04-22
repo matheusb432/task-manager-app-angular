@@ -18,4 +18,9 @@ const saveModalData = (): ModalConfirmData => ({
   confirmText: 'Yes, save',
 });
 
-export { cancelModalData, deleteModalData, saveModalData };
+const successModalData = (): ModalConfirmData => ({
+  title: 'Success',
+  message: 'Your changes have been saved successfully!',
+});
+
+export { cancelModalData, deleteModalData, saveModalData, successModalData };

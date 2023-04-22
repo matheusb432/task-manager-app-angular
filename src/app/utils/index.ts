@@ -1,4 +1,9 @@
-export { cancelModalData, deleteModalData, saveModalData } from './modal-defaults';
+export {
+  cancelModalData,
+  deleteModalData,
+  saveModalData,
+  successModalData,
+} from './modal-defaults';
 export { Icons } from './icons.enum';
 export { AlertTypes } from './alert-types.enum';
 export { Pages, paths, PageStates, DetailsTypes } from './page-paths.enum';
