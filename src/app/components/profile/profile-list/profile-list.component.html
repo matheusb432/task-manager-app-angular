@@ -1,7 +1,4 @@
-<article>
+<article id="cProfileList">
   <app-table [items]="items" [config]="config" (deleteItem)="openDeleteModal($event)"></app-table>
-</article>
-
-<footer>
   <app-pagination [totalItems]="totalItems" (pageChanged)="paginate($event)"></app-pagination>
-</footer>
+</article>

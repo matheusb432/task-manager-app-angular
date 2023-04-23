@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { us } from '../helpers';
 import { ApiRequest, SelectOption } from '../models/configs';
 import { ProfileType } from '../models/entities/profile-type';
-import { ApiService } from './api.service';
+import { ApiService } from './api/api.service';
 
 @Injectable({
   providedIn: 'root',

@@ -35,7 +35,7 @@ export class CreateProfileComponent implements OnInit {
   }
 
   initForm(): void {
-    this.form = new FormGroup(getProfileForm());
+    this.form = ProfileFormGroup.from(getProfileForm());
   }
 
   async loadData(): Promise<void> {
@@ -47,9 +47,7 @@ export class CreateProfileComponent implements OnInit {
   }
 
   async create(): Promise<void> {
-    const item = this.form.value as Profile;
-
-    const { id } = await this.service.insert(item);
+    const { id } = await this.service.insert(this.form);
 
     this.ts.success('Profile created successfully');
     this.service.goToDetails(id, DetailsTypes.View);

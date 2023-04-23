@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests, ResCallback } from 'src/app/models';
-import { PaginatedResult, PostReturn } from '../models/types';
-import { environment } from './../../environments/environment';
+import { PaginatedResult, PostReturn } from '../../models/types';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

@@ -1,31 +1,24 @@
-import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 
-import { Observable } from 'rxjs';
+import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ProfileFormGroup } from '../components/profile';
 import { us } from '../helpers';
-import { ApiRequest } from '../models/configs/api-request';
-import { ProfilePostDto, ProfilePutDto } from '../models/dtos/profile';
+import { PaginationOptions } from '../helpers/pagination-options';
 import { Profile } from '../models/entities';
 import { ProfileType } from '../models/entities/profile-type';
-import { PaginatedResult, PostReturn } from '../models/types';
+import { PostReturn } from '../models/types';
 import { DetailsTypes, paths } from '../utils';
-import { ApiService } from './api.service';
+import { ProfileApiService } from './api';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
-import { AbstractControl } from '@angular/forms';
-import { ODataOptions } from '../helpers/odata';
-import { PaginationOptions } from '../helpers/pagination-options';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
-  private url = `${environment.apiUrl}/profiles`;
-
   private item?: Profile;
 
   private _types: ProfileType[] = [];
@@ -33,6 +26,8 @@ export class ProfileService {
   private _total = 0;
 
   private _typesSet = new BehaviorSubject<void>(undefined);
+
+  private _lastOptions?: PaginationOptions;
 
   typeOptions$ = this._typesSet.pipe(map(() => ProfileTypeService.toOptions(this.types)));
 
@@ -63,36 +58,50 @@ export class ProfileService {
   }
 
   constructor(
-    private api: ApiService,
+    private api: ProfileApiService,
     private profileTypeService: ProfileTypeService,
     private ts: ToastService,
     private router: Router
   ) {}
 
-  async getItem(id: number): Promise<Profile> {
-    return this.api.getById<Profile>(ApiRequest.getById<Profile>(this.url, Profile, id));
-  }
+  update = async (id: string | null | undefined, fg: ProfileFormGroup): Promise<void> => {
+    if (id == null) {
+      this.ts.error("Error while updating profile, couldn't fetch ID!");
+      return;
+    }
 
-  async getItems(): Promise<Profile[]> {
-    return this.api.get<Profile>(ApiRequest.get<Profile>(this.url, Profile));
-  }
+    const item = ProfileFormGroup.toEntity(fg.value);
 
-  async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
-    const queryUrl = us.buildPaginatedODataQuery(this.url, options);
+    await this.api.update({ id: +id, ...item });
 
-    return this.api.getPaginated<Profile>(ApiRequest.get<Profile>(queryUrl, Profile));
-  }
+    this.ts.success('Profile updated successfully!');
 
-  insert = async (ct: Profile): Promise<PostReturn> =>
-    this.api.insert(ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto));
+    await this.loadListItems();
+  };
 
-  duplicate = async (ct: Profile): Promise<PostReturn> => this.insert(ct);
+  insert = async (fg: ProfileFormGroup): Promise<PostReturn> => {
+    const item = ProfileFormGroup.toEntity(fg.value);
 
-  update = async (ct: Profile): Promise<void> =>
-    this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
+    const res = await this.api.insert(item);
 
-  private remove = async (id: number): Promise<void> =>
-    this.api.remove(ApiRequest.delete(this.url, id));
+    this.ts.success('Profile created successfully!');
+
+    await this.loadListItems();
+
+    return res;
+  };
+
+  duplicate = async (fg: ProfileFormGroup): Promise<PostReturn> => {
+    const item = ProfileFormGroup.toEntity(fg.value);
+
+    const res = await this.api.duplicate(item);
+
+    this.ts.success('Profile duplicated successfully');
+
+    await this.loadListItems();
+
+    return res;
+  };
 
   private removeFromMemory = (id: number): void => {
     if (this.item?.id === id) this.item = undefined;
@@ -110,7 +119,7 @@ export class ProfileService {
     }
     const parsedId = +id;
 
-    await this.remove(parsedId);
+    await this.api.remove(parsedId);
     this.removeFromMemory(parsedId);
 
     this.ts.success('Profile deleted successfully!');
@@ -131,8 +140,10 @@ export class ProfileService {
     return this.loadItem(id);
   };
 
-  async loadListItems(options: PaginationOptions): Promise<void> {
-    const res = await this.getPaginated(options);
+  async loadListItems(options?: PaginationOptions): Promise<void> {
+    this._lastOptions = options;
+
+    const res = await this.api.getPaginated(options ?? this._lastOptions ?? PaginationOptions.default());
 
     this.total = res.total;
     this.listItems = res.items;
@@ -149,7 +160,7 @@ export class ProfileService {
 
     if (this.item?.id === parsedId) return us.deepClone(this.item);
 
-    this.item = await this.getItem(parsedId);
+    this.item = await this.api.getById(parsedId);
 
     if (this.item == null) this.ts.error("Couldn't fetch data!");
 
@@ -160,15 +171,6 @@ export class ProfileService {
     if (us.notEmpty(this.types)) return;
 
     this.types = await this.profileTypeService.getItems();
-  };
-
-  private mapProps = (item: Profile): Profile => {
-    const mapped = us.deepClone(item);
-
-    // TODO eventually remove, should be automatically set from API
-    mapped.userId = 1;
-
-    return mapped;
   };
 
   convertToForm(fg: ProfileFormGroup, item: Profile): void {

@@ -22,10 +22,12 @@ table.data-table {
     background: var(--primary-lighter);
   }
 }
+th {
+  text-transform: capitalize;
+}
 
 th,
 td {
-  text-transform: capitalize;
   text-align: start;
   border-right: none !important;
 }

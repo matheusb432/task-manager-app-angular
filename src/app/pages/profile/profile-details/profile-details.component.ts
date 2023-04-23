@@ -29,12 +29,11 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private service: ProfileService,
     private ts: ToastService,
-    private pageService: PageService,
+    private pageService: PageService
   ) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
-
   }
 
   ngOnDestroy(): void {
@@ -74,7 +73,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   initForm(): void {
-    this.form = new FormGroup(getProfileForm());
+    this.form = ProfileFormGroup.from(getProfileForm());
   }
 
   initPage(): void {
@@ -95,23 +94,12 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   async editItem(): Promise<void> {
-    const id = this.pageData?.id;
-    const item = this.form.value as Profile;
-
-    if (id == null) return;
-
-    await this.service.update({ id: +id, ...item });
-
+    await this.service.update(this.pageData?.id, this.form);
     this.ts.success('Profile updated successfully');
   }
 
   async duplicateItem(): Promise<void> {
-    const id = this.pageData?.id;
-    const item = this.form.value as Profile;
-
-    if (id == null) return;
-
-    const { id: createdId } = await this.service.duplicate(item);
+    const { id: createdId } = await this.service.duplicate(this.form);
 
     this.ts.success('Profile duplicated successfully');
     this.service.goToDetails(createdId, DetailsTypes.View);

@@ -1,10 +1,17 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/entities';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {
+
+  static from(form: ProfileForm): ProfileFormGroup {
+    return new ProfileFormGroup(form);
+  }
+
   static getFormKeys(): (keyof Profile & keyof ProfileForm)[] {
     return ['name', 'timeTarget', 'tasksTarget', 'priority', 'profileTypeId'];
   }
+
+  static toEntity = (value: Partial<Profile>): Profile => value as Profile;
 }
 
 export interface ProfileForm {
