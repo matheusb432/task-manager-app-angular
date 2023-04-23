@@ -29,7 +29,7 @@ import { IconComponent } from '../components/custom/icon/icon.component';
 import { TableComponent } from '../components/custom/table/table.component';
 import { ModalFeedbackComponent, ModalConfirmComponent } from '../components/custom/modals';
 import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
-import { FocusInitialDirective } from '../directives';
+import { FocusInitialDirective, SetIdDirective } from '../directives';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 
 @NgModule({
@@ -51,6 +51,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
     ModalFeedbackComponent,
     PaginationComponent,
     FocusInitialDirective,
+    SetIdDirective,
   ],
   imports: [
     CommonModule,
@@ -98,6 +99,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
     MatPaginatorModule,
     FormsModule,
     FocusInitialDirective,
+    SetIdDirective,
     ReactiveFormsModule,
   ],
 })

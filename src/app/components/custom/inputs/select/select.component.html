@@ -5,8 +5,13 @@
     [formControlName]="fcName"
     [multiple]="multiple"
     [compareWith]="compareWithFn"
+    [id]="elId"
   >
-    <mat-option *ngFor="let option of options" [value]="option.value">
+    <mat-option
+      [id]="elId + 'Option' + (option.id ?? option.value)"
+      *ngFor="let option of options"
+      [value]="option.value"
+    >
       {{ option.label }}
     </mat-option>
   </mat-select>

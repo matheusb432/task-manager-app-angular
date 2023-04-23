@@ -18,6 +18,7 @@ export class SelectComponent {
   @Input() helperText?: string;
   @Input() errText?: string;
   @Input() multiple?: boolean = false;
+  @Input() elId = '';
   @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) =>
     o1 === o2;
 

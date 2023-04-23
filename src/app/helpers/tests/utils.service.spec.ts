@@ -179,19 +179,29 @@ describe('Service: Utils', () => {
     });
   });
 
-  describe('hasItems', () => {
+  describe('notEmpty', () => {
     it('should return false when passed an empty array', () => {
-      const result = UtilsService.hasItems([]);
+      const result = UtilsService.notEmpty([]);
+      expect(result).toBeFalse();
+    });
+
+    it('should return false when passed an empty string', () => {
+      const result = UtilsService.notEmpty('');
       expect(result).toBeFalse();
     });
 
     it('should return false when passed undefined', () => {
-      const result = UtilsService.hasItems(undefined as unknown as unknown[]);
+      const result = UtilsService.notEmpty(undefined as unknown as unknown[]);
       expect(result).toBeFalse();
     });
 
     it('should return true when passed an array with items', () => {
-      const result = UtilsService.hasItems([1, 2, 3]);
+      const result = UtilsService.notEmpty([1, 2, 3]);
+      expect(result).toBeTrue();
+    });
+
+    it('should return true when passed a string with characters', () => {
+      const result = UtilsService.notEmpty('word');
       expect(result).toBeTrue();
     });
   });

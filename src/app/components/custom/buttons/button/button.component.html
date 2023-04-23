@@ -2,6 +2,7 @@
   <button
     *ngSwitchCase="'raised'"
     mat-raised-button
+    [appSetId]="elId"
     [color]="color"
     [type]="type"
     (click)="emitClick()"
@@ -11,6 +12,7 @@
   <button
     *ngSwitchCase="'stroked'"
     mat-stroked-button
+    [appSetId]="elId"
     [color]="color"
     [type]="type"
     (click)="emitClick()"
@@ -20,6 +22,7 @@
   <button
     *ngSwitchCase="'flat'"
     mat-flat-button
+    [appSetId]="elId"
     [color]="color"
     [type]="type"
     (click)="emitClick()"
@@ -29,6 +32,7 @@
   <button
     *ngSwitchCase="'icon'"
     mat-icon-button
+    [appSetId]="elId"
     [color]="color"
     [type]="type"
     (click)="emitClick()"
@@ -41,16 +45,24 @@
   <button
     *ngSwitchCase="'mini-fab'"
     mat-mini-fab
+    [appSetId]="elId"
     [color]="color"
     [type]="type"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
   </button>
-  <a *ngSwitchCase="'link'" mat-button [color]="color" [routerLink]="url"
+  <a *ngSwitchCase="'link'" mat-button [appSetId]="elId" [color]="color" [routerLink]="url"
     ><ng-container *ngTemplateOutlet="labelTemplate"></ng-container
   ></a>
-  <button *ngSwitchDefault mat-button [color]="color" [type]="type" (click)="emitClick()">
+  <button
+    *ngSwitchDefault
+    mat-button
+    [appSetId]="elId"
+    [color]="color"
+    [type]="type"
+    (click)="emitClick()"
+  >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
   </button>
 </ng-container>

@@ -42,11 +42,11 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   initIcons(): void {
     const { hasCopy, hasDelete, hasEdit, hasView } = this.config;
     const icons = [
-      !!hasCopy && IconConfig.withUrlType(Icons.ContentCopy, DetailsTypes.Duplicate),
-      !!hasEdit && IconConfig.withUrlType(Icons.Edit, DetailsTypes.Edit),
-      !!hasView && IconConfig.withUrlType(Icons.PageView, DetailsTypes.View),
+      !!hasCopy && IconConfig.withUrlType('DuplicateIcon',Icons.ContentCopy, DetailsTypes.Duplicate),
+      !!hasEdit && IconConfig.withUrlType('EditIcon', Icons.Edit, DetailsTypes.Edit),
+      !!hasView && IconConfig.withUrlType('ViewIcon', Icons.PageView, DetailsTypes.View),
       !!hasDelete &&
-        IconConfig.withClick(Icons.Delete, (id: number) => this.deleteItem.emit(id), 'warn'),
+        IconConfig.withClick('DeleteIcon', Icons.Delete, (id: number) => this.deleteItem.emit(id), 'warn'),
     ].filter((i) => !!i);
 
     this.icons = icons as IconConfig<number>[];
@@ -59,13 +59,13 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   });
 
   validateList(): void {
-    if (us.hasItems(this.tableHeaders) && this.tableHeaders.length === this.tableKeys?.length)
+    if (us.notEmpty(this.tableHeaders) && this.tableHeaders.length === this.tableKeys?.length)
       return;
 
     throw new InvalidTableConfigError(this.tableHeaders, this.tableKeys);
   }
 
-  canShowActions = () => us.hasItems(this.icons);
+  canShowActions = () => us.notEmpty(this.icons);
 
   getItemId(index: number, item: T): number {
     return item?.id ?? index;

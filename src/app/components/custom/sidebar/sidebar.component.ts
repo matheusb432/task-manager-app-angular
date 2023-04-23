@@ -10,18 +10,22 @@ import { NavItem } from 'src/app/models/configs';
 export class SidebarComponent {
   navItems: NavItem[] = [
     {
+      id: 'Home',
       label: 'Home',
       link: Pages.Home,
     },
     {
+      id: 'Timesheets',
       label: 'Timesheets',
       link: Pages.Timesheets,
     },
     {
+      id: 'Profiles',
       label: 'Profiles',
       link: Pages.Profiles,
     },
     {
+      id: 'Metrics',
       label: 'Metrics',
       link: Pages.Metrics,
     },

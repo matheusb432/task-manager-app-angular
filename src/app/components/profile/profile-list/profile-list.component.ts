@@ -39,7 +39,7 @@ export class ProfileListComponent {
     }
 
     const { pageIndex, pageSize } = event;
-    this.service.loadListItems(PaginationOptions.from(pageIndex, pageSize));
+    this.service.loadListItems(PaginationOptions.from(pageIndex + 1, pageSize));
   }
 
   private deleteItem = async (id: number) => {

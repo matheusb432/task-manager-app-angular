@@ -15,6 +15,7 @@ export class InputComponent {
   @Input() helperText?: string;
   @Input() errText?: string;
   @Input() placeholder = '';
+  @Input() elId = '';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   getErrText(): string {

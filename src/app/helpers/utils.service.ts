@@ -68,7 +68,7 @@ export class UtilsService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  static hasItems(items: unknown[]): boolean {
+  static notEmpty(items: unknown[] | string): boolean {
     return items?.length > 0;
   }
 

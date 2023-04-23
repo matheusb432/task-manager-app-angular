@@ -1,7 +1,7 @@
-<nav>
-  <ul class="side-nav-items">
-    <li class="nav-item" *ngFor="let item of items">
-      <app-button model="link" [color]="undefined" [url]="'/' + item.link">{{
+<nav id="cNavItemsNav">
+  <ul id="cNavItemsList" class="side-nav-items">
+    <li  class="nav-item" *ngFor="let item of items">
+      <app-button model="link" [elId]="'cNavItemsButton'+item.id" [color]="undefined" [url]="'/' + item.link">{{
         item.label
       }}</app-button>
     </li>

@@ -157,7 +157,7 @@ export class ProfileService {
   }
 
   loadProfileTypes = async (): Promise<void> => {
-    if (us.hasItems(this.types)) return;
+    if (us.notEmpty(this.types)) return;
 
     this.types = await this.profileTypeService.getItems();
   };
