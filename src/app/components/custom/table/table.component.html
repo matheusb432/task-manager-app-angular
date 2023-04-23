@@ -20,6 +20,7 @@
               ? buildQueryParams(getItemId(itemIndex, item), icon.urlType)
               : undefined
           "
+          [clickable]="true"
           (clicked)="icon.onClick?.(getItemId(itemIndex, item))"
         ></app-icon>
       </td>

@@ -40,16 +40,8 @@ td {
   text-align: right;
 
   app-icon {
-    transition: all 0.2s;
-    opacity: 0.7;
     font-size: 1.25rem;
     line-height: 1.75rem;
     margin-right: 1.5rem;
-    cursor: pointer;
-    font-weight: bold;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 }

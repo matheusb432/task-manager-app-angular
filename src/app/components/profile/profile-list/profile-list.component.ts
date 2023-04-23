@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { PaginationOptions } from 'src/app/helpers/pagination-options';
 import { TableConfig } from 'src/app/models/configs/table-config';
@@ -12,9 +13,13 @@ import { deleteModalData, paths } from 'src/app/utils';
   templateUrl: './profile-list.component.html',
   styleUrls: ['./profile-list.component.scss'],
 })
-export class ProfileListComponent {
+export class ProfileListComponent implements OnInit {
   @Input() items!: Profile[];
   @Input() totalItems = 0;
+
+  filterForm!: FormGroup<{
+    name: FormControl<string | null>;
+  }>;
 
   config: TableConfig<Profile> = {
     headers: Profile.tableHeaders(),
@@ -31,6 +36,27 @@ export class ProfileListComponent {
     private ts: ToastService,
     private modalService: ModalService
   ) {}
+
+  ngOnInit(): void {
+    this.initFilterForm();
+  }
+
+  initFilterForm(): void {
+    const form = new FormGroup({
+      name: new FormControl('', [Validators.maxLength(250)]),
+    });
+
+    this.filterForm = form;
+  }
+
+  // TODO implement filter logic
+  onFilter(filter: string): void {
+    console.log(filter);
+  }
+
+  applyFilter(): void {
+    console.log(this.filterForm.value);
+  }
 
   async paginate(event: PageEvent): Promise<void> {
     if (event == null) {

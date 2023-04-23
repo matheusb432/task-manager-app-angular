@@ -1,4 +1,16 @@
 <article id="cProfileList">
+  <header class="search-bar">
+    <app-search
+      fcName="name"
+      [control]="filterForm.controls.name"
+      [fg]="filterForm"
+      labelText="Search"
+      placeholder="Filter by name"
+      elId="cProfileListFilter"
+      (filter)="onFilter($event)"
+      (apply)="applyFilter()"
+    ></app-search>
+  </header>
   <app-table [items]="items" [config]="config" (deleteItem)="openDeleteModal($event)"></app-table>
   <app-pagination [totalItems]="totalItems" (pageChanged)="paginate($event)"></app-pagination>
 </article>

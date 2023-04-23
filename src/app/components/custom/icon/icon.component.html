@@ -1,4 +1,3 @@
-
 <a *ngIf="url; else iconTemplate" [routerLink]="url" [queryParams]="queryParams">
   <ng-container *ngTemplateOutlet="iconTemplate"></ng-container>
 </a>
@@ -10,5 +9,7 @@
     [fontIcon]="icon"
     [color]="color"
     (click)="clicked.emit()"
+    [ngClass]="{ 'action-icon': clickable }"
+    [ngStyle]="{ 'font-size': size + 'px', width: size + 'px', height: size + 'px' }"
   ></mat-icon>
 </ng-template>

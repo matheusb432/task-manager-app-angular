@@ -12,6 +12,8 @@ export class IconComponent {
   @Input() color: ThemePalette = 'primary';
   @Input() ariaLabelText = 'Icon';
   @Input() url?: string;
+  @Input() size = 24;
+  @Input() clickable = false;
   @Input() queryParams?: Record<string, string>;
 
   @Output() clicked = new EventEmitter<void>();

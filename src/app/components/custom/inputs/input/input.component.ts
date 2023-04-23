@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { IconConfig } from 'src/app/models/configs';
 
 @Component({
   selector: 'app-input [fcName] [control] [fg] [labelText]',
@@ -11,12 +12,15 @@ export class InputComponent {
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
+  @Input() labelIcon?: IconConfig<never>;
   @Input() type = 'text';
   @Input() helperText?: string;
   @Input() errText?: string;
   @Input() placeholder = '';
   @Input() elId = '';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
+
+  @Output() keydownPressed = new EventEmitter<KeyboardEvent>();
 
   getErrText(): string {
     const errors = this.control?.errors;

@@ -1,5 +1,5 @@
 <mat-form-field class="input-container" [formGroup]="fg">
-  <mat-label *ngIf="labelText">
+  <mat-label>
     {{ labelText }}
   </mat-label>
   <input
@@ -8,14 +8,21 @@
     [formControlName]="fcName"
     [placeholder]="placeholder"
     [id]="elId"
+    (keydown)="keydownPressed.emit($event)"
   />
+  <app-icon
+    matSuffix
+    *ngIf="labelIcon"
+    [icon]="labelIcon.icon"
+    [color]="labelIcon.color"
+    [size]="labelIcon.size ?? 24"
+    [clickable]="true"
+    (clicked)="labelIcon.onClick?.()"
+  ></app-icon>
   <mat-error *ngIf="invalid && !disabled">
     {{ getErrText() }}
   </mat-error>
-  <small
-    class="helper"
-    *ngIf="helperText && !invalid && !disabled"
-  >
+  <small class="helper" *ngIf="helperText && !invalid && !disabled">
     {{ helperText }}
   </small>
 </mat-form-field>
