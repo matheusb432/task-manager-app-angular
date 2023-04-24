@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { Subscription } from 'rxjs';
 import { us } from 'src/app/helpers';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { ModalService } from 'src/app/services/modal.service';

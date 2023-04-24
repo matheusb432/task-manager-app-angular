@@ -1,4 +1,3 @@
-
 export class ApiRequest<T = unknown> {
   itemType?: Ctor<T>;
   postDto?: Ctor<unknown>;
@@ -8,13 +7,7 @@ export class ApiRequest<T = unknown> {
   params?: Record<string, string>;
   resCallback?: ResCallback;
 
-
-
-  constructor(public url: string) {
-    this.params = {
-      "$count": "true",
-    }
-  }
+  constructor(public url: string) {}
 
   static get<T>(url: string, itemType: Ctor<T>, params?: Record<string, string>): ApiRequest<T> {
     return { url, itemType, params };

@@ -1,5 +1,7 @@
-  <app-sidebar>
-    <div class="container">
-      <ng-content #pageContent></ng-content>
-    </div>
-  </app-sidebar>
+<app-sidebar>
+  <div class="container">
+    <!-- TODO remove -->
+    <app-loading></app-loading>
+    <ng-content #pageContent></ng-content>
+  </div>
+</app-sidebar>

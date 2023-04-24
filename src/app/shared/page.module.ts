@@ -18,6 +18,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { RouterModule } from '@angular/router';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
@@ -31,6 +32,7 @@ import { ModalFeedbackComponent, ModalConfirmComponent } from '../components/cus
 import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
 import { FocusInitialDirective, SetIdDirective } from '../directives';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
+import { LoadingComponent } from '../components/custom/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
     ButtonComponent,
     TableComponent,
     IconComponent,
+    LoadingComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -68,6 +71,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -83,6 +87,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
     ButtonComponent,
     TableComponent,
     IconComponent,
+    LoadingComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -97,6 +102,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     FormsModule,
     FocusInitialDirective,
     SetIdDirective,
