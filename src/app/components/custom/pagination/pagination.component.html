@@ -7,5 +7,6 @@
   (page)="pageChanged.emit($event)"
   aria-label="Select page"
   class="pagination"
+  [pageIndex]="currentPage - 1"
 >
 </mat-paginator>

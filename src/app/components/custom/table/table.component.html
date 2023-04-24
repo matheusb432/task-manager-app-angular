@@ -11,7 +11,7 @@
       <td *ngIf="canShowActions()" class="text-right actions">
         <app-icon
           *ngFor="let icon of icons"
-          [appSetId]="'cTable' + icon.id + getItemId(itemIndex, item)"
+          [appSetId]="'cTable' + icon.id + itemIndex"
           [icon]="icon.icon"
           [color]="icon.color"
           [url]="icon.urlType != null ? buildUrl() : undefined"

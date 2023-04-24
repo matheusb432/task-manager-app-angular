@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { FormTypes } from '../utils';
+import { Constants, FormTypes } from '../utils';
 import { Subscription } from 'rxjs';
 import { ODataBuilder, ODataOptions } from './odata';
 import { PaginationOptions } from './pagination-options';
@@ -81,7 +81,7 @@ export class UtilsService {
     {page,itemsPerPage,options}: PaginationOptions,
   ): string => {
     page ??= 1;
-    itemsPerPage ??= 10;
+    itemsPerPage ??= Constants.DefaultItemsPerPage;
 
     const skip = (page - 1) * itemsPerPage;
     const top = itemsPerPage;

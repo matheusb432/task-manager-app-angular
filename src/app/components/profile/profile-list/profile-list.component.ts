@@ -20,7 +20,7 @@ export class ProfileListComponent implements OnInit {
   @Input() totalItems = 0;
 
   filterForm!: FormGroup<{
-    name: FormControl<string | null>;
+    name: FormControl<string>;
   }>;
 
   config: TableConfig<Profile> = {
@@ -32,6 +32,16 @@ export class ProfileListComponent implements OnInit {
     hasEdit: true,
     hasView: true,
   };
+
+  prevFilter?: string;
+
+  get currentPage(): number {
+    return this.service.currentPage;
+  }
+
+  get itemsPerPage(): number {
+    return this.service.itemsPerPage;
+  }
 
   constructor(
     private service: ProfileService,
@@ -46,14 +56,13 @@ export class ProfileListComponent implements OnInit {
 
   initFilterForm(): void {
     const form = new FormGroup({
-      name: new FormControl('', [Validators.maxLength(250)]),
+      name: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(250)] }),
     });
 
     this.filterForm = form;
   }
 
-  // TODO implement filter logic
-  onFilter(filter: string): void {
+  onFilter(): void {
     this.filterService.filterDebounced(this.loadFilteredItems.bind(this));
   }
 
@@ -65,11 +74,11 @@ export class ProfileListComponent implements OnInit {
   async loadFilteredItems(): Promise<void> {
     const { name: nameFilter } = this.filterForm.value;
 
-    // TODO call on items per page
-    const itemsPerPage = 10;
+    if (nameFilter === this.prevFilter) return;
+    this.prevFilter = nameFilter;
     await this.service.loadListItems(
-      PaginationOptions.first(itemsPerPage, {
-        filter: { name: [ODataOperators.Contains, nameFilter ?? ''] },
+      PaginationOptions.first(this.itemsPerPage, {
+        filter: { name: [ODataOperators.Contains, nameFilter] },
       })
     );
   }

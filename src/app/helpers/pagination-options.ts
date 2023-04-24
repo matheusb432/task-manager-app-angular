@@ -1,4 +1,8 @@
 import { ODataOptions } from 'src/app/helpers/odata';
+import { Constants } from '../utils';
+
+const defaultPage = 1;
+const defaultItemsPerPage = Constants.DefaultItemsPerPage;
 
 export class PaginationOptions {
   page?: number;
@@ -12,7 +16,7 @@ export class PaginationOptions {
   }
 
   static default(): PaginationOptions {
-    return new PaginationOptions(1, 10);
+    return new PaginationOptions(defaultPage, defaultItemsPerPage);
   }
 
   static first(itemsPerPage: number, options?: ODataOptions): PaginationOptions {

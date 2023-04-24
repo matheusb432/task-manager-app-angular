@@ -6,11 +6,15 @@
       [fg]="filterForm"
       labelText="Search"
       placeholder="Filter by name"
-      elId="cProfileListFilter"
-      (filter)="onFilter($event)"
+      elId="cProfileListNameFilter"
+      (filter)="onFilter()"
       (apply)="applyFilter()"
     ></app-search>
   </header>
   <app-table [items]="items" [config]="config" (deleteItem)="openDeleteModal($event)"></app-table>
-  <app-pagination [totalItems]="totalItems" (pageChanged)="paginate($event)"></app-pagination>
+  <app-pagination
+    [totalItems]="totalItems"
+    [currentPage]="currentPage"
+    (pageChanged)="paginate($event)"
+  ></app-pagination>
 </article>

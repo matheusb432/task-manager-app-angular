@@ -10,7 +10,7 @@ import { PaginationOptions } from '../helpers/pagination-options';
 import { Profile } from '../models/entities';
 import { ProfileType } from '../models/entities/profile-type';
 import { PostReturn } from '../models/types';
-import { DetailsTypes, paths } from '../utils';
+import { Constants, DetailsTypes, paths } from '../utils';
 import { ProfileApiService } from './api';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
@@ -55,6 +55,14 @@ export class ProfileService {
 
   private set total(value: number) {
     this._total = value;
+  }
+
+  get itemsPerPage(): number {
+    return this._lastOptions?.itemsPerPage ?? Constants.DefaultItemsPerPage;
+  }
+
+  get currentPage(): number {
+    return this._lastOptions?.page ?? 1;
   }
 
   constructor(
@@ -109,6 +117,13 @@ export class ProfileService {
     if (!this.listItems?.some((x) => x.id === id)) return;
 
     this.listItems = this.listItems.filter((x) => x.id !== id);
+    this.total--;
+
+    if (this.listItems.length === 0) {
+      if (this._lastOptions?.page) this._lastOptions.page--;
+
+      this.loadListItems();
+    }
   };
 
   deleteItem = async (id: string | number | null | undefined): Promise<void> => {
@@ -141,9 +156,13 @@ export class ProfileService {
   };
 
   async loadListItems(options?: PaginationOptions): Promise<void> {
-    this._lastOptions = options;
+    if (options == null) {
+      options = this._lastOptions ?? PaginationOptions.default();
+    } else {
+      this._lastOptions = options;
+    }
 
-    const res = await this.api.getPaginated(options ?? this._lastOptions ?? PaginationOptions.default());
+    const res = await this.api.getPaginated(options);
 
     this.total = res.total;
     this.listItems = res.items;
