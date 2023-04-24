@@ -19,6 +19,9 @@
     [clickable]="true"
     (clicked)="labelIcon.onClick?.()"
   ></app-icon>
+  <span *ngIf="isLoading" class="input-loading-container">
+    <app-loading [isLoading]="isLoading" [size]="24"> </app-loading>
+  </span>
   <mat-error *ngIf="invalid && !disabled">
     {{ getErrText() }}
   </mat-error>

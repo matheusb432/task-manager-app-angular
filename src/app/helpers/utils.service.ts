@@ -70,7 +70,7 @@ export class UtilsService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  static notEmpty(items: unknown[] | string | undefined): boolean {
+  static notEmpty(items: unknown[] | string | undefined | null): boolean {
     return items != null && items?.length > 0;
   }
 

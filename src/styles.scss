@@ -101,6 +101,13 @@ h3 {
   margin-bottom: .5rem;
 }
 
+.input-loading-container {
+  position: absolute;
+  width: 50px;
+  right: 0;
+  top: 18px;
+}
+
 
 ::-webkit-scrollbar {
   height: 12px;

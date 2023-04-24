@@ -5,7 +5,13 @@ import { us } from 'src/app/helpers';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { ElementIds, FormTypes, cancelModalData, deleteModalData, saveModalData } from 'src/app/utils';
+import {
+  ElementIds,
+  FormTypes,
+  cancelModalData,
+  deleteModalData,
+  saveModalData,
+} from 'src/app/utils';
 import { ProfileForm, ProfileFormGroup } from '../profile-form-group';
 
 @Component({

@@ -1,4 +1,8 @@
-<mat-form-field *ngIf="options != null" class="input-container" [formGroup]="fg">
+<mat-form-field
+  *ngIf="options != null"
+  class="input-container"
+  [formGroup]="fg"
+>
   <mat-label *ngIf="labelText">{{ labelText }}</mat-label>
   <mat-select
     [placeholder]="placeholder"
@@ -15,6 +19,10 @@
       {{ option.label }}
     </mat-option>
   </mat-select>
+
+  <span *ngIf="isLoading" class="input-loading-container">
+    <app-loading [isLoading]="isLoading" [size]="24"> </app-loading>
+  </span>
   <mat-error *ngIf="invalid && !!disabled">{{ getErrText() }}</mat-error>
   <small class="helper" *ngIf="helperText && !invalid && !!disabled">
     {{ helperText }}

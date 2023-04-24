@@ -42,7 +42,8 @@
       [fg]="form"
       labelText="Type"
       [options]="typeOptions$ | async"
-      elId="cProfileFormType"
+      [canEdit]="canEdit"
+      [elId]="elIds.ProfileFormType"
     ></app-select>
 
     <div class="form-buttons">

@@ -1,13 +1,12 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
-import { Observable, lastValueFrom, throwError } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
+import { Observable, lastValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 
-import { ApiRequest, ErrorMessages, Requests, ResCallback } from 'src/app/models';
-import { PaginatedResult, PostReturn } from '../../models/types';
-import { environment } from '../../../environments/environment';
+import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
+import { PaginatedResult, PostReturn, RequestData } from '../../models/types';
 import { AppService } from '../app.service';
 
 @Injectable({
@@ -147,13 +146,21 @@ export class ApiService {
 
   private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
     const { resCallback, customData, url } = apiReq;
-    const loading = customData?.loading;
-    const resKey = `${apiReq.url}|${us.randomHex()}`;
 
-    this.appService.addRequestData(resKey, { url, loading, moment: Date.now() });
+    this.registerRequestData(url, customData);
+
     const piped$ = req$.pipe(map((res) => resCallback?.(res) ?? res));
 
     return lastValueFrom(piped$);
+  }
+
+  private registerRequestData = (url: string, customData: RequestData | undefined): void => {
+    if (customData == null) return;
+
+    const loading = customData.loading;
+    const resKey = `${url}|${us.randomHex()}`;
+
+    this.appService.addRequestData(resKey, { url, loading, moment: Date.now() });
   }
 
   private urlWithId = (apiReq: ApiRequest): string => `${apiReq.url}/${apiReq.id}`;

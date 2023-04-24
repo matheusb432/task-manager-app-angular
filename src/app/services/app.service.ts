@@ -9,7 +9,6 @@ export class AppService {
 
   addRequestData(key: string, value: AppRequestData): void {
     this._reqDict.set(key, value);
-
   }
 
   getRequestData(key: string): AppRequestData | undefined {
@@ -32,7 +31,7 @@ export class AppService {
     return this._reqDict.delete(key);
   }
 
-  static sortByMostRecentData(datas: [string, AppRequestData][]): void {
+  static sortByMostRecent(datas: [string, AppRequestData][]): void {
     datas.sort((a, b) => b[1].moment - a[1].moment);
   }
 }

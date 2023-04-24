@@ -1,7 +1,7 @@
-import { Icons } from './../../../../utils/icons.enum';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { IconConfig } from 'src/app/models/configs';
+import { Icons } from './../../../../utils/icons.enum';
 
 @Component({
   selector: 'app-search [fcName] [control] [fg] [labelText]',
@@ -23,6 +23,7 @@ export class SearchComponent {
   @Output() apply = new EventEmitter<void>();
 
   searchIcon = IconConfig.withClick('cSearchIcon', Icons.Search, () => this.apply.emit());
+
 
   get invalid(): boolean {
     return this.isInvalid();

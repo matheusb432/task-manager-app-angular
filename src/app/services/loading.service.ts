@@ -1,5 +1,7 @@
-import { us } from 'src/app/helpers';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { us } from 'src/app/helpers';
 import { Loading } from '../models/configs';
 import { AppRequestData } from '../models/types';
 import { AppService } from './app.service';
@@ -9,18 +11,7 @@ import { AppService } from './app.service';
 })
 export class LoadingService {
   private _loadings: Loading[] = [];
-
-  get isLoading(): boolean {
-    return this._loading.isLoading;
-  }
-
-  get size(): number {
-    return this._loading.size ?? 100;
-  }
-
-  private _loading: Loading = {
-    isLoading: true,
-  };
+  private _loadingsSet = new BehaviorSubject<void>(undefined);
 
   get loadings(): Loading[] {
     return us.deepClone(this._loadings);
@@ -29,17 +20,19 @@ export class LoadingService {
   private set loadings(value: Loading[]) {
     this._loadings = value;
 
-    console.log(us.deepClone(this._loadings));
+    this._loadingsSet.next();
   }
 
   constructor(private appService: AppService) {}
 
-  setLoading(loading: Loading): void {
-    this._loading = loading;
-  }
-
   addLoading(loading: Loading): void {
     this.loadings = [...this._loadings, loading];
+  }
+
+  shouldBeLoading(targetElId: string | undefined): boolean {
+    if (!us.notEmpty(targetElId)) return false;
+
+    return this.getLoadingByElId(targetElId) != null;
   }
 
   getLoadingByElId(targetElId: string | undefined): Loading | undefined {
@@ -63,24 +56,22 @@ export class LoadingService {
   removeLoadingByElId(targetElId: string | undefined): void {
     if (!us.notEmpty(targetElId)) return;
 
-    const index = this._loadings.findIndex((x) => x.targetElId === targetElId);
-    if (index >= 0) this.loadings = this._loadings.filter((x, i) => i !==index);
-  }
-
-  removeLoadingsByElId(targetElIds: (string | undefined)[]): void {
-    if (!us.notEmpty(targetElIds)) return;
-
-    targetElIds.forEach((x) => this.removeLoadingByElId(x));
+    this.loadings = this._loadings.filter((x) => x.targetElId !== targetElId);
   }
 
   removeAllLoadings(): void {
     this.loadings = [];
   }
 
+  /*
+   * Remove previous loadings from the same url and sorts datas by most recent
+   *
+   * @param datas - [key, value] pairs from AppService
+   */
   removePreviousLoadings(datas: [string, AppRequestData][]): void {
     if (datas == null || datas.length <= 1) return;
 
-    AppService.sortByMostRecentData(datas);
+    AppService.sortByMostRecent(datas);
 
     this.removeLoadings(datas.slice(1).map((x) => x[1].loading));
   }
@@ -97,11 +88,14 @@ export class LoadingService {
     return currentData;
   }
 
+  isLoadingPipeFactory(elId: string): Observable<boolean> {
+    return this._loadingsSet.asObservable().pipe(map(() => this.shouldBeLoading(elId)));
+  }
+
   static createLoading(targetElId: string, size = 100): Loading {
     return {
       targetElId,
       size,
-      isLoading: true,
     };
   }
 }
