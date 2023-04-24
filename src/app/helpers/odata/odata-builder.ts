@@ -1,4 +1,5 @@
 import { ODataFilter } from './odata-filter';
+import { ODataOperators } from './odata-operators.enum';
 import { ODataOptions } from './odata-options';
 import { ODataFilterValue } from './odata-types';
 
@@ -43,6 +44,14 @@ export class ODataBuilder {
       if (value === undefined) continue;
 
       if (value instanceof Array) {
+        const [operator, filter] = value;
+
+        if (operator === ODataOperators.Contains) {
+          filterString += `contains(${key}, ${this.normalizeValue(filter)}) and `;
+
+          continue;
+        }
+
         filterString += `(${key} ${value[0]} ${this.normalizeValue(value[1])}) and `;
       } else {
         filterString += `(${key} eq ${this.normalizeValue(value)}) and `;

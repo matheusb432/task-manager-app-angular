@@ -8,4 +8,5 @@ export enum ODataOperators {
   And = 'and',
   Or = 'or',
   Not = 'not',
+  Contains = 'contains',
 }

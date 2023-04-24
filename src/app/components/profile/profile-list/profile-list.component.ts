@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { ODataOperators } from 'src/app/helpers/odata';
 import { PaginationOptions } from 'src/app/helpers/pagination-options';
 import { TableConfig } from 'src/app/models/configs/table-config';
 import { Profile } from 'src/app/models/entities';
 import { ProfileService, ToastService } from 'src/app/services';
+import { FilterService } from 'src/app/services/filter.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { deleteModalData, paths } from 'src/app/utils';
 
@@ -34,7 +36,8 @@ export class ProfileListComponent implements OnInit {
   constructor(
     private service: ProfileService,
     private ts: ToastService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private filterService: FilterService
   ) {}
 
   ngOnInit(): void {
@@ -51,11 +54,24 @@ export class ProfileListComponent implements OnInit {
 
   // TODO implement filter logic
   onFilter(filter: string): void {
-    console.log(filter);
+    this.filterService.filterDebounced(this.loadFilteredItems.bind(this));
   }
 
   applyFilter(): void {
-    console.log(this.filterForm.value);
+    this.filterService.cancelPreviousCall();
+    this.loadFilteredItems();
+  }
+
+  async loadFilteredItems(): Promise<void> {
+    const { name: nameFilter } = this.filterForm.value;
+
+    // TODO call on items per page
+    const itemsPerPage = 10;
+    await this.service.loadListItems(
+      PaginationOptions.first(itemsPerPage, {
+        filter: { name: [ODataOperators.Contains, nameFilter ?? ''] },
+      })
+    );
   }
 
   async paginate(event: PageEvent): Promise<void> {

@@ -15,6 +15,10 @@ export class PaginationOptions {
     return new PaginationOptions(1, 10);
   }
 
+  static first(itemsPerPage: number, options?: ODataOptions): PaginationOptions {
+    return new PaginationOptions(1, itemsPerPage, options);
+  }
+
   static from(page: number, itemsPerPage: number, options?: ODataOptions): PaginationOptions {
     return new PaginationOptions(page, itemsPerPage, options);
   }
