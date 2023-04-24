@@ -10,10 +10,11 @@ import { PaginationOptions } from '../helpers/pagination-options';
 import { Profile } from '../models/entities';
 import { ProfileType } from '../models/entities/profile-type';
 import { PostReturn } from '../models/types';
-import { Constants, DetailsTypes, paths } from '../utils';
+import { Constants, DetailsTypes, ElementIds, paths } from '../utils';
 import { ProfileApiService } from './api';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -189,7 +190,9 @@ export class ProfileService {
   loadProfileTypes = async (): Promise<void> => {
     if (us.notEmpty(this.types)) return;
 
-    this.types = await this.profileTypeService.getItems();
+    this.types = await this.profileTypeService.getItems({
+      loading: LoadingService.createLoading(ElementIds.ProfileFormType),
+    });
   };
 
   convertToForm(fg: ProfileFormGroup, item: Profile): void {

@@ -8,6 +8,8 @@ import { ProfilePostDto, ProfilePutDto } from '../../models/dtos/profile';
 import { Profile } from '../../models/entities';
 import { PaginatedResult, PostReturn } from '../../models/types';
 import { ApiService } from './api.service';
+import { ElementIds } from 'src/app/utils';
+import { LoadingService } from '../loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,10 @@ export class ProfileApiService {
   constructor(private api: ApiService) {}
 
   async getById(id: number): Promise<Profile> {
-    return this.api.getById<Profile>(ApiRequest.getById<Profile>(this.url, Profile, id));
+    return this.api.getById<Profile>({
+      ...ApiRequest.getById<Profile>(this.url, Profile, id),
+      customData: { loading: LoadingService.createLoading(ElementIds.ProfileForm) },
+    });
   }
 
   async get(): Promise<Profile[]> {
@@ -28,7 +33,10 @@ export class ProfileApiService {
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
     const queryUrl = us.buildPaginatedODataQuery(this.url, options);
 
-    return this.api.getPaginated<Profile>(ApiRequest.get<Profile>(queryUrl, Profile));
+    return this.api.getPaginated<Profile>({
+      ...ApiRequest.get<Profile>(queryUrl, Profile),
+      customData: { loading: LoadingService.createLoading(ElementIds.ProfileList) },
+    });
   }
 
   insert = async (ct: Profile): Promise<PostReturn> =>

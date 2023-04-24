@@ -6,7 +6,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ToastService } from '../services';
@@ -16,7 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(private ts: ToastService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(catchError((err) => this.handleHttpError(err)));
+    return next.handle(request).pipe(catchError(this.handleHttpError.bind(this)));
   }
 
   handleHttpError(err: HttpErrorResponse): Observable<HttpEvent<unknown>> {
@@ -25,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     this.logErrors(err);
     this.notifyErrorByCode(code);
 
-    return new Observable<HttpEvent<unknown>>();
+    return throwError(() => err);
   }
 
   notifyErrorByCode(code: number): void {

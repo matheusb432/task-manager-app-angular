@@ -4,6 +4,8 @@ import { Constants, FormTypes } from '../utils';
 import { Subscription } from 'rxjs';
 import { ODataBuilder, ODataOptions } from './odata';
 import { PaginationOptions } from './pagination-options';
+import { stringify } from 'crypto-js/enc-hex';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,7 @@ export class UtilsService {
     return word[0].toUpperCase() + word.substring(1).toLowerCase();
   };
 
-  static deepClone<T>(obj: T): T  {
+  static deepClone<T>(obj: T): T {
     if (obj == null || obj instanceof Function) return obj;
 
     return JSON.parse(JSON.stringify(obj));
@@ -68,8 +70,8 @@ export class UtilsService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  static notEmpty(items: unknown[] | string): boolean {
-    return items?.length > 0;
+  static notEmpty(items: unknown[] | string | undefined): boolean {
+    return items != null && items?.length > 0;
   }
 
   static buildODataQuery = (url: string, options?: ODataOptions): string => {
@@ -78,7 +80,7 @@ export class UtilsService {
 
   static buildPaginatedODataQuery = (
     url: string,
-    {page,itemsPerPage,options}: PaginationOptions,
+    { page, itemsPerPage, options }: PaginationOptions
   ): string => {
     page ??= 1;
     itemsPerPage ??= Constants.DefaultItemsPerPage;
@@ -88,4 +90,10 @@ export class UtilsService {
 
     return UtilsService.buildODataQuery(url, { count: true, skip, top, ...options });
   };
+
+  static randomHex(length = 10): string {
+    const randomBytesBuffer = CryptoJS.lib.WordArray.random(length);
+
+    return stringify(randomBytesBuffer).slice(0, length);
+  }
 }

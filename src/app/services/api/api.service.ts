@@ -1,19 +1,20 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
-import { Observable, lastValueFrom } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, lastValueFrom, throwError } from 'rxjs';
+import { map, tap, catchError } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests, ResCallback } from 'src/app/models';
 import { PaginatedResult, PostReturn } from '../../models/types';
 import { environment } from '../../../environments/environment';
+import { AppService } from '../app.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private appService: AppService) {}
 
   async get<T>(apiReq: ApiRequest<T>): Promise<T[]> {
     if (!this.isValidRequest[Requests.Get](apiReq)) {
@@ -22,9 +23,10 @@ export class ApiService {
       return Promise.reject(ErrorMessages.InvalidURLRequest);
     }
 
-    const req$ = this._getRequest({ ...apiReq, url: `${apiReq.url}/odata` });
+    const reqData = { ...apiReq, url: `${apiReq.url}/odata` };
+    const req$ = this._getRequest(reqData);
 
-    return this._returnAsync(req$, apiReq.resCallback) as Promise<T[]>;
+    return this._returnAsync(req$, reqData) as Promise<T[]>;
   }
 
   async getPaginated<T>(apiReq: ApiRequest<T>): Promise<PaginatedResult<T>> {
@@ -36,7 +38,7 @@ export class ApiService {
 
     const req$ = this._getPaginatedRequest<T>(apiReq);
 
-    return this._returnAsync(req$, apiReq.resCallback) as Promise<PaginatedResult<T>>;
+    return this._returnAsync(req$, apiReq) as Promise<PaginatedResult<T>>;
   }
 
   async getById<T>(apiReq: ApiRequest<T>): Promise<T> {
@@ -46,14 +48,14 @@ export class ApiService {
       return Promise.reject(ErrorMessages.InvalidServiceRequest);
     }
 
-    const url = us.buildODataQuery(apiReq.url, { filter: {id: apiReq.id } });
-
-    const req$ = this._getRequest<T>({
+    const url = us.buildODataQuery(apiReq.url, { filter: { id: apiReq.id } });
+    const reqData = {
       ...apiReq,
       url,
-    }).pipe(map((res: T[]) => res?.[0]));
+    };
+    const req$ = this._getRequest<T>(reqData).pipe(map((res: T[]) => res?.[0]));
 
-    return this._returnAsync(req$, apiReq.resCallback) as Promise<T>;
+    return this._returnAsync(req$, reqData) as Promise<T>;
   }
 
   async insert<T>(apiReq: ApiRequest<T>): Promise<PostReturn> {
@@ -65,7 +67,7 @@ export class ApiService {
 
     const req$ = this._postRequest<T>(apiReq);
 
-    return this._returnAsync(req$) as Promise<PostReturn>;
+    return this._returnAsync(req$, apiReq) as Promise<PostReturn>;
   }
 
   async update<T>(apiReq: ApiRequest<T>): Promise<void> {
@@ -74,12 +76,10 @@ export class ApiService {
 
       return Promise.reject(ErrorMessages.InvalidServiceRequest);
     }
+    const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
+    const req$ = this._putRequest<T>(reqData);
 
-    apiReq.url = this.urlWithId(apiReq);
-
-    const req$ = this._putRequest<T>(apiReq);
-
-    return this._returnAsync(req$) as Promise<void>;
+    return this._returnAsync(req$, reqData) as Promise<void>;
   }
 
   async remove<T>(apiReq: ApiRequest<T>): Promise<void> {
@@ -88,20 +88,14 @@ export class ApiService {
 
       return Promise.reject(ErrorMessages.InvalidServiceRequest);
     }
+    const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
+    const req$ = this._deleteRequest<T>(reqData);
 
-    apiReq.url = this.urlWithId(apiReq);
-
-    const req$ = this._deleteRequest<T>(apiReq);
-
-    return this._returnAsync(req$) as Promise<void>;
+    return this._returnAsync(req$, reqData) as Promise<void>;
   }
 
   handleInvalidRequestError(apiReq: ApiRequest): void {
     console.error('Invalid request!', apiReq);
-  }
-
-  handleHttpError(err: HttpErrorResponse, req: Observable<unknown>): void {
-    if (!environment.production) console.log(err, req);
   }
 
   private _getRequest<T>({ url, itemType, params }: ApiRequest<T>): Observable<T[]> {
@@ -151,15 +145,15 @@ export class ApiService {
     return this.http.delete<T>(url);
   }
 
-  private async _returnAsync(
-    req$: Observable<unknown>,
-    resCallback?: ResCallback
-  ): Promise<unknown> {
-    return lastValueFrom(req$)
-      .then((res) => {
-        return resCallback?.(res) ?? res;
-      })
-      .catch((err: HttpErrorResponse) => this.handleHttpError(err, req$));
+  private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
+    const { resCallback, customData, url } = apiReq;
+    const loading = customData?.loading;
+    const resKey = `${apiReq.url}|${us.randomHex()}`;
+
+    this.appService.addRequestData(resKey, { url, loading, moment: Date.now() });
+    const piped$ = req$.pipe(map((res) => resCallback?.(res) ?? res));
+
+    return lastValueFrom(piped$);
   }
 
   private urlWithId = (apiReq: ApiRequest): string => `${apiReq.url}/${apiReq.id}`;

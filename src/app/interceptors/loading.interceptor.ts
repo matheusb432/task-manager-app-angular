@@ -1,35 +1,27 @@
+import { us } from 'src/app/helpers';
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { LoadingService } from '../services/loading.service';
+import { AppService } from '../services/app.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
-
-  constructor(private service: LoadingService) {}
+  constructor(private service: LoadingService, private appService: AppService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // show loading spinner or progress bar
-    // depending on your UI library or implementation
-    // for example: showLoadingSpinner();
-    console.log(request);
-    console.log('calling request...');
-    console.log((request as any)['targetElId'])
+    const [key, data] = this.service.getLoadingByUrlFromAppRequests(request.url);
+    const loadingData = data?.loading;
+    if (loadingData == null) return next.handle(request);
+
+    this.service.addLoading(loadingData);
 
     return next.handle(request).pipe(
       finalize(() => {
-        console.log('finalized!');
-        // hide loading spinner or progress bar
-        // depending on your UI library or implementation
-        // for example: hideLoadingSpinner();
+        this.service.removeLoading(loadingData);
+        this.appService.removeRequestData(key as string);
       })
     );
   }
-
 }

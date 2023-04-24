@@ -1,3 +1,5 @@
+import { RequestData } from "../types";
+
 export class ApiRequest<T = unknown> {
   itemType?: Ctor<T>;
   postDto?: Ctor<unknown>;
@@ -6,8 +8,10 @@ export class ApiRequest<T = unknown> {
   id?: number;
   params?: Record<string, string>;
   resCallback?: ResCallback;
+  customData?: RequestData;
 
   constructor(public url: string) {}
+
 
   static get<T>(url: string, itemType: Ctor<T>, params?: Record<string, string>): ApiRequest<T> {
     return { url, itemType, params };

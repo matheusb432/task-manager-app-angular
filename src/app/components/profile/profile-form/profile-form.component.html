@@ -1,4 +1,4 @@
-<form class="form-layout" [formGroup]="form" (ngSubmit)="openSaveModal()">
+<form [id]="elIds.ProfileForm" class="form-layout" [formGroup]="form" (ngSubmit)="openSaveModal()">
   <div class="form-grid">
     <app-input
       fcName="name"

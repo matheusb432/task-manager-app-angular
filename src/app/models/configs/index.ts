@@ -1,4 +1,3 @@
-export { CustomHttpRequest } from './custom-http-request';
 export { Loading } from './loading';
 export { IconConfig } from './icon-config';
 export { ToastData } from './toast-data';

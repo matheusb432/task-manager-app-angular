@@ -1,3 +1,4 @@
+export { AppRequestData, RequestData } from './app-request-data';
 export { PaginatedResult } from './paginated-result';
 export { TypedForm } from './typed-form';
 export { PostReturn } from './post-return';

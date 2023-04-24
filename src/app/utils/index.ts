@@ -1,3 +1,4 @@
+export { ElementIds } from './element-ids.enum';
 export {
   cancelModalData,
   deleteModalData,

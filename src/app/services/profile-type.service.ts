@@ -4,6 +4,9 @@ import { us } from '../helpers';
 import { ApiRequest, SelectOption } from '../models/configs';
 import { ProfileType } from '../models/entities/profile-type';
 import { ApiService } from './api/api.service';
+import { LoadingService } from './loading.service';
+import { ElementIds } from '../utils';
+import { RequestData } from '../models/types';
 
 @Injectable({
   providedIn: 'root',
@@ -19,10 +22,8 @@ export class ProfileTypeService {
     );
   }
 
-  async getItems(): Promise<ProfileType[]> {
-    return this.api.get<ProfileType>(ApiRequest.get<ProfileType>(this.url, ProfileType)) as Promise<
-      ProfileType[]
-    >;
+  async getItems(customData?: RequestData): Promise<ProfileType[]> {
+    return this.api.get<ProfileType>({...ApiRequest.get<ProfileType>(this.url, ProfileType), customData });
   }
 
   static toOptions(items: ProfileType[]): SelectOption<number>[] {

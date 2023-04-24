@@ -8,7 +8,7 @@ import { Profile } from 'src/app/models/entities';
 import { ProfileService, ToastService } from 'src/app/services';
 import { FilterService } from 'src/app/services/filter.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { deleteModalData, paths } from 'src/app/utils';
+import { ElementIds, deleteModalData, paths } from 'src/app/utils';
 
 @Component({
   selector: 'app-profile-list [items]',
@@ -34,6 +34,8 @@ export class ProfileListComponent implements OnInit {
   };
 
   prevFilter?: string;
+
+  elIds = ElementIds;
 
   get currentPage(): number {
     return this.service.currentPage;
