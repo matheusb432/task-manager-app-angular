@@ -10,30 +10,18 @@ const routes: Routes = [
   },
   {
     path: Pages.Home,
-    data: {
-      breadcrumb: 'Home',
-    },
     loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
   },
   {
     path: Pages.Timesheets,
-    data: {
-      breadcrumb: 'Timesheets',
-    },
     loadChildren: () => import('./pages/timesheet/timesheet.module').then((m) => m.TimesheetModule),
   },
   {
     path: Pages.Profiles,
-    data: {
-      breadcrumb: 'Profiles',
-    },
     loadChildren: () => import('./pages/profile/profile.module').then((m) => m.ProfileModule),
   },
   {
     path: Pages.Metrics,
-    data: {
-      breadcrumb: 'Metrics',
-    },
     loadChildren: () => import('./pages/metrics/metrics.module').then((m) => m.MetricsModule),
   },
   // TODO implement 404 page
@@ -41,7 +29,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home',
     // redirectTo: 'not-found',
-  }
+  },
 ];
 
 @NgModule({

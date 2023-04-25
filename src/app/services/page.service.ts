@@ -36,7 +36,7 @@ export class PageService {
       .root.children['primary'].segments.map((it) => it.path)
       .join('/');
 
-  buildDetailsUrl = (url: string, id: number, type: DetailsTypes) =>
-    `${url}?id=${id}&type=${type}`;
+  getPathWithoutParams = () => '/' + this.getUrlWithoutParams();
 
+  buildDetailsUrl = (url: string, id: number, type: DetailsTypes) => `${url}?id=${id}&type=${type}`;
 }

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Card, Crumb } from 'src/app/models/configs';
-import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
+import { Card } from 'src/app/models/configs';
 import { ModalService } from 'src/app/services/modal.service';
-import { Icons, Pages, paths, successModalData } from 'src/app/utils';
+import { Pages, successModalData } from 'src/app/utils';
 
 @Component({
   selector: 'app-home',

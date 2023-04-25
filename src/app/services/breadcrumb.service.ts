@@ -1,12 +1,11 @@
-import { AddMap } from 'mapper-ts/lib-esm';
 import { Injectable } from '@angular/core';
 import { Crumb } from '../models/configs';
+import { crumbDefaults } from '../utils';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BreadcrumbService {
-
   private _crumbs: Crumb[] = [];
 
   get crumbs(): Crumb[] {
@@ -17,20 +16,13 @@ export class BreadcrumbService {
     this._crumbs = value;
   }
 
-
-  add(crumb: Crumb): void {
-    this.crumbs.push(crumb);
-  }
-
-  remove(crumb: Crumb): void {
-    this.crumbs = this.crumbs.filter(b => b !== crumb);
-  }
-
   set(crumbs: Crumb[]): void {
     this.crumbs = crumbs;
   }
 
-  clear(): void {
-    this.crumbs = [];
+  setByUrl(url: string): void {
+    const crumbs = (crumbDefaults as { [url: string]: Crumb[] })[url];
+
+    this.set(crumbs ?? []);
   }
 }

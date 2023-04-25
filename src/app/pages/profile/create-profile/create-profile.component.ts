@@ -54,5 +54,4 @@ export class CreateProfileComponent implements OnInit {
   onCancel(): Promise<boolean> {
     return this.service.goToList();
   }
-
 }

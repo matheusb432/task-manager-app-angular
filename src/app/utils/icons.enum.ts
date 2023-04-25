@@ -24,4 +24,5 @@ export enum Icons {
   Settings = 'settings',
   ContentCopy = 'content_copy',
   PageView = 'pageview',
+  CalendarToday = 'calendar_today',
 }
