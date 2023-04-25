@@ -1,7 +1,6 @@
-import { Component, Input, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subscription, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { us } from 'src/app/helpers';
 import { SelectOption } from 'src/app/models/configs';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -24,6 +23,7 @@ export class SelectComponent implements OnDestroy, OnChanges {
   @Input() multiple?: boolean = false;
   @Input() canEdit = true;
   @Input() elId = '';
+  @Input() formId = '';
   @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) =>
     o1 === o2;
 
@@ -34,7 +34,7 @@ export class SelectComponent implements OnDestroy, OnChanges {
   constructor(private loadingService: LoadingService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['elId'] && !!this.elId)) {
+    if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
       this.initLoadingSubscription();
     }
 
@@ -51,11 +51,13 @@ export class SelectComponent implements OnDestroy, OnChanges {
     us.unsub(this.subscriptions);
 
     this.subscriptions.push(
-      this.loadingService.isLoadingPipeFactory(this.elId).subscribe((isLoading) => {
-        this.isLoading = isLoading;
+      this.loadingService
+        .isAnyLoadingPipeFactory([this.elId, this.formId])
+        .subscribe((isLoading) => {
+          this.isLoading = isLoading;
 
-        this.changeControlEnabled();
-      })
+          this.changeControlEnabled();
+        })
     );
   }
 

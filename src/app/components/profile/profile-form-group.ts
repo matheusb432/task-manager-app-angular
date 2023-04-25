@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/entities';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {

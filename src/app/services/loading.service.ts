@@ -92,6 +92,12 @@ export class LoadingService {
     return this._loadingsSet.asObservable().pipe(map(() => this.shouldBeLoading(elId)));
   }
 
+  isAnyLoadingPipeFactory(elIds: string[]): Observable<boolean> {
+    return this._loadingsSet
+      .asObservable()
+      .pipe(map(() => elIds.some(this.shouldBeLoading.bind(this))));
+  }
+
   static createLoading(targetElId: string, size = 100): Loading {
     return {
       targetElId,

@@ -22,6 +22,7 @@ export class InputComponent implements OnDestroy, OnChanges {
   @Input() placeholder = '';
   @Input() elId = '';
   @Input() canEdit = true;
+  @Input() formId= '';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   @Output() keydownPressed = new EventEmitter<KeyboardEvent>();
@@ -38,10 +39,11 @@ export class InputComponent implements OnDestroy, OnChanges {
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['elId'] && !!this.elId)) {
+    if ((changes['formId']&& !!this.formId) || (changes['elId'] && !!this.elId)) {
       this.initLoadingSubscription();
     }
 
@@ -58,7 +60,7 @@ export class InputComponent implements OnDestroy, OnChanges {
     us.unsub(this.subscriptions);
 
     this.subscriptions.push(
-      this.loadingService.isLoadingPipeFactory(this.elId).subscribe((isLoading) => {
+      this.loadingService.isAnyLoadingPipeFactory([this.elId, this.formId]).subscribe((isLoading) => {
         this.isLoading = isLoading;
 
         this.changeControlEnabled();

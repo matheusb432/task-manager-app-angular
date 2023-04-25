@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ProfileFormGroup, getProfileForm } from 'src/app/components/profile';
 import { us } from 'src/app/helpers';
 import { PageConfig } from 'src/app/models/configs';
-import { Profile } from 'src/app/models/entities';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { PageData } from 'src/app/models/types';
 import { PageService, ProfileService, ToastService } from 'src/app/services';

@@ -2,15 +2,13 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output,
-  SimpleChanges,
   OnChanges,
   OnDestroy,
-  ContentChild,
-  ElementRef,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
-import { Subscription, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { us } from 'src/app/helpers';
 import { LoadingService } from 'src/app/services/loading.service';
 
@@ -55,7 +53,6 @@ export class ButtonComponent implements OnChanges, OnDestroy {
 
     this.subscriptions.push(
       this.loadingService.isLoadingPipeFactory(this.elId).subscribe((isLoading) => {
-        if (isLoading) console.log('is Loading!');
         this.isLoading = isLoading;
       })
     );
