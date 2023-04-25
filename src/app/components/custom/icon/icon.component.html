@@ -3,13 +3,16 @@
 </a>
 
 <ng-template #iconTemplate>
-  <mat-icon
-    aria-hidden="false"
-    [ariaLabel]="ariaLabelText"
-    [fontIcon]="icon"
-    [color]="color"
-    (click)="clicked.emit()"
-    [ngClass]="{ 'action-icon': clickable }"
-    [ngStyle]="{ 'font-size': size + 'px', width: size + 'px', height: size + 'px' }"
-  ></mat-icon>
+  <i class="icon-container">
+
+    <mat-icon
+      aria-hidden="false"
+      [ariaLabel]="ariaLabelText"
+      [fontIcon]="icon"
+      [color]="color"
+      (click)="clicked.emit()"
+      [ngClass]="{ 'action-icon': clickable }"
+      [ngStyle]="{ 'font-size': size + 'px', width: size + 'px', height: size + 'px' }"
+    ></mat-icon>
+  </i>
 </ng-template>

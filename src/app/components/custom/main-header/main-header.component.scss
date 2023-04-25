@@ -1,6 +1,18 @@
 .main-header {
-  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   width: 100%;
-  background-color: var(--secondary);
+  background: var(--primary-lighter);
+  height: 56px;
   padding: 16px;
+
+  section {
+    color: var(--primary-darker);
+    span {
+      font-weight: bold;
+      margin-right: 4px;
+    }
+  }
 }

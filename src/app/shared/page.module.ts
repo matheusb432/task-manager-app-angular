@@ -33,6 +33,7 @@ import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-la
 import { FocusInitialDirective, SetIdDirective } from '../directives';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 import { LoadingComponent } from '../components/custom/loading/loading.component';
+import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { LoadingComponent } from '../components/custom/loading/loading.component
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
+    BreadcrumbComponent,
     PaginationComponent,
     FocusInitialDirective,
     SetIdDirective,
@@ -91,6 +93,7 @@ import { LoadingComponent } from '../components/custom/loading/loading.component
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
+    BreadcrumbComponent,
     PaginationComponent,
     MatSidenavModule,
     MatGridListModule,

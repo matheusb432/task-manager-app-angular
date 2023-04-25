@@ -1,3 +1,4 @@
+export { Crumb } from './crumb';
 export { FormControlConfig } from './form-control-config';
 export { Loading } from './loading';
 export { IconConfig } from './icon-config';
