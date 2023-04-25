@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { of } from 'rxjs';
 import { us } from 'src/app/helpers';
 import { InvalidTableConfigError } from 'src/app/helpers/errors';
 import { IconConfig } from 'src/app/models/configs';
 import { TableConfig } from 'src/app/models/configs/table-config';
 import { TableItem } from 'src/app/models/types';
+import { LoadingService } from 'src/app/services/loading.service';
 import { DetailsTypes, Icons } from 'src/app/utils';
 
 @Component({
@@ -14,10 +16,15 @@ import { DetailsTypes, Icons } from 'src/app/utils';
 export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() items!: T[];
   @Input() config!: TableConfig<T>;
+  @Input() elId = 'cTableContainer';
 
   @Output() deleteItem = new EventEmitter<number>();
 
+  isLoading$ = of(false);
+
   icons: IconConfig<number>[] = [];
+
+  constructor(private loadingService: LoadingService) {}
 
   get tableHeaders(): string[] {
     return this.config.headers;
@@ -35,8 +42,12 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
     this.initIcons();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.tableHeaders != null && this.tableKeys != null) this.validateList();
+
+    if (changes['elId']) {
+      this.isLoading$ = this.loadingService.isLoadingPipeFactory(this.elId);
+    }
   }
 
   initIcons(): void {

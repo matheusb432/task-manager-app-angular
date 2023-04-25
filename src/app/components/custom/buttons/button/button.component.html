@@ -5,6 +5,7 @@
     [appSetId]="elId"
     [color]="color"
     [type]="type"
+    [disabled]="isDisabled"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
@@ -15,6 +16,7 @@
     [appSetId]="elId"
     [color]="color"
     [type]="type"
+    [disabled]="isDisabled"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
@@ -25,6 +27,7 @@
     [appSetId]="elId"
     [color]="color"
     [type]="type"
+    [disabled]="isDisabled"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
@@ -35,11 +38,19 @@
     [appSetId]="elId"
     [color]="color"
     [type]="type"
+    [disabled]="isDisabled"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
   </button>
-  <button *ngSwitchCase="'fab'" mat-fab [color]="color" [type]="type" (click)="emitClick()">
+  <button
+    *ngSwitchCase="'fab'"
+    mat-fab
+    [color]="color"
+    [type]="type"
+    [disabled]="isDisabled"
+    (click)="emitClick()"
+  >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
   </button>
   <button
@@ -48,11 +59,18 @@
     [appSetId]="elId"
     [color]="color"
     [type]="type"
+    [disabled]="isDisabled"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
   </button>
-  <a *ngSwitchCase="'link'" mat-button [appSetId]="elId" [color]="color" [routerLink]="url"
+  <a
+    *ngSwitchCase="'link'"
+    mat-button
+    [appSetId]="elId"
+    [color]="color"
+    [routerLink]="url"
+    [disabled]="isDisabled"
     ><ng-container *ngTemplateOutlet="labelTemplate"></ng-container
   ></a>
   <button
@@ -61,6 +79,7 @@
     [appSetId]="elId"
     [color]="color"
     [type]="type"
+    [disabled]="isDisabled"
     (click)="emitClick()"
   >
     <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
@@ -68,5 +87,11 @@
 </ng-container>
 
 <ng-template #labelTemplate>
-  <ng-content></ng-content>
+  <div class="button-content">
+    <ng-content></ng-content>
+    <ng-container *ngIf="isLoading">
+      <span>...</span>
+      <app-loading [isLoading]="isLoading" [size]="20"></app-loading>
+    </ng-container>
+  </div>
 </ng-template>

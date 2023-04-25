@@ -1,11 +1,12 @@
-<table class="data-table" id="cTable">
+<table class="data-table" [appSetId]="elId">
   <thead class="table-header" id="cTableHeader">
     <tr>
       <th *ngFor="let headerKey of tableHeaders" class="table-item">{{ headerKey }}</th>
       <th *ngIf="canShowActions()"></th>
     </tr>
   </thead>
-  <tbody id="cTableBody">
+  <!-- <tbody id="cTableBody" *ngIf="!isLoading; else loadingBody"> -->
+  <tbody id="cTableBody" *ngIf="(isLoading$ | async) !== true">
     <tr *ngFor="let item of items; let itemIndex = index; trackBy: getItemId" class="table-row">
       <td *ngFor="let key of tableKeys" class="table-item">{{ item[key] }}</td>
       <td *ngIf="canShowActions()" class="text-right actions">
@@ -26,4 +27,13 @@
       </td>
     </tr>
   </tbody>
+  <ng-template #loadingBody [ngIf]="isLoading$ | async">
+    <tbody id="cTableBody">
+      <tr class="table-row">
+        <td class="table-item loading-item" colspan="100%">
+          <app-loading [isLoading]="true" [size]="100"> </app-loading>
+        </td>
+      </tr>
+    </tbody>
+  </ng-template>
 </table>

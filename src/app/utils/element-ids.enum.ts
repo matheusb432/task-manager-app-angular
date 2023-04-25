@@ -1,5 +1,7 @@
 export enum ElementIds {
-  ProfileList = 'cProfileListContainer',
+  ProfileTable = 'cProfileTableContainer',
   ProfileForm = 'cProfileFormContainer',
   ProfileFormType = 'cProfileFormType',
+  ProfileSubmit = 'cProfileFormSubmit',
+  ProfileDelete = 'cProfileFormDelete',
 }

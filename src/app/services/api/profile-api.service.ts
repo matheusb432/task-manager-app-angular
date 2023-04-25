@@ -26,28 +26,34 @@ export class ProfileApiService {
     });
   }
 
-  async get(): Promise<Profile[]> {
-    return this.api.get<Profile>(ApiRequest.get<Profile>(this.url, Profile));
-  }
-
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
     const queryUrl = us.buildPaginatedODataQuery(this.url, options);
 
     return this.api.getPaginated<Profile>({
       ...ApiRequest.get<Profile>(queryUrl, Profile),
-      customData: { loading: LoadingService.createLoading(ElementIds.ProfileList) },
+      customData: { loading: LoadingService.createLoading(ElementIds.ProfileTable) },
     });
   }
 
   insert = async (ct: Profile): Promise<PostReturn> =>
-    this.api.insert(ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto));
+    this.api.insert({
+      ...ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto),
+      customData: { loading: LoadingService.createLoading(ElementIds.ProfileSubmit) },
+    });
 
   duplicate = async (ct: Profile): Promise<PostReturn> => this.insert(ct);
 
   update = async (ct: Profile): Promise<void> =>
-    this.api.update(ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto));
+    this.api.update({
+      ...ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto),
+      customData: { loading: LoadingService.createLoading(ElementIds.ProfileSubmit) },
+    });
 
-  remove = async (id: number): Promise<void> => this.api.remove(ApiRequest.delete(this.url, id));
+  remove = async (id: number): Promise<void> =>
+    this.api.remove({
+      ...ApiRequest.delete(this.url, id),
+      customData: { loading: LoadingService.createLoading(ElementIds.ProfileDelete) },
+    });
 
   private mapProps = (item: Profile): Profile => {
     const mapped = us.deepClone(item);

@@ -161,7 +161,7 @@ export class ApiService {
     const resKey = `${url}|${us.randomHex()}`;
 
     this.appService.addRequestData(resKey, { url, loading, moment: Date.now() });
-  }
+  };
 
   private urlWithId = (apiReq: ApiRequest): string => `${apiReq.url}/${apiReq.id}`;
 

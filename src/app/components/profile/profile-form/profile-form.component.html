@@ -6,6 +6,7 @@
       [fg]="form"
       labelText="Name"
       placeholder="Profile Name"
+      [canEdit]="canEdit"
       elId="cProfileFormName"
     ></app-input>
 
@@ -15,6 +16,7 @@
       [fg]="form"
       labelText="Time Target"
       type="time"
+      [canEdit]="canEdit"
       elId="cProfileFormTimeTarget"
     ></app-input>
 
@@ -24,6 +26,7 @@
       [fg]="form"
       labelText="Tasks Target"
       type="number"
+      [canEdit]="canEdit"
       elId="cProfileFormTasksTarget"
     ></app-input>
 
@@ -33,6 +36,7 @@
       [fg]="form"
       labelText="Priority"
       type="number"
+      [canEdit]="canEdit"
       elId="cProfileFormPriority"
     ></app-input>
 
@@ -50,7 +54,7 @@
       <div *ngIf="showDelete()" class="left-buttons">
         <app-button
           model="raised"
-          elId="cProfileFormDelete"
+          [elId]="elIds.ProfileDelete"
           (clicked)="openDeleteModal()"
           color="warn"
           >Delete</app-button
@@ -64,7 +68,7 @@
         color="accent"
         >Cancel</app-button
       >
-      <app-button model="raised" elId="cProfileFormSubmit" *ngIf="canEdit" type="submit">{{
+      <app-button model="raised" [elId]="elIds.ProfileSubmit" *ngIf="canEdit" type="submit">{{
         submitLabel
       }}</app-button>
     </div>
