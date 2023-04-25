@@ -7,6 +7,8 @@ export enum Icons {
   Search = 'search',
   ArrowBack = 'arrow_back',
   ArrowForward = 'arrow_forward',
+  ArrowUpward = 'arrow_upward',
+  ArrowDownward = 'arrow_downward',
   Menu = 'menu',
   Home = 'home',
   Info = 'info',

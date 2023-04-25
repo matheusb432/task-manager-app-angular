@@ -1,14 +1,28 @@
 <table class="data-table" [appSetId]="elId">
   <thead class="table-header" id="cTableHeader">
     <tr>
-      <th *ngFor="let headerKey of tableHeaders" class="table-item">{{ headerKey }}</th>
+      <th
+        *ngFor="let itemConfig of itemConfigs"
+        class="table-item column-sort"
+        (click)="onOrderBy(itemConfig.key)"
+      >
+        {{ itemConfig.header }}
+        <app-icon
+          [ngClass]="{ 'active-sort': orderBy?.key === itemConfig.key }"
+          [icon]="orderBy?.direction === 'asc' ? Icons.ArrowUpward : Icons.ArrowDownward"
+          [size]="20"
+        >
+        </app-icon>
+      </th>
       <th *ngIf="canShowActions()"></th>
     </tr>
   </thead>
-  <!-- <tbody id="cTableBody" *ngIf="!isLoading; else loadingBody"> -->
   <tbody id="cTableBody" *ngIf="(isLoading$ | async) !== true">
-    <tr *ngFor="let item of items; let itemIndex = index; trackBy: getItemId" class="table-row">
-      <td *ngFor="let key of tableKeys" class="table-item">{{ item[key] }}</td>
+    <tr
+      *ngFor="let item of orderedItems; let itemIndex = index; trackBy: getItemId"
+      class="table-row"
+    >
+      <td *ngFor="let itemConfig of itemConfigs" class="table-item">{{ item[itemConfig.key] }}</td>
       <td *ngIf="canShowActions()" class="text-right actions">
         <app-icon
           *ngFor="let icon of icons"

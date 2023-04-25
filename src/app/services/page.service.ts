@@ -33,7 +33,7 @@ export class PageService {
 
   getUrlWithoutParams = () =>
     this.getUrlTree()
-      .root.children['primary'].segments.map((it) => it.path)
+      .root.children['primary']?.segments?.map((it) => it.path)
       .join('/');
 
   getPathWithoutParams = () => '/' + this.getUrlWithoutParams();

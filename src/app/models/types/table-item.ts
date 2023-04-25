@@ -1,6 +1,7 @@
+import { TableItemConfig } from '../configs';
+
 export abstract class TableItem {
   id?: number;
 
-  static tableHeaders: () => string[];
-  static tableKeys: () => (keyof unknown)[];
+  static tableItems: () => TableItemConfig<unknown>[];
 }

@@ -1,9 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { of } from 'rxjs';
 import { us } from 'src/app/helpers';
-import { InvalidTableConfigError } from 'src/app/helpers/errors';
 import { IconConfig } from 'src/app/models/configs';
-import { TableConfig } from 'src/app/models/configs/table-config';
+import { OrderByConfig, TableConfig, TableItemConfig } from 'src/app/models/configs';
 import { TableItem } from 'src/app/models/types';
 import { LoadingService } from 'src/app/services/loading.service';
 import { DetailsTypes, Icons } from 'src/app/utils';
@@ -18,20 +25,27 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() config!: TableConfig<T>;
   @Input() elId = 'cTableContainer';
 
+
   @Output() deleteItem = new EventEmitter<number>();
+  @Output() orderByChanged = new EventEmitter<OrderByConfig<T> | null>();
+
+  orderedItems: T[] = [];
 
   isLoading$ = of(false);
 
   icons: IconConfig<number>[] = [];
 
+  Icons = Icons;
+
   constructor(private loadingService: LoadingService) {}
 
-  get tableHeaders(): string[] {
-    return this.config.headers;
+
+  get itemConfigs(): TableItemConfig<T>[] {
+    return this.config.itemConfigs;
   }
 
-  get tableKeys(): (keyof T)[] {
-    return this.config.keys;
+  get orderBy(): OrderByConfig<T> | null {
+    return this.config.orderBy;
   }
 
   get detailsUrl(): string {
@@ -43,21 +57,29 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.tableHeaders != null && this.tableKeys != null) this.validateList();
-
     if (changes['elId']) {
       this.isLoading$ = this.loadingService.isLoadingPipeFactory(this.elId);
+    }
+
+    if (changes['items'] || changes['sortColumn'] || changes['sortDirection']) {
+      this.orderedItems = this.orderItems(this.items);
     }
   }
 
   initIcons(): void {
     const { hasCopy, hasDelete, hasEdit, hasView } = this.config;
     const icons = [
-      !!hasCopy && IconConfig.withUrlType('DuplicateIcon',Icons.ContentCopy, DetailsTypes.Duplicate),
+      !!hasCopy &&
+        IconConfig.withUrlType('DuplicateIcon', Icons.ContentCopy, DetailsTypes.Duplicate),
       !!hasEdit && IconConfig.withUrlType('EditIcon', Icons.Edit, DetailsTypes.Edit),
       !!hasView && IconConfig.withUrlType('ViewIcon', Icons.PageView, DetailsTypes.View),
       !!hasDelete &&
-        IconConfig.withClick('DeleteIcon', Icons.Delete, (id: number) => this.deleteItem.emit(id), 'warn'),
+        IconConfig.withClick(
+          'DeleteIcon',
+          Icons.Delete,
+          (id: number) => this.deleteItem.emit(id),
+          'warn'
+        ),
     ].filter((i) => !!i);
 
     this.icons = icons as IconConfig<number>[];
@@ -69,16 +91,32 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
     type,
   });
 
-  validateList(): void {
-    if (us.notEmpty(this.tableHeaders) && this.tableHeaders.length === this.tableKeys?.length)
-      return;
-
-    throw new InvalidTableConfigError(this.tableHeaders, this.tableKeys);
-  }
-
   canShowActions = () => us.notEmpty(this.icons);
 
   getItemId(index: number, item: T): number {
     return item?.id ?? index;
+  }
+
+  private getOrderBy(): OrderByConfig<T> | null {
+    return this.config.orderBy;
+  }
+
+  private setOrderBy(orderBy: OrderByConfig<T> | null): void {
+    this.config.orderBy = orderBy;
+    this.orderedItems = this.orderItems(this.items);
+    this.orderByChanged.emit(orderBy);
+  }
+
+  onOrderBy(columnKey: keyof T): void {
+    const newOrderBy = us.onOrderByChange(this.getOrderBy(), columnKey);
+    this.setOrderBy(newOrderBy);
+  }
+
+  orderItems(items: T[]): T[] {
+    const orderBy = this.getOrderBy();
+
+    if (!orderBy) return us.deepClone(items);
+
+    return us.orderItems(items, orderBy.key, orderBy.direction);
   }
 }

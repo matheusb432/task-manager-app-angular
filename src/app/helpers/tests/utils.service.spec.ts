@@ -4,6 +4,7 @@ import { UtilsService } from '../utils.service';
 import { TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 import { ODataOperators } from '../odata';
+import { OrderByConfig } from 'src/app/models/configs';
 
 describe('Service: Utils', () => {
   let service: UtilsService;
@@ -308,6 +309,71 @@ describe('Service: Utils', () => {
       for (const param of Object.values(expectedParams)) {
         expect(result).toContain(param);
       }
+    });
+  });
+
+  describe('onOrderByChange', () => {
+    it('should return an object with new column key and ascending direction when orderBy is null', () => {
+      const newOrderBy = UtilsService.onOrderByChange(null, 'name');
+      expect(newOrderBy).toEqual({ key: 'name', direction: 'asc' });
+    });
+
+    it('should return null when direction is descending and key matches the existing key', () => {
+      const existingOrderBy = { key: 'name', direction: 'desc' } as OrderByConfig;
+      const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'name' as keyof unknown);
+      expect(newOrderBy).toBeNull();
+    });
+
+    it('should return an object with new column key and ascending direction when key does not match the existing key', () => {
+      const existingOrderBy = { key: 'name', direction: 'asc' } as OrderByConfig;
+      const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'age' as keyof unknown);
+      expect(newOrderBy).toEqual({ key: 'age' as keyof unknown, direction: 'asc' });
+    });
+
+    it('should return an object with new column key and descending direction when direction is ascending and key does not match the existing key', () => {
+      const existingOrderBy = { key: 'name', direction: 'asc' } as OrderByConfig;
+      const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'age' as keyof unknown);
+      expect(newOrderBy).toEqual({ key: 'age' as keyof unknown, direction: 'asc' });
+    });
+
+    it('should return an object with existing column key and descending direction when direction is ascending and key matches the existing key', () => {
+      const existingOrderBy = { key: 'name', direction: 'asc' } as OrderByConfig;
+      const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'name' as keyof unknown);
+      expect(newOrderBy).toEqual({ key: 'name' as keyof unknown, direction: 'desc' });
+    });
+  });
+
+  describe('orderItems', () => {
+    const items = [
+      { name: 'Alice', age: 25 },
+      { name: 'Bob', age: 30 },
+      { name: 'Charlie', age: 20 },
+    ];
+
+    it('should order items in ascending direction by default', () => {
+      const orderedItems = UtilsService.orderItems(items, 'age', 'asc');
+      expect(orderedItems).toEqual([
+        { name: 'Charlie', age: 20 },
+        { name: 'Alice', age: 25 },
+        { name: 'Bob', age: 30 },
+      ]);
+    });
+
+    it('should order items in descending direction', () => {
+      const orderedItems = UtilsService.orderItems(items, 'age', 'desc');
+      expect(orderedItems).toEqual([
+        { name: 'Bob', age: 30 },
+        { name: 'Alice', age: 25 },
+        { name: 'Charlie', age: 20 },
+      ]);
+    });
+
+    it('should not modify original array', () => {
+      const unorderedItems = items;
+      const orderedItems = UtilsService.orderItems(unorderedItems, 'age', 'desc');
+
+      expect(orderedItems).not.toEqual(items);
+      expect(unorderedItems).toEqual(items);
     });
   });
 });

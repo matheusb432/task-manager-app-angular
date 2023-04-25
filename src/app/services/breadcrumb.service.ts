@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Crumb } from '../models/configs';
-import { crumbDefaults } from '../utils';
+import { crumbDefaults, paths } from '../utils';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,6 @@ export class BreadcrumbService {
   setByUrl(url: string): void {
     const crumbs = (crumbDefaults as { [url: string]: Crumb[] })[url];
 
-    this.set(crumbs ?? []);
+    this.set(crumbs ?? crumbDefaults[paths.home]);
   }
 }

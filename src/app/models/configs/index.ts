@@ -1,3 +1,4 @@
+export { TableConfig, TableItemConfig, OrderByConfig } from './table-config';
 export { Crumb } from './crumb';
 export { FormControlConfig } from './form-control-config';
 export { Loading } from './loading';

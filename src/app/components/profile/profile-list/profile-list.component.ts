@@ -24,8 +24,8 @@ export class ProfileListComponent implements OnInit {
   }>;
 
   config: TableConfig<Profile> = {
-    headers: Profile.tableHeaders(),
-    keys: Profile.tableKeys(),
+    itemConfigs: Profile.tableItems(),
+    orderBy: { key: 'id', direction: 'asc' },
     detailsUrl: paths.profilesDetails,
     hasCopy: true,
     hasDelete: true,

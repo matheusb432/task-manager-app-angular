@@ -6,6 +6,7 @@ import { ODataBuilder, ODataOptions } from './odata';
 import { PaginationOptions } from './pagination-options';
 import { stringify } from 'crypto-js/enc-hex';
 import * as CryptoJS from 'crypto-js';
+import { OrderByConfig } from '../models/configs';
 
 @Injectable({
   providedIn: 'root',
@@ -95,5 +96,28 @@ export class UtilsService {
     const randomBytesBuffer = CryptoJS.lib.WordArray.random(length);
 
     return stringify(randomBytesBuffer).slice(0, length);
+  }
+
+  static onOrderByChange<T>(
+    orderBy: OrderByConfig<T> | null,
+    newColumnKey: keyof T
+  ): OrderByConfig<T> | null {
+    if (!orderBy) return { key: newColumnKey, direction: 'asc' };
+    const { key, direction } = orderBy;
+
+    if (direction === 'desc') return null;
+
+    return { key: newColumnKey, direction: key === newColumnKey ? 'desc' : 'asc' };
+  }
+
+  static orderItems<T>(items: T[], key: keyof T, direction: 'asc' | 'desc'): T[] {
+    return this.deepClone(items).sort((a, b) => this.orderFn(a, b, key, direction));
+  }
+
+  private static orderFn<T>(a: T, b: T, key?: keyof T, direction?: string): number {
+    if (!key || !direction) return 0;
+    const multiplier = direction === 'asc' ? 1 : -1;
+
+    return a[key] < b[key] ? -multiplier : a[key] > b[key] ? multiplier : 0;
   }
 }

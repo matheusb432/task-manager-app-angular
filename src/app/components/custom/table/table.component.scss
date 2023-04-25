@@ -38,6 +38,24 @@ td {
   padding: 1rem 1.5rem;
 }
 
+.column-sort {
+  cursor: pointer;
+
+  app-icon {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    &.active-sort {
+      opacity: 1;
+    }
+  }
+
+  &:hover {
+    app-icon {
+      opacity: 1;
+    }
+  }
+}
+
 .actions {
   text-align: right;
 
