@@ -17,9 +17,7 @@ export class ApiService {
 
   async get<T>(apiReq: ApiRequest<T>): Promise<T[]> {
     if (!this.isValidRequest[Requests.Get](apiReq)) {
-      this.handleInvalidRequestError(apiReq);
-
-      return Promise.reject(ErrorMessages.InvalidURLRequest);
+      return this.handleInvalidServiceRequest(apiReq);
     }
 
     const reqData = { ...apiReq, url: `${apiReq.url}/odata` };
@@ -30,9 +28,7 @@ export class ApiService {
 
   async getPaginated<T>(apiReq: ApiRequest<T>): Promise<PaginatedResult<T>> {
     if (!this.isValidRequest[Requests.Get](apiReq)) {
-      this.handleInvalidRequestError(apiReq);
-
-      return Promise.reject(ErrorMessages.InvalidServiceRequest);
+      return this.handleInvalidServiceRequest(apiReq);
     }
 
     const req$ = this._getPaginatedRequest<T>(apiReq);
@@ -42,9 +38,7 @@ export class ApiService {
 
   async getById<T>(apiReq: ApiRequest<T>): Promise<T> {
     if (!this.isValidRequest[Requests.GetById](apiReq)) {
-      this.handleInvalidRequestError(apiReq);
-
-      return Promise.reject(ErrorMessages.InvalidServiceRequest);
+      return this.handleInvalidServiceRequest(apiReq);
     }
 
     const url = us.buildODataQuery(apiReq.url, { filter: { id: apiReq.id } });
@@ -59,9 +53,7 @@ export class ApiService {
 
   async insert<T>(apiReq: ApiRequest<T>): Promise<PostReturn> {
     if (!this.isValidRequest[Requests.Post](apiReq)) {
-      this.handleInvalidRequestError(apiReq);
-
-      return Promise.reject(ErrorMessages.InvalidServiceRequest);
+      return this.handleInvalidServiceRequest(apiReq);
     }
 
     const req$ = this._postRequest<T>(apiReq);
@@ -71,9 +63,7 @@ export class ApiService {
 
   async update<T>(apiReq: ApiRequest<T>): Promise<void> {
     if (!this.isValidRequest[Requests.Put](apiReq)) {
-      this.handleInvalidRequestError(apiReq);
-
-      return Promise.reject(ErrorMessages.InvalidServiceRequest);
+      return this.handleInvalidServiceRequest(apiReq);
     }
     const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
     const req$ = this._putRequest<T>(reqData);
@@ -83,9 +73,7 @@ export class ApiService {
 
   async remove<T>(apiReq: ApiRequest<T>): Promise<void> {
     if (!this.isValidRequest[Requests.Delete](apiReq)) {
-      this.handleInvalidRequestError(apiReq);
-
-      return Promise.reject(ErrorMessages.InvalidServiceRequest);
+      return this.handleInvalidServiceRequest(apiReq);
     }
     const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
     const req$ = this._deleteRequest<T>(reqData);
@@ -93,8 +81,14 @@ export class ApiService {
     return this._returnAsync(req$, reqData) as Promise<void>;
   }
 
-  handleInvalidRequestError(apiReq: ApiRequest): void {
+  private handleInvalidRequestError(apiReq: ApiRequest): void {
     console.error('Invalid request!', apiReq);
+  }
+
+  handleInvalidServiceRequest(apiReq: ApiRequest): Promise<never> {
+    this.handleInvalidRequestError(apiReq);
+
+    return Promise.reject(ErrorMessages.InvalidServiceRequest);
   }
 
   private _getRequest<T>({ url, itemType, params }: ApiRequest<T>): Observable<T[]> {

@@ -42,7 +42,7 @@ export class ProfileApiService {
   }
 
   private mapGet(profile: Profile): Profile {
-    if (!profile) return profile;
+    if (!profile || typeof profile.timeTarget === 'string') return profile;
 
     profile.timeTarget = us.numberToTime(parseInt(profile.timeTarget ?? '0'));
 
