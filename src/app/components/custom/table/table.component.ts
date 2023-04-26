@@ -25,7 +25,6 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() config!: TableConfig<T>;
   @Input() elId = 'cTableContainer';
 
-
   @Output() deleteItem = new EventEmitter<number>();
   @Output() orderByChanged = new EventEmitter<OrderByConfig<T> | null>();
 
@@ -38,7 +37,6 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   Icons = Icons;
 
   constructor(private loadingService: LoadingService) {}
-
 
   get itemConfigs(): TableItemConfig<T>[] {
     return this.config.itemConfigs;

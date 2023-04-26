@@ -87,6 +87,21 @@ describe('Service: Utils', () => {
     });
   });
 
+  describe('numberToTime', () => {
+    it('should return an empty string when given an invalid number', () => {
+      expect(UtilsService.numberToTime(-1)).toEqual('');
+      expect(UtilsService.numberToTime(12345)).toEqual('');
+    });
+
+    it('should convert a valid number to a time string', () => {
+      expect(UtilsService.numberToTime(1234)).toEqual('12:34');
+      expect(UtilsService.numberToTime(559)).toEqual('05:59');
+      expect(UtilsService.numberToTime(56)).toEqual('00:56');
+      expect(UtilsService.numberToTime(7)).toEqual('00:07');
+      expect(UtilsService.numberToTime(0)).toEqual('00:00');
+    });
+  })
+
   describe('isCreateForm', () => {
     it('should return true for FormTypes.Create', () => {
       expect(UtilsService.isCreateForm(FormTypes.Create)).toBeTrue();

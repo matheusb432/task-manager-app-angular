@@ -20,19 +20,33 @@ export class ProfileApiService {
   constructor(private api: ApiService) {}
 
   async getById(id: number): Promise<Profile> {
-    return this.api.getById<Profile>({
+    const res = await this.api.getById<Profile>({
       ...ApiRequest.getById<Profile>(this.url, Profile, id),
       customData: { loading: LoadingService.createLoading(ElementIds.ProfileForm) },
     });
+
+    return this.mapGet(res);
   }
 
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
     const queryUrl = us.buildPaginatedODataQuery(this.url, options);
 
-    return this.api.getPaginated<Profile>({
+    const res = await this.api.getPaginated<Profile>({
       ...ApiRequest.get<Profile>(queryUrl, Profile),
       customData: { loading: LoadingService.createLoading(ElementIds.ProfileTable) },
     });
+
+    res.items = res.items.map(this.mapGet);
+
+    return res;
+  }
+
+  private mapGet(profile: Profile): Profile {
+    if (!profile) return profile;
+
+    profile.timeTarget = us.numberToTime(parseInt(profile.timeTarget ?? '0'));
+
+    return profile;
   }
 
   insert = async (ct: Profile): Promise<PostReturn> =>

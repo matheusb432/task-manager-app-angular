@@ -42,6 +42,24 @@ export class UtilsService {
     return Number(hours + minutes);
   };
 
+  static numberToTime(numberTime: number | null | undefined): string {
+    if (numberTime == null || numberTime < 0 || numberTime > 9999) return '';
+
+    let time = numberTime.toString();
+
+    if (time.length > 2) {
+      time = time.slice(0, -2) + ':' + time.slice(-2);
+    }
+
+    while (time.length < 5) {
+      if (!time.includes(':')) time = `:${'0'.repeat(2 - time.length)}${time}`;
+
+      time = `0${time}`;
+    }
+
+    return time;
+  }
+
   static isCreateForm = (type: FormTypes) => type === FormTypes.Create;
   static isViewForm = (type: FormTypes) => type === FormTypes.View;
   static isEditForm = (type: FormTypes) => type === FormTypes.Edit;
@@ -96,6 +114,14 @@ export class UtilsService {
     const randomBytesBuffer = CryptoJS.lib.WordArray.random(length);
 
     return stringify(randomBytesBuffer).slice(0, length);
+  }
+
+  static orderByToOData<T>(orderBy: OrderByConfig<T> | null): string[] {
+    if (!orderBy) return [''];
+
+    const { key, direction } = orderBy;
+
+    return [`${key as string} ${direction}`];
   }
 
   static onOrderByChange<T>(

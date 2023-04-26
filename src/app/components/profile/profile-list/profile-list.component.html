@@ -14,8 +14,9 @@
   <app-table
     [items]="items"
     [config]="config"
-    (deleteItem)="openDeleteModal($event)"
     [elId]="elIds.ProfileTable"
+    (deleteItem)="openDeleteModal($event)"
+    (orderByChanged)="handleOrderBy()"
   ></app-table>
   <app-pagination
     [totalItems]="totalItems"

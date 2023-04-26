@@ -28,10 +28,16 @@ export class ODataBuilder {
 
     if (options.select) queryString += `$select=${options.select.join(',')}&`;
     if (options.expand) queryString += `$expand=${options.expand.join(',')}&`;
-    if (options.filter) queryString += `$filter=${this.buildFilterString(options.filter)}&`;
+    if (options.filter) {
+      const filterString = this.buildFilterString(options.filter);
+      if (filterString) queryString += `$filter=${filterString}&`;
+    }
     if (options.top != null) queryString += `$top=${options.top}&`;
     if (options.skip != null) queryString += `$skip=${options.skip}&`;
-    if (options.orderBy) queryString += `$orderby=${options.orderBy.join(',')}&`;
+    if (options.orderBy) {
+      const orderByString = options.orderBy.join(',');
+      if (orderByString) queryString += `$orderby=${orderByString}&`;
+    }
     if (options.count) queryString += `$count=${options.count}&`;
 
     return queryString.slice(0, -1);

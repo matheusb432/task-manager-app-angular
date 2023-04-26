@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { us } from 'src/app/helpers';
 import { ODataOperators } from 'src/app/helpers/odata';
 import { PaginationOptions } from 'src/app/helpers/pagination-options';
-import { TableConfig } from 'src/app/models/configs/table-config';
+import { OrderByConfig, TableConfig } from 'src/app/models/configs/table-config';
 import { Profile } from 'src/app/models/entities';
 import { ProfileService, ToastService } from 'src/app/services';
 import { FilterService } from 'src/app/services/filter.service';
@@ -79,9 +80,11 @@ export class ProfileListComponent implements OnInit {
     if (nameFilter === this.prevFilter) return;
     this.prevFilter = nameFilter;
     await this.service.loadListItems(
-      PaginationOptions.first(this.itemsPerPage, {
-        filter: { name: [ODataOperators.Contains, nameFilter] },
-      })
+      this.getPaginationQuery(1)
+      // TODO clean
+      // PaginationOptions.first(this.itemsPerPage, {
+      //   filter: { name: [ODataOperators.Contains, nameFilter] },
+      // })
     );
   }
 
@@ -92,12 +95,19 @@ export class ProfileListComponent implements OnInit {
     }
 
     const { pageIndex, pageSize } = event;
-    this.service.loadListItems(PaginationOptions.from(pageIndex + 1, pageSize));
+    this.service.loadListItems(this.getPaginationQuery(pageIndex + 1, pageSize));
   }
 
   private deleteItem = async (id: number) => {
     await this.service.deleteItem(id);
   };
+
+  private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
+    return PaginationOptions.from(page, itemsPerPage ?? this.itemsPerPage, {
+      filter: { name: this.prevFilter ?[ODataOperators.Contains, this.prevFilter] : undefined },
+      orderBy: us.orderByToOData(this.config.orderBy),
+    });
+  }
 
   openDeleteModal(id: number): void {
     const ref = this.modalService.confirmation(deleteModalData());
@@ -107,5 +117,9 @@ export class ProfileListComponent implements OnInit {
 
       this.deleteItem(id);
     });
+  }
+
+  handleOrderBy(): void {
+    this.service.loadListItems(this.getPaginationQuery(1));
   }
 }
