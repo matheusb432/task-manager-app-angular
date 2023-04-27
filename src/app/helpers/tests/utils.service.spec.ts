@@ -391,4 +391,51 @@ describe('Service: Utils', () => {
       expect(unorderedItems).toEqual(items);
     });
   });
+
+  describe('isFromEnum', () => {
+    it('should return true when value is from enum', () => {
+      enum TestEnum {
+        One = 'one',
+        Two = 'two',
+      }
+
+      expect(UtilsService.isFromEnum(TestEnum, 'one')).toBe(true);
+    });
+
+    it('should return false when value is not from enum', () => {
+      enum TestEnum {
+        One = 'one',
+        Two = 'two',
+      }
+
+      expect(UtilsService.isFromEnum(TestEnum, 'three')).toBe(false);
+    });
+
+    it('should return false when value is not from enum and enum is empty', () => {
+      enum TestEnum {}
+
+      expect(UtilsService.isFromEnum(TestEnum, 'three')).toBe(false);
+    });
+
+    it('should return false when value is nullish', () => {
+      enum TestEnum {}
+
+      expect(UtilsService.isFromEnum(TestEnum, null)).toBe(false);
+      expect(UtilsService.isFromEnum(TestEnum, undefined)).toBe(false);
+    });
+  });
+
+  describe('shouldParseJson', () => {
+    it('should return true when value is a stringified JSON', () => {
+      expect(UtilsService.shouldParseJson('{"name":"John"}')).toBe(true);
+    });
+
+    it('should return true when value is a stringified Array', () => {
+      expect(UtilsService.shouldParseJson('[2, 3, 5]')).toBe(true);
+    });
+
+    it('should return false when value is not a stringified JSON', () => {
+      expect(UtilsService.shouldParseJson('John')).toBe(false);
+    });
+  });
 });

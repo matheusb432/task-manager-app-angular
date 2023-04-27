@@ -146,4 +146,15 @@ export class UtilsService {
 
     return a[key] < b[key] ? -multiplier : a[key] > b[key] ? multiplier : 0;
   }
+
+  static isFromEnum<T extends object>(enumType: T, value: unknown): boolean {
+    if (value == null) return false;
+
+    return Object.values(enumType).includes(value);
+  }
+
+  static shouldParseJson(value: string | null | undefined): boolean {
+    if (value == null) return false;
+    return RegExp(/^\{.*\}$/).test(value) || RegExp(/^\[.*\]$/).test(value);
+  }
 }

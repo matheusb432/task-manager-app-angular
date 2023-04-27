@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/models/configs';
-import { LocalStorageService } from 'src/app/services';
-import { StoreService, STORE_SERVICE } from 'src/app/services/base';
+import { STORE_SERVICE, StoreService } from 'src/app/services/interfaces';
 import { ModalService } from 'src/app/services/modal.service';
 import { Pages, StoreKeys, successModalData } from 'src/app/utils';
 
