@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { us } from 'src/app/helpers';
 import { ODataOperators } from 'src/app/helpers/odata';
 import { PaginationOptions } from 'src/app/helpers/pagination-options';
-import { OrderByConfig, TableConfig } from 'src/app/models/configs/table-config';
+import { TableConfig } from 'src/app/models/configs/table-config';
 import { Profile } from 'src/app/models/entities';
 import { ProfileService, ToastService } from 'src/app/services';
 import { FilterService } from 'src/app/services/filter.service';
@@ -81,10 +81,6 @@ export class ProfileListComponent implements OnInit {
     this.prevFilter = nameFilter;
     await this.service.loadListItems(
       this.getPaginationQuery(1)
-      // TODO clean
-      // PaginationOptions.first(this.itemsPerPage, {
-      //   filter: { name: [ODataOperators.Contains, nameFilter] },
-      // })
     );
   }
 

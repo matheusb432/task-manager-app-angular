@@ -19,8 +19,8 @@ export class PaginationOptions {
     return new PaginationOptions(defaultPage, defaultItemsPerPage);
   }
 
-  static first(itemsPerPage: number, options?: ODataOptions): PaginationOptions {
-    return new PaginationOptions(1, itemsPerPage, options);
+  static first(itemsPerPage?: number, options?: ODataOptions): PaginationOptions {
+    return new PaginationOptions(1, itemsPerPage ?? defaultItemsPerPage, options);
   }
 
   static from(page: number, itemsPerPage: number, options?: ODataOptions): PaginationOptions {

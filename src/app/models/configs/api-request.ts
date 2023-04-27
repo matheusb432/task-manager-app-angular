@@ -21,11 +21,11 @@ export class ApiRequest<T = unknown> {
     return { url, itemType, id };
   }
 
-  static post<T>(url: string, item: T, postDto: Ctor<unknown>): ApiRequest<T> {
+  static post<T>(url: string, item: T, postDto?: Ctor<unknown>): ApiRequest<T> {
     return { url, item, postDto };
   }
 
-  static put<T>(url: string, id: number, item: T, putDto: Ctor<unknown>): ApiRequest<T> {
+  static put<T>(url: string, id: number, item: T, putDto?: Ctor<unknown>): ApiRequest<T> {
     return { url, id, item, putDto };
   }
 

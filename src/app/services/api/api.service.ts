@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { Observable, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { us } from 'src/app/helpers';
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
 import { PaginatedResult, PostReturn, RequestData } from '../../models/types';
 import { AppService } from '../app.service';
+import { Ctor } from 'src/app/models/configs/api-request';
 
 @Injectable({
   providedIn: 'root',
@@ -94,9 +95,7 @@ export class ApiService {
   private _getRequest<T>({ url, itemType, params }: ApiRequest<T>): Observable<T[]> {
     return this.http.get<T[]>(url, { params }).pipe(
       map((data) => {
-        if (!itemType) return data;
-
-        return new Mapper(itemType).map(data);
+        return this._mapOrSelf(data, itemType as Ctor<T[]>);
       })
     ) as unknown as Observable<T[]>;
   }
@@ -119,23 +118,25 @@ export class ApiService {
   }
 
   private _postRequest<T>({ url, item, postDto }: ApiRequest<T>): Observable<T> {
-    if (!postDto || !item) throw new Error(ErrorMessages.InvalidServiceRequest);
+    if (!item) throw new Error(ErrorMessages.InvalidServiceRequest);
 
-    const mappedItem = new Mapper(postDto).map(item);
-
-    return this.http.post<T>(url, mappedItem);
+    return this.http.post<T>(url, this._mapOrSelf(item, postDto));
   }
 
   private _putRequest<T>({ url, item, putDto }: ApiRequest<T>): Observable<T> {
-    if (!putDto || !item) throw new Error(ErrorMessages.InvalidServiceRequest);
+    if (!item) throw new Error(ErrorMessages.InvalidServiceRequest);
 
-    const mappedItem = new Mapper(putDto).map(item);
-
-    return this.http.put<T>(url, mappedItem);
+    return this.http.put<T>(url, this._mapOrSelf(item, putDto));
   }
 
   private _deleteRequest<T>({ url }: ApiRequest<T>): Observable<T> {
     return this.http.delete<T>(url);
+  }
+
+  private _mapOrSelf<T>(item: T, itemType?: Ctor<T>): T {
+    if (!item || !itemType) return item;
+
+    return new Mapper(itemType).map(item) as unknown as T;
   }
 
   private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
