@@ -17,12 +17,18 @@ export class AuthService {
   constructor(private api: ApiService) {}
 
   // TODO implement
-  login(email: string, password: string) {
-    return Promise.resolve();
+  login(email: string, password: string): Promise<AuthToken> {
+    return this.api.insert<LoginRequest, AuthToken>({
+      ...ApiRequest.post(this.url, { email, password }),
+      customData: { loading: { targetElId: ElementIds.LoginForm } },
+    });
   }
 
   // TODO implement
   logout() {
+    localStorage.setItem('access_token', 'token');
+    localStorage.setItem('refresh_token', 'token');
+
     return Promise.resolve();
   }
 }

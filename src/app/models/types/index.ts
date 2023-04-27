@@ -1,3 +1,4 @@
+export { StoreData } from './store-data';
 export { LoginRequest } from './login-request';
 export { AuthToken } from './auth-token';
 export { AppRequestData, RequestData } from './app-request-data';

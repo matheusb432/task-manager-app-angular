@@ -11,6 +11,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { HomeModule } from './pages/home/home.module';
 import { PageModule } from './shared';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { STORE_SERVICE } from './services/base';
+import { LocalStorageService } from './services';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +31,9 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: 'LOCALSTORAGE', useValue: window.localStorage },
+    { provide: 'SESSIONSTORAGE', useValue: window.sessionStorage },
+    { provide: STORE_SERVICE, useClass: LocalStorageService },
   ],
   bootstrap: [AppComponent],
 })

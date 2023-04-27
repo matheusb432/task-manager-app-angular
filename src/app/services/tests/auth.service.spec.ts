@@ -5,7 +5,7 @@ import { AuthToken } from 'src/app/models/types';
 import { assertObjectsAreEqual } from './test-utils';
 
 // TODO remove fdescribe
-fdescribe('Service: Auth', () => {
+describe('Service: Auth', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
   let url: string;

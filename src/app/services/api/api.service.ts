@@ -52,14 +52,14 @@ export class ApiService {
     return this._returnAsync(req$, reqData) as Promise<T>;
   }
 
-  async insert<T>(apiReq: ApiRequest<T>): Promise<PostReturn> {
+  async insert<TBody, TReturn = PostReturn>(apiReq: ApiRequest<TBody>): Promise<TReturn> {
     if (!this.isValidRequest[Requests.Post](apiReq)) {
       return this.handleInvalidServiceRequest(apiReq);
     }
 
-    const req$ = this._postRequest<T>(apiReq);
+    const req$ = this._postRequest<TBody>(apiReq);
 
-    return this._returnAsync(req$, apiReq) as Promise<PostReturn>;
+    return this._returnAsync(req$, apiReq) as Promise<TReturn>;
   }
 
   async update<T>(apiReq: ApiRequest<T>): Promise<void> {
