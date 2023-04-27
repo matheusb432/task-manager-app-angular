@@ -6,6 +6,7 @@ import { PaginationOptions } from '../../helpers/pagination-options';
 import { Profile } from '../../models/entities';
 import { PaginatedResult } from '../../models/types';
 import { ProfileApiService } from '../api';
+import { assertObjectsAreEqual } from './test-utils';
 
 describe('Service: ProfileApi', () => {
   let service: ProfileApiService;
@@ -45,7 +46,7 @@ describe('Service: ProfileApi', () => {
       };
 
       service.getPaginated(mockPaginationOptions).then((result) => {
-        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockPaginatedResult));
+        assertObjectsAreEqual(result, mockPaginatedResult)
       });
 
       const req = httpMock.expectOne(
@@ -61,7 +62,7 @@ describe('Service: ProfileApi', () => {
       const mockProfile: Profile = { name: 'John Doe', userId: 1, timeTarget: '10:00' };
       const mockPostReturn = { id: 1 };
       service.insert(mockProfile).then((result) => {
-        expect(result).toEqual(mockPostReturn);
+        assertObjectsAreEqual(result, mockPostReturn)
       });
 
       const req = httpMock.expectOne(service['url']);
@@ -76,7 +77,7 @@ describe('Service: ProfileApi', () => {
       const mockProfile: Profile = { id: 1, name: 'John Doe', userId: 1, timeTarget: '10:00' };
       const mockPostReturn = { id: 2 };
       service.duplicate(mockProfile).then((result) => {
-        expect(result).toEqual(mockPostReturn);
+        assertObjectsAreEqual(result, mockPostReturn)
       });
 
       const req = httpMock.expectOne(service['url']);
