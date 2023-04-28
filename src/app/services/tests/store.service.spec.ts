@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { LocalStorageService } from '../local-storage.service';
-import { Inject, InjectionToken } from '@angular/core';
-import { STORE_SERVICE, StoreService } from '../interfaces';
 import { StoreKeys } from 'src/app/utils';
+import { STORE_SERVICE, StoreService } from '../interfaces';
 
 describe('Service: Store', () => {
   let service: StoreService;

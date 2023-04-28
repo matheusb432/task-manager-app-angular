@@ -5,4 +5,5 @@ export enum ElementIds {
   ProfileSubmit = 'cProfileFormSubmit',
   ProfileDelete = 'cProfileFormDelete',
   LoginForm = 'cLoginFormContainer',
+  SignupForm = 'cSignupFormContainer',
 }

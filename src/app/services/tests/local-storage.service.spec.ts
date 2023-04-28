@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { StoreKeys } from 'src/app/utils';
 import { LOCAL_STORAGE, LocalStorageService } from '../local-storage.service';
 import { StoreData, StoreDataTypes } from 'src/app/models/types';
-import { assertObjectsAreEqual } from './test-utils';
+import { assertAreEqual } from './test-utils';
 
 describe('Service: LocalStorage', () => {
   let service: LocalStorageService;
@@ -16,7 +16,7 @@ describe('Service: LocalStorage', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LocalStorageService, { provide: LOCAL_STORAGE, useValue: localStorage }],
+      providers: [LocalStorageService],
     });
     service = TestBed.inject(LocalStorageService);
     _localStorage = TestBed.inject(LOCAL_STORAGE);
@@ -66,7 +66,7 @@ describe('Service: LocalStorage', () => {
         const result = setItemAndGet(key, value, type);
 
         expect(_localStorage.getItem(key)).toBe(type ? JSON.stringify(result) : (result as string));
-        assertObjectsAreEqual(result, value);
+        assertAreEqual(result, value);
       }
     });
 

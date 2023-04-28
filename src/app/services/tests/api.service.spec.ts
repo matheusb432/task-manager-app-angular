@@ -5,7 +5,7 @@ import { PaginationOptions } from 'src/app/helpers/pagination-options';
 import { ApiService } from '../api';
 import { AppService } from '../app.service';
 import { ApiRequest } from 'src/app/models';
-import { assertObjectsAreEqual } from './test-utils';
+import { assertAreEqual } from './test-utils';
 
 class MockItem {
   id?: number;
@@ -34,7 +34,7 @@ describe('Service: Api', () => {
       const expectedItems = [{ id: 1 }, { id: 2 }];
       const apiRequest = { url: 'testUrl', itemType: MockItem };
       service.get<MockItem>(apiRequest).then((items) => {
-        assertObjectsAreEqual(items, expectedItems);
+        assertAreEqual(items, expectedItems);
         done();
       });
       const request = httpMock.expectOne('testUrl/odata');
@@ -51,7 +51,7 @@ describe('Service: Api', () => {
         itemType: MockItem,
       };
       service.getPaginated<MockItem>(apiRequest).then((result) => {
-        assertObjectsAreEqual(result, expectedPaginatedResult);
+        assertAreEqual(result, expectedPaginatedResult);
         done();
       });
       const request = httpMock.expectOne('testUrl/odata?$top=10&$skip=0&$count=true');
@@ -65,7 +65,7 @@ describe('Service: Api', () => {
       const expectedItem = { id: 1 };
       const apiRequest = { url: 'testUrl', id: 1, itemType: MockItem };
       service.getById<MockItem>(apiRequest).then((item) => {
-        assertObjectsAreEqual(item, expectedItem);
+        assertAreEqual(item, expectedItem);
         done();
       });
       const request = httpMock.expectOne('testUrl/odata?$filter=(id eq 1)');
@@ -81,7 +81,7 @@ describe('Service: Api', () => {
       const mockResponse = { id: 1 };
 
       service.insert<MockItem>(mockRequest).then((response) => {
-        assertObjectsAreEqual(response, mockResponse);
+        assertAreEqual(response, mockResponse);
         done();
       });
 

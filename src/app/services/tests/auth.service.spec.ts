@@ -2,9 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { AuthService } from '../auth.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthToken } from 'src/app/models/types';
-import { assertObjectsAreEqual } from './test-utils';
+import { assertAreEqual } from './test-utils';
+import { STORE_SERVICE } from '../interfaces';
+import { LocalStorageService } from '../local-storage.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
-// TODO remove fdescribe
 fdescribe('Service: Auth', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
@@ -13,7 +15,7 @@ fdescribe('Service: Auth', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [],
+      providers: [AuthService, { provide: STORE_SERVICE, useClass: LocalStorageService }],
     });
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -29,13 +31,12 @@ fdescribe('Service: Auth', () => {
     it('should return the access token object', (done) => {
       const mockResponse: AuthToken = {
         access_token: 'token',
-        refresh_token: 'token',
         expires_in: 5000,
         userEmail: 'email@email.com',
       };
 
       service.login('email', 'password').then((response) => {
-        assertObjectsAreEqual(response, mockResponse as any);
+        assertAreEqual(response, mockResponse);
         done();
       });
 
@@ -45,21 +46,17 @@ fdescribe('Service: Auth', () => {
     });
 
     it('should store the access tokens in local storage', (done) => {
-      const expectedAccessToken = 'access-token';
-      const expectedRefreshToken = 'refresh-token';
       const mockResponse: AuthToken = {
-        access_token: expectedAccessToken,
-        refresh_token: expectedRefreshToken,
+        access_token: 'access-token',
         expires_in: 5000,
         userEmail: 'email',
       };
+      const expectedAccessToken = JSON.stringify(mockResponse);
 
       service.login('email', 'password').then(() => {
         const accessToken = localStorage.getItem('access_token');
-        const refreshToken = localStorage.getItem('refresh_token');
 
         expect(accessToken).toBe(expectedAccessToken);
-        expect(refreshToken).toBe(expectedRefreshToken);
         done();
       });
 
@@ -71,8 +68,10 @@ fdescribe('Service: Auth', () => {
     it('should return an error if the login fails', (done) => {
       const mockResponse = { message: 'error' };
 
-      service.login('email', 'password').catch((error) => {
-        assertObjectsAreEqual(error, mockResponse as any);
+      service.login('email', 'password').catch((error: HttpErrorResponse) => {
+        assertAreEqual(error.status, 401);
+        assertAreEqual(error.statusText, 'Unauthorized');
+        assertAreEqual(error.error, mockResponse);
         done();
       });
 
@@ -82,29 +81,67 @@ fdescribe('Service: Auth', () => {
     });
   });
 
-  describe('logout', () => {
-    it('should remove the access tokens from local storage', (done) => {
-      localStorage.setItem('access_token', 'token');
-      localStorage.setItem('refresh_token', 'token');
+  describe('signup', () => {
+    it('should return the access token object', (done) => {
+      const mockResponse: AuthToken = {
+        access_token: 'token',
+        expires_in: 5000,
+        userEmail: 'email@email.com',
+      };
 
-      service.logout();
-
-      expect(localStorage.getItem('access_token')).toBeNull();
-      expect(localStorage.getItem('refresh_token')).toBeNull();
-      done();
-    });
-
-    it('should return an error if the logout fails', (done) => {
-      const mockResponse = { message: 'error' };
-
-      service.logout().catch((error) => {
-        assertObjectsAreEqual(error, mockResponse as any);
+      service.signup('email', 'password').then((response) => {
+        assertAreEqual(response, mockResponse);
         done();
       });
 
-      const request = httpMock.expectOne(`${url}/logout`);
+      const request = httpMock.expectOne(`${url}/signup`);
+      expect(request.request.method).toBe('POST');
+      request.flush(mockResponse);
+    });
+
+    it('should store the access tokens in local storage', (done) => {
+      const mockResponse: AuthToken = {
+        access_token: 'access-token',
+        expires_in: 5000,
+        userEmail: 'email',
+      };
+      const expectedAccessToken = JSON.stringify(mockResponse);
+
+      service.signup('email', 'password').then(() => {
+        const accessToken = localStorage.getItem('access_token');
+
+        expect(accessToken).toBe(expectedAccessToken);
+        done();
+      });
+
+      const request = httpMock.expectOne(`${url}/signup`);
+      expect(request.request.method).toBe('POST');
+      request.flush(mockResponse);
+    });
+
+    it('should return an error if the signup fails', (done) => {
+      const mockResponse = { message: 'error' };
+
+      service.signup('email', 'password').catch((error: HttpErrorResponse) => {
+        assertAreEqual(error.status, 401);
+        assertAreEqual(error.statusText, 'Unauthorized');
+        assertAreEqual(error.error, mockResponse);
+        done();
+      });
+
+      const request = httpMock.expectOne(`${url}/signup`);
       expect(request.request.method).toBe('POST');
       request.flush(mockResponse, { status: 401, statusText: 'Unauthorized' });
+    });
+  });
+
+  describe('logout', () => {
+    it('should remove the access tokens from local storage', (done) => {
+      localStorage.setItem('access_token', 'token');
+      service.logout();
+
+      expect(localStorage.getItem('access_token')).toBeNull();
+      done();
     });
   });
 });

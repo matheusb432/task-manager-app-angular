@@ -1,9 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/models/configs';
-import { STORE_SERVICE, StoreService } from 'src/app/services/interfaces';
 import { ModalService } from 'src/app/services/modal.service';
-import { Pages, StoreKeys, successModalData } from 'src/app/utils';
+import { Pages, successModalData } from 'src/app/utils';
 
 @Component({
   selector: 'app-home',
@@ -35,10 +34,7 @@ export class HomeComponent {
     },
   ];
 
-  constructor(private router: Router, private modalService: ModalService, @Inject(STORE_SERVICE) private store: StoreService) {
-    // TODO remove
-    console.log(this.store.store({ key: StoreKeys.AccessToken,value: 'test' }));
-  }
+  constructor(private router: Router, private modalService: ModalService) {}
 
   isLandingPage(): boolean {
     return this.router.url === '/';

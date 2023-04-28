@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { Observable, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
+import { Ctor } from 'src/app/models/configs/api-request';
 import { PaginatedResult, PostReturn, RequestData } from '../../models/types';
 import { AppService } from '../app.service';
-import { Ctor } from 'src/app/models/configs/api-request';
 
 @Injectable({
   providedIn: 'root',

@@ -1,9 +1,9 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { StoreData, StoreDataTypes } from '../models/types';
-import { StoreService } from './interfaces';
-import { StoreKeys } from '../utils';
-import { InvalidStoreError } from '../helpers/errors';
 import { us } from '../helpers';
+import { InvalidStoreError } from '../helpers/errors';
+import { StoreData, StoreDataTypes } from '../models/types';
+import { StoreKeys } from '../utils';
+import { StoreService } from './interfaces';
 
 export const LOCAL_STORAGE = new InjectionToken<Storage>('localStorage', {
   providedIn: 'root',
@@ -33,7 +33,6 @@ export class LocalStorageService implements StoreService {
 
     this._localStorage.removeItem(key);
   }
-
 
   clear(): void {
     this._localStorage.clear();

@@ -7,6 +7,7 @@ export class Timesheet {
   date?: string;
   userId?: number;
   finished?: boolean;
+  @AddMap(TimesheetNote)
   timesheetNotes?: TimesheetNote[];
   @AddMap(TaskItem)
   taskItems?: TaskItem[];
