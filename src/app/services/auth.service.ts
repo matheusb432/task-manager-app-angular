@@ -1,13 +1,16 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiRequest } from '../models';
-import { AuthToken, LoginRequest } from '../models/types';
+import { AuthData, DecodedAuthToken } from '../models/types';
 import { ElementIds, StoreKeys } from '../utils';
 import { ApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { us } from '../helpers';
+import { Mapper } from 'mapper-ts/lib-esm';
+import { AuthResponse, LoginRequest, SignupRequest } from '../models/dtos/auth';
+import jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -16,18 +19,23 @@ export class AuthService implements OnDestroy {
   private url = `${environment.apiUrl}/auth`;
   private accessTokenKey = StoreKeys.AccessToken;
 
-  private _setAuthToken = new BehaviorSubject<AuthToken | null>(null);
-  private _authToken: AuthToken | null = null;
+  private _setAuthData = new BehaviorSubject<AuthData | null>(null);
+  private _authData: AuthData | null = null;
 
-  get setAuthToken$(): Observable<AuthToken | null> {
-    return this._setAuthToken.asObservable().pipe(
-      map((authToken) => us.deepClone(authToken)),
-      tap((authToken) => {
-        this._authToken = authToken;
-        const loggedIn = this._authTokenValidator();
+  get authToken(): string | undefined {
+    return this._authData?.token;
+  }
 
-        if (loggedIn) {
-          this.store.store({ key: this.accessTokenKey, value: authToken });
+  get setAuthData$(): Observable<AuthData | null> {
+    return this._setAuthData.asObservable().pipe(
+      map((authData) => AuthData.fromSelf(authData)),
+      tap((authData) => {
+        this._authData = authData;
+        const loggedIn = this._authValidator();
+
+        if (authData != null && loggedIn) {
+          // TODO decode token when retrieving from store
+          this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
         } else {
           this.store.remove(this.accessTokenKey);
         }
@@ -36,7 +44,7 @@ export class AuthService implements OnDestroy {
   }
 
   get loggedIn$(): Observable<boolean> {
-    return this.setAuthToken$.pipe(map(this._authTokenValidator.bind(this)));
+    return this.setAuthData$.pipe(map(this._authValidator.bind(this)));
   }
 
   private subscriptions: Subscription[] = [];
@@ -50,50 +58,79 @@ export class AuthService implements OnDestroy {
   }
 
   private initSubscriptions() {
-    const setAuthTokenSub = this.setAuthToken$.subscribe();
+    const setAuthDataSub = this.setAuthData$.subscribe();
 
     us.unsub(this.subscriptions);
-    this.subscriptions = [setAuthTokenSub];
+    this.subscriptions = [setAuthDataSub];
   }
 
   // TODO test
-  async login(email: string, password: string): Promise<AuthToken> {
-    const res = await this.api.insert<LoginRequest, AuthToken>({
-      ...ApiRequest.post(`${this.url}/login`, { email, password }),
+  async login(data: LoginRequest): Promise<AuthResponse> {
+    const res = await this.api.insert<LoginRequest, AuthResponse>({
+      ...ApiRequest.post(`${this.url}/login`, data),
       customData: { loading: { targetElId: ElementIds.LoginForm } },
+      resCallback: (res) => {
+        if (res == null) return res;
+
+        return new Mapper(AuthResponse).map(res);
+      },
+      // TODO add map & tap and configure them in login & signup
     });
 
-    this.setAuthToken(res);
+    if (res?.token == null) {
+      this.setAuthData(null);
+      return res;
+    }
+
+    const decodedToken = this.decodeAuthToken(res.token);
+    // TODO refactor
+    this.setAuthData(AuthData.fromToken(res.token, decodedToken!, res.user));
 
     return res;
   }
 
   // TODO test
-  async signup(email: string, password: string): Promise<AuthToken> {
-    const res = await this.api.insert<LoginRequest, AuthToken>({
-      ...ApiRequest.post(`${this.url}/signup`, { email, password }),
+  async signup(data: SignupRequest): Promise<AuthResponse> {
+    const res = await this.api.insert<SignupRequest, AuthResponse>({
+      ...ApiRequest.post(`${this.url}/signup`, data),
       customData: { loading: { targetElId: ElementIds.SignupForm } },
+      // TODO refactor to remove duplication
+      resCallback: (res) => {
+        if (res == null) return res;
+
+        return new Mapper(AuthResponse).map(res);
+      },
     });
 
-    this.setAuthToken(res);
+    if (res?.token == null) {
+      this.setAuthData(null);
+      return res;
+    }
+
+    const decodedToken = this.decodeAuthToken(res.token);
+    // TODO refactor
+    this.setAuthData(AuthData.fromToken(res.token, decodedToken!, res.user));
 
     return res;
   }
 
   // TODO test
   logout(): void {
-    this.setAuthToken(null);
+    this.setAuthData(null);
   }
 
-  setAuthToken(authToken: AuthToken | null): void {
-    this._setAuthToken.next(authToken);
+  setAuthData(data: AuthData | null): void {
+    this._setAuthData.next(data);
   }
 
-  private _authTokenValidator = (): boolean => {
-    const authToken = this._authToken;
-    if (authToken == null) return false;
-    const { access_token, expires_in } = authToken;
+  // TODO move to separate TokenService ?
+  // TODO research on how to mock injected services
+  private decodeAuthToken(token: string): DecodedAuthToken | null {
+    return token != null ? jwtDecode(token) : null;
+  }
 
-    return !!access_token && expires_in > 0;
+  private _authValidator = (): boolean => {
+    const authData = this._authData;
+    return !!authData?.isValid;
   };
 }

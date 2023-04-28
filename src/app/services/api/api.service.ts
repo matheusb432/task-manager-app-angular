@@ -144,7 +144,7 @@ export class ApiService {
 
     this.registerRequestData(url, customData);
 
-    const piped$ = req$.pipe(map((res) => resCallback?.(res) ?? res));
+    const piped$ = req$.pipe(map((res) => (resCallback != null ? resCallback(res) : res)));
 
     return lastValueFrom(piped$);
   }

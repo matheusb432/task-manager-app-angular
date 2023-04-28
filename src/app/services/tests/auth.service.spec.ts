@@ -1,16 +1,30 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthService } from '../auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AuthToken } from 'src/app/models/types';
-import { assertAreEqual } from './test-utils';
+import { TestBed } from '@angular/core/testing';
+import { AuthResponse, LoginRequest, SignupRequest } from 'src/app/models/dtos/auth';
+import { StoreKeys } from 'src/app/utils';
+import { AuthService } from '../auth.service';
 import { STORE_SERVICE } from '../interfaces';
 import { LocalStorageService } from '../local-storage.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { assertAreEqual } from './test-utils';
 
+// TODO remove f
 fdescribe('Service: Auth', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
   let url: string;
+  const mockLogin: LoginRequest = { email: 'email', password: 'password' };
+  const mockSignup: SignupRequest = {
+    email: 'email',
+    password: 'password',
+    name: 'name',
+    userName: 'name123',
+  };
+  const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlzbEB0ZXN0dHQuY29tIn0.zHL0i9KvTeP1tu0aXyxeJASWmvGXkXT7yO2JM0q4BQo';
+  const mockResponse: AuthResponse = {
+    user: mockSignup,
+    token: mockToken,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,13 +43,7 @@ fdescribe('Service: Auth', () => {
 
   describe('login', () => {
     it('should return the access token object', (done) => {
-      const mockResponse: AuthToken = {
-        access_token: 'token',
-        expires_in: 5000,
-        userEmail: 'email@email.com',
-      };
-
-      service.login('email', 'password').then((response) => {
+      service.login(mockLogin).then((response) => {
         assertAreEqual(response, mockResponse);
         done();
       });
@@ -46,15 +54,10 @@ fdescribe('Service: Auth', () => {
     });
 
     it('should store the access tokens in local storage', (done) => {
-      const mockResponse: AuthToken = {
-        access_token: 'access-token',
-        expires_in: 5000,
-        userEmail: 'email',
-      };
-      const expectedAccessToken = JSON.stringify(mockResponse);
+      const expectedAccessToken = mockToken;
 
-      service.login('email', 'password').then(() => {
-        const accessToken = localStorage.getItem('access_token');
+      service.login(mockLogin).then(() => {
+        const accessToken = localStorage.getItem(StoreKeys.AccessToken);
 
         expect(accessToken).toBe(expectedAccessToken);
         done();
@@ -68,7 +71,7 @@ fdescribe('Service: Auth', () => {
     it('should return an error if the login fails', (done) => {
       const mockResponse = { message: 'error' };
 
-      service.login('email', 'password').catch((error: HttpErrorResponse) => {
+      service.login(mockLogin).catch((error: HttpErrorResponse) => {
         assertAreEqual(error.status, 401);
         assertAreEqual(error.statusText, 'Unauthorized');
         assertAreEqual(error.error, mockResponse);
@@ -83,13 +86,7 @@ fdescribe('Service: Auth', () => {
 
   describe('signup', () => {
     it('should return the access token object', (done) => {
-      const mockResponse: AuthToken = {
-        access_token: 'token',
-        expires_in: 5000,
-        userEmail: 'email@email.com',
-      };
-
-      service.signup('email', 'password').then((response) => {
+      service.signup(mockSignup).then((response) => {
         assertAreEqual(response, mockResponse);
         done();
       });
@@ -100,15 +97,10 @@ fdescribe('Service: Auth', () => {
     });
 
     it('should store the access tokens in local storage', (done) => {
-      const mockResponse: AuthToken = {
-        access_token: 'access-token',
-        expires_in: 5000,
-        userEmail: 'email',
-      };
-      const expectedAccessToken = JSON.stringify(mockResponse);
+      const expectedAccessToken = mockToken;
 
-      service.signup('email', 'password').then(() => {
-        const accessToken = localStorage.getItem('access_token');
+      service.signup(mockSignup).then(() => {
+        const accessToken = localStorage.getItem(StoreKeys.AccessToken);
 
         expect(accessToken).toBe(expectedAccessToken);
         done();
@@ -122,7 +114,7 @@ fdescribe('Service: Auth', () => {
     it('should return an error if the signup fails', (done) => {
       const mockResponse = { message: 'error' };
 
-      service.signup('email', 'password').catch((error: HttpErrorResponse) => {
+      service.signup(mockSignup).catch((error: HttpErrorResponse) => {
         assertAreEqual(error.status, 401);
         assertAreEqual(error.statusText, 'Unauthorized');
         assertAreEqual(error.error, mockResponse);
@@ -137,10 +129,10 @@ fdescribe('Service: Auth', () => {
 
   describe('logout', () => {
     it('should remove the access tokens from local storage', (done) => {
-      localStorage.setItem('access_token', 'token');
+      localStorage.setItem(StoreKeys.AccessToken, 'token');
       service.logout();
 
-      expect(localStorage.getItem('access_token')).toBeNull();
+      expect(localStorage.getItem(StoreKeys.AccessToken)).toBeNull();
       done();
     });
   });

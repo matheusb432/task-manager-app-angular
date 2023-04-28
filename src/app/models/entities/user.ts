@@ -6,6 +6,7 @@ export class User {
   id?: number;
   name?: string;
   email?: string;
+  userName?: string;
   @AddMap(Profile)
   profiles?: Profile[];
   @AddMap(PresetTaskItem)

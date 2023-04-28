@@ -7,6 +7,7 @@ export class ApiRequest<T = unknown> {
   item?: T;
   id?: number;
   params?: Record<string, string>;
+  // TODO refactor to mapFn?
   resCallback?: ResCallback;
   customData?: RequestData;
 

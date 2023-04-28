@@ -1,6 +1,5 @@
 export { StoreData, StoreDataTypes } from './store-data';
-export { LoginRequest } from './login-request';
-export { AuthToken } from './auth-token';
+export { AuthData, DecodedAuthToken } from './auth-data';
 export { AppRequestData, RequestData } from './app-request-data';
 export { PaginatedResult } from './paginated-result';
 export { TypedForm } from './typed-form';
