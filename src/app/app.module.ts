@@ -13,8 +13,9 @@ import { HomeModule } from './pages/home/home.module';
 import { PageModule } from './shared';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { STORE_SERVICE } from './services/interfaces';
-import { LocalStorageService } from './services';
+import { AuthService, LocalStorageService } from './services';
 import { TOKEN_DECODER_FN } from './services/token.service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +34,7 @@ import { TOKEN_DECODER_FN } from './services/token.service';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: STORE_SERVICE, useClass: LocalStorageService },
     { provide: TOKEN_DECODER_FN, useValue: jwtDecode },
   ],

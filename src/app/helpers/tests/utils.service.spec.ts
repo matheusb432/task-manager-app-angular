@@ -1,10 +1,11 @@
-import { FormTypes } from 'src/app/utils';
+import { ApiEndpoints, FormTypes } from 'src/app/utils';
 import { UtilsService } from '../utils.service';
 
 import { TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 import { ODataOperators } from '../odata';
 import { OrderByConfig } from 'src/app/models/configs';
+import { environment } from 'src/environments/environment';
 
 describe('Service: Utils', () => {
   let service: UtilsService;
@@ -467,7 +468,9 @@ describe('Service: Utils', () => {
       expect(UtilsService.arraysAreEqualDeep([1, 2, 3], [1, 2, 3])).toBe(true);
       expect(UtilsService.arraysAreEqualDeep(['a', 'b', 'c'], ['a', 'b', 'c'])).toBe(true);
       expect(UtilsService.arraysAreEqualDeep([true, false], [true, false])).toBe(true);
-      expect(UtilsService.arraysAreEqualDeep([{ a: 1 }, { b: 2 }], [{ a: 1 }, { b: 2 }])).toBe(true);
+      expect(UtilsService.arraysAreEqualDeep([{ a: 1 }, { b: 2 }], [{ a: 1 }, { b: 2 }])).toBe(
+        true
+      );
       expect(
         UtilsService.arraysAreEqualDeep(
           [
@@ -487,7 +490,9 @@ describe('Service: Utils', () => {
       expect(UtilsService.arraysAreEqualDeep([1, 2, 3], [1, 2, 4])).toBe(false);
       expect(UtilsService.arraysAreEqualDeep(['a', 'b', 'c'], ['a', 'b', 'd'])).toBe(false);
       expect(UtilsService.arraysAreEqualDeep([true, false], [true, true])).toBe(false);
-      expect(UtilsService.arraysAreEqualDeep([{ a: 1 }, { b: 20 }], [{ a: 1 }, { b: 2 }])).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep([{ a: 1 }, { b: 20 }], [{ a: 1 }, { b: 2 }])).toBe(
+        false
+      );
       expect(
         UtilsService.arraysAreEqualDeep(
           [
@@ -508,6 +513,14 @@ describe('Service: Utils', () => {
       expect(UtilsService.arraysAreEqualDeep(nullArr, [1, 2, 3])).toBe(false);
       expect(UtilsService.arraysAreEqualDeep([1, 2, 3], nullArr)).toBe(false);
       expect(UtilsService.arraysAreEqualDeep(nullArr, nullArr)).toBe(false);
+    });
+  });
+
+  describe('buildApiUrl', () => {
+    const apiUrl = environment.apiUrl;
+
+    it('should return api url concatenated with endpoint', () => {
+      expect(UtilsService.buildApiUrl('/users' as unknown as ApiEndpoints)).toBe(`${apiUrl}/users`);
     });
   });
 });

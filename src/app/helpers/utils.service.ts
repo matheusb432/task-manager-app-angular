@@ -1,12 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { Constants, FormTypes } from '../utils';
+import { ApiEndpoints, Constants, FormTypes } from '../utils';
 import { Subscription } from 'rxjs';
 import { ODataBuilder, ODataOptions } from './odata';
 import { PaginationOptions } from './pagination-options';
 import { stringify } from 'crypto-js/enc-hex';
 import * as CryptoJS from 'crypto-js';
 import { OrderByConfig } from '../models/configs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -179,4 +180,10 @@ export class UtilsService {
 
     return array1.every((item, index) => JSON.stringify(item) === JSON.stringify(array2[index]));
   }
+
+  static buildApiUrl = (endpoint: ApiEndpoints): string => {
+    const url = environment.apiUrl;
+
+    return `${url}${endpoint}`;
+  };
 }

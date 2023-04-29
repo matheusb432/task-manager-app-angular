@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/models/configs';
-import { LoginRequest } from 'src/app/models/dtos/auth';
-import { AuthService } from 'src/app/services';
 import { ModalService } from 'src/app/services/modal.service';
 import { Pages, successModalData } from 'src/app/utils';
 
@@ -36,11 +34,8 @@ export class HomeComponent {
     },
   ];
 
-  constructor(private router: Router, private modalService: ModalService, private authService: AuthService) {
-    // TODO remove
-    this.authService.login(LoginRequest.withEmail('emaisl@testtt.com', 'abc123')).then(result => {
-      console.log(result);
-    });
+  constructor(private router: Router, private modalService: ModalService) {
+
   }
 
 

@@ -7,7 +7,7 @@ import { us } from '../helpers';
 import { ApiRequest } from '../models';
 import { AuthResponse, LoginRequest, SignupRequest } from '../models/dtos/auth';
 import { AuthData, DecodedAuthToken } from '../models/types';
-import { ElementIds, StoreKeys } from '../utils';
+import { ApiEndpoints, ElementIds, StoreKeys } from '../utils';
 import { ApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { TokenService } from './token.service';
@@ -16,8 +16,10 @@ import { LoadingService } from './loading.service';
 @Injectable({
   providedIn: 'root',
 })
+// TODO refactor into AuthApiService & AuthService
 export class AuthService implements OnDestroy {
-  private url = `${environment.apiUrl}/auth`;
+  // private url = `${environment.apiUrl}/auth`;
+  private url = us.buildApiUrl(ApiEndpoints.Auth);
   private accessTokenKey = StoreKeys.AccessToken;
 
   private _setAuthData = new BehaviorSubject<AuthData | null>(null);
@@ -35,7 +37,6 @@ export class AuthService implements OnDestroy {
         const loggedIn = this._authValidator();
 
         if (authData != null && loggedIn) {
-          // TODO decode token when retrieving from store
           this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
         } else {
           this.store.remove(this.accessTokenKey);
@@ -56,13 +57,16 @@ export class AuthService implements OnDestroy {
     private tokenService: TokenService
   ) {
     this.initSubscriptions();
+    this.retrieveTokenFromStore();
   }
 
   ngOnDestroy(): void {
     us.unsub(this.subscriptions);
   }
 
-  private retrieveTokenFromStore(): void {
+  retrieveTokenFromStore(): void {
+    if (this._authData != null) return;
+
     const token = this.store.get<string>(this.accessTokenKey);
     if (token == null) return;
 

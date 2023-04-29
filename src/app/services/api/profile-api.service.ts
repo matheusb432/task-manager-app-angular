@@ -8,14 +8,16 @@ import { ProfilePostDto, ProfilePutDto } from '../../models/dtos/profile';
 import { Profile } from '../../models/entities';
 import { PaginatedResult, PostReturn } from '../../models/types';
 import { ApiService } from './api.service';
-import { ElementIds } from 'src/app/utils';
+import { ApiEndpoints, ElementIds } from 'src/app/utils';
 import { LoadingService } from '../loading.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileApiService {
-  private url = `${environment.apiUrl}/profiles`;
+  // TODO testsss
+  // private url = `${environment.apiUrl}/profiles`;
+  private url = us.buildApiUrl(ApiEndpoints.Profiles);
 
   constructor(private api: ApiService) {}
 
