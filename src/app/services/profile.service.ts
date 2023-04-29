@@ -191,7 +191,7 @@ export class ProfileService {
     if (us.notEmpty(this.types)) return;
 
     this.types = await this.profileTypeService.getItems({
-      loading: LoadingService.createLoading(ElementIds.ProfileFormType),
+      loadings: LoadingService.createManyFromId(ElementIds.ProfileFormType),
     });
   };
 

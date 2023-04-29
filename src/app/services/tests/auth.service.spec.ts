@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -6,10 +7,10 @@ import { StoreKeys } from 'src/app/utils';
 import { AuthService } from '../auth.service';
 import { STORE_SERVICE } from '../interfaces';
 import { LocalStorageService } from '../local-storage.service';
+import { TOKEN_DECODER_FN } from '../token.service';
 import { assertAreEqual } from './test-utils';
 
-// TODO remove f
-fdescribe('Service: Auth', () => {
+describe('Service: Auth', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
   let url: string;
@@ -20,7 +21,7 @@ fdescribe('Service: Auth', () => {
     name: 'name',
     userName: 'name123',
   };
-  const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlzbEB0ZXN0dHQuY29tIn0.zHL0i9KvTeP1tu0aXyxeJASWmvGXkXT7yO2JM0q4BQo';
+  const mockToken = 'token';
   const mockResponse: AuthResponse = {
     user: mockSignup,
     token: mockToken,
@@ -29,7 +30,11 @@ fdescribe('Service: Auth', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService, { provide: STORE_SERVICE, useClass: LocalStorageService }],
+      providers: [
+        AuthService,
+        { provide: STORE_SERVICE, useClass: LocalStorageService },
+        { provide: TOKEN_DECODER_FN, useValue: (token: string, _: unknown) => token },
+      ],
     });
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);

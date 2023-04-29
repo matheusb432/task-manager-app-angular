@@ -152,10 +152,10 @@ export class ApiService {
   private registerRequestData = (url: string, customData: RequestData | undefined): void => {
     if (customData == null) return;
 
-    const loading = customData.loading;
+    const loadings = customData.loadings;
     const resKey = `${url}|${us.randomHex()}`;
 
-    this.appService.addRequestData(resKey, { url, loading, moment: Date.now() });
+    this.appService.addRequestData(resKey, { url, loadings, moment: Date.now() });
   };
 
   private urlWithId = (apiReq: ApiRequest): string => `${apiReq.url}/${apiReq.id}`;

@@ -100,7 +100,7 @@ describe('Service: Utils', () => {
       expect(UtilsService.numberToTime(7)).toEqual('00:07');
       expect(UtilsService.numberToTime(0)).toEqual('00:00');
     });
-  })
+  });
 
   describe('isCreateForm', () => {
     it('should return true for FormTypes.Create', () => {
@@ -436,6 +436,78 @@ describe('Service: Utils', () => {
 
     it('should return false when value is not a stringified JSON', () => {
       expect(UtilsService.shouldParseJson('John')).toBe(false);
+    });
+  });
+
+  describe('arraysAreEqualShallow', () => {
+    it('should return true when arrays are equal', () => {
+      expect(UtilsService.arraysAreEqualShallow([1, 2, 3], [1, 2, 3])).toBe(true);
+      expect(UtilsService.arraysAreEqualShallow(['a', 'b', 'c'], ['a', 'b', 'c'])).toBe(true);
+      expect(UtilsService.arraysAreEqualShallow([true, false], [true, false])).toBe(true);
+    });
+
+    it('should return false when arrays are not equal', () => {
+      expect(UtilsService.arraysAreEqualShallow([1, 2, 3], [1, 2])).toBe(false);
+      expect(UtilsService.arraysAreEqualShallow([1, 2, 3], [1, 2, 4])).toBe(false);
+      expect(UtilsService.arraysAreEqualShallow(['a', 'b', 'c'], ['a', 'b', 'd'])).toBe(false);
+      expect(UtilsService.arraysAreEqualShallow([true, false], [true, true])).toBe(false);
+    });
+
+    it('should return false when one or both of the arrays are null', () => {
+      const nullArr = null as unknown as unknown[];
+
+      expect(UtilsService.arraysAreEqualShallow(nullArr, [1, 2, 3])).toBe(false);
+      expect(UtilsService.arraysAreEqualShallow([1, 2, 3], nullArr)).toBe(false);
+      expect(UtilsService.arraysAreEqualShallow(nullArr, nullArr)).toBe(false);
+    });
+  });
+
+  describe('arraysAreEqualDeep', () => {
+    it('should return true when arrays are equal', () => {
+      expect(UtilsService.arraysAreEqualDeep([1, 2, 3], [1, 2, 3])).toBe(true);
+      expect(UtilsService.arraysAreEqualDeep(['a', 'b', 'c'], ['a', 'b', 'c'])).toBe(true);
+      expect(UtilsService.arraysAreEqualDeep([true, false], [true, false])).toBe(true);
+      expect(UtilsService.arraysAreEqualDeep([{ a: 1 }, { b: 2 }], [{ a: 1 }, { b: 2 }])).toBe(true);
+      expect(
+        UtilsService.arraysAreEqualDeep(
+          [
+            [1, 2],
+            [3, 4],
+          ],
+          [
+            [1, 2],
+            [3, 4],
+          ]
+        )
+      ).toBe(true);
+    });
+
+    it('should return false when arrays are not equal', () => {
+      expect(UtilsService.arraysAreEqualDeep([1, 2, 3], [1, 2])).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep([1, 2, 3], [1, 2, 4])).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep(['a', 'b', 'c'], ['a', 'b', 'd'])).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep([true, false], [true, true])).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep([{ a: 1 }, { b: 20 }], [{ a: 1 }, { b: 2 }])).toBe(false);
+      expect(
+        UtilsService.arraysAreEqualDeep(
+          [
+            [1, 2],
+            [3, 5],
+          ],
+          [
+            [1, 2],
+            [3, 4],
+          ]
+        )
+      ).toBe(false);
+    });
+
+    it('should return false when one or both of the arrays are null', () => {
+      const nullArr = null as unknown as unknown[];
+
+      expect(UtilsService.arraysAreEqualDeep(nullArr, [1, 2, 3])).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep([1, 2, 3], nullArr)).toBe(false);
+      expect(UtilsService.arraysAreEqualDeep(nullArr, nullArr)).toBe(false);
     });
   });
 });

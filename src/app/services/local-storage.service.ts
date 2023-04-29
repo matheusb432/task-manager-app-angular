@@ -14,7 +14,7 @@ export const LOCAL_STORAGE = new InjectionToken<Storage>('localStorage', {
 export class LocalStorageService implements StoreService {
   constructor(@Inject(LOCAL_STORAGE) private _localStorage: Storage) {}
 
-  get(key: StoreKeys, type?: StoreDataTypes): unknown {
+  get<T = unknown>(key: StoreKeys, type?: StoreDataTypes): T | null {
     this.validate(key);
 
     const value = this._localStorage.getItem(key);

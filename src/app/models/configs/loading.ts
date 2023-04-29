@@ -1,5 +1,5 @@
-
 export interface Loading {
-    size?: number;
-    targetElId?: string;
+  id?: string;
+  targetElId: string;
+  size: number;
 }

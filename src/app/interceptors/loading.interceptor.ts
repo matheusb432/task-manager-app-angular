@@ -11,14 +11,14 @@ export class LoadingInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const [key, data] = this.service.getLoadingByUrlFromAppRequests(request.url);
-    const loadingData = data?.loading;
-    if (loadingData == null) return next.handle(request);
+    const loadings = data?.loadings;
+    if (key == null || loadings == null) return next.handle(request);
 
-    this.service.addLoading(loadingData);
+    this.service.addLoadings(key, loadings);
 
     return next.handle(request).pipe(
       finalize(() => {
-        this.service.removeLoading(loadingData);
+        this.service.removeLoadings(loadings);
         this.appService.removeRequestData(key as string);
       })
     );

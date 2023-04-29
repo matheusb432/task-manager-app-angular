@@ -4,8 +4,11 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "types": [
-      "jasmine"
-    ]
+      "jasmine",
+      "node"
+    ],
+    "inlineSourceMap": true,
+    "inlineSources": true
   },
   "include": [
     "src/**/*.spec.ts",

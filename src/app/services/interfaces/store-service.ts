@@ -4,7 +4,7 @@ import { StoreKeys } from 'src/app/utils';
 
 export interface StoreService {
   remove(key: StoreKeys): void;
-  get(key: StoreKeys, type?: StoreDataTypes): unknown;
+  get<T = unknown>(key: StoreKeys, type?: StoreDataTypes): T | null;
   store<T>(data: StoreData<T>): void;
   clear(): void;
 }

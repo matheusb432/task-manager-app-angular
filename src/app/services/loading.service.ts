@@ -25,8 +25,16 @@ export class LoadingService {
 
   constructor(private appService: AppService) {}
 
-  addLoading(loading: Loading): void {
+  addLoading(id: string, loading: Loading): void {
+    loading.id = id;
+
     this.loadings = [...this._loadings, loading];
+  }
+
+  addLoadings(id: string, loadings: Loading[]): void {
+    loadings.forEach((x) => (x.id = id));
+
+    this.loadings = [...this._loadings, ...loadings];
   }
 
   shouldBeLoading(targetElId: string | undefined): boolean {
@@ -44,7 +52,7 @@ export class LoadingService {
   removeLoading(loading: Loading | undefined): void {
     if (loading == null) return;
 
-    this.removeLoadingByElId(loading.targetElId);
+    this.removeLoadingById(loading.id);
   }
 
   removeLoadings(loadings: (Loading | undefined)[]): void {
@@ -53,32 +61,32 @@ export class LoadingService {
     loadings.forEach((x) => this.removeLoading(x));
   }
 
-  removeLoadingByElId(targetElId: string | undefined): void {
-    if (!us.notEmpty(targetElId)) return;
+  removeLoadingById(id: string | undefined): void {
+    if (!us.notEmpty(id)) return;
 
-    this.loadings = this._loadings.filter((x) => x.targetElId !== targetElId);
+    this.loadings = this._loadings.filter((x) => x.id !== id);
   }
 
   removeAllLoadings(): void {
     this.loadings = [];
   }
 
-  /*
-   * Remove previous loadings from the same url and sorts datas by most recent
-   *
-   * @param datas - [key, value] pairs from AppService
-   */
-  removePreviousLoadings(datas: [string, AppRequestData][]): void {
-    if (datas == null || datas.length <= 1) return;
+  // /*
+  //  * Remove previous loadings from the same url and sorts datas by most recent
+  //  *
+  //  * @param datas - [key, value] pairs from AppService
+  //  */
+  // removePreviousLoadings(datas: [string, AppRequestData][]): void {
+  //   if (datas == null || datas.length <= 1) return;
 
-    AppService.sortByMostRecent(datas);
+  //   AppService.sortByMostRecent(datas);
 
-    this.removeLoadings(datas.slice(1).map((x) => x[1].loading));
-  }
+  //   this.removeLoadings(datas.slice(1).map((x) => x[1].loading));
+  // }
 
   private getCurrentDataFromAppRequests(url: string): [string, AppRequestData] | null {
     const datas = this.appService.getManyByUrl(url);
-    this.removePreviousLoadings(datas);
+    // this.removePreviousLoadings(datas);
     return datas?.[0];
   }
 
@@ -98,10 +106,18 @@ export class LoadingService {
       .pipe(map(() => elIds.some(this.shouldBeLoading.bind(this))));
   }
 
-  static createLoading(targetElId: string, size = 100): Loading {
+  static createFromId(targetElId: string, size = 100): Loading {
     return {
-      targetElId,
+      targetElId: targetElId,
       size,
     };
+  }
+
+  static createManyFromId(targetElId: string, size = 100): Loading[] {
+    return [this.createFromId(targetElId, size)];
+  }
+
+  static createManyFromIds(targetElIds: string[], size = 100): Loading[] {
+    return targetElIds.map((id) => LoadingService.createFromId(id, size));
   }
 }

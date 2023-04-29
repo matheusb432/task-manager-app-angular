@@ -22,7 +22,7 @@ export class ProfileApiService {
   async getById(id: number): Promise<Profile> {
     const res = await this.api.getById<Profile>({
       ...ApiRequest.getById<Profile>(this.url, Profile, id),
-      customData: { loading: LoadingService.createLoading(ElementIds.ProfileForm) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileForm) },
     });
 
     return this.mapGet(res);
@@ -33,7 +33,7 @@ export class ProfileApiService {
 
     const res = await this.api.getPaginated<Profile>({
       ...ApiRequest.get<Profile>(queryUrl, Profile),
-      customData: { loading: LoadingService.createLoading(ElementIds.ProfileTable) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileTable) },
     });
 
     res.items = res.items.map(this.mapGet);
@@ -52,7 +52,7 @@ export class ProfileApiService {
   insert = async (ct: Profile): Promise<PostReturn> =>
     this.api.insert({
       ...ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto),
-      customData: { loading: LoadingService.createLoading(ElementIds.ProfileSubmit) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileSubmit) },
     });
 
   duplicate = async (ct: Profile): Promise<PostReturn> => this.insert(ct);
@@ -60,13 +60,13 @@ export class ProfileApiService {
   update = async (ct: Profile): Promise<void> =>
     this.api.update({
       ...ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto),
-      customData: { loading: LoadingService.createLoading(ElementIds.ProfileSubmit) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileSubmit) },
     });
 
   remove = async (id: number): Promise<void> =>
     this.api.remove({
       ...ApiRequest.delete(this.url, id),
-      customData: { loading: LoadingService.createLoading(ElementIds.ProfileDelete) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileDelete) },
     });
 
   private mapProps = (item: Profile): Profile => {

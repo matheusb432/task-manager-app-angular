@@ -11,6 +11,7 @@ import { ElementIds, StoreKeys } from '../utils';
 import { ApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { TokenService } from './token.service';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -61,6 +62,16 @@ export class AuthService implements OnDestroy {
     us.unsub(this.subscriptions);
   }
 
+  private retrieveTokenFromStore(): void {
+    const token = this.store.get<string>(this.accessTokenKey);
+    if (token == null) return;
+
+    const decodedToken = this.decodeAuthToken(token);
+    if (decodedToken == null) return;
+
+    this.setAuthData(AuthData.fromToken(token, decodedToken));
+  }
+
   private initSubscriptions() {
     const setAuthDataSub = this.setAuthData$.subscribe();
 
@@ -72,7 +83,7 @@ export class AuthService implements OnDestroy {
   async login(data: LoginRequest): Promise<AuthResponse> {
     const res = await this.api.insert<LoginRequest, AuthResponse>({
       ...ApiRequest.post(`${this.url}/login`, data),
-      customData: { loading: { targetElId: ElementIds.LoginForm } },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.LoginForm) },
       resCallback: (res) => {
         if (res == null) return res;
 
@@ -97,7 +108,7 @@ export class AuthService implements OnDestroy {
   async signup(data: SignupRequest): Promise<AuthResponse> {
     const res = await this.api.insert<SignupRequest, AuthResponse>({
       ...ApiRequest.post(`${this.url}/signup`, data),
-      customData: { loading: { targetElId: ElementIds.SignupForm } },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.SignupForm) },
       // TODO refactor to remove duplication
       resCallback: (res) => {
         if (res == null) return res;
@@ -127,9 +138,8 @@ export class AuthService implements OnDestroy {
     this._setAuthData.next(data);
   }
 
-  // TODO research on how to mock injected services
   private decodeAuthToken(token: string): DecodedAuthToken | null {
-    return this.tokenService.decodeAuthToken(token);
+    return this.tokenService.decode(token);
   }
 
   private _authValidator = (): boolean => {

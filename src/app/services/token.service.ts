@@ -14,7 +14,7 @@ export const TOKEN_DECODER_FN = new InjectionToken<TokenDecoderFn>('TOKEN_DECODE
 export class TokenService {
   constructor(@Inject(TOKEN_DECODER_FN) private decoderFn: TokenDecoderFn) {}
 
-  decodeAuthToken(token: string): DecodedAuthToken | null {
-    return token != null ? this.decoderFn(token) : null;
+  decode(token: string): DecodedAuthToken | null | never {
+      return token != null ? this.decoderFn(token) : null;
   }
 }

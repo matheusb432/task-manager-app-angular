@@ -6,5 +6,5 @@ export interface AppRequestData extends RequestData {
 }
 
 export interface RequestData {
-  loading?: Loading;
+  loadings?: Loading[];
 }
