@@ -71,26 +71,12 @@ export class LoadingService {
     this.loadings = [];
   }
 
-  // /*
-  //  * Remove previous loadings from the same url and sorts datas by most recent
-  //  *
-  //  * @param datas - [key, value] pairs from AppService
-  //  */
-  // removePreviousLoadings(datas: [string, AppRequestData][]): void {
-  //   if (datas == null || datas.length <= 1) return;
-
-  //   AppService.sortByMostRecent(datas);
-
-  //   this.removeLoadings(datas.slice(1).map((x) => x[1].loading));
-  // }
-
   private getCurrentDataFromAppRequests(url: string): [string, AppRequestData] | null {
     const datas = this.appService.getManyByUrl(url);
-    // this.removePreviousLoadings(datas);
     return datas?.[0];
   }
 
-  getLoadingByUrlFromAppRequests(url: string): [string, AppRequestData] | [null, null] {
+  getKeyAndLoadingByUrlFromAppRequests(url: string): [string, AppRequestData] | [null, null] {
     const currentData = this.getCurrentDataFromAppRequests(url);
     if (currentData?.length !== 2) return [null, null];
     return currentData;

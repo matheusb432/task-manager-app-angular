@@ -7,7 +7,7 @@ import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
 import { Ctor } from 'src/app/models/configs/api-request';
-import { PaginatedResult, PostReturn, RequestData } from '../../models/types';
+import { PaginatedResult, PostReturn } from '../../models/types';
 import { AppService } from '../app.service';
 
 @Injectable({
@@ -142,21 +142,12 @@ export class ApiService {
   private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
     const { resCallback, customData, url } = apiReq;
 
-    this.registerRequestData(url, customData);
+    this.appService.registerRequestData(url, customData);
 
     const piped$ = req$.pipe(map((res) => (resCallback != null ? resCallback(res) : res)));
 
     return lastValueFrom(piped$);
   }
-
-  private registerRequestData = (url: string, customData: RequestData | undefined): void => {
-    if (customData == null) return;
-
-    const loadings = customData.loadings;
-    const resKey = `${url}|${us.randomHex()}`;
-
-    this.appService.addRequestData(resKey, { url, loadings, moment: Date.now() });
-  };
 
   private urlWithId = (apiReq: ApiRequest): string => `${apiReq.url}/${apiReq.id}`;
 

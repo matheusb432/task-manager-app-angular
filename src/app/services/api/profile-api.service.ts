@@ -15,8 +15,6 @@ import { LoadingService } from '../loading.service';
   providedIn: 'root',
 })
 export class ProfileApiService {
-  // TODO testsss
-  // private url = `${environment.apiUrl}/profiles`;
   private url = us.buildApiUrl(ApiEndpoints.Profiles);
 
   constructor(private api: ApiService) {}

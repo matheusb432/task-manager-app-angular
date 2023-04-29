@@ -11,7 +11,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const url = request.url;
 
-    console.table([url, ApiEndpoints.Auth, url.includes(ApiEndpoints.Auth)]);
     if (url.includes(ApiEndpoints.Auth)) return next.handle(request);
 
     const newRequest = this.cloneWithToken(request);

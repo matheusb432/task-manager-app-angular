@@ -5,7 +5,7 @@ import { AuthInterceptor } from 'src/app/interceptors';
 import { AuthService } from 'src/app/services';
 import { ApiEndpoints } from 'src/app/utils';
 
-fdescribe('AuthInterceptor', () => {
+describe('Interceptor: Auth', () => {
   let mockAuthService: AuthService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;

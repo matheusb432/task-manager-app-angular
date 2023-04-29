@@ -18,7 +18,6 @@ import { LoadingService } from './loading.service';
 })
 // TODO refactor into AuthApiService & AuthService
 export class AuthService implements OnDestroy {
-  // private url = `${environment.apiUrl}/auth`;
   private url = us.buildApiUrl(ApiEndpoints.Auth);
   private accessTokenKey = StoreKeys.AccessToken;
 
@@ -83,7 +82,6 @@ export class AuthService implements OnDestroy {
     this.subscriptions = [setAuthDataSub];
   }
 
-  // TODO test
   async login(data: LoginRequest): Promise<AuthResponse> {
     const res = await this.api.insert<LoginRequest, AuthResponse>({
       ...ApiRequest.post(`${this.url}/login`, data),
@@ -108,7 +106,6 @@ export class AuthService implements OnDestroy {
     return res;
   }
 
-  // TODO test
   async signup(data: SignupRequest): Promise<AuthResponse> {
     const res = await this.api.insert<SignupRequest, AuthResponse>({
       ...ApiRequest.post(`${this.url}/signup`, data),

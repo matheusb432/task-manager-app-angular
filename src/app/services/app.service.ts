@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AppRequestData } from '../models/types';
+import { AppRequestData, RequestData } from '../models/types';
+import { us } from '../helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,16 @@ import { AppRequestData } from '../models/types';
 export class AppService {
   private _reqDict = new Map<string, AppRequestData>();
 
-  addRequestData(key: string, value: AppRequestData): void {
+  registerRequestData = (url: string, customData: RequestData | undefined): void => {
+    if (customData == null) return;
+
+    const loadings = customData.loadings;
+    const resKey = `${url}|${us.randomHex()}`;
+
+    this.addRequestData(resKey, { url, loadings, moment: Date.now() });
+  };
+
+  private addRequestData(key: string, value: AppRequestData): void {
     this._reqDict.set(key, value);
   }
 

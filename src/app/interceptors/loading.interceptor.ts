@@ -10,7 +10,7 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private service: LoadingService, private appService: AppService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const [key, data] = this.service.getLoadingByUrlFromAppRequests(request.url);
+    const [key, data] = this.service.getKeyAndLoadingByUrlFromAppRequests(request.url);
     const loadings = data?.loadings;
     if (key == null || loadings == null) return next.handle(request);
 
