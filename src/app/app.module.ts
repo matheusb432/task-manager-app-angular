@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -13,6 +14,7 @@ import { PageModule } from './shared';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { STORE_SERVICE } from './services/interfaces';
 import { LocalStorageService } from './services';
+import { TOKEN_DECODER_FN } from './services/token.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +34,7 @@ import { LocalStorageService } from './services';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: STORE_SERVICE, useClass: LocalStorageService },
+    { provide: TOKEN_DECODER_FN, useValue: jwtDecode },
   ],
   bootstrap: [AppComponent],
 })

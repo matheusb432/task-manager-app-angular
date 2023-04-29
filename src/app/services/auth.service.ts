@@ -1,16 +1,16 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { Mapper } from 'mapper-ts/lib-esm';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { us } from '../helpers';
 import { ApiRequest } from '../models';
+import { AuthResponse, LoginRequest, SignupRequest } from '../models/dtos/auth';
 import { AuthData, DecodedAuthToken } from '../models/types';
 import { ElementIds, StoreKeys } from '../utils';
 import { ApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { us } from '../helpers';
-import { Mapper } from 'mapper-ts/lib-esm';
-import { AuthResponse, LoginRequest, SignupRequest } from '../models/dtos/auth';
-import jwtDecode from 'jwt-decode';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +49,11 @@ export class AuthService implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private api: ApiService, @Inject(STORE_SERVICE) private store: StoreService) {
+  constructor(
+    private api: ApiService,
+    @Inject(STORE_SERVICE) private store: StoreService,
+    private tokenService: TokenService
+  ) {
     this.initSubscriptions();
   }
 
@@ -123,10 +127,9 @@ export class AuthService implements OnDestroy {
     this._setAuthData.next(data);
   }
 
-  // TODO move to separate TokenService ?
   // TODO research on how to mock injected services
   private decodeAuthToken(token: string): DecodedAuthToken | null {
-    return token != null ? jwtDecode(token) : null;
+    return this.tokenService.decodeAuthToken(token);
   }
 
   private _authValidator = (): boolean => {

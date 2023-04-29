@@ -1,3 +1,4 @@
+export { TokenService } from './token.service';
 export { AppService } from './app.service';
 export { AuthService } from './auth.service';
 export { BreadcrumbService } from './breadcrumb.service';
