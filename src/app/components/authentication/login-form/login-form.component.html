@@ -1,0 +1,24 @@
+<form id="cLoginFormContainer" class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-grid">
+    <app-input
+      fcName="userNameOrEmail"
+      [control]="userNameOrEmail"
+      labelText="userNameOrEmail"
+      placeholder="User name or Email"
+      elId="cProfileFormUserNameOrEmail"
+      [fg]="form"
+    ></app-input>
+    <app-input
+      fcName="password"
+      [control]="password"
+      labelText="password"
+      placeholder="Password"
+      elId="cProfileFormPassword"
+      [fg]="form"
+    ></app-input>
+
+    <div class="form-buttons">
+      <app-button model="raised" [elId]="elIds.LoginSubmit" type="submit">Login</app-button>
+    </div>
+  </div>
+</form>
