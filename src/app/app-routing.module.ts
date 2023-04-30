@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Pages } from './utils/page-paths.enum';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: Pages.Home,
     pathMatch: 'full',
   },
   {
@@ -24,11 +25,13 @@ const routes: Routes = [
     path: Pages.Metrics,
     loadChildren: () => import('./pages/metrics/metrics.module').then((m) => m.MetricsModule),
   },
-  // TODO implement 404 page
+  {
+    path: Pages.NotFound,
+    component: NotFoundComponent,
+  },
   {
     path: '**',
-    redirectTo: 'home',
-    // redirectTo: 'not-found',
+    redirectTo: Pages.NotFound,
   },
 ];
 

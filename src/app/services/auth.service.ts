@@ -2,7 +2,6 @@ import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { us } from '../helpers';
 import { ApiRequest } from '../models';
 import { AuthResponse, LoginRequest, SignupRequest } from '../models/dtos/auth';
@@ -10,8 +9,8 @@ import { AuthData, DecodedAuthToken } from '../models/types';
 import { ApiEndpoints, ElementIds, StoreKeys } from '../utils';
 import { ApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
-import { TokenService } from './token.service';
 import { LoadingService } from './loading.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',

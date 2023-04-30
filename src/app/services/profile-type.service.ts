@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { us } from '../helpers';
 import { ApiRequest, SelectOption } from '../models/configs';
 import { ProfileType } from '../models/entities/profile-type';
 import { RequestData } from '../models/types';
-import { ApiService } from './api/api.service';
 import { ApiEndpoints } from '../utils';
+import { ApiService } from './api/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileTypeService {
-  // private url = `${environment.apiUrl}/profiles/types`;
   private url = us.buildApiUrl(ApiEndpoints.ProfileTypes);
 
   constructor(private api: ApiService) {}

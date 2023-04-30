@@ -16,9 +16,10 @@ import { STORE_SERVICE } from './services/interfaces';
 import { AuthService, LocalStorageService } from './services';
 import { TOKEN_DECODER_FN } from './services/token.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

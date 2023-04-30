@@ -3,6 +3,7 @@ export enum Pages {
   Timesheets = 'timesheets',
   Profiles = 'profiles',
   Metrics = 'metrics',
+  NotFound = 'not-found'
 }
 
 export enum PageStates {
