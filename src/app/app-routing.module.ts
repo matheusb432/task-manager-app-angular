@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Pages } from './utils/page-paths.enum';
+import { Pages } from './utils/pages';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: Pages.Home,
     loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    loadChildren: () =>
+      import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule),
   },
   {
     path: Pages.Timesheets,

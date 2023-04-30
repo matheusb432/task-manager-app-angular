@@ -2,7 +2,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/entities';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {
-
   static from(form: ProfileForm): ProfileFormGroup {
     return new ProfileFormGroup(form);
   }

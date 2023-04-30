@@ -12,7 +12,7 @@ import {
   deleteModalData,
   saveModalData,
 } from 'src/app/utils';
-import { ProfileForm, ProfileFormGroup } from '../profile-form-group';
+import { ProfileForm, ProfileFormGroup } from './profile-form-group';
 
 @Component({
   selector: 'app-profile-form [form] [formType] [cancel]',

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { ProfileFormGroup } from '../components/profile';
+import { ProfileFormGroup } from '../components/profile/profile-form';
 import { us } from '../helpers';
 import { PaginationOptions } from '../helpers/pagination-options';
 import { Profile } from '../models/entities';

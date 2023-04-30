@@ -2,7 +2,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AuthResponse, LoginRequest, SignupRequest } from 'src/app/models/dtos/auth';
+import { AuthResponse, Login, Signup } from 'src/app/models/dtos/auth';
 import { StoreKeys } from 'src/app/utils';
 import { AuthService } from '../auth.service';
 import { STORE_SERVICE } from '../interfaces';
@@ -14,8 +14,8 @@ describe('Service: Auth', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
   let url: string;
-  const mockLogin: LoginRequest = { email: 'email', password: 'password' };
-  const mockSignup: SignupRequest = {
+  const mockLogin: Login = { email: 'email', password: 'password' };
+  const mockSignup: Signup = {
     email: 'email',
     password: 'password',
     name: 'name',

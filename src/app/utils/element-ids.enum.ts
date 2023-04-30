@@ -7,6 +7,6 @@ export enum ElementIds {
   UserTable = 'cUserTableContainer',
   UserForm = 'cUserFormContainer',
   HeaderUser = 'cHeaderUser',
-  LoginForm = 'cLoginFormContainer',
-  SignupForm = 'cSignupFormContainer',
+  LoginSubmit = 'cLoginSubmit',
+  SignupSubmit = 'cSignupSubmit',
 }

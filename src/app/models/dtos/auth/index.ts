@@ -1,3 +1,3 @@
-export { SignupRequest } from './signup-request';
+export { Signup } from './signup';
 export { AuthResponse } from './auth-response';
-export { LoginRequest } from './login-request';
+export { Login } from './login';

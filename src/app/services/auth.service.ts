@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { us } from '../helpers';
 import { ApiRequest } from '../models';
-import { AuthResponse, LoginRequest, SignupRequest } from '../models/dtos/auth';
+import { AuthResponse, Login, Signup } from '../models/dtos/auth';
 import { AuthData, DecodedAuthToken } from '../models/types';
 import { ApiEndpoints, ElementIds, StoreKeys } from '../utils';
 import { ApiService } from './api';
@@ -81,10 +81,10 @@ export class AuthService implements OnDestroy {
     this.subscriptions = [setAuthDataSub];
   }
 
-  async login(data: LoginRequest): Promise<AuthResponse> {
-    const res = await this.api.insert<LoginRequest, AuthResponse>({
+  async login(data: Login): Promise<AuthResponse> {
+    const res = await this.api.insert<Login, AuthResponse>({
       ...ApiRequest.post(`${this.url}/login`, data),
-      customData: { loadings: LoadingService.createManyFromId(ElementIds.LoginForm) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.LoginSubmit) },
       resCallback: (res) => {
         if (res == null) return res;
 
@@ -105,10 +105,10 @@ export class AuthService implements OnDestroy {
     return res;
   }
 
-  async signup(data: SignupRequest): Promise<AuthResponse> {
-    const res = await this.api.insert<SignupRequest, AuthResponse>({
+  async signup(data: Signup): Promise<AuthResponse> {
+    const res = await this.api.insert<Signup, AuthResponse>({
       ...ApiRequest.post(`${this.url}/signup`, data),
-      customData: { loadings: LoadingService.createManyFromId(ElementIds.SignupForm) },
+      customData: { loadings: LoadingService.createManyFromId(ElementIds.SignupSubmit) },
       // TODO refactor to remove duplication
       resCallback: (res) => {
         if (res == null) return res;

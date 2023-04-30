@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+  OnChanges,
+  OnDestroy,
+} from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { us } from 'src/app/helpers';
@@ -22,7 +30,7 @@ export class InputComponent implements OnDestroy, OnChanges {
   @Input() placeholder = '';
   @Input() elId = '';
   @Input() canEdit = true;
-  @Input() formId= '';
+  @Input() formId = '';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   @Output() keydownPressed = new EventEmitter<KeyboardEvent>();
@@ -39,11 +47,10 @@ export class InputComponent implements OnDestroy, OnChanges {
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {
-  }
+  constructor(private loadingService: LoadingService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['formId']&& !!this.formId) || (changes['elId'] && !!this.elId)) {
+    if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
       this.initLoadingSubscription();
     }
 
@@ -60,11 +67,13 @@ export class InputComponent implements OnDestroy, OnChanges {
     us.unsub(this.subscriptions);
 
     this.subscriptions.push(
-      this.loadingService.isAnyLoadingPipeFactory([this.elId, this.formId]).subscribe((isLoading) => {
-        this.isLoading = isLoading;
+      this.loadingService
+        .isAnyLoadingPipeFactory([this.elId, this.formId])
+        .subscribe((isLoading) => {
+          this.isLoading = isLoading;
 
-        this.changeControlEnabled();
-      })
+          this.changeControlEnabled();
+        })
     );
   }
 

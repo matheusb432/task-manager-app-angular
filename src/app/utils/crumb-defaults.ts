@@ -1,6 +1,6 @@
 import { Crumb } from '../models/configs';
 import { Icons } from './icons.enum';
-import { paths } from './page-paths.enum';
+import { paths } from './pages';
 
 const homeCrumbs: Crumb[] = [
   {
