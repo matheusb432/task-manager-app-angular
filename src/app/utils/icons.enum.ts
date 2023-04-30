@@ -27,4 +27,6 @@ export enum Icons {
   ContentCopy = 'content_copy',
   PageView = 'pageview',
   CalendarToday = 'calendar_today',
+  RemoveRedEye = 'remove_red_eye',
+  Undo = 'undo',
 }

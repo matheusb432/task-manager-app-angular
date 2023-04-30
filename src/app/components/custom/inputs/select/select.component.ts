@@ -24,6 +24,7 @@ export class SelectComponent implements OnDestroy, OnChanges {
   @Input() canEdit = true;
   @Input() elId = '';
   @Input() formId = '';
+  @Input() appearance:  'fill' | 'outline' = 'fill';
   @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) =>
     o1 === o2;
 

@@ -1,4 +1,8 @@
 <!-- TODO implement auth-layout -->
 <app-page-layout>
   <p>Login works!</p>
+  <app-login-form
+    [form]="form"
+    (save)="login($event)"
+  ></app-login-form>
 </app-page-layout>

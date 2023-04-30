@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageData } from '../models';
-import { DetailsTypes } from '../utils';
+import { DetailsTypes, Pages } from '../utils';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +9,10 @@ import { DetailsTypes } from '../utils';
 export class PageService {
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute
   ) {}
+
+  goToHome = () => this.router.navigate([Pages.Home]);
 
   getParam = (param: string) => this.getUrlTree().queryParams[param];
 

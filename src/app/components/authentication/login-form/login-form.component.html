@@ -3,17 +3,20 @@
     <app-input
       fcName="userNameOrEmail"
       [control]="userNameOrEmail"
-      labelText="userNameOrEmail"
-      placeholder="User name or Email"
-      elId="cProfileFormUserNameOrEmail"
+      labelText="User name or Email"
+      placeholder="Enter your user name or email"
+      elId="cLoginFormUserNameOrEmail"
       [fg]="form"
     ></app-input>
+    <!-- TODO add helpers to detail what the password should have in signup form -->
     <app-input
       fcName="password"
       [control]="password"
-      labelText="password"
-      placeholder="Password"
-      elId="cProfileFormPassword"
+      labelText="Password"
+      [type]="passwordVisible ? 'text' : 'password'"
+      placeholder="Enter your password"
+      elId="cLoginFormPassword"
+      [labelIcon]="visibilityIcon"
       [fg]="form"
     ></app-input>
 

@@ -31,6 +31,7 @@ export class InputComponent implements OnDestroy, OnChanges {
   @Input() elId = '';
   @Input() canEdit = true;
   @Input() formId = '';
+  @Input() appearance: 'fill' | 'outline' = 'fill';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   @Output() keydownPressed = new EventEmitter<KeyboardEvent>();

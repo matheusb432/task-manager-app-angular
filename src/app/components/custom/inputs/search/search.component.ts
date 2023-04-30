@@ -24,7 +24,6 @@ export class SearchComponent {
 
   searchIcon = IconConfig.withClick('cSearchIcon', Icons.Search, () => this.apply.emit());
 
-
   get invalid(): boolean {
     return this.isInvalid();
   }

@@ -1,16 +1,15 @@
 .input-container {
   display: flex;
 
- input[matinput]::-webkit-outer-spin-button,
- input[matinput]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
- }
-
+  input[matinput]::-webkit-outer-spin-button,
+  input[matinput]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 .helper {
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 app-icon {

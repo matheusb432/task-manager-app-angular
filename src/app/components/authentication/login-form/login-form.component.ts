@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ElementIds } from 'src/app/utils';
+import { ElementIds, Icons } from 'src/app/utils';
 import { LoginForm, LoginFormGroup } from './login-form-group';
+import { IconConfig } from 'src/app/models/configs';
 
 @Component({
   selector: 'app-login-form',
@@ -16,6 +17,11 @@ export class LoginFormComponent {
   @Output() remove = new EventEmitter<void>();
 
   elIds = ElementIds;
+
+  passwordVisible = false;
+  visibilityIcon = IconConfig.withClick('cPasswordVisibilityIcon', Icons.RemoveRedEye, () =>
+    this.togglePasswordVisibility(), 'accent'
+  );
 
   get controls(): LoginForm {
     return this.form.controls;
@@ -37,4 +43,9 @@ export class LoginFormComponent {
   onSubmit(): void {
     this.save.emit(this.form);
   }
+
+  togglePasswordVisibility = (): void => {
+    this.passwordVisible = !this.passwordVisible;
+    this.visibilityIcon.color = this.passwordVisible ? 'primary' : 'accent';
+  };
 }

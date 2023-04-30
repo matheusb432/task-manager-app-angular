@@ -1,6 +1,7 @@
 <mat-form-field
   *ngIf="options != null"
   class="input-container"
+  [appearance]="appearance"
   [formGroup]="fg"
 >
   <mat-label *ngIf="labelText">{{ labelText }}</mat-label>
