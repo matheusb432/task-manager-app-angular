@@ -13,8 +13,6 @@ export class LoginFormComponent {
   @Input() form!: LoginFormGroup;
 
   @Output() save = new EventEmitter<LoginFormGroup>();
-  @Output() cancel = new EventEmitter<void>();
-  @Output() remove = new EventEmitter<void>();
 
   elIds = ElementIds;
 

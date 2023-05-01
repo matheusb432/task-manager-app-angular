@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Login } from 'src/app/models/dtos/auth';
 
 export class LoginFormGroup extends FormGroup<LoginForm> {
@@ -27,30 +27,10 @@ export interface LoginForm {
 export const getLoginForm = (): LoginForm => ({
   userNameOrEmail: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required, Validators.maxLength(250)],
+    validators: [Validators.required, Validators.maxLength(100)],
   }),
   password: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required, passwordValidator()],
+    validators: [Validators.required],
   }),
 });
-
-function passwordValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: boolean } | null => {
-    const value = control.value;
-    if (value && value.length < 10) return { password: true };
-
-    return null;
-  };
-}
-
-// TODO implement passwordStrengthValidator
-function passwordStrengthValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: boolean } | null => {
-    const value = control.value;
-    if (value && !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(value)) {
-      return { passwordStrength: true };
-    }
-    return null;
-  };
-}

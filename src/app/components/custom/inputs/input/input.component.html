@@ -22,10 +22,12 @@
   <span *ngIf="isLoading" class="input-loading-container">
     <app-loading [isLoading]="isLoading" [size]="24"> </app-loading>
   </span>
-  <mat-error *ngIf="invalid && !disabled">
+  <mat-error *ngIf="invalid && !disabled && !helpers">
     {{ getErrText() }}
   </mat-error>
-  <small class="helper" *ngIf="helperText && !invalid && !disabled">
-    {{ helperText }}
-  </small>
 </mat-form-field>
+<small class="helper" *ngIf="!!helpers && !disabled">
+  <ul>
+    <li *ngFor="let helper of helpers" [ngClass]="{'invalid-helper': invalid}">{{ helper }}</li>
+  </ul>
+</small>

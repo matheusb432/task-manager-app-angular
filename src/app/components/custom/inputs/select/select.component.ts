@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { us } from 'src/app/helpers';
 import { SelectOption } from 'src/app/models/configs';
 import { LoadingService } from 'src/app/services/loading.service';
+import { validationErrorMessages } from '../validation-errors';
 
 @Component({
   selector: 'app-select [fcName] [control] [fg] [labelText] [options]',
@@ -18,13 +19,13 @@ export class SelectComponent implements OnDestroy, OnChanges {
   @Input() options!: SelectOption[] | null;
   @Input() placeholder = '';
   @Input() invalid?: boolean;
-  @Input() helperText?: string;
+  @Input() helpers?: string;
   @Input() errText?: string;
   @Input() multiple?: boolean = false;
   @Input() canEdit = true;
   @Input() elId = '';
   @Input() formId = '';
-  @Input() appearance:  'fill' | 'outline' = 'fill';
+  @Input() appearance: 'fill' | 'outline' = 'fill';
   @Input() compareWithFn: (o1: unknown, o2: unknown) => boolean = (o1: unknown, o2: unknown) =>
     o1 === o2;
 
@@ -68,11 +69,11 @@ export class SelectComponent implements OnDestroy, OnChanges {
   }
 
   getErrText(): string {
-    const errors = this.control?.errors;
+    const errorKeys = Object.keys(
+      this.control?.errors ?? []
+    ) as (keyof typeof validationErrorMessages)[];
 
-    if (errors == null) return this.errText || 'Invalid field';
-    if (errors['required']) return 'This field is required';
-    return 'Invalid input';
+    return validationErrorMessages[errorKeys[0]] || 'Invalid field';
   }
 
   get disabled(): boolean {

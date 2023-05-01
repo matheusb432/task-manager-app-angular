@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginForm, LoginFormGroup, getLoginForm } from 'src/app/components/authentication/login-form';
+import {
+  LoginForm,
+  LoginFormGroup,
+  getLoginForm,
+} from 'src/app/components/authentication/login-form';
 import { AuthService, PageService, ToastService } from 'src/app/services';
 
 @Component({
@@ -10,7 +14,11 @@ import { AuthService, PageService, ToastService } from 'src/app/services';
 export class LoginComponent implements OnInit {
   form!: LoginFormGroup;
 
-  constructor(private service: AuthService, private pageService: PageService, private ts: ToastService) {}
+  constructor(
+    private service: AuthService,
+    private pageService: PageService,
+    private ts: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -30,6 +38,5 @@ export class LoginComponent implements OnInit {
     this.ts.success('Login successful!');
     // TODO uncomment
     // this.pageService.goToHome();
-
   }
 }

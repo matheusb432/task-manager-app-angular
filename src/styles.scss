@@ -11,6 +11,8 @@
   --primary-light: #f386ab;
   --primary-lighter: #faccdc;
 
+  --danger: #f44336;
+
   --secondary: #607d8b;
   --secondary-dark: #43484b;
   --accent: #b0bec5;
@@ -50,6 +52,11 @@ h3 {
 .form-layout {
   margin: 0 auto;
   width: 50%;
+}
+
+.side-form-layout {
+  margin: 1rem 0;
+  width: 100%;
 }
 
 .form-buttons {

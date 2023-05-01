@@ -25,7 +25,7 @@
     <app-loading [isLoading]="isLoading" [size]="24"> </app-loading>
   </span>
   <mat-error *ngIf="invalid && !!disabled">{{ getErrText() }}</mat-error>
-  <small class="helper" *ngIf="helperText && !invalid && !!disabled">
-    {{ helperText }}
+  <small class="helper" *ngIf="helpers && !invalid && !!disabled">
+    {{ helpers }}
   </small>
 </mat-form-field>

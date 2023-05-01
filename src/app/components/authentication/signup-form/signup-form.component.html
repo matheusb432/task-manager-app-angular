@@ -1,3 +1,56 @@
-<p>
-  signup-form works!
-</p>
+<!-- TODO replace Login on IDs -->
+<form id="cSignupFormContainer" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-grid">
+    <app-input
+      fcName="userName"
+      [control]="userName"
+      labelText="User name"
+      placeholder="Enter your user name"
+      elId="cSignupFormUserName"
+      [fg]="form"
+    ></app-input>
+    <app-input
+      fcName="name"
+      [control]="name"
+      labelText="Name"
+      placeholder="Enter your name"
+      elId="cSignupFormName"
+      [fg]="form"
+    ></app-input>
+    <app-input
+      fcName="email"
+      [control]="email"
+      labelText="Email"
+      placeholder="Enter your email"
+      elId="cSignupFormEmail"
+      [fg]="form"
+    ></app-input>
+    <app-input
+      fcName="password"
+      [control]="password"
+      labelText="Password"
+      [type]="passwordVisible ? 'text' : 'password'"
+      placeholder="Enter your password"
+      elId="cSignupFormPassword"
+      [labelIcon]="visibilityIcon"
+      [fg]="form"
+      [helpers]="passwordHelpers"
+    ></app-input>
+    <app-input
+      fcName="confirmPassword"
+      [control]="confirmPassword"
+      labelText="Confirm Password"
+      [type]="passwordVisible ? 'text' : 'password'"
+      placeholder="Confirm password"
+      elId="cSignupFormConfirmPassword"
+      [labelIcon]="visibilityIcon"
+      [fg]="form"
+    ></app-input>
+
+    <div class="form-buttons">
+      <app-button model="raised" [elId]="elIds.SignupSubmit" [disabled]="form.invalid" type="submit"
+        >Sign Up</app-button
+      >
+    </div>
+  </div>
+</form>

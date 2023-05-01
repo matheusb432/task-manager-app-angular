@@ -1,4 +1,4 @@
-<form id="cLoginFormContainer" class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form id="cLoginFormContainer" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-grid">
     <app-input
       fcName="userNameOrEmail"
@@ -21,7 +21,7 @@
     ></app-input>
 
     <div class="form-buttons">
-      <app-button model="raised" color="accent" [elId]="elIds.LoginSubmit" type="submit">Login</app-button>
+      <app-button model="raised" [elId]="elIds.LoginSubmit" [disabled]="form.invalid" type="submit">Login</app-button>
     </div>
   </div>
 </form>

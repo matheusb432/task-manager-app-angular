@@ -8,8 +8,29 @@
   }
 }
 
+// TODO clean
+// .helper {
+//   color: #9ca3af;
+// }
 .helper {
-  color: #9ca3af;
+  display: block;
+  margin-bottom: 1rem;
+
+  .invalid-helper {
+    color: var(--danger);
+  }
+
+  ul {
+    margin: 0;
+    margin-top: -1rem;
+    // padding: 0;
+    padding-left: 16px;
+    // list-style: none;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
 }
 
 app-icon {
