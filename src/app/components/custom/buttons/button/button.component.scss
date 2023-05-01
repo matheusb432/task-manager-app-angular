@@ -9,3 +9,11 @@
     margin-left: 8px;
   }
 }
+
+// TODO - add prop to dynamically change this
+button {
+  background: var(--bg-color) !important;
+  * {
+    color: #fff;
+  }
+}
