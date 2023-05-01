@@ -39,7 +39,7 @@ const passwordValidators: ValidatorFn[] = [
 export const getSignupForm = (): SignupForm => ({
   userName: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required, Validators.maxLength(100)],
+    validators: [Validators.required, Validators.maxLength(100), userNameValidator()],
   }),
   email: new FormControl('', {
     nonNullable: true,
@@ -59,7 +59,6 @@ export const getSignupForm = (): SignupForm => ({
   }),
 });
 
-// TODO test
 function passwordStrengthValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: boolean } | null => {
     const value = control.value;
@@ -77,4 +76,14 @@ function passwordsAreEqual(control: AbstractControl): ValidationErrors | null {
     return { confirmpassword: true };
   }
   return null;
+}
+
+function userNameValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+    const value = control.value;
+    if (value && !/^[a-zA-Z0-9_.]+$/.test(value)) {
+      return { username: true };
+    }
+    return null;
+  };
 }

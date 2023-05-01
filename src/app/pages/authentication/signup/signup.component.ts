@@ -5,7 +5,6 @@ import { AuthService, PageService, ToastService } from 'src/app/services';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
   form!: SignupFormGroup;
@@ -30,5 +29,7 @@ export class SignupComponent implements OnInit {
     await this.service.signup(signup);
 
     this.ts.success('Sign up successful!');
+    // TODO move logic to route guard
+    this.pageService.goToHome();
   }
 }

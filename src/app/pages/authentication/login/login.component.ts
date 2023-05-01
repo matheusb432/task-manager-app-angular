@@ -11,7 +11,6 @@ import { AuthService, PageService, ToastService } from 'src/app/services';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   form!: LoginFormGroup;
@@ -38,6 +37,7 @@ export class LoginComponent implements OnInit {
     await this.service.login(login);
 
     this.ts.success('Login successful!');
+    // TODO move logic to route guard
     this.pageService.goToHome();
   }
 }

@@ -19,16 +19,16 @@ $page: 784px;
 }
 
 .page-content {
-  width: 100%;
   display: flex;
   flex: 1;
-  min-width: $content-min-width;
   flex-direction: column;
-  justify-content: center;
+  width: 100%;
+  min-width: $content-min-width;
   background: var(--secondary-dark);
   color: #fff;
   padding: 1rem 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  overflow-y: auto;
 }
 
 @media screen and (max-width: $page) {

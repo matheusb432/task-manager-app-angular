@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Pages } from './utils/pages';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: Pages.Home,
-    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
+    component: HomeComponent,
   },
   {
     path: '',

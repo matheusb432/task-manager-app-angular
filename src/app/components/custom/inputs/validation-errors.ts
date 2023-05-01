@@ -7,6 +7,7 @@ export enum ValidationErrorKeys {
   Email = 'email',
   PasswordStrength = 'passwordstrength',
   ConfirmPassword = 'confirmpassword',
+  Username = 'username',
 }
 
 export const validationErrorMessages: { [key in ValidationErrorKeys]: string } = {
@@ -19,4 +20,5 @@ export const validationErrorMessages: { [key in ValidationErrorKeys]: string } =
   [ValidationErrorKeys.PasswordStrength]:
     'This field must contain at least one uppercase letter, one lowercase letter, and one number',
   [ValidationErrorKeys.ConfirmPassword]: 'Passwords must match',
+  [ValidationErrorKeys.Username]: 'Only letters, numbers or "_" or "." special characters are allowed',
 };

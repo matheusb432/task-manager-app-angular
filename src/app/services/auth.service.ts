@@ -6,7 +6,7 @@ import { us } from '../helpers';
 import { ApiRequest } from '../models';
 import { AuthResponse, Login, Signup } from '../models/dtos/auth';
 import { AuthData, DecodedAuthToken } from '../models/types';
-import { ApiEndpoints, ElementIds, StoreKeys } from '../utils';
+import { ApiEndpoints, ElementIds, StoreKeys, paths } from '../utils';
 import { ApiService, UserApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { LoadingService } from './loading.service';
@@ -14,6 +14,7 @@ import { TokenService } from './token.service';
 import { UserAuthGet } from '../models/dtos/user';
 import { PageService } from './page.service';
 import { User } from '../models/entities';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -46,6 +47,8 @@ export class AuthService implements OnDestroy {
 
         if (authData != null && loggedIn) {
           this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
+          // TODO move logic to route guard
+          this.pageService.goToHome();
         } else {
           this.logout();
         }
@@ -97,7 +100,8 @@ export class AuthService implements OnDestroy {
     private userApi: UserApiService,
     private pageService: PageService,
     @Inject(STORE_SERVICE) private store: StoreService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router: Router
   ) {
     this.initSubscriptions();
     this.retrieveTokenFromStore();
@@ -162,11 +166,16 @@ export class AuthService implements OnDestroy {
 
   logout(): void {
     this.store.remove(this.accessTokenKey);
-    this.goToLogin();
+    // TODO move logic to route guard
+    if (!this.isAuthPage()) this.goToLogin();
   }
 
   setAuthResponse(data: AuthResponse | null): void {
     this._setAuthResponse.next(data);
+  }
+
+  isAuthPage(): boolean {
+    return this.router.url === paths.login || this.router.url === paths.signup;
   }
 
   goToLogin = () => this.pageService.goToLogin();
