@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  // height: calc(100vh - 64px);
   height: calc(100vh);
   background: linear-gradient(45deg, var(--primary), var(--accent));
 }
@@ -20,10 +19,8 @@
   max-height: 440px;
   padding: 2rem;
   border-radius: 0.5rem;
-  // background gradient between pink and grey
   background: #fff;
   color: var(--primary-darker);
-  // background-color: #fff;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
 }
 

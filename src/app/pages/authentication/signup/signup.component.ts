@@ -25,14 +25,10 @@ export class SignupComponent implements OnInit {
   }
 
   async signup(form: SignupFormGroup): Promise<void> {
-    // TODO handle dynamic email/username setting
     const signup = SignupFormGroup.toEntity(form.value);
 
-    const res = await this.service.signup(signup);
+    await this.service.signup(signup);
 
-    console.log(res);
-    this.ts.success('signup successful!');
-    // TODO uncomment
-    // this.pageService.goToHome();
+    this.ts.success('Sign up successful!');
   }
 }

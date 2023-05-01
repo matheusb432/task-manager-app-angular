@@ -523,4 +523,14 @@ describe('Service: Utils', () => {
       expect(UtilsService.buildApiUrl('/users' as unknown as ApiEndpoints)).toBe(`${apiUrl}/users`);
     });
   });
+
+  describe('isEmail', () => {
+    it('should return true when email is valid', () => {
+      expect(UtilsService.isEmail('email@example.com')).toBe(true);
+  })
+
+    it('should return false when email is invalid', () => {
+      expect(UtilsService.isEmail('email')).toBe(false);
+    });
+});
 });

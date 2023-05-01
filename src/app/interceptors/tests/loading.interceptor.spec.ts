@@ -25,7 +25,6 @@ describe('Interceptor: Loading', () => {
         AppService,
       ],
     });
-    // loadingInterceptor = TestBed.inject(LoadingInterceptor);
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
     loadingService = TestBed.inject(LoadingService);

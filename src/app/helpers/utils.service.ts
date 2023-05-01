@@ -186,4 +186,8 @@ export class UtilsService {
 
     return `${url}${endpoint}`;
   };
+
+  static isEmail = (email: string): boolean => {
+    return RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email);
+  };
 }

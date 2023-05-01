@@ -1,14 +1,11 @@
-import { UserAuthGet } from '../dtos/user';
 
 export class AuthData {
   token: string;
   decodedToken: DecodedAuthToken;
   expiration: Date;
-  user?: UserAuthGet;
 
-  private constructor(token: string, decodedToken: DecodedAuthToken, user?: UserAuthGet) {
+  private constructor(token: string, decodedToken: DecodedAuthToken) {
     this.token = token;
-    this.user = user;
     this.decodedToken = decodedToken;
     this.expiration = new Date(this.decodedToken.exp * 1000);
   }
@@ -21,14 +18,14 @@ export class AuthData {
     return Date.now() > this.expiration.getTime();
   }
 
-  static fromSelf(self: AuthData | null): AuthData | null {
+  static fromSelf(self: AuthData | null | undefined): AuthData | null | undefined {
     if (self == null) return self;
 
-    return new AuthData(self.token, self.decodedToken, self.user);
+    return new AuthData(self.token, self.decodedToken);
   }
 
-  static fromToken(token: string, decodedAuthToken: DecodedAuthToken, user?: UserAuthGet): AuthData {
-    return new AuthData(token, decodedAuthToken, user);
+  static fromToken(token: string, decodedAuthToken: DecodedAuthToken): AuthData {
+    return new AuthData(token, decodedAuthToken);
   }
 }
 

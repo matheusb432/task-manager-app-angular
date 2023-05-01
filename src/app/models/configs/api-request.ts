@@ -1,4 +1,4 @@
-import { RequestData } from "../types";
+import { RequestData } from '../types';
 
 export class ApiRequest<T = unknown> {
   itemType?: Ctor<T>;
@@ -7,12 +7,11 @@ export class ApiRequest<T = unknown> {
   item?: T;
   id?: number;
   params?: Record<string, string>;
-  // TODO refactor to mapFn?
-  resCallback?: ResCallback;
+  mapFn?: ResCallback;
+  tapFn?: ResCallback;
   customData?: RequestData;
 
   constructor(public url: string) {}
-
 
   static get<T>(url: string, itemType: Ctor<T>, params?: Record<string, string>): ApiRequest<T> {
     return { url, itemType, params };
@@ -35,6 +34,7 @@ export class ApiRequest<T = unknown> {
   }
 }
 
-export type ResCallback = (...args: unknown[]) => unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ResCallback<T = unknown> = (...args: any[]) => T;
 
 export type Ctor<T> = new (...args: unknown[]) => T;

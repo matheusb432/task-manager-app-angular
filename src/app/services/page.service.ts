@@ -13,6 +13,7 @@ export class PageService {
   ) {}
 
   goToHome = () => this.router.navigate([Pages.Home]);
+  goToLogin = () => this.router.navigate([Pages.Login]);
 
   getParam = (param: string) => this.getUrlTree().queryParams[param];
 

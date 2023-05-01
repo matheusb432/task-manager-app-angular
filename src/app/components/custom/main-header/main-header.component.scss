@@ -7,12 +7,12 @@
   background: var(--primary-lighter);
   height: 56px;
   padding: 16px;
+}
 
-  section {
-    color: var(--primary-darker);
-    span {
-      font-weight: bold;
-      margin-right: 4px;
-    }
+.user-data {
+  color: var(--primary-darker);
+  span {
+    font-weight: bold;
+    margin-right: 4px;
   }
 }

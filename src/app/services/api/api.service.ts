@@ -21,10 +21,14 @@ export class ApiService {
       return this.handleInvalidServiceRequest(apiReq);
     }
 
-    const reqData = { ...apiReq, url: `${apiReq.url}/odata` };
+    const reqData = { ...apiReq };
     const req$ = this._getRequest(reqData);
 
     return this._returnAsync(req$, reqData) as Promise<T[]>;
+  }
+
+  async getOData<T>(apiReq: ApiRequest<T>): Promise<T[]> {
+    return this.get({...apiReq, url: `${apiReq.url}/odata`});
   }
 
   async getPaginated<T>(apiReq: ApiRequest<T>): Promise<PaginatedResult<T>> {
@@ -140,11 +144,11 @@ export class ApiService {
   }
 
   private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
-    const { resCallback, customData, url } = apiReq;
+    const { mapFn, customData, url } = apiReq;
 
     this.appService.registerRequestData(url, customData);
 
-    const piped$ = req$.pipe(map((res) => (resCallback != null ? resCallback(res) : res)));
+    const piped$ = req$.pipe(map((res) => (mapFn != null ? mapFn(res) : res)));
 
     return lastValueFrom(piped$);
   }

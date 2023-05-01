@@ -31,7 +31,6 @@ $page: 784px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
 
-// Responsiveness for phone screens
 @media screen and (max-width: $page) {
   .auth-container {
     flex-direction: column;

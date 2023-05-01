@@ -7,6 +7,7 @@ export {
   deleteModalData,
   saveModalData,
   successModalData,
+  logoutModalData,
 } from './modal-defaults';
 export { Icons } from './icons.enum';
 export { AlertTypes } from './alert-types.enum';

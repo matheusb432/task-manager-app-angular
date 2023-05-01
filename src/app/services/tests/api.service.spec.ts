@@ -33,7 +33,7 @@ describe('Service: Api', () => {
     it('should return an array of items', (done) => {
       const expectedItems = [{ id: 1 }, { id: 2 }];
       const apiRequest = { url: 'testUrl', itemType: MockItem };
-      service.get<MockItem>(apiRequest).then((items) => {
+      service.getOData<MockItem>(apiRequest).then((items) => {
         assertAreEqual(items, expectedItems);
         done();
       });

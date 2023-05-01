@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
 import {
   LoginForm,
   LoginFormGroup,
   getLoginForm,
 } from 'src/app/components/authentication/login-form';
+import { us } from 'src/app/helpers';
 import { AuthService, PageService, ToastService } from 'src/app/services';
 
 @Component({
@@ -29,14 +31,13 @@ export class LoginComponent implements OnInit {
   }
 
   async login(form: LoginFormGroup): Promise<void> {
-    // TODO handle dynamic email/username setting
-    const login = LoginFormGroup.toEntityWithUserName(form.controls);
+    const login = us.isEmail(form.controls.userNameOrEmail.value)
+      ? LoginFormGroup.toEntityWithEmail(form.controls)
+      : LoginFormGroup.toEntityWithUserName(form.controls);
 
-    const res = await this.service.login(login);
+    await this.service.login(login);
 
-    console.log(res);
     this.ts.success('Login successful!');
-    // TODO uncomment
-    // this.pageService.goToHome();
+    this.pageService.goToHome();
   }
 }

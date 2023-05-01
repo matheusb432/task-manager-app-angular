@@ -29,16 +29,5 @@ export class SidebarComponent {
       label: 'Metrics',
       link: Pages.Metrics,
     },
-    // TODO Remove auth links
-    {
-      id: 'Login',
-      label: 'Login',
-      link: Pages.Login,
-    },
-    {
-      id: 'Signup',
-      label: 'Signup',
-      link: Pages.Signup,
-    },
   ]
 }

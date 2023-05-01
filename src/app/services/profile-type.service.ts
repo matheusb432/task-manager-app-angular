@@ -21,7 +21,7 @@ export class ProfileTypeService {
   }
 
   async getItems(customData?: RequestData): Promise<ProfileType[]> {
-    return this.api.get<ProfileType>({
+    return this.api.getOData<ProfileType>({
       ...ApiRequest.get<ProfileType>(this.url, ProfileType),
       customData,
     });

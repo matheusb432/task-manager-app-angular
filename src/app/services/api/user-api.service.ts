@@ -18,6 +18,18 @@ export class UserApiService {
 
   constructor(private api: ApiService) {}
 
+  async getByEmail(email: string): Promise<User> {
+    const queryUrl = us.buildODataQuery(this.url, { filter: { email } });
+
+    return this.api.get<User>({
+      ...ApiRequest.get<User>(queryUrl, User),
+      mapFn: (res: User[]) => res?.[0],
+      customData: {
+        loadings: LoadingService.createManyFromIds([ElementIds.UserForm, ElementIds.HeaderUser]),
+      },
+    }) as Promise<User>;
+  }
+
   async getById(id: number): Promise<User> {
     return this.api.getById<User>({
       ...ApiRequest.getById<User>(this.url, User, id),
