@@ -4,6 +4,7 @@ export enum Pages {
   Profiles = 'profiles',
   Metrics = 'metrics',
   NotFound = 'not-found',
+  Auth = 'auth',
   Login = 'login',
   Signup = 'signup',
 }
@@ -21,8 +22,9 @@ export enum DetailsTypes {
 
 export const paths = Object.freeze({
   home: `/${Pages.Home}`,
-  login: `/${Pages.Login}`,
-  signup: `/${Pages.Signup}`,
+  notFound: `/${Pages.NotFound}`,
+  login: `/${Pages.Auth}/${Pages.Login}`,
+  signup: `/${Pages.Auth}/${Pages.Signup}`,
   timesheets: `/${Pages.Timesheets}`,
   timesheetsCreate: `/${Pages.Timesheets}/${PageStates.Create}`,
   timesheetsDetails: `/${Pages.Timesheets}/${PageStates.Details}`,

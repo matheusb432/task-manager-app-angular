@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { HomeModule } from './pages/home/home.module';
 import { PageModule } from './shared';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { STORE_SERVICE } from './services/interfaces';
@@ -17,15 +16,15 @@ import { AuthService, LocalStorageService } from './services';
 import { TOKEN_DECODER_FN } from './services/token.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
+  declarations: [AppComponent, HomeComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HomeModule,
     PageModule,
     AppRoutingModule,
     HttpClientModule,

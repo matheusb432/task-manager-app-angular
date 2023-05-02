@@ -23,6 +23,9 @@ export class AuthService implements OnDestroy {
   private _setLoggedUser = new BehaviorSubject<UserAuthGet | null | undefined>(undefined);
 
   private _authData: AuthData | null = null;
+  private _loggedUser: UserAuthGet | null | undefined = undefined;
+
+  private subscriptions: Subscription[] = [];
 
   get authToken(): string | undefined {
     return this._authData?.token;
@@ -37,15 +40,21 @@ export class AuthService implements OnDestroy {
 
         this._authData = authData;
 
-        const loggedIn = this._authValidator();
+        const loggedIn = this.isLoggedIn;
 
         if (authData != null && loggedIn) {
           this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
           // TODO move logic to route guard
           this.pageService.goToHome();
-        } else {
-          this.logout();
+        } else if (!this.isAuthPage()) {
+          this.pageService.goToLogin();
         }
+
+        // TODO clean
+        // } else {
+        //   // this.logout();
+        //   this.store.remove(this.accessTokenKey);
+        // }
       })
     );
   }
@@ -59,8 +68,8 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  get loggedIn$(): Observable<boolean> {
-    return this.setAuthData$.pipe(map(this._authValidator.bind(this)));
+  get isLoggedIn(): boolean {
+    return !!this._authData?.isValid;
   }
 
   get setLoggedUser$(): Observable<UserAuthGet | null | undefined> {
@@ -69,11 +78,10 @@ export class AuthService implements OnDestroy {
         if (user == null) return user;
 
         return new Mapper(UserAuthGet).map(user) as UserAuthGet;
-      })
+      }),
+      tap((user) => (this._loggedUser = user))
     );
   }
-
-  private subscriptions: Subscription[] = [];
 
   constructor(
     private api: AuthApiService,
@@ -114,8 +122,10 @@ export class AuthService implements OnDestroy {
 
   logout(): void {
     this.store.remove(this.accessTokenKey);
+    this._setLoggedUser.next(null);
+    this.setAuthData(null);
     // TODO move logic to route guard
-    if (!this.isAuthPage()) this.goToLogin();
+    // if (!this.isAuthPage()) this.goToLogin();
   }
 
   isAuthPage(): boolean {
@@ -124,11 +134,16 @@ export class AuthService implements OnDestroy {
 
   goToLogin = () => this.pageService.goToLogin();
 
-  private handleAuthResult(token: string | null | undefined, user?: UserAuthGet | null) {
+  private handleAuthResult(
+    token: string | null | undefined,
+    user?: UserAuthGet | null
+  ): void {
     const decodedToken = this.decodeAuthToken(token ?? '');
     if (!decodedToken) {
-      this._setLoggedUser.next(null);
-      this.setAuthData(null);
+      // this._setLoggedUser.next(null);
+      // this.setAuthData(null);
+      this.logout();
+
       return;
     }
 
@@ -157,9 +172,4 @@ export class AuthService implements OnDestroy {
 
     return this.tokenService.decode(token);
   }
-
-  private _authValidator = (): boolean => {
-    const authData = this._authData;
-    return !!authData?.isValid;
-  };
 }

@@ -14,7 +14,7 @@ export class ToastService {
   private readonly posXDefault: MatSnackBarHorizontalPosition = 'end';
   private readonly posYDefault: MatSnackBarVerticalPosition = 'top';
   private readonly actionDefault = 'Close';
-  private readonly durationDefault = 3500;
+  private readonly durationDefault = 4000;
 
   constructor(private _snackBar: MatSnackBar) {}
 

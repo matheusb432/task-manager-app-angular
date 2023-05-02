@@ -28,7 +28,7 @@ export class AuthenticationComponent implements OnInit {
   }
 
   switchPage(): void {
-    this.router.navigate([this.isLoginPage ? Pages.Signup : Pages.Login]);
+    this.router.navigate([this.isLoginPage ? paths.signup : paths.login]);
   }
 
   setSwitchPageLabel(): void {

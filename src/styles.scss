@@ -94,6 +94,11 @@ h3 {
 
   &.warning div {
     @include mxs.set-background(#ff9800);
+    color: #000;
+
+    .mdc-button__label {
+      color: #000;
+    }
   }
 
   .mdc-button__label {
