@@ -17,9 +17,6 @@ export const canActivateAuthPage = (service = inject(AuthService)): true | UrlTr
   const router = inject(Router);
   const ts = inject(ToastService);
 
-  console.log(router.url);
-
-  console.log(service.isLoggedIn);
   if (!service.isLoggedIn) return true;
 
   ts.info('You are already logged in! Logout if you want to enter with another account.');

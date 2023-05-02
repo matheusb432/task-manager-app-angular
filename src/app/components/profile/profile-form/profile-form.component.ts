@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { us } from 'src/app/helpers';
+import { FormUtilsService, us } from 'src/app/helpers';
 import { ProfileType } from 'src/app/models/entities/profile-type';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -103,7 +103,7 @@ export class ProfileFormComponent {
     ref.afterClosed().subscribe((result) => {
       if (!result) return;
 
-      this.save.emit(this.form);
+      FormUtilsService.onSubmit(this.form, this.save);
     });
   }
 }

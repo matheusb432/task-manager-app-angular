@@ -3,6 +3,7 @@ import { AbstractControl } from '@angular/forms';
 import { SignupForm, SignupFormGroup } from './signup-form-group';
 import { ElementIds, Icons } from 'src/app/utils';
 import { IconConfig } from 'src/app/models/configs';
+import { FormUtilsService } from 'src/app/helpers';
 
 @Component({
   selector: 'app-signup-form',
@@ -58,13 +59,7 @@ export class SignupFormComponent {
   }
 
   onSubmit(): void {
-    // TODO add as middleware logic, intercept submit event?
-    if (!this.form.valid) {
-      this.form.markAllAsTouched();
-
-      return;
-    }
-    this.save.emit(this.form);
+    FormUtilsService.onSubmit(this.form, this.save);
   }
 
   togglePasswordVisibility = (): void => {

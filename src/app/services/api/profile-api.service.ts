@@ -48,17 +48,17 @@ export class ProfileApiService {
     return profile;
   }
 
-  insert = async (ct: Profile): Promise<PostReturn> =>
+  insert = async (item: Profile): Promise<PostReturn> =>
     this.api.insert({
-      ...ApiRequest.post(this.url, this.mapProps(ct), ProfilePostDto),
+      ...ApiRequest.post(this.url, item, ProfilePostDto),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileSubmit) },
     });
 
-  duplicate = async (ct: Profile): Promise<PostReturn> => this.insert(ct);
+  duplicate = async (item: Profile): Promise<PostReturn> => this.insert(item);
 
-  update = async (ct: Profile): Promise<void> =>
+  update = async (item: Profile): Promise<void> =>
     this.api.update({
-      ...ApiRequest.put(this.url, ct.id ?? 0, this.mapProps(ct), ProfilePutDto),
+      ...ApiRequest.put(this.url, item.id ?? 0, item, ProfilePutDto),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileSubmit) },
     });
 
@@ -67,13 +67,4 @@ export class ProfileApiService {
       ...ApiRequest.delete(this.url, id),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileDelete) },
     });
-
-  private mapProps = (item: Profile): Profile => {
-    const mapped = us.deepClone(item);
-
-    // TODO eventually remove, should be automatically set from API
-    mapped.userId = 1;
-
-    return mapped;
-  };
 }

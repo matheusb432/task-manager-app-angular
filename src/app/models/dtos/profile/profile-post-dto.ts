@@ -6,7 +6,6 @@ export class ProfilePostDto {
   timeTarget?: number;
   tasksTarget?: number;
   priority?: number;
-  userId?: number;
   profileTypeId?: number;
   @AddMap(PresetTaskItemPostDto)
   presetTaskItems?: PresetTaskItemPostDto[];

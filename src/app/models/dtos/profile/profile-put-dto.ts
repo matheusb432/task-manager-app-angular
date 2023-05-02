@@ -1,4 +1,4 @@
-import { AddMap } from 'mapper-ts/lib-esm';
+import { AddMap, IgnoreMap } from 'mapper-ts/lib-esm';
 import { ProfileTypePutDto } from './profile-type-put-dto';
 import { ProfilePresetTaskItemPutDto } from './profile-preset-task-item-put-dto';
 
@@ -8,7 +8,6 @@ export class ProfilePutDto {
   timeTarget?: number;
   tasksTarget?: number;
   priority?: number;
-  userId?: number;
   profileTypeId?: number;
   @AddMap(ProfileTypePutDto)
   profileType?: ProfileTypePutDto;
