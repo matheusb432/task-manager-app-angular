@@ -13,6 +13,9 @@
   color: var(--primary-darker);
   span {
     font-weight: bold;
-    margin-right: 4px;
+  }
+
+  & :not(:first-child) {
+    margin-left: 16px;
   }
 }

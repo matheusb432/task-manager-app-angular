@@ -8,7 +8,7 @@ import { canActivateAuth, canActivateAuthPage } from './guards';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: paths.home,
+    redirectTo: Pages.Home,
     pathMatch: 'full',
   },
   {
@@ -17,8 +17,7 @@ const routes: Routes = [
     canActivate: [() => canActivateAuth()],
   },
   {
-    // TODO remove /auth page
-    path: Pages.Auth,
+    path: '',
     loadChildren: () =>
       import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule),
     canActivateChild: [() => canActivateAuthPage()],

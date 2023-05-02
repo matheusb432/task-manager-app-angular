@@ -33,11 +33,6 @@ export class LoginFormComponent {
     return this.controls.password;
   }
 
-  // TODO implement rememberMe fc?
-  // get rememberMe(): AbstractControl {
-  //   return this.controls.rememberMe;
-  // }
-
   onSubmit(): void {
     this.save.emit(this.form);
   }

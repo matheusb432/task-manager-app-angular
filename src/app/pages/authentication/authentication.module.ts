@@ -8,11 +8,9 @@ import { LoginFormComponent } from 'src/app/components/authentication/login-form
 import { SignupFormComponent } from 'src/app/components/authentication/signup-form/signup-form.component';
 import { CrudPageModule } from 'src/app/shared/crud-page.module';
 import { AuthPageLayoutComponent } from 'src/app/components/layout/auth-page-layout/auth-page-layout.component';
-import { AuthenticationComponent } from './authentication/authentication.component';
 
 @NgModule({
   declarations: [
-    AuthenticationComponent,
     LoginComponent,
     SignupComponent,
     LoginFormComponent,

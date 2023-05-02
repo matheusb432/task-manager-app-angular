@@ -1,6 +1,6 @@
-import jwtDecode from 'jwt-decode';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import jwtDecode from 'jwt-decode';
 
 import { NgOptimizedImage } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -8,15 +8,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { PageModule } from './shared';
-import { LoadingInterceptor } from './interceptors/loading.interceptor';
-import { STORE_SERVICE } from './services/interfaces';
-import { AuthService, LocalStorageService } from './services';
-import { TOKEN_DECODER_FN } from './services/token.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { LocalStorageService } from './services';
+import { STORE_SERVICE } from './services/interfaces';
+import { TOKEN_DECODER_FN } from './services/token.service';
+import { PageModule } from './shared';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent],

@@ -29,4 +29,6 @@ export enum Icons {
   CalendarToday = 'calendar_today',
   RemoveRedEye = 'remove_red_eye',
   Undo = 'undo',
+  Login = 'login',
+  Logout = 'logout',
 }

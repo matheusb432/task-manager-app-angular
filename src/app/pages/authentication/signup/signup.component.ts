@@ -29,7 +29,5 @@ export class SignupComponent implements OnInit {
     await this.service.signup(signup);
 
     this.ts.success('Sign up successful!');
-    // TODO move logic to route guard
-    this.pageService.goToHome();
   }
 }

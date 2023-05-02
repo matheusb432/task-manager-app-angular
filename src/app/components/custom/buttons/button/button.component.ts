@@ -24,6 +24,7 @@ export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() url?: string;
   @Input() model: 'raised' | 'stroked' | 'flat' | 'icon' | 'fab' | 'mini-fab' | 'link' | '' = '';
   @Input() elId?: string;
+  @Input() title?: string;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 

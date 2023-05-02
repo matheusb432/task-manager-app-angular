@@ -1,9 +1,8 @@
 <header class="main-header mat-elevation-z6">
   <app-breadcrumb></app-breadcrumb>
-  <!-- TODO add on click for user to edit own profile? -->
   <section class="user-data" *ngIf="setLoggedUser$ | async as loggedUser">
     <span>{{ loggedUser.name }}</span>
-    <app-button (clicked)="logout()">Logout</app-button>
     <app-icon [icon]="Icons.AccountCircle"></app-icon>
+      <app-icon [icon]="Icons.Logout" [clickable]="true" title="Logout" (clicked)="logout()"></app-icon>
   </section>
 </header>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
-import { Observable, lastValueFrom, pipe } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 

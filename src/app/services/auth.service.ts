@@ -1,5 +1,4 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -7,7 +6,7 @@ import { us } from '../helpers';
 import { AuthResponse, Login, Signup } from '../models/dtos/auth';
 import { UserAuthGet } from '../models/dtos/user';
 import { AuthData, DecodedAuthToken } from '../models/types';
-import { StoreKeys, paths } from '../utils';
+import { StoreKeys } from '../utils';
 import { AuthApiService } from './api/auth-api.service';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
@@ -23,7 +22,6 @@ export class AuthService implements OnDestroy {
   private _setLoggedUser = new BehaviorSubject<UserAuthGet | null | undefined>(undefined);
 
   private _authData: AuthData | null = null;
-  private _loggedUser: UserAuthGet | null | undefined = undefined;
 
   private subscriptions: Subscription[] = [];
 
@@ -44,17 +42,7 @@ export class AuthService implements OnDestroy {
 
         if (authData != null && loggedIn) {
           this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
-          // TODO move logic to route guard
-          this.pageService.goToHome();
-        } else if (!this.isAuthPage()) {
-          this.pageService.goToLogin();
         }
-
-        // TODO clean
-        // } else {
-        //   // this.logout();
-        //   this.store.remove(this.accessTokenKey);
-        // }
       })
     );
   }
@@ -78,8 +66,7 @@ export class AuthService implements OnDestroy {
         if (user == null) return user;
 
         return new Mapper(UserAuthGet).map(user) as UserAuthGet;
-      }),
-      tap((user) => (this._loggedUser = user))
+      })
     );
   }
 
@@ -87,8 +74,7 @@ export class AuthService implements OnDestroy {
     private api: AuthApiService,
     private pageService: PageService,
     @Inject(STORE_SERVICE) private store: StoreService,
-    private tokenService: TokenService,
-    private router: Router
+    private tokenService: TokenService
   ) {
     this.initSubscriptions();
     this.retrieveTokenFromStore();
@@ -113,36 +99,34 @@ export class AuthService implements OnDestroy {
   }
 
   async login(data: Login): Promise<AuthResponse> {
-    return this.api.login(data);
+    const res = await this.api.login(data);
+    this.pageService.goToHome();
+    return res;
   }
 
   async signup(data: Signup): Promise<AuthResponse> {
-    return this.api.signup(data);
+    const res = await this.api.signup(data);
+    this.pageService.goToHome();
+    return res;
   }
 
   logout(): void {
-    this.store.remove(this.accessTokenKey);
-    this._setLoggedUser.next(null);
-    this.setAuthData(null);
-    // TODO move logic to route guard
-    // if (!this.isAuthPage()) this.goToLogin();
-  }
-
-  isAuthPage(): boolean {
-    return this.router.url === paths.login || this.router.url === paths.signup;
+    this.emptyAuthData();
+    this.goToLogin();
   }
 
   goToLogin = () => this.pageService.goToLogin();
 
-  private handleAuthResult(
-    token: string | null | undefined,
-    user?: UserAuthGet | null
-  ): void {
+  private emptyAuthData(): void {
+    this.store.remove(this.accessTokenKey);
+    this._setLoggedUser.next(null);
+    this.setAuthData(null);
+  }
+
+  private handleAuthResult(token: string | null | undefined, user?: UserAuthGet | null): void {
     const decodedToken = this.decodeAuthToken(token ?? '');
     if (!decodedToken) {
-      // this._setLoggedUser.next(null);
-      // this.setAuthData(null);
-      this.logout();
+      this.emptyAuthData();
 
       return;
     }
