@@ -2,27 +2,28 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/interceptors';
-import { AuthService } from 'src/app/services';
 import { ApiEndpoints } from 'src/app/utils';
+import { TOKEN_DECODER_FN, TokenService } from 'src/app/services/token.service';
 
 describe('Interceptor: Auth', () => {
-  let mockAuthService: AuthService;
+  let mockTokenService: TokenService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
   const baseUrl = 'https://api.example.com';
 
   beforeEach(() => {
-    mockAuthService = {
+    mockTokenService = {
       get authToken() {
         return undefined;
       },
-    } as unknown as AuthService;
-    spyOnProperty(mockAuthService, 'authToken', 'get').and.returnValue('test-token');
+    } as unknown as TokenService;
+    spyOnProperty(mockTokenService, 'authToken', 'get').and.returnValue('test-token');
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: TokenService, useValue: mockTokenService },
+        { provide: TOKEN_DECODER_FN, useValue: (token: string, _: unknown) => token },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthInterceptor,

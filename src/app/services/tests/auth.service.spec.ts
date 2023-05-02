@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -9,9 +10,12 @@ import { STORE_SERVICE } from '../interfaces';
 import { LocalStorageService } from '../local-storage.service';
 import { TOKEN_DECODER_FN } from '../token.service';
 import { assertAreEqual } from './test-utils';
+import { AuthApiService } from '../api/auth-api.service';
+import { PageService } from '../page.service';
 
 describe('Service: Auth', () => {
   let service: AuthService;
+  let api: AuthApiService;
   let httpMock: HttpTestingController;
   let url: string;
   const mockLogin: Login = { email: 'email', password: 'password' };
@@ -29,17 +33,23 @@ describe('Service: Auth', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([
+        { path: 'home', component: class {} },
+        { path: 'login', component: class {} },
+      ])],
       providers: [
         AuthService,
+        AuthApiService,
+        PageService,
         { provide: STORE_SERVICE, useClass: LocalStorageService },
         { provide: TOKEN_DECODER_FN, useValue: (token: string, _: unknown) => token },
       ],
     });
     service = TestBed.inject(AuthService);
+    api = TestBed.inject(AuthApiService);
     httpMock = TestBed.inject(HttpTestingController);
 
-    url = service['url'];
+    url = api['url'];
   });
 
   afterEach(() => {

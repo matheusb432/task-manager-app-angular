@@ -1,30 +1,24 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { us } from '../helpers';
-import { ApiRequest } from '../models';
 import { AuthResponse, Login, Signup } from '../models/dtos/auth';
-import { AuthData, DecodedAuthToken } from '../models/types';
-import { ApiEndpoints, ElementIds, StoreKeys, paths } from '../utils';
-import { ApiService, UserApiService } from './api';
-import { STORE_SERVICE, StoreService } from './interfaces';
-import { LoadingService } from './loading.service';
-import { TokenService } from './token.service';
 import { UserAuthGet } from '../models/dtos/user';
+import { AuthData, DecodedAuthToken } from '../models/types';
+import { StoreKeys, paths } from '../utils';
+import { AuthApiService } from './api/auth-api.service';
+import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
-import { User } from '../models/entities';
-import { Router } from '@angular/router';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
-// TODO refactor into AuthApiService & AuthService
 export class AuthService implements OnDestroy {
-  private url = us.buildApiUrl(ApiEndpoints.Auth);
   private accessTokenKey = StoreKeys.AccessToken;
 
-  private _setAuthResponse = new BehaviorSubject<AuthResponse | null | undefined>(undefined);
   private _setAuthData = new BehaviorSubject<AuthData | null | undefined>(undefined);
   private _setLoggedUser = new BehaviorSubject<UserAuthGet | null | undefined>(undefined);
 
@@ -56,25 +50,11 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private get _setAuthResponse$(): Observable<AuthResponse | null | undefined> {
-    return this._setAuthResponse.asObservable().pipe(
+  private get authResponse$(): Observable<AuthResponse | null | undefined> {
+    return this.api.authResponse$.pipe(
       tap((res) => {
         if (res === undefined) return;
-
-        const decodedToken = this.decodeAuthToken(res?.token ?? '');
-        if (res == null || !decodedToken) {
-          this._setLoggedUser.next(null);
-          this.setAuthData(null);
-          return;
-        }
-
-        if (res.user == null) {
-          this.fetchUser(decodedToken.email);
-        } else {
-          this._setLoggedUser.next(res.user);
-        }
-
-        this.setAuthData(AuthData.fromToken(res.token as string, decodedToken));
+        this.handleAuthResult(res?.token, res?.user);
       })
     );
   }
@@ -96,8 +76,7 @@ export class AuthService implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private api: ApiService,
-    private userApi: UserApiService,
+    private api: AuthApiService,
     private pageService: PageService,
     @Inject(STORE_SERVICE) private store: StoreService,
     private tokenService: TokenService,
@@ -113,55 +92,24 @@ export class AuthService implements OnDestroy {
 
   retrieveTokenFromStore(): void {
     const token = this.store.get<string>(this.accessTokenKey);
-    if (token == null) {
-      this.setAuthResponse(null);
 
-      return;
-    }
-
-    this.setAuthResponse({ token });
+    this.handleAuthResult(token);
   }
 
   private initSubscriptions() {
     const setAuthDataSub = this.setAuthData$.subscribe();
-    const setAuthResponseSub = this._setAuthResponse$.subscribe();
+    const setAuthResponseSub = this.authResponse$.subscribe();
 
     us.unsub(this.subscriptions);
     this.subscriptions = [setAuthDataSub, setAuthResponseSub];
   }
 
   async login(data: Login): Promise<AuthResponse> {
-    const res = await this.api.insert<Login, AuthResponse>({
-      ...ApiRequest.post(`${this.url}/login`, data),
-      customData: { loadings: LoadingService.createManyFromId(ElementIds.LoginSubmit) },
-      mapFn: (res) => {
-        if (res == null) return res;
-
-        return new Mapper(AuthResponse).map(res);
-      },
-      // TODO add map & tap and configure them in login & signup
-    });
-
-    this.setAuthResponse(res);
-
-    return res;
+    return this.api.login(data);
   }
 
   async signup(data: Signup): Promise<AuthResponse> {
-    const res = await this.api.insert<Signup, AuthResponse>({
-      ...ApiRequest.post(`${this.url}/signup`, data),
-      customData: { loadings: LoadingService.createManyFromId(ElementIds.SignupSubmit) },
-      // TODO refactor to remove duplication
-      mapFn: (res) => {
-        if (res == null) return res;
-
-        return new Mapper(AuthResponse).map(res);
-      },
-    });
-
-    this.setAuthResponse(res);
-
-    return res;
+    return this.api.signup(data);
   }
 
   logout(): void {
@@ -170,26 +118,36 @@ export class AuthService implements OnDestroy {
     if (!this.isAuthPage()) this.goToLogin();
   }
 
-  setAuthResponse(data: AuthResponse | null): void {
-    this._setAuthResponse.next(data);
-  }
-
   isAuthPage(): boolean {
     return this.router.url === paths.login || this.router.url === paths.signup;
   }
 
   goToLogin = () => this.pageService.goToLogin();
 
+  private handleAuthResult(token: string | null | undefined, user?: UserAuthGet | null) {
+    const decodedToken = this.decodeAuthToken(token ?? '');
+    if (!decodedToken) {
+      this._setLoggedUser.next(null);
+      this.setAuthData(null);
+      return;
+    }
+
+    if (user == null) {
+      this.fetchUser(decodedToken.email);
+    } else {
+      this._setLoggedUser.next(user);
+    }
+
+    this.setAuthData(AuthData.fromToken(token as string, decodedToken));
+  }
+
   private setAuthData(data: AuthData | null): void {
     this._setAuthData.next(data);
   }
-
   private async fetchUser(email: string): Promise<void> {
     if (!email) return;
 
-    const res = await this.userApi.getByEmail(email);
-
-    const newUser = new Mapper(UserAuthGet).map(res) as UserAuthGet;
+    const newUser = await this.api.getUserByEmail(email);
 
     this._setLoggedUser.next(newUser);
   }

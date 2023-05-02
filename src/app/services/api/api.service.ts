@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
-import { Observable, lastValueFrom } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, lastValueFrom, pipe } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
@@ -28,7 +28,7 @@ export class ApiService {
   }
 
   async getOData<T>(apiReq: ApiRequest<T>): Promise<T[]> {
-    return this.get({...apiReq, url: `${apiReq.url}/odata`});
+    return this.get({ ...apiReq, url: `${apiReq.url}/odata` });
   }
 
   async getPaginated<T>(apiReq: ApiRequest<T>): Promise<PaginatedResult<T>> {
@@ -144,11 +144,14 @@ export class ApiService {
   }
 
   private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
-    const { mapFn, customData, url } = apiReq;
+    const { mapFn, tapFn, customData, url } = apiReq;
 
     this.appService.registerRequestData(url, customData);
 
-    const piped$ = req$.pipe(map((res) => (mapFn != null ? mapFn(res) : res)));
+    const piped$ = req$.pipe(
+      map((res) => (mapFn != null ? mapFn(res) : res)),
+      tap((res) => (tapFn != null ? tapFn(res) : res))
+    );
 
     return lastValueFrom(piped$);
   }
