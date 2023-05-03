@@ -1,24 +1,55 @@
-<section class="carousel">
-  <div class="slide-nav-prev" (click)="prev()" [ngClass]="{ inactive: prevDisabled }">
-    <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true"></app-icon>
-  </div>
-  <owl-carousel-o [options]="customOptions" #carousel>
-    <ng-container *ngFor="let slide of slides; trackBy: getItemId">
-      <ng-template carouselSlide [id]="slide.id">
-        <div class="slide" (click)="onSlideClick(slide)" [ngClass]="{ active: slide.selected }">
-          <footer class="slide-footer">
-            <span class="day">
-              {{ slide.day }}
+<section id="cDatesCarousel" class="carousel">
+  <header id="cDatesCarouselHeader" class="carousel-header">
+    <owl-carousel-o [options]="carouselHeaderOptions" #carouselHeader>
+      <ng-container *ngFor="let monthSlide of monthSlides; let i = index; trackBy: getItemId">
+        <ng-template carouselSlide [id]="monthSlide.id">
+          <div
+            class="month-slide"
+            [ngClass]="{ active: monthSlide.selected, 'next-month': isNextMonthSlide(i) }"
+          >
+            <span class="month">
+              {{ monthSlide.month }}
             </span>
-            <span class="day-of-week">
-              {{ slide.dayOfWeek }}
+            <span class="year">
+              {{ monthSlide.year }}
             </span>
-          </footer>
-        </div>
-      </ng-template>
-    </ng-container>
-  </owl-carousel-o>
-  <div class="slide-nav-next" (click)="next()" [ngClass]="{ inactive: nextDisabled }">
-    <app-icon [icon]="Icons.ChevronRight" color="accent" [size]="44" [clickable]="true"></app-icon>
-  </div>
+          </div>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </header>
+  <article id="cDatesCarouselSlides" class="carousel-slides">
+    <div class="slide-nav-prev" (click)="prev()" [ngClass]="{ inactive: prevDisabled }">
+      <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true"></app-icon>
+    </div>
+    <owl-carousel-o [options]="carouselOptions" #carousel (changed)="handleChange($event)">
+      <ng-container *ngFor="let slide of slides; trackBy: getItemId">
+        <ng-template carouselSlide [id]="slide.id">
+          <div
+            class="slide"
+            (click)="onSlideClick(slide)"
+            [ngClass]="{ active: slide.selected, 'first-of-month': slide.firstOfMonth }"
+          >
+            <header class="slide-header"></header>
+            <footer class="slide-footer">
+              <span class="day">
+                {{ slide.day }}
+              </span>
+              <span class="day-of-week">
+                {{ slide.dayOfWeek }}
+              </span>
+            </footer>
+          </div>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+    <div class="slide-nav-next" (click)="next()" [ngClass]="{ inactive: nextDisabled }">
+      <app-icon
+        [icon]="Icons.ChevronRight"
+        color="accent"
+        [size]="44"
+        [clickable]="true"
+      ></app-icon>
+    </div>
+  </article>
 </section>

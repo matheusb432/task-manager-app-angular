@@ -1,17 +1,25 @@
 @use 'src/_mixins.scss' as mxs;
 
 $slide-width: 160px;
+$slide-height: calc($slide-width / 3) * 2;
 $slide-nav-width: 36px;
-$slide-height: $slide-nav-width * 4 + 20px;
 
 .carousel {
   position: relative;
   background: var(--primary-darker);
-  padding: 1rem;
-  padding-bottom: 0.5rem;
-  height: $slide-height;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
+.carousel-slides {
+  position: relative;
+  padding: 1rem 0;
+}
+
+.carousel-header {
+  border-bottom: 4px solid var(--primary);
+  padding-top: 4px;
+  background: var(--bg-color);
+}
 
 .slide {
   position: relative;
@@ -30,6 +38,54 @@ $slide-height: $slide-nav-width * 4 + 20px;
   &.active {
     border: 2px solid var(--primary);
   }
+
+  &.first-of-month {
+    background: orangered;
+  }
+}
+
+.month-slide {
+  position: relative;
+  padding: 1rem;
+  text-align: start;
+
+  &.active {
+    text-align: center;
+    .month,
+    .year {
+      color: var(--primary);
+    }
+  }
+
+  &.next-month {
+    text-align: end;
+  }
+
+  .month {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+
+    // TODO enable carousel month clicking
+    // cursor: pointer;
+    // transition: all 0.15s ease-in-out;
+    // &:hover {
+    //   color: var(--primary);
+    // }
+  }
+
+  .year {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+}
+
+.floating-slide-data {
+  position: absolute;
+  top: -14px;
+  z-index: 9999;
+  background-color: #000;
 }
 
 .slide-footer {
@@ -60,7 +116,7 @@ $slide-height: $slide-nav-width * 4 + 20px;
 
 .slide-nav {
   position: absolute;
-  top: 0;
+  bottom: 0;
   width: $slide-nav-width;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);

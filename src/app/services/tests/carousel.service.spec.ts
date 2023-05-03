@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { CarouselService } from '../carousel.service';
+import { DatesCarouselService } from '../dates-carousel.service';
 import { ElementIds } from 'src/app/utils';
 import { DateSlide, DaysOfWeek } from 'src/app/models/types';
 import { assertAreEqual } from './test-utils';
@@ -7,11 +7,11 @@ import { assertAreEqual } from './test-utils';
 fdescribe('Service: Carousel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CarouselService],
+      providers: [DatesCarouselService],
     });
   });
 
-  it('should create', inject([CarouselService], (service: CarouselService) => {
+  it('should create', inject([DatesCarouselService], (service: DatesCarouselService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -23,24 +23,30 @@ fdescribe('Service: Carousel', () => {
           id: `${ElementIds.DateCarouselSlide}1`,
           date: '31/12/2020',
           day: '31',
+          month: 'December',
           dayOfWeek: DaysOfWeek.Thursday,
+          year: 2020,
         },
         {
           id: `${ElementIds.DateCarouselSlide}2`,
           date: '01/01/2021',
           day: '01',
+          month: 'January',
           dayOfWeek: DaysOfWeek.Friday,
+          year: 2021,
         },
         {
           id: `${ElementIds.DateCarouselSlide}3`,
           date: '02/01/2021',
           day: '02',
+          month: 'January',
           dayOfWeek: DaysOfWeek.Saturday,
+          year: 2021,
         },
       ];
       const expectedSize = 3;
 
-      const result = CarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
+      const result = DatesCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
 
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {
@@ -48,6 +54,7 @@ fdescribe('Service: Carousel', () => {
         expect(slide.date).toEqual(expectedSlides[i].date);
         expect(slide.day).toEqual(expectedSlides[i].day);
         expect(slide.dayOfWeek).toEqual(expectedSlides[i].dayOfWeek);
+        expect(slide.month).toEqual(expectedSlides[i].month);
       });
     });
 
@@ -59,29 +66,37 @@ fdescribe('Service: Carousel', () => {
           date: '30/12/2020',
           day: '30',
           dayOfWeek: DaysOfWeek.Wednesday,
+          month: 'December',
+          year: 2020,
         },
         {
           id: `${ElementIds.DateCarouselSlide}2`,
           date: '31/12/2020',
           day: '31',
           dayOfWeek: DaysOfWeek.Thursday,
+          month: 'December',
+          year: 2020,
         },
         {
           id: `${ElementIds.DateCarouselSlide}3`,
           date: '01/01/2021',
           day: '01',
           dayOfWeek: DaysOfWeek.Friday,
+          month: 'January',
+          year: 2021,
         },
         {
           id: `${ElementIds.DateCarouselSlide}4`,
           date: '02/01/2021',
           day: '02',
           dayOfWeek: DaysOfWeek.Saturday,
+          month: 'January',
+          year: 2021,
         },
       ];
       const expectedSize = 4;
 
-      const result = CarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
+      const result = DatesCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
 
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {
@@ -89,6 +104,7 @@ fdescribe('Service: Carousel', () => {
         expect(slide.date).toEqual(expectedSlides[i].date);
         expect(slide.day).toEqual(expectedSlides[i].day);
         expect(slide.dayOfWeek).toEqual(expectedSlides[i].dayOfWeek);
+        expect(slide.month).toEqual(expectedSlides[i].month);
       });
     });
   });

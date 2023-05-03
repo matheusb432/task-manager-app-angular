@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class DatesCarouselService {
   private slides$ = new BehaviorSubject<DateSlide[]>(
-    DatesCarouselService.buildDatesCarousel(new Date(), 30)
+    DatesCarouselService.buildDatesCarousel(new Date(), 60)
   );
 
   getSlides(): Observable<DateSlide[]> {
@@ -30,28 +30,21 @@ export class DatesCarouselService {
 
     const slides: DateSlide[] = [];
     const daysToAdd = -Math.floor(size / 2);
+    let lastMonth = '';
 
     for (let days = 0; days < size; days++) {
       const date = DateUtilsService.addDays(centerDate, days + daysToAdd);
+      const dateValues = DateUtilsService.getDateValues(date);
 
       slides.push({
         id: `${ElementIds.DateCarouselSlide}${days + 1}`,
-        ...this.getDateValues(date),
+        ...dateValues,
         selected: days + daysToAdd === 0,
+        firstOfMonth: dateValues.month !== lastMonth,
       });
+
+      lastMonth = dateValues.month;
     }
     return slides;
-  }
-
-  static getDateValues(date: Date): DateValues {
-    const formattedDate = DateUtilsService.formatDate(date);
-    const formattedDay = DateUtilsService.formatDay(date);
-    const formattedDayOfWeek = DateUtilsService.toDayOfWeek(date.getDay());
-
-    return {
-      date: formattedDate,
-      day: formattedDay,
-      dayOfWeek: formattedDayOfWeek,
-    };
   }
 }

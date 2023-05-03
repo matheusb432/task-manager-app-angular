@@ -1,7 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { DateUtilsService } from '../date-utils.service';
+import { DateValues, DaysOfWeek } from 'src/app/models/types';
 
-describe('Service: DateUtils', () => {
+fdescribe('Service: DateUtils', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DateUtilsService],
@@ -69,6 +70,19 @@ describe('Service: DateUtils', () => {
     it('should return an empty string when given a falsy value', () => {
       expect(DateUtilsService.formatDay(null as unknown as Date)).toEqual('');
       expect(DateUtilsService.formatDay(null as unknown as Date)).toEqual('');
+    });
+  });
+
+  describe('getDateValues', () => {
+    it('should return the date values', () => {
+      const expectedResult: DateValues = {
+        day: '01',
+        dayOfWeek: DaysOfWeek.Monday,
+        month: 'May',
+        date: '01/05/2023',
+        year: 2023,
+      }
+      expect(DateUtilsService.getDateValues(new Date(2023, 4, 1))).toEqual(expectedResult);
     });
   });
 });

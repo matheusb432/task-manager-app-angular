@@ -1,3 +1,4 @@
+export { MonthSlide } from './month-slide';
 export { DateValues } from './date-values';
 export { DateSlide } from './date-slide';
 export { StoreData, StoreDataTypes } from './store-data';

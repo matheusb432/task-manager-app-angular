@@ -1,6 +1,12 @@
-import { DatePipe, WeekDay } from '@angular/common';
+import {
+  DatePipe,
+  FormStyle,
+  TranslationWidth,
+  WeekDay,
+  getLocaleMonthNames,
+} from '@angular/common';
 import { Injectable } from '@angular/core';
-import { DaysOfWeek } from '../models/types';
+import { DateValues, DaysOfWeek } from '../models/types';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +25,13 @@ export class DateUtilsService {
   static formatDay = (date: Date): string => {
     if (!date) return '';
 
-    return date.getDate().toString().padStart(2, '0');
+    return DateUtilsService.formatDayFromNumber(date.getDate());
+  };
+
+  private static formatDayFromNumber = (day: number): string => {
+    if (!day) return '';
+
+    return day.toString().padStart(2, '0');
   };
 
   static toDayOfWeek = (dayOfWeek: WeekDay): DaysOfWeek | '' => {
@@ -41,4 +53,25 @@ export class DateUtilsService {
     result.setDate(result.getDate() + days);
     return result;
   };
+
+  static getMonthName = (month: number): string => {
+    const monthNames = getLocaleMonthNames('en-US', FormStyle.Format, TranslationWidth.Wide);
+
+    return monthNames[month - 1];
+  };
+
+  static getDateValues(date: Date): DateValues {
+    const formattedDate = DateUtilsService.formatDate(date);
+    const day = DateUtilsService.formatDayFromNumber(date.getDate());
+    const dayOfWeek = DateUtilsService.toDayOfWeek(date.getDay());
+    const month = DateUtilsService.getMonthName(date.getMonth() + 1);
+
+    return {
+      date: formattedDate,
+      dayOfWeek,
+      day,
+      month,
+      year: date.getFullYear(),
+    };
+  }
 }

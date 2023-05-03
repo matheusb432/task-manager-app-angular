@@ -10,4 +10,5 @@ export enum ElementIds {
   LoginSubmit = 'cLoginSubmit',
   SignupSubmit = 'cSignupSubmit',
   DateCarouselSlide = 'cDateCarouselSlide',
+  MonthCarouselSlide = 'cMonthCarouselSlide',
 }
