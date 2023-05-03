@@ -79,9 +79,7 @@ export class ProfileListComponent implements OnInit {
 
     if (nameFilter === this.prevFilter) return;
     this.prevFilter = nameFilter;
-    await this.service.loadListItems(
-      this.getPaginationQuery(1)
-    );
+    await this.service.loadListItems(this.getPaginationQuery(1));
   }
 
   async paginate(event: PageEvent): Promise<void> {
@@ -100,7 +98,7 @@ export class ProfileListComponent implements OnInit {
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
     return PaginationOptions.from(page, itemsPerPage ?? this.itemsPerPage, {
-      filter: { name: this.prevFilter ?[ODataOperators.Contains, this.prevFilter] : undefined },
+      filter: { name: this.prevFilter ? [ODataOperators.Contains, this.prevFilter] : undefined },
       orderBy: us.orderByToOData(this.config.orderBy),
     });
   }

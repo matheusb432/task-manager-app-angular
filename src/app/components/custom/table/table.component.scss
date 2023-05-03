@@ -1,5 +1,6 @@
 table.data-table {
   width: 100%;
+  position: relative;
   border-radius: 0.25rem;
   overflow: hidden;
   margin-bottom: 1.5rem;
@@ -7,11 +8,13 @@ table.data-table {
 }
 
 .table-header {
+  position: relative;
   color: #fff;
   background-color: var(--secondary);
 }
 
 .table-row {
+  position: relative;
   color: #000;
 
   &:nth-child(odd) {
@@ -20,6 +23,24 @@ table.data-table {
 
   &:nth-child(even) {
     background: var(--primary-lighter);
+  }
+}
+
+.table-loader {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+
+  app-loading {
+    position: absolute;
+    z-index: 1000;
   }
 }
 
@@ -40,9 +61,11 @@ td {
 
 .column-sort {
   cursor: pointer;
+  position: relative;
 
   app-icon {
     opacity: 0;
+    position: absolute;
     transition: all 0.2s ease-in-out;
     &.active-sort {
       opacity: 1;

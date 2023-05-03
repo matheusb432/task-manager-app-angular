@@ -8,6 +8,24 @@
   color: set-text-color($color);
 }
 
+@mixin add-pulse($duration: 3s) {
+  animation: pulse $duration infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background: #fff;
+  }
+
+  50% {
+    background: var(--primary-lighter);
+  }
+
+  100% {
+    background: #fff;
+  }
+}
+
 @function set-text-color($color) {
   @if (lightness($color) > 70) {
     @return #333;

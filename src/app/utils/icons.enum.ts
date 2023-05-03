@@ -31,4 +31,6 @@ export enum Icons {
   Undo = 'undo',
   Login = 'login',
   Logout = 'logout',
+  ChevronRight = 'chevron_right',
+  ChevronLeft = 'chevron_left',
 }

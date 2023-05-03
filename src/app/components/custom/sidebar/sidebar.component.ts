@@ -1,11 +1,11 @@
-import { Pages } from 'src/app/utils';
+import { Icons, Pages } from 'src/app/utils';
 import { Component } from '@angular/core';
 import { NavItem } from 'src/app/models/configs';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
   navItems: NavItem[] = [
@@ -29,5 +29,7 @@ export class SidebarComponent {
       label: 'Metrics',
       link: Pages.Metrics,
     },
-  ]
+  ];
+
+  Icons = Icons;
 }
