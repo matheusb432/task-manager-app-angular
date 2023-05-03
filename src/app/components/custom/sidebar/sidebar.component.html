@@ -11,8 +11,8 @@
     <h1 class="logo">Task Manager App</h1>
 
     <app-nav-items [items]="navItems"></app-nav-items>
-    <div class="sidebar-close" *ngIf="sidenav.opened">
-      <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true" title="Hide Sidebar" (clicked)="sidenav.close()"></app-icon>
+    <div class="sidebar-close" *ngIf="sidenav.opened" (click)="sidenav.close()">
+      <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true" title="Hide Sidebar"></app-icon>
     </div>
   </mat-sidenav>
 

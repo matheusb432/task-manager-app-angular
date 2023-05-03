@@ -12,6 +12,10 @@
   animation: pulse $duration infinite;
 }
 
+@mixin fading-bg($position) {
+  background: linear-gradient(to $position, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+
 @keyframes pulse {
   0% {
     background: #fff;

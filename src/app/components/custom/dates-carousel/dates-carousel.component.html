@@ -1,19 +1,24 @@
-<p>dates-carousel works!</p>
-<owl-carousel-o [options]="customOptions" #carousel>
-  <ng-container *ngFor="let slide of slides">
-    <ng-template carouselSlide [id]="slide.id">
-      <div class="slide" (click)="test(slide)">
-        <footer class="slide-footer">
-
-          <span class="day">
-            {{ slide.day }}
-          </span>
-          <span class="day-of-week">
-            {{ slide.dayOfWeek }}
-          </span>
-        </footer>
-      </div>
-    </ng-template>
-  </ng-container>
-</owl-carousel-o>
-<p>dates-carousel works!</p>
+<section class="carousel">
+  <div class="slide-nav-prev" (click)="prev()" [ngClass]="{ inactive: prevDisabled }">
+    <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true"></app-icon>
+  </div>
+  <owl-carousel-o [options]="customOptions" #carousel>
+    <ng-container *ngFor="let slide of slides; trackBy: getItemId">
+      <ng-template carouselSlide [id]="slide.id">
+        <div class="slide" (click)="onSlideClick(slide)" [ngClass]="{ active: slide.selected }">
+          <footer class="slide-footer">
+            <span class="day">
+              {{ slide.day }}
+            </span>
+            <span class="day-of-week">
+              {{ slide.dayOfWeek }}
+            </span>
+          </footer>
+        </div>
+      </ng-template>
+    </ng-container>
+  </owl-carousel-o>
+  <div class="slide-nav-next" (click)="next()" [ngClass]="{ inactive: nextDisabled }">
+    <app-icon [icon]="Icons.ChevronRight" color="accent" [size]="44" [clickable]="true"></app-icon>
+  </div>
+</section>

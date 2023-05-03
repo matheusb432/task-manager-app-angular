@@ -1,3 +1,12 @@
+@use 'src/_mixins.scss' as mxs;
+
+.carousel {
+  position: relative;
+  background: var(--primary-darker);
+  padding: 1rem;
+  padding-bottom: 0.5rem;
+}
+
 $slide-width: 160px;
 
 .slide {
@@ -6,8 +15,17 @@ $slide-width: 160px;
   height: calc($slide-width / 3) * 2;
   padding: 1rem;
   cursor: pointer;
-  background: var(--primary-darker);
+  background: #000;
   border: 1px solid #fff;
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  &.active {
+    border: 2px solid var(--primary);
+  }
 }
 
 .slide-footer {
@@ -29,5 +47,56 @@ $slide-width: 160px;
 }
 
 ::ng-deep .owl-nav {
-  color: #000;
+  display: none;
+}
+
+::ng-deep .owl-stage {
+  margin-bottom: 0.5rem;
+}
+$slide-nav-width: 36px;
+
+.slide-nav {
+  position: absolute;
+  top: 0;
+  height: $slide-nav-width * 4 + 20px;
+  width: $slide-nav-width;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.15s ease-in-out;
+
+  app-icon {
+    opacity: 0;
+    transition: all 0.15s ease-in-out;
+  }
+
+  &:hover {
+    opacity: 1;
+
+    app-icon {
+      opacity: 1;
+    }
+  }
+
+  &.inactive {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+.slide-nav-prev {
+  @extend .slide-nav;
+  @include mxs.fading-bg(right);
+  left: 0;
+}
+
+.slide-nav-next {
+  @extend .slide-nav;
+  @include mxs.fading-bg(left);
+  right: 0;
 }
