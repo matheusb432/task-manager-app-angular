@@ -1,3 +1,4 @@
+export { DateSlide } from './date-slide';
 export { StoreData, StoreDataTypes } from './store-data';
 export { AuthData, DecodedAuthToken } from './auth-data';
 export { AppRequestData, RequestData } from './app-request-data';

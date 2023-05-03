@@ -34,6 +34,8 @@ import { FocusInitialDirective, SetIdDirective } from '../directives';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 import { LoadingComponent } from '../components/custom/loading/loading.component';
 import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.component';
+import { DatesCarouselComponent } from '../components/custom/dates-carousel/dates-carousel.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.
     ModalFeedbackComponent,
     BreadcrumbComponent,
     PaginationComponent,
+    DatesCarouselComponent,
     FocusInitialDirective,
     SetIdDirective,
   ],
@@ -74,6 +77,7 @@ import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.
     MatDialogModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    CarouselModule,
     NgOptimizedImage,
   ],
   exports: [
@@ -95,6 +99,7 @@ import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.
     ModalFeedbackComponent,
     BreadcrumbComponent,
     PaginationComponent,
+    DatesCarouselComponent,
     MatSidenavModule,
     MatGridListModule,
     MatInputModule,
@@ -106,6 +111,7 @@ import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.
     MatDialogModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    CarouselModule,
     FormsModule,
     FocusInitialDirective,
     SetIdDirective,
