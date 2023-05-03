@@ -60,10 +60,17 @@ export class DateUtilsService {
     return monthNames[month - 1];
   };
 
+  static isWeekend = (dayOfWeek: WeekDay): boolean => {
+    return dayOfWeek === WeekDay.Saturday || dayOfWeek === WeekDay.Sunday;
+  };
+
   static getDateValues(date: Date): DateValues {
+    const dayIndex = date.getDay();
+
     const formattedDate = DateUtilsService.formatDate(date);
     const day = DateUtilsService.formatDayFromNumber(date.getDate());
-    const dayOfWeek = DateUtilsService.toDayOfWeek(date.getDay());
+    const dayOfWeek = DateUtilsService.toDayOfWeek(dayIndex);
+    const isWeekend = DateUtilsService.isWeekend(dayIndex);
     const month = DateUtilsService.getMonthName(date.getMonth() + 1);
 
     return {
@@ -72,6 +79,7 @@ export class DateUtilsService {
       day,
       month,
       year: date.getFullYear(),
+      isWeekend,
     };
   }
 }

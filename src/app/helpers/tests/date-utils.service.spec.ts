@@ -1,6 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { DateUtilsService } from '../date-utils.service';
 import { DateValues, DaysOfWeek } from 'src/app/models/types';
+import { WeekDay } from '@angular/common';
 
 fdescribe('Service: DateUtils', () => {
   beforeEach(() => {
@@ -73,6 +74,18 @@ fdescribe('Service: DateUtils', () => {
     });
   });
 
+  describe('isWeekend', () => {
+    it('should return true when the day index is a weekend', () => {
+      expect(DateUtilsService.isWeekend(WeekDay.Saturday)).toEqual(true);
+      expect(DateUtilsService.isWeekend(WeekDay.Sunday)).toEqual(true);
+    });
+
+    it('should return false when the day index is not a weekend', () => {
+      expect(DateUtilsService.isWeekend(WeekDay.Thursday)).toEqual(false);
+      expect(DateUtilsService.isWeekend(WeekDay.Friday)).toEqual(false);
+    });
+  });
+
   describe('getDateValues', () => {
     it('should return the date values', () => {
       const expectedResult: DateValues = {
@@ -81,6 +94,7 @@ fdescribe('Service: DateUtils', () => {
         month: 'May',
         date: '01/05/2023',
         year: 2023,
+        isWeekend: false,
       }
       expect(DateUtilsService.getDateValues(new Date(2023, 4, 1))).toEqual(expectedResult);
     });

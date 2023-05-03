@@ -14,6 +14,7 @@ export enum Icons {
   Info = 'info',
   Warning = 'warning',
   Error = 'error',
+  ErrorOutline = 'error_outline',
   AccountCircle = 'account_circle',
   Lock = 'lock',
   Email = 'email',
@@ -33,4 +34,7 @@ export enum Icons {
   Logout = 'logout',
   ChevronRight = 'chevron_right',
   ChevronLeft = 'chevron_left',
+  Timelapse = 'timelapse',
+  CheckBox = 'check_box',
+  Assignment = 'assignment',
 }

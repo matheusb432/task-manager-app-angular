@@ -1,46 +1,134 @@
 @use 'src/_mixins.scss' as mxs;
 
 $slide-width: 160px;
-$slide-height: calc($slide-width / 3) * 2;
+$slide-height: calc($slide-width / 5) * 4;
 $slide-nav-width: 36px;
+$border-radius: 0px;
+$carousel-primary: var(--primary);
+$carousel-bg: var(--accent);
+$carousel-header-bg: var(--bg-color);
 
 .carousel {
   position: relative;
-  background: var(--primary-darker);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  border-radius: $border-radius;
+
+  margin: 1.5rem 0;
 }
 
 .carousel-slides {
   position: relative;
   padding: 1rem 0;
+  background: $carousel-bg;
+  border-radius: $border-radius;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .carousel-header {
-  border-bottom: 4px solid var(--primary);
+  border-bottom: 4px solid $carousel-primary;
   padding-top: 4px;
-  background: var(--bg-color);
+  background: $carousel-header-bg;
+  border-radius: $border-radius;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .slide {
   position: relative;
   width: $slide-width;
-  height: calc($slide-width / 3) * 2;
-  padding: 1rem;
+  height: $slide-height;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  background: #000;
-  border: 1px solid #fff;
+  background: $carousel-header-bg;
   transition: all 0.15s ease-in-out;
 
-  &:hover {
-    filter: brightness(0.8);
+  &:not(.active):hover {
+    filter: brightness(0.85);
+  }
+
+  &:not(.active):active {
+    filter: brightness(0.7);
+  }
+
+  &.weekend {
+    .slide-header {
+      background: var(--warning);
+      color: #000;
+    }
+  }
+
+  &.holiday {
+    .slide-header {
+      background: var(--danger);
+      color: #fff;
+    }
+  }
+
+  &.special {
+    .slide-header {
+      background: var(--info);
+      color: #fff;
+    }
   }
 
   &.active {
-    border: 2px solid var(--primary);
+    cursor: default;
+
+    .slide-header {
+      background: $carousel-primary;
+      color: #fff;
+    }
   }
 
-  &.first-of-month {
-    background: orangered;
+
+  .slide-header {
+    display: flex;
+    padding: 0.25rem;
+    align-items: flex-end;
+    color: var(--primary-darker);
+    background: var(--primary-lighter);
+    transition: all 0.3s ease-in-out;
+
+    .day {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .day-of-week {
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .month {
+      display: block;
+      margin-left: auto;
+      text-align: start;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+  }
+
+  .slide-body {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    padding: 0.25rem;
+
+    .tasks,
+    .hours,
+    .rating {
+      width: 100%;
+
+      &.failed {
+        color: var(--danger);
+      }
+
+      &.completed {
+        color: green;
+      }
+    }
   }
 }
 
@@ -53,7 +141,7 @@ $slide-nav-width: 36px;
     text-align: center;
     .month,
     .year {
-      color: var(--primary);
+      color: $carousel-primary;
     }
   }
 
@@ -70,7 +158,7 @@ $slide-nav-width: 36px;
     // cursor: pointer;
     // transition: all 0.15s ease-in-out;
     // &:hover {
-    //   color: var(--primary);
+    //   color: $carousel-primary;
     // }
   }
 
@@ -79,31 +167,6 @@ $slide-nav-width: 36px;
     font-weight: 700;
     color: #fff;
   }
-}
-
-.floating-slide-data {
-  position: absolute;
-  top: -14px;
-  z-index: 9999;
-  background-color: #000;
-}
-
-.slide-footer {
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
-}
-
-.day {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.day-of-week {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
 }
 
 ::ng-deep .owl-nav {
@@ -151,11 +214,13 @@ $slide-nav-width: 36px;
 .slide-nav-prev {
   @extend .slide-nav;
   @include mxs.fading-bg(right);
+  border-bottom-left-radius: $border-radius;
   left: 0;
 }
 
 .slide-nav-next {
   @extend .slide-nav;
   @include mxs.fading-bg(left);
+  border-bottom-right-radius: $border-radius;
   right: 0;
 }

@@ -6,4 +6,8 @@ export interface DateValues {
   month: string;
   year: number;
   dayOfWeek: DaysOfWeek | '';
+  isWeekend: boolean;
+  isHoliday?: boolean;
+  isSpecial?: boolean;
+  isToday?: boolean;
 }

@@ -25,6 +25,7 @@ fdescribe('Service: Carousel', () => {
           day: '31',
           month: 'December',
           dayOfWeek: DaysOfWeek.Thursday,
+          isWeekend: false,
           year: 2020,
         },
         {
@@ -33,6 +34,7 @@ fdescribe('Service: Carousel', () => {
           day: '01',
           month: 'January',
           dayOfWeek: DaysOfWeek.Friday,
+          isWeekend: false,
           year: 2021,
         },
         {
@@ -41,6 +43,7 @@ fdescribe('Service: Carousel', () => {
           day: '02',
           month: 'January',
           dayOfWeek: DaysOfWeek.Saturday,
+          isWeekend: true,
           year: 2021,
         },
       ];
@@ -67,6 +70,7 @@ fdescribe('Service: Carousel', () => {
           day: '30',
           dayOfWeek: DaysOfWeek.Wednesday,
           month: 'December',
+          isWeekend: false,
           year: 2020,
         },
         {
@@ -75,6 +79,7 @@ fdescribe('Service: Carousel', () => {
           day: '31',
           dayOfWeek: DaysOfWeek.Thursday,
           month: 'December',
+          isWeekend: false,
           year: 2020,
         },
         {
@@ -83,6 +88,7 @@ fdescribe('Service: Carousel', () => {
           day: '01',
           dayOfWeek: DaysOfWeek.Friday,
           month: 'January',
+          isWeekend: false,
           year: 2021,
         },
         {
@@ -91,6 +97,7 @@ fdescribe('Service: Carousel', () => {
           day: '02',
           dayOfWeek: DaysOfWeek.Saturday,
           month: 'January',
+          isWeekend: true,
           year: 2021,
         },
       ];

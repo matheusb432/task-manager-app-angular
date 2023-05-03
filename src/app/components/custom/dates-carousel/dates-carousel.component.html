@@ -23,22 +23,43 @@
       <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true"></app-icon>
     </div>
     <owl-carousel-o [options]="carouselOptions" #carousel (changed)="handleChange($event)">
-      <ng-container *ngFor="let slide of slides; trackBy: getItemId">
+      <ng-container *ngFor="let slide of slides; let i = index; trackBy: getItemId">
         <ng-template carouselSlide [id]="slide.id">
           <div
             class="slide"
             (click)="onSlideClick(slide)"
-            [ngClass]="{ active: slide.selected, 'first-of-month': slide.firstOfMonth }"
+            [ngClass]="{
+              weekend: slide.isWeekend,
+              active: slide.selected,
+              holiday: slide.isHoliday,
+              special: slide.isSpecial,
+            }"
           >
-            <header class="slide-header"></header>
-            <footer class="slide-footer">
-              <span class="day">
-                {{ slide.day }}
+            <header class="slide-header">
+              <div>
+                <span class="day">
+                  {{ slide.day }}
+                </span>
+                <span class="day-of-week">
+                  {{ slide.dayOfWeek }}
+                </span>
+              </div>
+            </header>
+            <div class="slide-body">
+              <!-- TODO add timesheet data -->
+              <span class="tasks" title="5 total tasks">
+                <app-icon [icon]="Icons.Assignment" [size]="24"></app-icon>
+                5
               </span>
-              <span class="day-of-week">
-                {{ slide.dayOfWeek }}
+              <span class="hours completed" title="5 out of 8 hours completed">
+                <app-icon [icon]="Icons.Timelapse" [size]="24"></app-icon>
+                5/8
               </span>
-            </footer>
+              <span class="rating failed" title="3.6 average rating">
+                <app-icon [icon]="Icons.Star" [size]="24"></app-icon>
+                3.6
+              </span>
+            </div>
           </div>
         </ng-template>
       </ng-container>
