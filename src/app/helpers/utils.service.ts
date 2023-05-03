@@ -13,16 +13,6 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class UtilsService {
-  static formatDate = (date: Date): string => {
-    if (!date) return '';
-
-    const datePipe = new DatePipe('en-US');
-
-    const formattedDate = datePipe.transform(date, 'dd/MM/yyyy');
-
-    return formattedDate || '';
-  };
-
   static capitalize = (word: string | undefined): string => {
     if (!word) return '';
 

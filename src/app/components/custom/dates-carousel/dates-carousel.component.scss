@@ -1,13 +1,17 @@
 @use 'src/_mixins.scss' as mxs;
 
+$slide-width: 160px;
+$slide-nav-width: 36px;
+$slide-height: $slide-nav-width * 4 + 20px;
+
 .carousel {
   position: relative;
   background: var(--primary-darker);
   padding: 1rem;
   padding-bottom: 0.5rem;
+  height: $slide-height;
 }
 
-$slide-width: 160px;
 
 .slide {
   position: relative;
@@ -53,13 +57,12 @@ $slide-width: 160px;
 ::ng-deep .owl-stage {
   margin-bottom: 0.5rem;
 }
-$slide-nav-width: 36px;
 
 .slide-nav {
   position: absolute;
   top: 0;
-  height: $slide-nav-width * 4 + 20px;
   width: $slide-nav-width;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;

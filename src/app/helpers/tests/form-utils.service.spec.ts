@@ -3,7 +3,7 @@ import { EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormUtilsService } from '../form-utils.service';
 
-fdescribe('FormUtilsService', () => {
+describe('FormUtilsService', () => {
   let service: FormUtilsService;
 
   beforeEach(() => {

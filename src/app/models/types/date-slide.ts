@@ -1,7 +1,6 @@
-export interface DateSlide {
+import { DateValues } from './date-values';
+
+export interface DateSlide extends DateValues {
   id: string;
-  date: string;
-  day: string;
-  dayOfWeek: string;
   selected?: boolean;
 }

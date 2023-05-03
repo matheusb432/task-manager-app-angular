@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { us } from '../helpers';
+import { us, DateUtilsService } from '../helpers';
 import { ApiRequest, SelectOption } from '../models/configs';
 import { ProfileType } from '../models/entities/profile-type';
 import { RequestData } from '../models/types';
@@ -41,7 +41,11 @@ export class ProfileTypeService {
     const hasDates = !!dateRangeStart && !!dateRangeEnd;
 
     return hasDates
-      ? ' (' + us.formatDate(dateRangeStart) + ' - ' + us.formatDate(dateRangeEnd) + ')'
+      ? ' (' +
+          DateUtilsService.formatDate(dateRangeStart) +
+          ' - ' +
+          DateUtilsService.formatDate(dateRangeEnd) +
+          ')'
       : '';
   }
 }

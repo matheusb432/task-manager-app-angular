@@ -1,3 +1,4 @@
+export { DatesCarouselService } from './dates-carousel.service';
 export { TokenService } from './token.service';
 export { AppService } from './app.service';
 export { AuthService } from './auth.service';

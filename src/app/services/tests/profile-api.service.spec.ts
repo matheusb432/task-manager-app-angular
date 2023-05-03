@@ -59,7 +59,7 @@ describe('Service: ProfileApi', () => {
 
   describe('insert', () => {
     it('should insert a new Profile', () => {
-      const mockProfile: Profile = { name: 'John Doe', userId: 1, timeTarget: '10:00' };
+      const mockProfile: Profile = { name: 'John Doe', timeTarget: '10:00' };
       const mockPostReturn = { id: 1 };
       service.insert(mockProfile).then((result) => {
         assertAreEqual(result, mockPostReturn)
@@ -89,8 +89,8 @@ describe('Service: ProfileApi', () => {
 
   describe('update', () => {
     it('should send a PUT request to the API with the updated profile', () => {
-      const updatedProfile: Profile = { id: 1, name: 'Updated Profile', userId: 1 };
-      const expectedBody: ProfilePutDto = { id: 1, name: 'Updated Profile', userId: 1 };
+      const updatedProfile: Profile = { id: 1, name: 'Updated Profile' };
+      const expectedBody: ProfilePutDto = { id: 1, name: 'Updated Profile' };
 
       service.update(updatedProfile).then(() => {
         expect().nothing();

@@ -1,3 +1,4 @@
+export { DateValues } from './date-values';
 export { DateSlide } from './date-slide';
 export { StoreData, StoreDataTypes } from './store-data';
 export { AuthData, DecodedAuthToken } from './auth-data';
@@ -11,3 +12,4 @@ export { ErrorMessages } from './error-messages.enum';
 export { FormItem, FormValue } from './form-types';
 export { PaginatorEvent } from './paginator-event';
 export { Requests } from './requests.enum';
+export { DaysOfWeek } from './days-of-week.enum';

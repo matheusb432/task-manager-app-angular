@@ -19,18 +19,6 @@ describe('Service: Utils', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('formatDate', () => {
-    it('should return an empty string when given a falsy value', () => {
-      expect(UtilsService.formatDate(null as unknown as Date)).toEqual('');
-      expect(UtilsService.formatDate(undefined as unknown as Date)).toEqual('');
-    });
-
-    it('should format a date correctly', () => {
-      const date = new Date(2023, 3, 21);
-      expect(UtilsService.formatDate(date)).toEqual('21/04/2023');
-    });
-  });
-
   describe('capitalize', () => {
     it('should return an empty string when given a falsy value', () => {
       expect(UtilsService.capitalize(undefined)).toEqual('');
