@@ -5,10 +5,15 @@ import { TimesheetPutDto, Timesheet, PaginatedResult } from 'src/app/models';
 import { PaginationOptions } from '../../helpers/pagination-options';
 import { TimesheetApiService } from '../api';
 import { assertAreEqual } from './test-utils';
+import { Mapper } from 'mapper-ts/lib-esm';
 
 describe('Service: TimesheetApi', () => {
   let service: TimesheetApiService;
   let httpMock: HttpTestingController;
+
+  function mapItem(item: object): Timesheet {
+    return new Mapper(Timesheet).map(item) as Timesheet;
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -26,7 +31,7 @@ describe('Service: TimesheetApi', () => {
   describe('getById', () => {
     it('should return a Timesheet', () => {
       const id = 1;
-      const mockTimesheet: Timesheet = { id: 1, date: '2023-05-10' };
+      const mockTimesheet: Timesheet = mapItem({ id: 1, date: '2023-05-10' });
 
       service.getById(id).then();
       const req = httpMock.expectOne(us.buildODataQuery(service['url'], { filter: { id } }));
@@ -40,7 +45,7 @@ describe('Service: TimesheetApi', () => {
       const mockPaginationOptions: PaginationOptions = { page: 1, itemsPerPage: 10 };
       const mockPaginatedResult: PaginatedResult<Timesheet> = {
         total: 1,
-        items: [{ id: 1, date: '2023-05-10' }],
+        items: [mapItem({ id: 1, date: '2023-05-10' })],
       };
 
       service.getPaginated(mockPaginationOptions).then((result) => {
@@ -57,7 +62,7 @@ describe('Service: TimesheetApi', () => {
 
   describe('insert', () => {
     it('should insert a new Timesheet', () => {
-      const mockTimesheet: Timesheet = { date: '2023-05-10' };
+      const mockTimesheet: Timesheet = mapItem({ date: '2023-05-10' });
       const mockPostReturn = { id: 1 };
       service.insert(mockTimesheet).then((result) => {
         assertAreEqual(result, mockPostReturn);
@@ -72,7 +77,7 @@ describe('Service: TimesheetApi', () => {
 
   describe('duplicate', () => {
     it('should duplicate an existing Timesheet', () => {
-      const mockTimesheet: Timesheet = { id: 1, date: '2023-05-10' };
+      const mockTimesheet: Timesheet = mapItem({ id: 1, date: '2023-05-10' });
       const mockPostReturn = { id: 2 };
       service.duplicate(mockTimesheet).then((result) => {
         assertAreEqual(result, mockPostReturn);
@@ -87,7 +92,7 @@ describe('Service: TimesheetApi', () => {
 
   describe('update', () => {
     it('should send a PUT request to the API with the updated Timesheet', () => {
-      const updatedTimesheet: Timesheet = { id: 1, date: '2023-05-10' };
+      const updatedTimesheet: Timesheet = mapItem({ id: 1, date: '2023-05-10' });
       const expectedBody: TimesheetPutDto = { id: 1, date: '2023-05-10' };
 
       service.update(updatedTimesheet).then(() => {

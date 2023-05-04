@@ -1,0 +1,27 @@
+<article id="cTimesheetListContainer">
+  <header class="search-bar">
+    <!-- TODO search should filter by date range -->
+    <!-- <app-search
+      fcName="name"
+      [control]="filterForm.controls.name"
+      [fg]="filterForm"
+      labelText="Search"
+      placeholder="Filter by name"
+      elId="cTimesheetListNameFilter"
+      (filter)="onFilter()"
+      (apply)="applyFilter()"
+    ></app-search> -->
+  </header>
+  <app-table
+    [items]="items"
+    [config]="config"
+    [elId]="elIds.TimesheetTable"
+    (deleteItem)="openDeleteModal($event)"
+    (orderByChanged)="handleOrderBy()"
+  ></app-table>
+  <app-pagination
+    [totalItems]="totalItems"
+    [currentPage]="currentPage"
+    (pageChanged)="paginate($event)"
+  ></app-pagination>
+</article>

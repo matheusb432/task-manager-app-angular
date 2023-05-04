@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule, DatePipe, NgOptimizedImage, PercentPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CardComponent } from '../components/custom/card/card.component';
 import { ImageComponent } from '../components/custom/image/image.component';
@@ -34,6 +34,8 @@ import { FocusInitialDirective, SetIdDirective } from '../directives';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 import { LoadingComponent } from '../components/custom/loading/loading.component';
 import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.component';
+import { DynamicPipe } from '../pipes/dynamic.pipe';
+import { TimePipe } from '../pipes';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.
     PaginationComponent,
     FocusInitialDirective,
     SetIdDirective,
+    DynamicPipe,
+    TimePipe,
   ],
   imports: [
     CommonModule,
@@ -110,6 +114,9 @@ import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.
     FocusInitialDirective,
     SetIdDirective,
     ReactiveFormsModule,
+    DynamicPipe,
+    TimePipe,
   ],
+  providers: [DynamicPipe, DatePipe, TimePipe],
 })
 export class PageModule {}

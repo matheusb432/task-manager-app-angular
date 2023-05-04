@@ -22,11 +22,13 @@
       *ngFor="let item of orderedItems; let itemIndex = index; trackBy: getItemId"
       class="table-row"
     >
-      <td *ngFor="let itemConfig of itemConfigs" class="table-item">{{ item[itemConfig.key] }}</td>
+      <td *ngFor="let itemConfig of itemConfigs" class="table-item">
+        {{ item[itemConfig.key] | dynamic : itemConfig.pipe : itemConfig.pipeArgs }}
+      </td>
       <td *ngIf="canShowActions()" class="text-right actions">
         <app-icon
           *ngFor="let icon of icons"
-          [appSetId]="'cTable' + icon.id + itemIndex"
+          [elId]="'cTable' + icon.id + itemIndex"
           [icon]="icon.icon"
           [color]="icon.color"
           [url]="icon.urlType != null ? buildUrl() : undefined"

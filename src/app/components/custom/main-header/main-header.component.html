@@ -3,6 +3,12 @@
   <section class="user-data" *ngIf="setLoggedUser$ | async as loggedUser">
     <span>{{ loggedUser.name }}</span>
     <app-icon [icon]="Icons.AccountCircle"></app-icon>
-      <app-icon [icon]="Icons.Logout" [clickable]="true" title="Logout" (clicked)="logout()"></app-icon>
+    <app-icon
+      appSetId="cMainHeaderLogout"
+      [icon]="Icons.Logout"
+      [clickable]="true"
+      title="Logout"
+      (clicked)="logout()"
+    ></app-icon>
   </section>
 </header>

@@ -16,6 +16,7 @@ export class IconComponent {
   @Input() clickable = false;
   @Input() queryParams?: Record<string, string>;
   @Input() title = '';
+  @Input() elId = '';
 
   @Output() clicked = new EventEmitter<void>();
 }

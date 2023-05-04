@@ -49,7 +49,7 @@ export class TimesheetApiService {
 
   duplicate = async (item: Timesheet): Promise<PostReturn> => this.insert(item);
 
-  update = async (item: Timesheet): Promise<void> =>
+  update = async (item: Partial<Timesheet>): Promise<void> =>
     this.api.update({
       ...ApiRequest.put(this.url, item.id ?? 0, item, TimesheetPutDto),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.TimesheetSubmit) },

@@ -1,11 +1,5 @@
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { passwordsAreEqual, userNameValidator } from 'src/app/helpers';
 import { Signup } from 'src/app/models';
 
 export class SignupFormGroup extends FormGroup<SignupForm> {
@@ -69,21 +63,3 @@ function passwordStrengthValidator(): ValidatorFn {
   };
 }
 
-function passwordsAreEqual(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
-  if (password?.value !== confirmPassword?.value) {
-    return { confirmpassword: true };
-  }
-  return null;
-}
-
-function userNameValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: boolean } | null => {
-    const value = control.value;
-    if (value && !/^[a-zA-Z0-9_.]+$/.test(value)) {
-      return { username: true };
-    }
-    return null;
-  };
-}

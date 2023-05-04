@@ -3,6 +3,8 @@ import { ProfilePresetTaskItem } from './profile-preset-task-item';
 import { ProfileType } from './profile-type';
 import { TableItem } from '../types';
 import { TableItemConfig } from '../configs';
+import { PercentPipe } from '@angular/common';
+import { TimePipe } from 'src/app/pipes/time.pipe';
 
 export class Profile implements TableItem {
   id?: number;
@@ -20,7 +22,8 @@ export class Profile implements TableItem {
   static tableItems = (): TableItemConfig<Profile>[] => [
     { header: '#', key: 'id' },
     { header: 'name', key: 'name' },
-    { header: 'Time Target', key: 'timeTarget' },
+    // TODO add time target pipe? pipe to access nested objects?
+    { header: 'Time Target', key: 'timeTarget', pipe: TimePipe },
     { header: 'Tasks Target', key: 'tasksTarget' },
     { header: 'Priority', key: 'priority' },
   ];

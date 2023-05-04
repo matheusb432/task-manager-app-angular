@@ -11,7 +11,7 @@ import { AlertTypes } from '../utils';
   providedIn: 'root',
 })
 export class ToastService {
-  private readonly posXDefault: MatSnackBarHorizontalPosition = 'end';
+  private readonly posXDefault: MatSnackBarHorizontalPosition = 'center';
   private readonly posYDefault: MatSnackBarVerticalPosition = 'top';
   private readonly actionDefault = 'Close';
   private readonly durationDefault = 4000;

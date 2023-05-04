@@ -14,3 +14,4 @@ export * from './form-types';
 export * from './paginator-event';
 export * from './requests.enum';
 export * from './days-of-week.enum';
+export * from './utility-types';

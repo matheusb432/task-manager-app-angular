@@ -1,22 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { DateSlide } from 'src/app/models';
-import { DatesCarouselService, ModalService } from 'src/app/services';
+import { DatesCarouselService, TimesheetService } from 'src/app/services';
 
 @Component({
   selector: 'app-timesheets',
   templateUrl: './timesheets.component.html',
-  styleUrls: ['./timesheets.component.scss']
+  styleUrls: ['./timesheets.component.scss'],
 })
 export class TimesheetsComponent implements OnInit {
   slides$: Observable<DateSlide[]> = of([]);
 
+  get listItems() {
+    return this.service.listItems;
+  }
+
+  get total() {
+    return this.service.total;
+  }
+
   constructor(
-    private modalService: ModalService,
+    private service: TimesheetService,
     private datesCarouselService: DatesCarouselService
   ) {}
 
   ngOnInit(): void {
     this.slides$ = this.datesCarouselService.getSlides();
+    this.service.loadListData();
   }
 }

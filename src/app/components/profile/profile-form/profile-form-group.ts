@@ -1,5 +1,7 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Mapper } from 'mapper-ts/lib-esm';
 import { Profile } from 'src/app/models';
+import { TimePipe } from 'src/app/pipes/time.pipe';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {
   static from(form: ProfileForm): ProfileFormGroup {
@@ -10,7 +12,12 @@ export class ProfileFormGroup extends FormGroup<ProfileForm> {
     return ['name', 'timeTarget', 'tasksTarget', 'priority', 'profileTypeId'];
   }
 
-  static toEntity = (value: Partial<Profile>): Profile => value as Profile;
+  static toEntity = (value: Partial<Profile>): Profile => {
+    return new Mapper(Profile).map({
+      ...value,
+      timeTarget: TimePipe.formatTimeHhMm(value.timeTarget),
+    }) as Profile;
+  };
 }
 
 export interface ProfileForm {

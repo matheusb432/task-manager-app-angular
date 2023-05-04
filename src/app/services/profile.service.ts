@@ -13,6 +13,7 @@ import { ProfileApiService } from './api';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
 import { LoadingService } from './loading.service';
+import { TimePipe } from '../pipes';
 
 @Injectable({
   providedIn: 'root',
@@ -150,7 +151,7 @@ export class ProfileService {
   };
 
   loadEditData = async (id: string | null | undefined): Promise<Profile | null> => {
-    await this.loadProfileTypes();
+    await this.loadCreateData();
     return this.loadItem(id);
   };
 
@@ -200,7 +201,11 @@ export class ProfileService {
 
       if (control == null) continue;
 
-      control.setValue(item[key] == null ? '' : item[key]);
+      let value = item[key] == null ? '' : item[key];
+
+      if (key === 'timeTarget') value = TimePipe.formatTimeHhMm(value);
+
+      control.setValue(value);
     }
   }
 

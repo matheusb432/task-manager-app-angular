@@ -28,7 +28,8 @@ export class ProfileApiService {
       customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileForm) },
     });
 
-    return this.mapGet(res);
+    return res;
+    // return this.mapGet(res);
   }
 
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
@@ -39,18 +40,19 @@ export class ProfileApiService {
       customData: { loadings: LoadingService.createManyFromId(ElementIds.ProfileTable) },
     });
 
-    res.items = res.items.map(this.mapGet);
+    // TODO clean
+    // res.items = res.items.map(this.mapGet);
 
     return res;
   }
 
-  private mapGet(profile: Profile): Profile {
-    if (!profile || typeof profile.timeTarget === 'string') return profile;
+  // private mapGet(profile: Profile): Profile {
+  //   if (!profile || typeof profile.timeTarget === 'string') return profile;
 
-    profile.timeTarget = us.numberToTime(parseInt(profile.timeTarget ?? '0'));
+  //   profile.timeTarget = us.numberToTime(parseInt(profile.timeTarget ?? '0'));
 
-    return profile;
-  }
+  //   return profile;
+  // }
 
   insert = async (item: Profile): Promise<PostReturn> =>
     this.api.insert({
