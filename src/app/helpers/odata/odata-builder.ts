@@ -1,7 +1,7 @@
 import { ODataFilter } from './odata-filter';
 import { ODataOperators } from './odata-operators.enum';
 import { ODataOptions } from './odata-options';
-import { ODataFilterValue } from './odata-types';
+import { ODataFilterValue, ODataOrderBy } from './odata-types';
 
 export class ODataBuilder {
   private baseUrl: string;
@@ -28,16 +28,10 @@ export class ODataBuilder {
 
     if (options.select) queryString += `$select=${options.select.join(',')}&`;
     if (options.expand) queryString += `$expand=${options.expand.join(',')}&`;
-    if (options.filter) {
-      const filterString = this.buildFilterString(options.filter);
-      if (filterString) queryString += `$filter=${filterString}&`;
-    }
+    queryString += this.getFilter(options.filter);
     if (options.top != null) queryString += `$top=${options.top}&`;
     if (options.skip != null) queryString += `$skip=${options.skip}&`;
-    if (options.orderBy) {
-      const orderByString = options.orderBy.join(',');
-      if (orderByString) queryString += `$orderby=${orderByString}&`;
-    }
+    queryString += this.getOrderBy(options.orderBy);
     if (options.count) queryString += `$count=${options.count}&`;
 
     return queryString.slice(0, -1);
@@ -69,5 +63,32 @@ export class ODataBuilder {
 
   private normalizeValue(value: ODataFilterValue): string {
     return typeof value === 'string' ? `'${value}'` : `${value}`;
+  }
+
+  private getFilter(filter: ODataFilter | undefined) {
+    if (!filter) return '';
+
+    const filterString = this.buildFilterString(filter);
+
+    return filterString ? `$filter=${filterString}&` : '';
+  }
+
+  private getOrderBy(orderBy: ODataOrderBy | ODataOrderBy[] | undefined): string {
+    if (!orderBy) return '';
+
+    if (orderBy[1] != null) orderBy = [orderBy as ODataOrderBy];
+
+    const orderBys: string[] = [];
+
+    // TODO test
+    orderBy.forEach((orderBy) => {
+      const [prop, direction] = orderBy;
+
+      orderBys.push(`${Array.isArray(prop) ? prop.join('/') : prop} ${direction}`);
+    });
+
+    const orderByString = orderBys.join(',');
+
+    return orderByString ? `$orderby=${orderByString}&` : '';
   }
 }

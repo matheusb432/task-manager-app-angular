@@ -19,6 +19,7 @@ import { TOKEN_DECODER_FN } from './services/token.service';
 import { PageModule } from './shared';
 import { DynamicPipe } from './pipes/dynamic.pipe';
 import { TimePipe } from './pipes/time.pipe';
+import { GetPipe } from './pipes/get.pipe';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent],

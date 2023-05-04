@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { of } from 'rxjs';
 import { us } from 'src/app/helpers';
-import { IconConfig, OrderByConfig, TableConfig, TableItem, TableItemConfig } from 'src/app/models';
+import { IconConfig, OrderByConfig, TableConfig, TableItem, TableItemConfig, TableKey } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { DetailsTypes, Icons } from 'src/app/utils';
 
@@ -103,9 +103,15 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
     this.orderByChanged.emit(orderBy);
   }
 
-  onOrderBy(columnKey: keyof T): void {
+  onOrderBy(columnKey: TableKey<T>): void {
     const newOrderBy = us.onOrderByChange(this.getOrderBy(), columnKey);
     this.setOrderBy(newOrderBy);
+  }
+
+  getPropValue(item: T, key: TableKey<T>): unknown {
+    if (!Array.isArray(key)) return item[key];
+
+    return us.getPropValue(item, us.keyToProp(key));
   }
 
   orderItems(items: T[]): T[] {

@@ -18,10 +18,7 @@ export class ArrayUtilsService {
     return array1.every((item, index) => item === array2[index]);
   }
 
-  static areEqualDeep<T>(
-    array1: T[] | undefined | null,
-    array2: T[] | undefined | null
-  ): boolean {
+  static areEqualDeep<T>(array1: T[] | undefined | null, array2: T[] | undefined | null): boolean {
     if (array1 == null || array1.length !== array2?.length) return false;
 
     return array1.every((item, index) => JSON.stringify(item) === JSON.stringify(array2[index]));
@@ -35,6 +32,5 @@ export class ArrayUtilsService {
         return prev + (value ? value : 0);
       }, 0) ?? 0
     );
-    // return this.taskItems?.reduce((prev, curr) => prev + (curr?.time ?? 0), 0) ?? 0;
   }
 }

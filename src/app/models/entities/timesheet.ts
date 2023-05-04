@@ -19,10 +19,9 @@ export class Timesheet implements TableItem {
     return this.taskItems?.length ?? 0;
   }
 
+  // TODO test
   get totalHours(): number {
-    // TODO test
     return ArrayUtilsService.sumNumberProp(this.taskItems, 'time');
-    // return this.taskItems?.reduce((prev,curr)=> prev.time + curr.time) ?? 0;
   }
 
   // TODO test

@@ -31,7 +31,7 @@ describe('Pipe: Dynamic', () => {
     expect(transformedValue).toBe(value);
   });
 
-  it('should transform the value if it and/or params is null or undefined', () => {
+  it('should transform the value if it or params is null or undefined', () => {
     const valueNull = null;
     const value = 15;
     const transformedValue = '15';

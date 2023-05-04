@@ -44,11 +44,7 @@ export class TimesheetService {
     return this._lastOptions?.page ?? 1;
   }
 
-  constructor(
-    private api: TimesheetApiService,
-    private ts: ToastService,
-    private router: Router
-  ) {}
+  constructor(private api: TimesheetApiService, private ts: ToastService, private router: Router) {}
 
   update = async (id: string | null | undefined, fg: TimesheetFormGroup): Promise<void> => {
     if (id == null) {
@@ -125,9 +121,7 @@ export class TimesheetService {
   };
 
   // TODO implement or remove
-  loadCreateData = async () => {
-    console.log('...');
-  };
+  loadCreateData = async () => {};
 
   loadEditData = async (id: string | null | undefined): Promise<Timesheet | null> => {
     await this.loadCreateData();
@@ -180,4 +174,5 @@ export class TimesheetService {
   goToCreate = () => this.router.navigateByUrl(paths.timesheetsCreate);
   goToDetails = async (id: number, type: DetailsTypes) => {
     this.router.navigate([paths.timesheetsDetails], { queryParams: { id, type } });
-  };}
+  };
+}

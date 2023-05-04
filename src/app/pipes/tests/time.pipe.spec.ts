@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TimePipe } from '../time.pipe';
 
-fdescribe('Pipe: Time', () => {
+describe('Pipe: Time', () => {
   let pipe: TimePipe;
 
   beforeEach(() => {

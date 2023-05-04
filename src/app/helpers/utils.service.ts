@@ -3,10 +3,12 @@ import * as CryptoJS from 'crypto-js';
 import { stringify } from 'crypto-js/enc-hex';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { OrderByConfig } from 'src/app/models';
+import { OrderByConfig, TableKey } from 'src/app/models';
 import { ApiEndpoints, Constants, FormTypes } from '../utils';
-import { ODataBuilder, ODataOptions } from './odata';
+import { ODataBuilder, ODataOptions, ODataOrderBy } from './odata';
 import { PaginationOptions } from './pagination-options';
+import { get, orderBy } from 'lodash-es';
+import { ArrayUtilsService } from './array-utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -106,28 +108,47 @@ export class UtilsService {
     return stringify(randomBytesBuffer).slice(0, length);
   }
 
-  static orderByToOData<T>(orderBy: OrderByConfig<T> | null): string[] {
-    if (!orderBy) return [''];
+  static orderByToOData<T>(orderBy: OrderByConfig<T> | null): ODataOrderBy | undefined {
+    if (!orderBy) return undefined;
 
     const { key, direction } = orderBy;
 
-    return [`${key as string} ${direction}`];
+    if (!Array.isArray(key)) return [String(key), direction];
+
+    return [key as [string, string], direction];
+  }
+
+  static keyToOData<T>(key: TableKey<T>): string {
+    if (!Array.isArray(key)) return String(key);
+
+    return key.join('/');
   }
 
   static onOrderByChange<T>(
     orderBy: OrderByConfig<T> | null,
-    newColumnKey: keyof T
+    newColumnKey: TableKey<T>
   ): OrderByConfig<T> | null {
     if (!orderBy) return { key: newColumnKey, direction: 'asc' };
     const { key, direction } = orderBy;
 
     if (direction === 'desc') return null;
 
-    return { key: newColumnKey, direction: key === newColumnKey ? 'desc' : 'asc' };
+    return { key: newColumnKey, direction: this.isSameKey(key, newColumnKey) ? 'desc' : 'asc' };
   }
 
-  static orderItems<T>(items: T[], key: keyof T, direction: 'asc' | 'desc'): T[] {
-    return this.deepClone(items).sort((a, b) => this.orderFn(a, b, key, direction));
+  private static isSameKey<T>(key: TableKey<T>, newColumnKey: TableKey<T>): boolean {
+    if (!Array.isArray(key) || !Array.isArray(newColumnKey)) {
+      return key === newColumnKey;
+    }
+    return ArrayUtilsService.areEqualShallow(key, newColumnKey);
+  }
+
+  static orderItems<T>(items: T[], key: TableKey<T>, direction: 'asc' | 'desc'): T[] {
+    if (!Array.isArray(key)) {
+      return this.deepClone(items).sort((a, b) => this.orderFn(a, b, key, direction));
+    }
+
+    return orderBy(items, this.keyToProp(key), direction);
   }
 
   private static orderFn<T>(a: T, b: T, key?: keyof T, direction?: string): number {
@@ -156,5 +177,13 @@ export class UtilsService {
 
   static isEmail = (email: string): boolean => {
     return RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email);
+  };
+
+  static getPropValue = (obj: object, prop: string): unknown => {
+    return get(obj, prop, null);
+  };
+
+  static keyToProp = (key: [unknown, string]): string => {
+    return key.join('.');
   };
 }

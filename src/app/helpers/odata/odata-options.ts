@@ -1,4 +1,5 @@
 import { ODataFilter } from "./odata-filter";
+import { ODataOrderBy } from './odata-types';
 
 export interface ODataOptions {
   select?: string[];
@@ -6,6 +7,6 @@ export interface ODataOptions {
   filter?: ODataFilter;
   top?: number;
   skip?: number;
-  orderBy?: string[];
+  orderBy?: ODataOrderBy | ODataOrderBy[];
   count?: boolean;
 }

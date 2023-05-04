@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ODataOperators } from '../odata';
 import { OrderByConfig } from 'src/app/models';
 import { environment } from 'src/environments/environment';
+import { assertAreEqual } from 'src/app/services/tests/test-utils';
 
 describe('Service: Utils', () => {
   let service: UtilsService;
@@ -213,22 +214,40 @@ describe('Service: Utils', () => {
 
   describe('buildODataQuery', () => {
     it('should build an OData query string', () => {
-      const result = UtilsService.buildODataQuery('https://example.com', {
+      const result1 = UtilsService.buildODataQuery('https://example.com', {
         filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] },
-        orderBy: ['name asc'],
+        orderBy: ['name', 'asc'],
       });
 
-      const expectedParams = {
+      const expectedParams1 = {
         filter: "$filter=(name eq 'John') and (age ge 20)",
         orderBy: '$orderby=name asc',
       };
 
-      expect(result.length).toEqual(
+      expect(result1.length).toEqual(
         "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=name asc"
           .length
       );
-      for (const param of Object.values(expectedParams)) {
-        expect(result).toContain(param);
+      for (const param of Object.values(expectedParams1)) {
+        expect(result1).toContain(param);
+      }
+
+      const result2 = UtilsService.buildODataQuery('https://example.com', {
+        filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] },
+        orderBy: [['nested', 'prop', 'test'], 'asc'],
+      });
+
+      const expectedParams2 = {
+        filter: "$filter=(name eq 'John') and (age ge 20)",
+        orderBy: '$orderby=nested/prop/test asc',
+      };
+
+      expect(result2.length).toEqual(
+        "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=nested/prop/test asc"
+          .length
+      );
+      for (const param of Object.values(expectedParams2)) {
+        expect(result2).toContain(param);
       }
     });
 
@@ -323,27 +342,50 @@ describe('Service: Utils', () => {
     });
 
     it('should return null when direction is descending and key matches the existing key', () => {
-      const existingOrderBy = { key: 'name', direction: 'desc' } as OrderByConfig;
+      const existingOrderBy = { key: 'name', direction: 'desc' } as unknown as OrderByConfig;
       const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'name' as keyof unknown);
       expect(newOrderBy).toBeNull();
     });
 
     it('should return an object with new column key and ascending direction when key does not match the existing key', () => {
-      const existingOrderBy = { key: 'name', direction: 'asc' } as OrderByConfig;
-      const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'age' as keyof unknown);
-      expect(newOrderBy).toEqual({ key: 'age' as keyof unknown, direction: 'asc' });
+      const existingOrderBy1 = { key: 'name', direction: 'asc' } as unknown as OrderByConfig;
+      const newOrderBy1 = UtilsService.onOrderByChange(existingOrderBy1, 'age' as keyof unknown);
+      expect(newOrderBy1).toEqual({ key: 'age' as keyof unknown, direction: 'asc' });
+
+      const existingOrderBy2 = { key: 'name', direction: 'asc' } as unknown as OrderByConfig;
+      const newOrderBy2 = UtilsService.onOrderByChange(existingOrderBy2, [
+        'age',
+        'nested.value',
+      ] as keyof unknown);
+      expect(newOrderBy2).toEqual({
+        key: ['age', 'nested.value'] as keyof unknown,
+        direction: 'asc',
+      });
     });
 
     it('should return an object with new column key and descending direction when direction is ascending and key does not match the existing key', () => {
-      const existingOrderBy = { key: 'name', direction: 'asc' } as OrderByConfig;
+      const existingOrderBy = { key: 'name', direction: 'asc' } as unknown as OrderByConfig;
       const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'age' as keyof unknown);
       expect(newOrderBy).toEqual({ key: 'age' as keyof unknown, direction: 'asc' });
     });
 
     it('should return an object with existing column key and descending direction when direction is ascending and key matches the existing key', () => {
-      const existingOrderBy = { key: 'name', direction: 'asc' } as OrderByConfig;
-      const newOrderBy = UtilsService.onOrderByChange(existingOrderBy, 'name' as keyof unknown);
-      expect(newOrderBy).toEqual({ key: 'name' as keyof unknown, direction: 'desc' });
+      const existingOrderBy1 = { key: 'name', direction: 'asc' } as unknown as OrderByConfig;
+      const newOrderBy1 = UtilsService.onOrderByChange(existingOrderBy1, 'name' as keyof unknown);
+      expect(newOrderBy1).toEqual({ key: 'name' as keyof unknown, direction: 'desc' });
+
+      const existingOrderBy2 = {
+        key: ['name', 'nested.prop'],
+        direction: 'asc',
+      } as unknown as OrderByConfig;
+      const newOrderBy2 = UtilsService.onOrderByChange(existingOrderBy2, [
+        'name',
+        'nested.prop',
+      ] as keyof unknown);
+      expect(newOrderBy2).toEqual({
+        key: ['name', 'nested.prop'] as keyof unknown,
+        direction: 'desc',
+      });
     });
   });
 
@@ -353,31 +395,60 @@ describe('Service: Utils', () => {
       { name: 'Bob', age: 30 },
       { name: 'Charlie', age: 20 },
     ];
+    const nestedItems = [
+      { name: 'A', nested: { value: 100 } },
+      { name: 'A', nested: { value: 20 } },
+      { name: 'A', nested: { value: 35 } },
+    ];
 
     it('should order items in ascending direction by default', () => {
       const orderedItems = UtilsService.orderItems(items, 'age', 'asc');
+      const orderedNestedItems = UtilsService.orderItems(nestedItems, ['nested', 'value'], 'asc');
+
       expect(orderedItems).toEqual([
         { name: 'Charlie', age: 20 },
         { name: 'Alice', age: 25 },
         { name: 'Bob', age: 30 },
+      ]);
+      expect(orderedNestedItems).toEqual([
+        { name: 'A', nested: { value: 20 } },
+        { name: 'A', nested: { value: 35 } },
+        { name: 'A', nested: { value: 100 } },
       ]);
     });
 
     it('should order items in descending direction', () => {
       const orderedItems = UtilsService.orderItems(items, 'age', 'desc');
+      const orderedNestedItems = UtilsService.orderItems(nestedItems, ['nested', 'value'], 'desc');
+
       expect(orderedItems).toEqual([
         { name: 'Bob', age: 30 },
         { name: 'Alice', age: 25 },
         { name: 'Charlie', age: 20 },
       ]);
+      assertAreEqual(orderedNestedItems, [
+        { name: 'A', nested: { value: 100 } },
+        { name: 'A', nested: { value: 35 } },
+        { name: 'A', nested: { value: 20 } },
+      ]);
     });
 
     it('should not modify original array', () => {
       const unorderedItems = items;
+      const unorderedNestedItems = nestedItems;
+
       const orderedItems = UtilsService.orderItems(unorderedItems, 'age', 'desc');
+      const orderedNestedItems = UtilsService.orderItems(
+        unorderedNestedItems,
+        ['nested', 'value'],
+        'desc'
+      );
 
       expect(orderedItems).not.toEqual(items);
       expect(unorderedItems).toEqual(items);
+
+      expect(orderedNestedItems).not.toEqual(nestedItems);
+      expect(unorderedNestedItems).toEqual(nestedItems);
     });
   });
 
@@ -439,10 +510,27 @@ describe('Service: Utils', () => {
   describe('isEmail', () => {
     it('should return true when email is valid', () => {
       expect(UtilsService.isEmail('email@example.com')).toBe(true);
-  })
+    });
 
     it('should return false when email is invalid', () => {
       expect(UtilsService.isEmail('email')).toBe(false);
     });
-});
+  });
+
+  describe('getPropValue', () => {
+    it('should return value of property when property exists', () => {
+      const obj = { name: 'John' };
+      expect(UtilsService.getPropValue(obj, 'name')).toBe('John');
+    });
+
+    it('should return null when property does not exist', () => {
+      const obj = { user: { name: 'Nested' } };
+      expect(UtilsService.getPropValue(obj, 'user.name')).toBe('Nested');
+    });
+
+    it('should return null when property does not exist', () => {
+      const obj = { user: { name: 'John' } };
+      expect(UtilsService.getPropValue(obj, 'user.age')).toBeNull();
+    });
+  });
 });

@@ -35,7 +35,7 @@ import { PaginationComponent } from '../components/custom/pagination/pagination.
 import { LoadingComponent } from '../components/custom/loading/loading.component';
 import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.component';
 import { DynamicPipe } from '../pipes/dynamic.pipe';
-import { TimePipe } from '../pipes';
+import { GetPipe, TimePipe } from '../pipes';
 
 @NgModule({
   declarations: [
@@ -61,6 +61,7 @@ import { TimePipe } from '../pipes';
     SetIdDirective,
     DynamicPipe,
     TimePipe,
+    GetPipe,
   ],
   imports: [
     CommonModule,
@@ -116,7 +117,8 @@ import { TimePipe } from '../pipes';
     ReactiveFormsModule,
     DynamicPipe,
     TimePipe,
+    GetPipe,
   ],
-  providers: [DynamicPipe, DatePipe, TimePipe],
+  providers: [DynamicPipe, DatePipe, TimePipe, GetPipe],
 })
 export class PageModule {}
