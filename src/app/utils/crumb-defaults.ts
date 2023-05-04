@@ -1,4 +1,4 @@
-import { Crumb } from '../models/configs';
+import { Crumb } from 'src/app/models';
 import { Icons } from './icons.enum';
 import { paths } from './pages';
 

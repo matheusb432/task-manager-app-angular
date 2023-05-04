@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
-import { ProfileType } from 'src/app/models/entities/profile-type';
+import { ProfileType } from 'src/app/models';
 import { ToastService } from 'src/app/services';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';

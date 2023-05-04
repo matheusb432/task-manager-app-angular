@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FormUtilsService, us } from 'src/app/helpers';
-import { ProfileType } from 'src/app/models/entities/profile-type';
+import { ProfileType } from 'src/app/models';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import {

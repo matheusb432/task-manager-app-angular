@@ -2,8 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { us } from 'src/app/helpers';
 import { PaginationOptions } from '../../helpers/pagination-options';
-import { User } from '../../models/entities';
-import { PaginatedResult } from '../../models/types';
+import { User, PaginatedResult } from 'src/app/models';
 import { UserApiService } from '../api';
 import { assertAreEqual } from './test-utils';
 

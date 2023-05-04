@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { DateSlide } from 'src/app/models/types';
+import { DateSlide } from 'src/app/models';
 import { DatesCarouselService, ModalService } from 'src/app/services';
 
 @Component({

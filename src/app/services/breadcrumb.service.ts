@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Crumb } from '../models/configs';
+import { Crumb } from 'src/app/models';
 import { crumbDefaults, paths } from '../utils';
 
 @Injectable({

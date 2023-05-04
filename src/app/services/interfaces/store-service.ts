@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { StoreData, StoreDataTypes } from 'src/app/models/types';
+import { StoreData, StoreDataTypes } from 'src/app/models';
 import { StoreKeys } from 'src/app/utils';
 
 export interface StoreService {

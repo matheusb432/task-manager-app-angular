@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
-import { Loading } from '../models/configs';
-import { AppRequestData } from '../models/types';
+import { Loading, AppRequestData } from 'src/app/models';
 import { AppService } from './app.service';
 
 @Injectable({

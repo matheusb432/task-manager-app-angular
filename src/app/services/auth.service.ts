@@ -3,11 +3,16 @@ import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { us } from '../helpers';
-import { AuthResponse, Login, Signup } from '../models/dtos/auth';
-import { UserAuthGet } from '../models/dtos/user';
-import { AuthData, DecodedAuthToken } from '../models/types';
+import {
+  AuthResponse,
+  Login,
+  Signup,
+  UserAuthGet,
+  AuthData,
+  DecodedAuthToken,
+} from 'src/app/models';
 import { StoreKeys } from '../utils';
-import { AuthApiService } from './api/auth-api.service';
+import { AuthApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
 import { TokenService } from './token.service';

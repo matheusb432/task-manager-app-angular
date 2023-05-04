@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DateUtilsService } from '../helpers';
-import { DateSlide } from '../models/types';
+import { DateSlide } from 'src/app/models';
 import { ElementIds } from '../utils';
 
 @Injectable({

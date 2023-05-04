@@ -6,7 +6,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Signup } from 'src/app/models/dtos/auth';
+import { Signup } from 'src/app/models';
 
 export class SignupFormGroup extends FormGroup<SignupForm> {
   static from(form: SignupForm): SignupFormGroup {

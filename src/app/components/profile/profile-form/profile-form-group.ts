@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Profile } from 'src/app/models/entities';
+import { Profile } from 'src/app/models';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {
   static from(form: ProfileForm): ProfileFormGroup {

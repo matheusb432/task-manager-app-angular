@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavItem } from 'src/app/models/configs';
+import { NavItem } from 'src/app/models';
 
 @Component({
   selector: 'app-nav-items [items]',

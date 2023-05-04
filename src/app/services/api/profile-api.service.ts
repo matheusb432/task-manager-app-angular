@@ -3,12 +3,16 @@ import { Injectable } from '@angular/core';
 import { ApiEndpoints, ElementIds } from 'src/app/utils';
 import { us } from '../../helpers';
 import { PaginationOptions } from '../../helpers/pagination-options';
-import { ApiRequest } from '../../models/configs/api-request';
-import { ProfilePostDto, ProfilePutDto } from '../../models/dtos/profile';
-import { Profile } from '../../models/entities';
-import { PaginatedResult, PostReturn } from '../../models/types';
 import { LoadingService } from '../loading.service';
 import { ApiService } from './api.service';
+import {
+  ApiRequest,
+  PaginatedResult,
+  PostReturn,
+  Profile,
+  ProfilePostDto,
+  ProfilePutDto,
+} from 'src/app/models';
 
 @Injectable({
   providedIn: 'root',

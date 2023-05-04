@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { IconConfig } from 'src/app/models/configs';
-import { Icons } from './../../../../utils/icons.enum';
+import { IconConfig } from 'src/app/models';
+import { Icons } from 'src/app/utils';
 
 @Component({
   selector: 'app-search [fcName] [control] [fg] [labelText]',

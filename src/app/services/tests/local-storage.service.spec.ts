@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { StoreKeys } from 'src/app/utils';
 import { LOCAL_STORAGE, LocalStorageService } from '../local-storage.service';
-import { StoreData, StoreDataTypes } from 'src/app/models/types';
+import { StoreData, StoreDataTypes } from 'src/app/models';
 import { assertAreEqual } from './test-utils';
 
 describe('Service: LocalStorage', () => {

@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { DateSlide, DaysOfWeek } from 'src/app/models/types';
+import { DateSlide, DaysOfWeek } from 'src/app/models';
 import { ElementIds } from 'src/app/utils';
 import { DatesCarouselService } from '../dates-carousel.service';
 

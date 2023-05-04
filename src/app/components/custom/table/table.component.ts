@@ -9,9 +9,7 @@ import {
 } from '@angular/core';
 import { of } from 'rxjs';
 import { us } from 'src/app/helpers';
-import { IconConfig } from 'src/app/models/configs';
-import { OrderByConfig, TableConfig, TableItemConfig } from 'src/app/models/configs';
-import { TableItem } from 'src/app/models/types';
+import { IconConfig, OrderByConfig, TableConfig, TableItem, TableItemConfig } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { DetailsTypes, Icons } from 'src/app/utils';
 

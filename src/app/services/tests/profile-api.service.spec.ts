@@ -1,10 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { us } from 'src/app/helpers';
-import { ProfilePutDto } from 'src/app/models/dtos/profile';
+import { ProfilePutDto, Profile, PaginatedResult } from 'src/app/models';
 import { PaginationOptions } from '../../helpers/pagination-options';
-import { Profile } from '../../models/entities';
-import { PaginatedResult } from '../../models/types';
 import { ProfileApiService } from '../api';
 import { assertAreEqual } from './test-utils';
 

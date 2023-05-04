@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { UserAuthGet } from 'src/app/models/dtos/user';
+import { UserAuthGet } from 'src/app/models';
 import { AuthService, ModalService } from 'src/app/services';
 import { Icons, logoutModalData } from 'src/app/utils';
 

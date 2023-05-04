@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { SignupForm, SignupFormGroup } from './signup-form-group';
 import { ElementIds, Icons } from 'src/app/utils';
-import { IconConfig } from 'src/app/models/configs';
+import { IconConfig } from 'src/app/models';
 import { FormUtilsService } from 'src/app/helpers';
 
 @Component({

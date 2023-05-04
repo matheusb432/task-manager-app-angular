@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CarouselComponent, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
-import { DateSlide, MonthSlide } from 'src/app/models/types';
+import { DateSlide, MonthSlide } from 'src/app/models';
 import { ElementIds, Icons } from 'src/app/utils';
 
 @Component({
@@ -102,7 +102,6 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
 
     const startSlide = this.slides[startPosition];
     const monthSlideId = this.getMonthSlideId(startSlide.month, startSlide.year);
-
     this.moveToMonthById(this.carouselHeader, monthSlideId);
   }
 

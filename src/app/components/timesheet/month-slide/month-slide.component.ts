@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MonthSlide } from 'src/app/models/types';
+import { MonthSlide } from 'src/app/models';
 
 @Component({
   selector: 'app-month-slide [slide] [isNextMonth]',

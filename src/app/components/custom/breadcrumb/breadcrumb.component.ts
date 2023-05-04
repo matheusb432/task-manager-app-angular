@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, tap } from 'rxjs/operators';
-import { Crumb } from 'src/app/models/configs';
+import { Crumb } from 'src/app/models';
 import { PageService } from 'src/app/services';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { Icons } from 'src/app/utils';

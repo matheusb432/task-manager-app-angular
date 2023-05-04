@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppRequestData, RequestData } from '../models/types';
+import { AppRequestData, RequestData } from 'src/app/models';
 import { us } from '../helpers';
 
 @Injectable({

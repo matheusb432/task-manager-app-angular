@@ -1,6 +1,6 @@
 import { Icons, Pages } from 'src/app/utils';
 import { Component } from '@angular/core';
-import { NavItem } from 'src/app/models/configs';
+import { NavItem } from 'src/app/models';
 
 @Component({
   selector: 'app-sidebar',

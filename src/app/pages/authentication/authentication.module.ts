@@ -4,10 +4,9 @@ import { PageModule } from 'src/app/shared';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { LoginFormComponent } from 'src/app/components/authentication/login-form/login-form.component';
-import { SignupFormComponent } from 'src/app/components/authentication/signup-form/signup-form.component';
 import { CrudPageModule } from 'src/app/shared/crud-page.module';
 import { AuthPageLayoutComponent } from 'src/app/components/layout/auth-page-layout/auth-page-layout.component';
+import { LoginFormComponent, SignupFormComponent } from 'src/app/components/authentication';
 
 @NgModule({
   declarations: [

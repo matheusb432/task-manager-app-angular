@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Card } from 'src/app/models/configs';
+import { Card } from 'src/app/models';
 
 @Component({
   selector: 'app-cards-grid [cards]',

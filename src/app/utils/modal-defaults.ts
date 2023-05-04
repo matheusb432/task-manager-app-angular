@@ -1,4 +1,4 @@
-import { ModalConfirmData } from '../models/configs/modals';
+import { ModalConfirmData } from 'src/app/models';
 
 const cancelModalData = (): ModalConfirmData => ({
   title: 'Cancel',

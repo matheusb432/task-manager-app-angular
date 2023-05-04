@@ -1,7 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { us } from '../helpers';
 import { InvalidStoreError } from '../helpers/errors';
-import { StoreData, StoreDataTypes } from '../models/types';
+import { StoreData, StoreDataTypes } from 'src/app/models';
 import { StoreKeys } from '../utils';
 import { StoreService } from './interfaces';
 

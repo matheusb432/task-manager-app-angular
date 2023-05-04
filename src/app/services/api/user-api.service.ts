@@ -4,9 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ElementIds } from 'src/app/utils';
 import { us } from '../../helpers';
 import { PaginationOptions } from '../../helpers/pagination-options';
-import { ApiRequest } from '../../models/configs/api-request';
-import { User } from '../../models/entities';
-import { PaginatedResult } from '../../models/types';
+import { ApiRequest, User, PaginatedResult } from 'src/app/models';
 import { LoadingService } from '../loading.service';
 import { ApiService } from './api.service';
 

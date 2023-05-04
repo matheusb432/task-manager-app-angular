@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Loading } from 'src/app/models/configs';
+import { Loading } from 'src/app/models';
 import { AppService } from '../app.service';
 import { LoadingService } from '../loading.service';
 

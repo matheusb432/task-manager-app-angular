@@ -6,7 +6,7 @@ import {
   getLocaleMonthNames,
 } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { DateValues, DaysOfWeek } from '../models/types';
+import { DateValues, DaysOfWeek } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root',

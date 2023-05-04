@@ -4,7 +4,7 @@ import { UtilsService } from '../utils.service';
 import { TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 import { ODataOperators } from '../odata';
-import { OrderByConfig } from 'src/app/models/configs';
+import { OrderByConfig } from 'src/app/models';
 import { environment } from 'src/environments/environment';
 
 describe('Service: Utils', () => {

@@ -3,7 +3,7 @@ import * as CryptoJS from 'crypto-js';
 import { stringify } from 'crypto-js/enc-hex';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { OrderByConfig } from '../models/configs';
+import { OrderByConfig } from 'src/app/models';
 import { ApiEndpoints, Constants, FormTypes } from '../utils';
 import { ODataBuilder, ODataOptions } from './odata';
 import { PaginationOptions } from './pagination-options';

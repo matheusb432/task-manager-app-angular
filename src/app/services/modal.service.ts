@@ -1,7 +1,7 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ModalConfirmData } from '../models/configs/modals';
+import { ModalConfirmData } from 'src/app/models';
 import { ModalConfirmComponent, ModalFeedbackComponent } from '../components/custom/modals';
 
 @Injectable({

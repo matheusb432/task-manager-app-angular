@@ -1,5 +1,5 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { DecodedAuthToken } from '../models/types';
+import { DecodedAuthToken } from 'src/app/models';
 
 export type TokenDecoderFn = <TResult = unknown, TOptions = unknown>(
   token: string,

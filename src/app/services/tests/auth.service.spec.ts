@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AuthResponse, Login, Signup } from 'src/app/models/dtos/auth';
+import { AuthResponse, Login, Signup } from 'src/app/models';
 import { StoreKeys } from 'src/app/utils';
 import { AuthService } from '../auth.service';
 import { STORE_SERVICE } from '../interfaces';

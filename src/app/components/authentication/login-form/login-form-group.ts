@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Login } from 'src/app/models/dtos/auth';
+import { Login } from 'src/app/models';
 
 export class LoginFormGroup extends FormGroup<LoginForm> {
   static from(form: LoginForm): LoginFormGroup {

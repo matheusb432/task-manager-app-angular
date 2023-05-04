@@ -6,8 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
-import { Ctor } from 'src/app/models/configs/api-request';
-import { PaginatedResult, PostReturn } from '../../models/types';
+import { Ctor, PaginatedResult, PostReturn } from 'src/app/models';
 import { AppService } from '../app.service';
 
 @Injectable({

@@ -10,7 +10,7 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { us } from 'src/app/helpers';
-import { IconConfig } from 'src/app/models/configs';
+import { IconConfig } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { validationErrorMessages } from '../validation-errors';
 

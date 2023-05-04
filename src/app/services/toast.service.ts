@@ -4,7 +4,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { ToastData } from '../models/configs';
+import { ToastData } from 'src/app/models';
 import { AlertTypes } from '../utils';
 
 @Injectable({
