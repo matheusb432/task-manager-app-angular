@@ -9,16 +9,16 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { CarouselComponent, OwlOptions, SlideModel, SlidesOutputData } from 'ngx-owl-carousel-o';
+import { CarouselComponent, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 import { DateSlide, MonthSlide } from 'src/app/models/types';
 import { ElementIds, Icons } from 'src/app/utils';
 
 @Component({
-  selector: 'app-dates-carousel [slides]',
-  templateUrl: './dates-carousel.component.html',
-  styleUrls: ['./dates-carousel.component.scss'],
+  selector: 'app-timesheet-carousel [slides]',
+  templateUrl: './timesheet-carousel.component.html',
+  styleUrls: ['./timesheet-carousel.component.scss']
 })
-export class DatesCarouselComponent implements OnChanges, AfterViewInit {
+export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;
   @ViewChild('carouselHeader', { static: false }) carouselHeader?: CarouselComponent;
 

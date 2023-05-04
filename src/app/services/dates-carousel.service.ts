@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DateSlide, DateValues } from '../models/types';
-import { DateUtilsService } from '../helpers';
-import { ElementIds } from '../utils';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DateUtilsService } from '../helpers';
+import { DateSlide } from '../models/types';
+import { ElementIds } from '../utils';
 
 @Injectable({
   providedIn: 'root',

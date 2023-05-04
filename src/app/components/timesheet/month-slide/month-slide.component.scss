@@ -1,0 +1,38 @@
+@use '../_timesheet-variables.scss' as timesheetVars;
+
+.month-slide {
+  position: relative;
+  padding: 1rem;
+  text-align: start;
+
+  &.active {
+    text-align: center;
+    .month,
+    .year {
+      color: timesheetVars.$carousel-primary;
+    }
+  }
+
+  &.next-month {
+    text-align: end;
+  }
+
+  .month {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+
+    // TODO enable carousel month clicking
+    // cursor: pointer;
+    // transition: all 0.15s ease-in-out;
+    // &:hover {
+    //   color: vars.$carousel-primary;
+    // }
+  }
+
+  .year {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+}

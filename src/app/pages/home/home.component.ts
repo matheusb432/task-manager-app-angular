@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, Observable } from 'rxjs';
 import { Card } from 'src/app/models/configs';
-import { DateSlide } from 'src/app/models/types';
-import { DatesCarouselService } from 'src/app/services/dates-carousel.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { Pages, successModalData } from 'src/app/utils';
 
@@ -12,7 +9,7 @@ import { Pages, successModalData } from 'src/app/utils';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent  {
+export class HomeComponent {
   cards: Card[] = [
     {
       id: 'cCardTimesheet',
@@ -37,17 +34,7 @@ export class HomeComponent  {
     },
   ];
 
-  slides$: Observable<DateSlide[]> = of([]);
-
-  constructor(
-    private router: Router,
-    private modalService: ModalService,
-    private datesCarouselService: DatesCarouselService
-  ) {}
-
-  ngOnInit(): void {
-    this.slides$ = this.datesCarouselService.getSlides();
-  }
+  constructor(private router: Router, private modalService: ModalService) {}
 
   isLandingPage(): boolean {
     return this.router.url === '/';

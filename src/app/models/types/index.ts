@@ -1,6 +1,7 @@
 export { MonthSlide } from './month-slide';
 export { DateValues } from './date-values';
 export { DateSlide } from './date-slide';
+// TODO refactor to * ?
 export { StoreData, StoreDataTypes } from './store-data';
 export { AuthData, DecodedAuthToken } from './auth-data';
 export { AppRequestData, RequestData } from './app-request-data';

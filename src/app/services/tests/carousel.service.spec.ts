@@ -1,8 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { DatesCarouselService } from '../dates-carousel.service';
-import { ElementIds } from 'src/app/utils';
 import { DateSlide, DaysOfWeek } from 'src/app/models/types';
-import { assertAreEqual } from './test-utils';
+import { ElementIds } from 'src/app/utils';
+import { DatesCarouselService } from '../dates-carousel.service';
 
 fdescribe('Service: Carousel', () => {
   beforeEach(() => {

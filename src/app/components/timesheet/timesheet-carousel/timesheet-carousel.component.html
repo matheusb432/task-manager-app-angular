@@ -1,0 +1,37 @@
+<section id="cDatesCarousel" class="carousel">
+  <header id="cDatesCarouselHeader" class="carousel-header">
+    <owl-carousel-o [options]="carouselHeaderOptions" #carouselHeader>
+      <ng-container *ngFor="let monthSlide of monthSlides; let i = index; trackBy: getItemId">
+        <ng-template carouselSlide [id]="monthSlide.id">
+          <app-month-slide
+            [slide]="monthSlide"
+            [isNextMonth]="isNextMonthSlide(i)"
+          ></app-month-slide>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </header>
+  <article id="cDatesCarouselSlides" class="carousel-slides">
+    <div class="slide-nav-prev" (click)="prev()" [ngClass]="{ inactive: prevDisabled }">
+      <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true"></app-icon>
+    </div>
+    <owl-carousel-o [options]="carouselOptions" #carousel (changed)="handleChange($event)">
+      <ng-container *ngFor="let slide of slides; let i = index; trackBy: getItemId">
+        <ng-template carouselSlide [id]="slide.id">
+          <app-timesheet-slide
+            [slide]="slide"
+            (selectedSlide)="onSlideClick($event)"
+          ></app-timesheet-slide>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+    <div class="slide-nav-next" (click)="next()" [ngClass]="{ inactive: nextDisabled }">
+      <app-icon
+        [icon]="Icons.ChevronRight"
+        color="accent"
+        [size]="44"
+        [clickable]="true"
+      ></app-icon>
+    </div>
+  </article>
+</section>

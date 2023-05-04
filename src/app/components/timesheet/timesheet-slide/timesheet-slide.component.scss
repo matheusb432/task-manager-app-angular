@@ -1,0 +1,93 @@
+@use 'src/_mixins.scss' as mxs;
+@use '../_timesheet-variables.scss' as timesheetVars;
+
+.slide {
+  position: relative;
+  width: timesheetVars.$slide-width;
+  height: timesheetVars.$slide-height;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  background: timesheetVars.$carousel-header-bg;
+  transition: all 0.15s ease-in-out;
+
+  &:not(.active):hover {
+    filter: brightness(0.85);
+  }
+
+  &:not(.active):active {
+    filter: brightness(0.7);
+  }
+
+  &.weekend .slide-header {
+    background: var(--warning);
+    color: #000;
+  }
+
+  &.holiday .slide-header {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  &.special .slide-header {
+    background: var(--info);
+    color: #fff;
+  }
+
+  &.active {
+    cursor: default;
+
+    .slide-header {
+      background: timesheetVars.$carousel-primary;
+      color: #fff;
+    }
+  }
+
+  .slide-header {
+    display: flex;
+    padding: 0.25rem;
+    align-items: flex-end;
+    color: var(--primary-darker);
+    background: var(--primary-lighter);
+    transition: all 0.3s ease-in-out;
+
+    .day {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .day-of-week {
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .month {
+      display: block;
+      margin-left: auto;
+      text-align: start;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+  }
+
+  .slide-body {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    padding: 0.25rem;
+
+    .tasks,
+    .hours,
+    .rating {
+      width: 100%;
+
+      &.failed {
+        color: var(--danger);
+      }
+
+      &.completed {
+        color: green;
+      }
+    }
+  }
+}

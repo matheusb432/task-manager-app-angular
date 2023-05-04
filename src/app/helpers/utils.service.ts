@@ -1,13 +1,12 @@
-import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { ApiEndpoints, Constants, FormTypes } from '../utils';
+import * as CryptoJS from 'crypto-js';
+import { stringify } from 'crypto-js/enc-hex';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { OrderByConfig } from '../models/configs';
+import { ApiEndpoints, Constants, FormTypes } from '../utils';
 import { ODataBuilder, ODataOptions } from './odata';
 import { PaginationOptions } from './pagination-options';
-import { stringify } from 'crypto-js/enc-hex';
-import * as CryptoJS from 'crypto-js';
-import { OrderByConfig } from '../models/configs';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
