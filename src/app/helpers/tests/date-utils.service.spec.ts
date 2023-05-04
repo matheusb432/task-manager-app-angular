@@ -3,7 +3,7 @@ import { DateUtilsService } from '../date-utils.service';
 import { DateValues, DaysOfWeek } from 'src/app/models';
 import { WeekDay } from '@angular/common';
 
-fdescribe('Service: DateUtils', () => {
+describe('Service: DateUtils', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DateUtilsService],

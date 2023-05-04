@@ -11,4 +11,8 @@ export enum ElementIds {
   SignupSubmit = 'cSignupSubmit',
   DateCarouselSlide = 'cDateCarouselSlide',
   MonthCarouselSlide = 'cMonthCarouselSlide',
+  TimesheetTable = 'cTimesheetTableContainer',
+  TimesheetForm = 'cTimesheetFormContainer',
+  TimesheetSubmit = 'cTimesheetFormSubmit',
+  TimesheetDelete = 'cTimesheetFormDelete',
 }
