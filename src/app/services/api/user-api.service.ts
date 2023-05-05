@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-import { ElementIds } from 'src/app/utils';
-import { us } from '../../helpers';
-import { PaginationOptions } from '../../helpers/pagination-options';
+import { ElementIds, QueryUtil } from 'src/app/util';
+import { PaginationOptions } from '../../models/configs/pagination-options';
 import { ApiRequest, User, PaginatedResult } from 'src/app/models';
 import { LoadingService } from '../loading.service';
 import { ApiService } from './api.service';
@@ -17,7 +16,7 @@ export class UserApiService {
   constructor(private api: ApiService) {}
 
   async getByEmail(email: string): Promise<User> {
-    const queryUrl = us.buildODataQuery(this.url, { filter: { email } });
+    const queryUrl = QueryUtil.buildODataQuery(this.url, { filter: { email } });
 
     return this.api.get<User>({
       ...ApiRequest.get<User>(queryUrl, User),
@@ -38,7 +37,7 @@ export class UserApiService {
   }
 
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<User>> {
-    const queryUrl = us.buildPaginatedODataQuery(this.url, options);
+    const queryUrl = QueryUtil.buildPaginatedODataQuery(this.url, options);
 
     return this.api.getPaginated<User>({
       ...ApiRequest.get<User>(queryUrl, User),

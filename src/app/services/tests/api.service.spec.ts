@@ -1,11 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { us } from 'src/app/helpers';
-import { PaginationOptions } from 'src/app/helpers/pagination-options';
+import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { ApiService } from '../api';
 import { AppService } from '../app.service';
 import { ApiRequest } from 'src/app/models';
 import { assertAreEqual } from './test-utils';
+import { QueryUtil } from 'src/app/util';
 
 class MockItem {
   id?: number;
@@ -47,7 +47,7 @@ describe('Service: Api', () => {
     it('should return a paginated result', (done) => {
       const expectedPaginatedResult = { total: 2, items: [{ id: 1 }, { id: 2 }] };
       const apiRequest = {
-        url: us.buildPaginatedODataQuery('testUrl', PaginationOptions.first()),
+        url: QueryUtil.buildPaginatedODataQuery('testUrl', PaginationOptions.first()),
         itemType: MockItem,
       };
       service.getPaginated<MockItem>(apiRequest).then((result) => {

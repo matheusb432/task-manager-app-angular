@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageStates } from 'src/app/utils';
+import { PageStates } from 'src/app/util';
 import { TimesheetsComponent } from './timesheets/timesheets.component';
 import { CreateTimesheetComponent } from './create-timesheet/create-timesheet.component';
 import { TimesheetDetailsComponent } from './timesheet-details/timesheet-details.component';

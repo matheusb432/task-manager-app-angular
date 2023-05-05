@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Constants, DetailsTypes, paths } from '../utils';
+import { Constants, DetailsTypes, ObjectUtil, paths } from '../util';
 import { AbstractControl } from '@angular/forms';
 import { TimesheetFormGroup } from '../components/timesheet/timesheet-form';
 import { PostReturn, Timesheet } from '../models';
-import { us } from '../helpers';
-import { PaginationOptions } from '../helpers/pagination-options';
+import { PaginationOptions } from '../models/configs/pagination-options';
 import { TimesheetApiService } from './api';
 import { ToastService } from './toast.service';
 import { Router } from '@angular/router';
@@ -150,13 +149,13 @@ export class TimesheetService {
 
     const parsedId = +id;
 
-    if (this.item?.id === parsedId) return us.deepClone(this.item);
+    if (this.item?.id === parsedId) return ObjectUtil.deepClone(this.item);
 
     this.item = await this.api.getById(parsedId);
 
     if (this.item == null) this.ts.error("Couldn't fetch data!");
 
-    return us.deepClone(this.item);
+    return ObjectUtil.deepClone(this.item);
   }
 
   convertToForm(fg: TimesheetFormGroup, item: Timesheet): void {

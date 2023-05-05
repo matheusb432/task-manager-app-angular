@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { us, DateUtilsService } from '../helpers';
+import { DateUtil, QueryUtil } from '../util';
 import { ApiRequest, SelectOption, ProfileType, RequestData } from 'src/app/models';
-import { ApiEndpoints } from '../utils';
+import { ApiEndpoints } from '../util';
 import { ApiService } from './api/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileTypeService {
-  private url = us.buildApiUrl(ApiEndpoints.ProfileTypes);
+  private url = QueryUtil.buildApiUrl(ApiEndpoints.ProfileTypes);
 
   constructor(private api: ApiService) {}
 
@@ -39,11 +39,7 @@ export class ProfileTypeService {
     const hasDates = !!dateRangeStart && !!dateRangeEnd;
 
     return hasDates
-      ? ' (' +
-          DateUtilsService.formatDate(dateRangeStart) +
-          ' - ' +
-          DateUtilsService.formatDate(dateRangeEnd) +
-          ')'
+      ? ' (' + DateUtil.formatDate(dateRangeStart) + ' - ' + DateUtil.formatDate(dateRangeEnd) + ')'
       : '';
   }
 }

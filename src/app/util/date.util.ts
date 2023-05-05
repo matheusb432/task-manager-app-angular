@@ -11,7 +11,7 @@ import { DateValues, DaysOfWeek } from 'src/app/models';
 @Injectable({
   providedIn: 'root',
 })
-export class DateUtilsService {
+export class DateUtil {
   static formatDate = (date: Date): string => {
     if (!date) return '';
 
@@ -25,7 +25,7 @@ export class DateUtilsService {
   static formatDay = (date: Date): string => {
     if (!date) return '';
 
-    return DateUtilsService.formatDayFromNumber(date.getDate());
+    return DateUtil.formatDayFromNumber(date.getDate());
   };
 
   private static formatDayFromNumber = (day: number): string => {
@@ -76,11 +76,11 @@ export class DateUtilsService {
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
 
-    const formattedDate = DateUtilsService.formatDate(date);
-    const day = DateUtilsService.formatDayFromNumber(dateNumber);
-    const dayOfWeek = DateUtilsService.toDayOfWeek(dayIndex);
-    const isWeekend = DateUtilsService.isWeekend(dayIndex);
-    const month = DateUtilsService.getMonthName(monthIndex + 1);
+    const formattedDate = DateUtil.formatDate(date);
+    const day = DateUtil.formatDayFromNumber(dateNumber);
+    const dayOfWeek = DateUtil.toDayOfWeek(dayIndex);
+    const isWeekend = DateUtil.isWeekend(dayIndex);
+    const month = DateUtil.getMonthName(monthIndex + 1);
 
     return {
       date: formattedDate,
@@ -89,7 +89,7 @@ export class DateUtilsService {
       month,
       year,
       isWeekend,
-      isToday: DateUtilsService.isToday(dateNumber, monthIndex, year),
+      isToday: DateUtil.isToday(dateNumber, monthIndex, year),
     };
   }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageStates } from 'src/app/utils';
+import { PageStates } from 'src/app/util';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 import { ProfilesComponent } from './profiles/profiles.component';

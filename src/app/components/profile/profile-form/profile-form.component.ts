@@ -1,17 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { FormUtilsService, us } from 'src/app/helpers';
 import { ProfileType } from 'src/app/models';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import {
   ElementIds,
-  FormTypes,
-  cancelModalData,
+  FormTypes, FormUtil, cancelModalData,
   deleteModalData,
-  saveModalData,
-} from 'src/app/utils';
+  saveModalData
+} from 'src/app/util';
 import { ProfileForm, ProfileFormGroup } from './profile-form-group';
 
 @Component({
@@ -60,11 +58,11 @@ export class ProfileFormComponent {
   }
 
   get submitLabel(): string {
-    return us.getSubmitLabel(this.formType);
+    return FormUtil.getSubmitLabel(this.formType);
   }
 
   get canEdit(): boolean {
-    return !us.isViewForm(this.formType);
+    return !FormUtil.isViewForm(this.formType);
   }
 
   get typeOptions$() {
@@ -74,7 +72,7 @@ export class ProfileFormComponent {
   constructor(private service: ProfileService, private modalService: ModalService) {}
 
   showDelete(): boolean {
-    return us.isEditForm(this.formType);
+    return FormUtil.isEditForm(this.formType);
   }
 
   openCancelModal(): void {
@@ -103,7 +101,7 @@ export class ProfileFormComponent {
     ref.afterClosed().subscribe((result) => {
       if (!result) return;
 
-      FormUtilsService.onSubmit(this.form, this.save);
+      FormUtil.onSubmit(this.form, this.save);
     });
   }
 }

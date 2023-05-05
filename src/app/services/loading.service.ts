@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { us } from 'src/app/helpers';
 import { Loading, AppRequestData } from 'src/app/models';
 import { AppService } from './app.service';
+import { ObjectUtil, StringUtil } from '../util';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class LoadingService {
   private _loadingsSet = new BehaviorSubject<void>(undefined);
 
   get loadings(): Loading[] {
-    return us.deepClone(this._loadings);
+    return ObjectUtil.deepClone(this._loadings);
   }
 
   private set loadings(value: Loading[]) {
@@ -37,13 +37,13 @@ export class LoadingService {
   }
 
   shouldBeLoading(targetElId: string | undefined): boolean {
-    if (!us.notEmpty(targetElId)) return false;
+    if (!StringUtil.notEmpty(targetElId)) return false;
 
     return this.getLoadingByElId(targetElId) != null;
   }
 
   getLoadingByElId(targetElId: string | undefined): Loading | undefined {
-    if (!us.notEmpty(targetElId)) return;
+    if (!StringUtil.notEmpty(targetElId)) return;
 
     return this._loadings.find((x) => x.targetElId === targetElId);
   }
@@ -55,13 +55,13 @@ export class LoadingService {
   }
 
   removeLoadings(loadings: (Loading | undefined)[]): void {
-    if (!us.notEmpty(loadings)) return;
+    if (!StringUtil.notEmpty(loadings)) return;
 
     loadings.forEach((x) => this.removeLoading(x));
   }
 
   removeLoadingById(id: string | undefined): void {
-    if (!us.notEmpty(id)) return;
+    if (!StringUtil.notEmpty(id)) return;
 
     this.loadings = this._loadings.filter((x) => x.id !== id);
   }

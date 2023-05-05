@@ -1,5 +1,5 @@
 import { DateSlide } from 'src/app/models';
-import { Icons } from 'src/app/utils';
+import { Icons } from 'src/app/util';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({

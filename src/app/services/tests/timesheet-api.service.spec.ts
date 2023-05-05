@@ -1,11 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { us } from 'src/app/helpers';
 import { TimesheetPutDto, Timesheet, PaginatedResult } from 'src/app/models';
-import { PaginationOptions } from '../../helpers/pagination-options';
+import { PaginationOptions } from '../../models/configs/pagination-options';
 import { TimesheetApiService } from '../api';
 import { assertAreEqual } from './test-utils';
 import { Mapper } from 'mapper-ts/lib-esm';
+import { QueryUtil } from 'src/app/util';
 
 describe('Service: TimesheetApi', () => {
   let service: TimesheetApiService;
@@ -34,7 +34,7 @@ describe('Service: TimesheetApi', () => {
       const mockTimesheet: Timesheet = mapItem({ id: 1, date: '2023-05-10' });
 
       service.getById(id).then();
-      const req = httpMock.expectOne(us.buildODataQuery(service['url'], { filter: { id } }));
+      const req = httpMock.expectOne(QueryUtil.buildODataQuery(service['url'], { filter: { id } }));
       expect(req.request.method).toBe('GET');
       req.flush(mockTimesheet);
     });
@@ -53,7 +53,7 @@ describe('Service: TimesheetApi', () => {
       });
 
       const req = httpMock.expectOne(
-        `${us.buildPaginatedODataQuery(service['url'], mockPaginationOptions)}`
+        `${QueryUtil.buildPaginatedODataQuery(service['url'], mockPaginationOptions)}`
       );
       expect(req.request.method).toBe('GET');
       req.flush(mockPaginatedResult);

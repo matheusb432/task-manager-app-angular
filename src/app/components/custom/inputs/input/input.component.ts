@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { us } from 'src/app/helpers';
 import { IconConfig } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { validationErrorMessages } from '../validation-errors';
+import { PubSubUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-input [fcName] [control] [fg] [labelText]',
@@ -62,11 +62,11 @@ export class InputComponent implements OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
   }
 
   initLoadingSubscription(): void {
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
 
     this.subscriptions.push(
       this.loadingService

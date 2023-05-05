@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { Subscription } from 'rxjs';
-import { us } from 'src/app/helpers';
 import { LoadingService } from 'src/app/services/loading.service';
+import { PubSubUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-button',
@@ -44,11 +44,11 @@ export class ButtonComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
   }
 
   initLoadingSubscription(): void {
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
 
     if (!this.elId) return;
 

@@ -1,5 +1,5 @@
 import { ODataOptions } from 'src/app/helpers/odata';
-import { Constants } from '../utils';
+import { Constants } from '../../util';
 
 const defaultPage = 1;
 const defaultItemsPerPage = Constants.DefaultItemsPerPage;

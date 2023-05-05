@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ElementIds, Icons } from 'src/app/utils';
+import { ElementIds, Icons } from 'src/app/util';
 import { LoginForm, LoginFormGroup } from './login-form-group';
 import { IconConfig } from 'src/app/models';
-import { FormUtilsService } from 'src/app/helpers';
+import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-login-form',
@@ -35,7 +35,7 @@ export class LoginFormComponent {
   }
 
   onSubmit(): void {
-    FormUtilsService.onSubmit(this.form, this.save);
+    FormUtil.onSubmit(this.form, this.save);
   }
 
   togglePasswordVisibility = (): void => {

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { us } from 'src/app/helpers';
 import { ApiRequest } from 'src/app/models';
 import { AuthResponse, Login, Signup, UserAuthGet } from 'src/app/models';
-import { ApiEndpoints, ElementIds } from 'src/app/utils';
+import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
 import { LoadingService } from '../loading.service';
 import { ApiService } from './api.service';
 import { UserApiService } from './user-api.service';
@@ -13,7 +12,7 @@ import { UserApiService } from './user-api.service';
   providedIn: 'root',
 })
 export class AuthApiService {
-  private url = us.buildApiUrl(ApiEndpoints.Auth);
+  private url = QueryUtil.buildApiUrl(ApiEndpoints.Auth);
 
   private authResponseSet = new BehaviorSubject<AuthResponse | null | undefined>(undefined);
 

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { ApiEndpoints, ElementIds } from 'src/app/utils';
-import { us } from '../../helpers';
-import { PaginationOptions } from '../../helpers/pagination-options';
+import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
+import { PaginationOptions } from '../../models/configs/pagination-options';
 import { LoadingService } from '../loading.service';
 import { ApiService } from './api.service';
 import {
@@ -18,7 +17,7 @@ import {
   providedIn: 'root',
 })
 export class ProfileApiService {
-  private url = us.buildApiUrl(ApiEndpoints.Profiles);
+  private url = QueryUtil.buildApiUrl(ApiEndpoints.Profiles);
 
   constructor(private api: ApiService) {}
 
@@ -32,7 +31,7 @@ export class ProfileApiService {
   }
 
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Profile>> {
-    const queryUrl = us.buildPaginatedODataQuery(this.url, options);
+    const queryUrl = QueryUtil.buildPaginatedODataQuery(this.url, options);
 
     const res = await this.api.getPaginated<Profile>({
       ...ApiRequest.get<Profile>(queryUrl, Profile),

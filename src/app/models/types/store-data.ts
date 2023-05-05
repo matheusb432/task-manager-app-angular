@@ -1,4 +1,4 @@
-import { StoreKeys } from 'src/app/utils';
+import { StoreKeys } from 'src/app/util';
 
 export interface StoreData<T = string> {
   key: StoreKeys;

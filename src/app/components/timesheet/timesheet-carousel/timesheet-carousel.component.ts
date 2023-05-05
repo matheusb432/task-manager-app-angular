@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { CarouselComponent, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 import { DateSlide, MonthSlide } from 'src/app/models';
-import { ElementIds, Icons } from 'src/app/utils';
+import { ElementIds, Icons } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheet-carousel [slides]',

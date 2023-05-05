@@ -3,7 +3,7 @@ import { AbstractControl } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 import { CanDeactivateForm } from '../models';
 import { ModalService } from '../services';
-import { unsavedChangesModalData } from '../utils/modal-defaults';
+import { unsavedChangesModalData } from '../util';
 
 export const canDeactivateForm = <T extends { [K in keyof T]: AbstractControl }>(
   comp: CanDeactivateForm<T>

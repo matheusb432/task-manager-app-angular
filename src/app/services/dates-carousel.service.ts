@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DateUtilsService } from '../helpers';
+import { DateUtil } from '../util';
 import { DateSlide } from 'src/app/models';
-import { ElementIds } from '../utils';
+import { ElementIds } from '../util';
 
 @Injectable({
   providedIn: 'root',
@@ -33,8 +33,8 @@ export class DatesCarouselService {
     let lastMonth = '';
 
     for (let days = 0; days < size; days++) {
-      const date = DateUtilsService.addDays(centerDate, days + daysToAdd);
-      const dateValues = DateUtilsService.getDateValues(date);
+      const date = DateUtil.addDays(centerDate, days + daysToAdd);
+      const dateValues = DateUtil.getDateValues(date);
 
       slides.push({
         id: `${ElementIds.DateCarouselSlide}${days + 1}`,

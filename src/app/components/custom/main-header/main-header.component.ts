@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { UserAuthGet } from 'src/app/models';
 import { AuthService, ModalService } from 'src/app/services';
-import { Icons, logoutModalData } from 'src/app/utils';
+import { Icons, logoutModalData } from 'src/app/util';
 
 @Component({
   selector: 'app-main-header',

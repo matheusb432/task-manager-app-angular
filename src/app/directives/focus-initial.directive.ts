@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { us } from '../helpers';
+import { AsyncUtil } from '../util';
 
 @Directive({
   selector: '[appFocusInitial]',
@@ -14,7 +14,7 @@ export class FocusInitialDirective implements OnInit {
 
     if (!this.focusChild) return this.focusEl(el);
 
-    await us.delayHtmlRender();
+    await AsyncUtil.delayHtmlRender();
     this.focusEl(el?.firstElementChild as HTMLElement | null);
   }
 

@@ -3,8 +3,8 @@ import {
   LoginFormGroup,
   getLoginForm
 } from 'src/app/components/authentication/login-form';
-import { us } from 'src/app/helpers';
 import { AuthService, PageService, ToastService } from 'src/app/services';
+import { StringUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   async login(form: LoginFormGroup): Promise<void> {
-    const login = us.isEmail(form.controls.userNameOrEmail.value)
+    const login = StringUtil.isEmail(form.controls.userNameOrEmail.value)
       ? LoginFormGroup.toEntityWithEmail(form.controls)
       : LoginFormGroup.toEntityWithUserName(form.controls);
 

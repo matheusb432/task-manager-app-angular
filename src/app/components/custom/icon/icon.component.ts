@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
-import { Icons } from 'src/app/utils';
+import { Icons } from 'src/app/util';
 
 @Component({
   selector: 'app-icon [icon]',

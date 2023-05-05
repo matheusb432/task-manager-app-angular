@@ -2,7 +2,6 @@ import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { us } from '../helpers';
 import {
   AuthResponse,
   Login,
@@ -11,7 +10,7 @@ import {
   AuthData,
   DecodedAuthToken,
 } from 'src/app/models';
-import { StoreKeys } from '../utils';
+import { PubSubUtil, StoreKeys } from '../util';
 import { AuthApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
@@ -86,7 +85,7 @@ export class AuthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
   }
 
   retrieveTokenFromStore(): void {
@@ -99,7 +98,7 @@ export class AuthService implements OnDestroy {
     const setAuthDataSub = this.setAuthData$.subscribe();
     const setAuthResponseSub = this.authResponse$.subscribe();
 
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
     this.subscriptions = [setAuthDataSub, setAuthResponseSub];
   }
 

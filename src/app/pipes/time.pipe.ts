@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { us } from '../helpers';
 import { Nullish } from '../models';
+import { StringUtil } from '../util';
 
 @Pipe({
   name: 'time',
@@ -14,6 +14,6 @@ export class TimePipe implements PipeTransform {
     if (time == null) return '';
     if (typeof time !== 'number') return time;
 
-    return us.numberToTime(time);
+    return StringUtil.numberToTime(time);
   }
 }

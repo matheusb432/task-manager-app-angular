@@ -1,10 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { us } from 'src/app/helpers';
-import { PaginationOptions } from '../../helpers/pagination-options';
+import { PaginationOptions } from '../../models/configs/pagination-options';
 import { User, PaginatedResult } from 'src/app/models';
 import { UserApiService } from '../api';
 import { assertAreEqual } from './test-utils';
+import { QueryUtil } from 'src/app/util';
 
 describe('Service: UserApi', () => {
   let service: UserApiService;
@@ -29,7 +29,7 @@ describe('Service: UserApi', () => {
       const mockUser: User = { id: 1, name: 'John Doe' };
 
       service.getById(id).then();
-      const req = httpMock.expectOne(us.buildODataQuery(service['url'], { filter: { id } }));
+      const req = httpMock.expectOne(QueryUtil.buildODataQuery(service['url'], { filter: { id } }));
       expect(req.request.method).toBe('GET');
       req.flush(mockUser);
     });
@@ -48,7 +48,7 @@ describe('Service: UserApi', () => {
       });
 
       const req = httpMock.expectOne(
-        `${us.buildPaginatedODataQuery(service['url'], mockPaginationOptions)}`
+        `${QueryUtil.buildPaginatedODataQuery(service['url'], mockPaginationOptions)}`
       );
       expect(req.request.method).toBe('GET');
       req.flush(mockPaginatedResult);

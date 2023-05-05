@@ -80,7 +80,6 @@ export class ODataBuilder {
 
     const orderBys: string[] = [];
 
-    // TODO test
     orderBy.forEach((orderBy) => {
       const [prop, direction] = orderBy;
 

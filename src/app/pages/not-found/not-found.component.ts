@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { paths } from 'src/app/utils';
+import { paths } from 'src/app/util';
 
 @Component({
   selector: 'app-not-found',

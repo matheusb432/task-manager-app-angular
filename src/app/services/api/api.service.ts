@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { Observable, lastValueFrom } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { us } from 'src/app/helpers';
 
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
 import { Ctor, PaginatedResult, PostReturn } from 'src/app/models';
 import { AppService } from '../app.service';
+import { QueryUtil } from 'src/app/util';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,7 @@ export class ApiService {
       return this.handleInvalidServiceRequest(apiReq);
     }
 
-    const url = us.buildODataQuery(apiReq.url, { filter: { id: apiReq.id } });
+    const url = QueryUtil.buildODataQuery(apiReq.url, { filter: { id: apiReq.id } });
     const reqData = {
       ...apiReq,
       url,

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Constants } from 'src/app/utils';
+import { Constants } from 'src/app/util';
 
 @Component({
   selector: 'app-pagination [totalItems] [pageChanged]',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, tap } from 'rxjs/operators';
-import { paths } from 'src/app/utils';
+import { paths } from 'src/app/util';
 
 @Component({
   selector: 'app-auth-page-layout',

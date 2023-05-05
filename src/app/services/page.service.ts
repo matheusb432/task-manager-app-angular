@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageData } from '../models';
-import { DetailsTypes, paths } from '../utils';
+import { DetailsTypes, paths } from '../util';
 
 @Injectable({
   providedIn: 'root',

@@ -10,3 +10,4 @@ export * from './card';
 export * from './api-request';
 export * from './select-option';
 export * from './modals';
+export * from './pagination-options';

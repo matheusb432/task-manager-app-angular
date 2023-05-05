@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { StoreData, StoreDataTypes } from 'src/app/models';
-import { StoreKeys } from 'src/app/utils';
+import { StoreKeys } from 'src/app/util';
 
 export interface StoreService {
   remove(key: StoreKeys): void;

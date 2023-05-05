@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ProfileForm, ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
-import { us } from 'src/app/helpers';
 import { CanDeactivateForm, PageConfig, PageData, ProfileType } from 'src/app/models';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
-import { DetailsTypes, FormTypes } from 'src/app/utils';
+import { DetailsTypes, FormTypes, PubSubUtil, StringUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-profile-details',
@@ -33,7 +32,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   }
 
   ngOnDestroy(): void {
-    us.unsub(this.subscriptions);
+    PubSubUtil.unsub(this.subscriptions);
   }
 
   runInitMethods(): void {
@@ -77,7 +76,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
     if (!type) return;
 
     this.formType = type as unknown as FormTypes;
-    this.detailsPage = new PageConfig(`${us.capitalize(type)} Profile`);
+    this.detailsPage = new PageConfig(`${StringUtil.capitalize(type)} Profile`);
   }
 
   submitForm(): Promise<void> {

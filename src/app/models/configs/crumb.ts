@@ -1,4 +1,4 @@
-import { Icons } from "src/app/utils";
+import { Icons } from 'src/app/util';
 
 export interface Crumb {
   label: string;

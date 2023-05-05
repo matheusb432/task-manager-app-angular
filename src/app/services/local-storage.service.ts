@@ -1,8 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { us } from '../helpers';
 import { InvalidStoreError } from '../helpers/errors';
 import { StoreData, StoreDataTypes } from 'src/app/models';
-import { StoreKeys } from '../utils';
+import { ObjectUtil, StoreKeys } from '../util';
 import { StoreService } from './interfaces';
 
 export const LOCAL_STORAGE = new InjectionToken<Storage>('localStorage', {
@@ -70,7 +69,7 @@ export class LocalStorageService implements StoreService {
   }
 
   private isValidKey(key: unknown): boolean {
-    return us.isFromEnum(StoreKeys, key);
+    return ObjectUtil.isFromEnum(StoreKeys, key);
   }
 
   private getErrorReason(key: unknown, isValidKey: boolean) {

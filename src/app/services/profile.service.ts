@@ -5,10 +5,9 @@ import { map } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { ProfileFormGroup } from '../components/profile/profile-form';
-import { us } from '../helpers';
-import { PaginationOptions } from '../helpers/pagination-options';
+import { PaginationOptions } from '../models/configs/pagination-options';
 import { Profile, ProfileType, PostReturn } from 'src/app/models';
-import { Constants, DetailsTypes, ElementIds, paths } from '../utils';
+import { Constants, DetailsTypes, ElementIds, ObjectUtil, StringUtil, paths } from '../util';
 import { ProfileApiService } from './api';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
@@ -177,17 +176,17 @@ export class ProfileService {
 
     const parsedId = +id;
 
-    if (this.item?.id === parsedId) return us.deepClone(this.item);
+    if (this.item?.id === parsedId) return ObjectUtil.deepClone(this.item);
 
     this.item = await this.api.getById(parsedId);
 
     if (this.item == null) this.ts.error("Couldn't fetch data!");
 
-    return us.deepClone(this.item);
+    return ObjectUtil.deepClone(this.item);
   }
 
   loadProfileTypes = async (): Promise<void> => {
-    if (us.notEmpty(this.types)) return;
+    if (StringUtil.notEmpty(this.types)) return;
 
     this.types = await this.profileTypeService.getItems({
       loadings: LoadingService.createManyFromId(ElementIds.ProfileFormType),

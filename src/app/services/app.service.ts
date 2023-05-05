@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppRequestData, RequestData } from 'src/app/models';
-import { us } from '../helpers';
+import { StringUtil } from '../util';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class AppService {
     if (customData == null) return;
 
     const loadings = customData.loadings;
-    const resKey = `${url}|${us.randomHex()}`;
+    const resKey = `${url}|${StringUtil.unsafeRandomHex()}`;
 
     this.addRequestData(resKey, { url, loadings, moment: Date.now() });
   };

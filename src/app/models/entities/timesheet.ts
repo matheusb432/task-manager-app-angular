@@ -3,7 +3,7 @@ import { TaskItem } from './task-item';
 import { TimesheetNote } from './timesheet-note';
 import { TableItem } from '../types';
 import { TableItemConfig } from '../configs';
-import { ArrayUtilsService } from 'src/app/helpers';
+import { ArrayUtil } from 'src/app/util';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimePipe } from 'src/app/pipes';
 
@@ -22,13 +22,13 @@ export class Timesheet implements TableItem {
   }
 
   get totalHours(): number {
-    return ArrayUtilsService.sumNumberProp(this.taskItems, 'time');
+    return ArrayUtil.sumNumberProp(this.taskItems, 'time');
   }
 
   get averageRating(): number {
     if (!this.totalTaskItems) return 0;
 
-    const sum = ArrayUtilsService.sumNumberProp(this.taskItems, 'rating');
+    const sum = ArrayUtil.sumNumberProp(this.taskItems, 'rating');
 
     return sum / this.totalTaskItems;
   }

@@ -8,16 +8,15 @@ import {
   TimesheetPutDto,
 } from 'src/app/models';
 import { LoadingService } from '../loading.service';
-import { ApiEndpoints, ElementIds } from 'src/app/utils';
+import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
 import { ApiService } from './api.service';
-import { us } from 'src/app/helpers';
-import { PaginationOptions } from 'src/app/helpers/pagination-options';
+import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimesheetApiService {
-  private url = us.buildApiUrl(ApiEndpoints.Timesheets);
+  private url = QueryUtil.buildApiUrl(ApiEndpoints.Timesheets);
 
   constructor(private api: ApiService) {}
 
@@ -31,7 +30,7 @@ export class TimesheetApiService {
   }
 
   async getPaginated(options: PaginationOptions): Promise<PaginatedResult<Timesheet>> {
-    const queryUrl = us.buildPaginatedODataQuery(this.url, options);
+    const queryUrl = QueryUtil.buildPaginatedODataQuery(this.url, options);
 
     const res = await this.api.getPaginated<Timesheet>({
       ...ApiRequest.get<Timesheet>(queryUrl, Timesheet),

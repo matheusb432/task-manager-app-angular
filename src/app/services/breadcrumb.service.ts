@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Crumb } from 'src/app/models';
-import { crumbDefaults, paths } from '../utils';
+import { crumbDefaults, paths } from '../util';
 
 @Injectable({
   providedIn: 'root',

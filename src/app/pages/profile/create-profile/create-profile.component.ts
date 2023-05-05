@@ -4,7 +4,7 @@ import { CanDeactivateForm, ProfileType } from 'src/app/models';
 import { ToastService } from 'src/app/services';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { DetailsTypes, FormTypes } from 'src/app/utils';
+import { DetailsTypes, FormTypes } from 'src/app/util';
 
 @Component({
   selector: 'app-create-profile',

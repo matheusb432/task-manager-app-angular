@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { us } from 'src/app/helpers';
 import { ODataOperators } from 'src/app/helpers/odata';
-import { PaginationOptions } from 'src/app/helpers/pagination-options';
+import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { TableConfig, Timesheet } from 'src/app/models';
 import { FilterService, ModalService, TimesheetService, ToastService } from 'src/app/services';
-import { ElementIds, deleteModalData, paths } from 'src/app/utils';
+import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheet-list',
@@ -98,7 +97,7 @@ export class TimesheetListComponent implements OnInit {
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
     return PaginationOptions.from(page, itemsPerPage ?? this.itemsPerPage, {
       filter: { name: this.prevFilter ? [ODataOperators.Contains, this.prevFilter] : undefined },
-      orderBy: us.orderByToOData(this.config.orderBy),
+      orderBy: QueryUtil.orderByToOData(this.config.orderBy),
     });
   }
 

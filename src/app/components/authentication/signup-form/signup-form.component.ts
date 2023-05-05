@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { FormUtilsService } from 'src/app/helpers';
 import { IconConfig } from 'src/app/models';
-import { ElementIds, Icons } from 'src/app/utils';
+import { ElementIds, FormUtil, Icons } from 'src/app/util';
 import { SignupForm, SignupFormGroup } from './signup-form-group';
 
 @Component({
@@ -59,7 +58,7 @@ export class SignupFormComponent  {
   }
 
   onSubmit(): void {
-    FormUtilsService.onSubmit(this.form, this.save);
+    FormUtil.onSubmit(this.form, this.save);
   }
 
   togglePasswordVisibility = (): void => {

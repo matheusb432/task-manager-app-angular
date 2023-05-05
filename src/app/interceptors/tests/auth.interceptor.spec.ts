@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/interceptors';
-import { ApiEndpoints } from 'src/app/utils';
+import { ApiEndpoints } from 'src/app/util';
 import { TOKEN_DECODER_FN, TokenService } from 'src/app/services/token.service';
 
 describe('Interceptor: Auth', () => {

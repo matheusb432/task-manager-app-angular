@@ -1,4 +1,4 @@
-import { Icons, Pages } from 'src/app/utils';
+import { Icons, Pages } from 'src/app/util';
 import { Component } from '@angular/core';
 import { NavItem } from 'src/app/models';
 

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { of } from 'rxjs';
-import { us } from 'src/app/helpers';
+import { ObjectUtil } from 'src/app/util';
 import {
   IconConfig,
   OrderByConfig,
@@ -19,7 +19,7 @@ import {
   TableKey,
 } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { DetailsTypes, Icons } from 'src/app/utils';
+import { ArrayUtil, DetailsTypes, Icons, StringUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-table [items] [config]',
@@ -108,7 +108,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
     type,
   });
 
-  canShowActions = () => us.notEmpty(this.icons);
+  canShowActions = () => StringUtil.notEmpty(this.icons);
 
   getItemId(index: number, item: T): number {
     return item?.id ?? index;
@@ -125,21 +125,21 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   }
 
   onOrderBy(columnKey: TableKey<T>): void {
-    const newOrderBy = us.onOrderByChange(this.getOrderBy(), columnKey);
+    const newOrderBy = ArrayUtil.onOrderByChange(this.getOrderBy(), columnKey);
     this.setOrderBy(newOrderBy);
   }
 
   getPropValue(item: T, key: TableKey<T>): unknown {
     if (!Array.isArray(key)) return item[key];
 
-    return us.getPropValue(item, us.keyToProp(key));
+    return ObjectUtil.getPropValue(item, ObjectUtil.keyToProp(key));
   }
 
   orderItems(items: T[]): T[] {
     const orderBy = this.getOrderBy();
 
-    if (!orderBy) return us.deepClone(items);
+    if (!orderBy) return ObjectUtil.deepClone(items);
 
-    return us.orderItems(items, orderBy.key, orderBy.direction);
+    return ArrayUtil.orderItems(items, orderBy.key, orderBy.direction);
   }
 }

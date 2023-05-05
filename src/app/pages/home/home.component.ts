@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/models';
 import { ModalService } from 'src/app/services/modal.service';
-import { Pages, successModalData } from 'src/app/utils';
+import { Pages, successModalData } from 'src/app/util';
 
 @Component({
   selector: 'app-home',

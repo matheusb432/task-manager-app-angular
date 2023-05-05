@@ -1,6 +1,7 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateUtilsService, dateMaxValidator } from 'src/app/helpers';
+import { DateUtil } from 'src/app/util';
 import { Timesheet } from 'src/app/models';
+import { dateMaxValidator } from 'src/app/helpers';
 
 export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
   static from(form: TimesheetForm): TimesheetFormGroup {
@@ -20,7 +21,7 @@ export interface TimesheetForm {
 }
 
 export const getTimesheetForm = (defaultDate: Date) => {
-  const tomorrow = DateUtilsService.addDays(new Date(), 1);
+  const tomorrow = DateUtil.addDays(new Date(), 1);
 
   return {
     date: new FormControl(defaultDate, {

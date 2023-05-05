@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreKeys } from 'src/app/utils';
+import { StoreKeys } from 'src/app/util';
 import { STORE_SERVICE, StoreService } from '../interfaces';
 
 describe('Service: Store', () => {

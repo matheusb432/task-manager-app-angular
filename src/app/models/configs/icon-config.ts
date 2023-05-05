@@ -1,5 +1,5 @@
 import { ThemePalette } from '@angular/material/core';
-import { DetailsTypes, Icons } from 'src/app/utils';
+import { DetailsTypes, Icons } from 'src/app/util';
 
 export class IconConfig<T = unknown> {
   size?: number;

@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { get } from 'lodash-es';
-import { us } from '../helpers';
+import { ObjectUtil } from '../util';
 
 @Pipe({
   name: 'get',
 })
 /*
+ * @class GetPipe
  * Pipe to get a nested value from an object.
  * Usage:
  *  value | get:nestedKey
@@ -20,7 +20,7 @@ export class GetPipe implements PipeTransform {
   }
 
   private getNestedValue(value: object, nestedKey: string): unknown {
-    const nestedValue = us.getPropValue(value, nestedKey);
+    const nestedValue = ObjectUtil.getPropValue(value, nestedKey);
 
     if (typeof nestedValue === 'object' || nestedValue == null) return '';
     return nestedValue;
