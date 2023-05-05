@@ -3,4 +3,5 @@ export interface MonthSlide {
   year: number;
   month: string;
   selected?: boolean;
+  isNextMonth?: boolean;
 }

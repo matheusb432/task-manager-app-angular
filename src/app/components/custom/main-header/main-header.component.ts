@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { UserAuthGet } from 'src/app/models';
@@ -8,6 +9,7 @@ import { Icons, logoutModalData } from 'src/app/util';
   selector: 'app-main-header',
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainHeaderComponent implements OnInit {
   Icons = Icons;
@@ -16,8 +18,17 @@ export class MainHeaderComponent implements OnInit {
 
   constructor(private authService: AuthService, private modalService: ModalService) {}
 
+  ngOnChanges(): void {
+    console.warn(`mainheader changes!`);
+  }
+
   ngOnInit(): void {
     this.setLoggedUser$ = this.authService.setLoggedUser$;
+  }
+
+  checkRender(): boolean {
+    console.log('checkRender main header');
+    return true;
   }
 
   logout(): void {

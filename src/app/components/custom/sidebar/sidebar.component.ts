@@ -1,11 +1,12 @@
 import { Icons, Pages } from 'src/app/util';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NavItem } from 'src/app/models';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
   navItems: NavItem[] = [
@@ -32,4 +33,9 @@ export class SidebarComponent {
   ];
 
   Icons = Icons;
+
+  checkRender(): boolean {
+    console.log('checkRender sidebar');
+    return true;
+  }
 }

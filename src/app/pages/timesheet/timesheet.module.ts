@@ -5,7 +5,7 @@ import { CreateTimesheetComponent } from './create-timesheet/create-timesheet.co
 import { TimesheetDetailsComponent } from './timesheet-details/timesheet-details.component';
 import { TimesheetRoutingModule } from './timesheet-routing.module';
 import { TimesheetsComponent } from './timesheets/timesheets.component';
-import { MonthSlideComponent, TimesheetCarouselComponent, TimesheetListComponent, TimesheetSlideComponent } from 'src/app/components/timesheet';
+import { MonthSlideComponent, TimesheetCarouselComponent, TimesheetFormComponent, TimesheetListComponent, TimesheetSlideComponent } from 'src/app/components/timesheet';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
@@ -17,6 +17,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     TimesheetSlideComponent,
     TimesheetCarouselComponent,
     TimesheetListComponent,
+    TimesheetFormComponent,
   ],
   imports: [CommonModule, PageModule, TimesheetRoutingModule, CarouselModule],
 })

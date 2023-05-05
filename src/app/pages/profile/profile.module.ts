@@ -8,8 +8,6 @@ import { ProfileDetailsComponent } from './profile-details/profile-details.compo
 import { CrudPageModule } from 'src/app/shared/crud-page.module';
 import { ProfileFormComponent, ProfileListComponent } from 'src/app/components/profile';
 
-
-
 @NgModule({
   declarations: [
     ProfilesComponent,
@@ -18,11 +16,6 @@ import { ProfileFormComponent, ProfileListComponent } from 'src/app/components/p
     ProfileFormComponent,
     ProfileListComponent,
   ],
-  imports: [
-    CommonModule,
-    PageModule,
-    CrudPageModule,
-    ProfileRoutingModule,
-  ]
+  imports: [CommonModule, PageModule, CrudPageModule, ProfileRoutingModule],
 })
-export class ProfileModule { }
+export class ProfileModule {}

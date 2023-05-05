@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -17,6 +18,7 @@ import { ElementIds, Icons } from 'src/app/util';
   selector: 'app-timesheet-carousel [slides]',
   templateUrl: './timesheet-carousel.component.html',
   styleUrls: ['./timesheet-carousel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;
@@ -66,18 +68,32 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
+  checkRender(): boolean {
+    console.log('checkRender');
+    return true;
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['slides']) this.onSlideChanges();
+    console.warn('changes in carousel!');
+    console.warn(changes);
+    if (changes['slides']) {
+      this.onSlideChanges();
+    }
   }
 
   ngAfterViewInit(): void {
     this.moveToSelected();
-    this.cdRef.detectChanges();
+    console.log('afterViewInit');
+    // TODO clean
+    // this.cdRef.detectChanges();
   }
 
   onSlideClick(slide: DateSlide): void {
-    this.unselectSlides();
-    slide.selected = true;
+    if (slide.selected) return;
+
+    // this.unselectSlides();
+    // slide = { ...slide, selected: true };
+    this.selectSlide(slide.id);
 
     this.selectedDate.emit(slide.date);
   }
@@ -135,19 +151,24 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   moveToMonthById(carousel: CarouselComponent | undefined, id: string | undefined): void {
     if (!id) return;
 
-    const target = this.monthSlides.find((slide) => slide.id === id);
+    // const targetIndex = this.monthSlides.find((slide) => slide.id === id);
 
-    if (!target) return;
-
-    this.unselectedMonthSlides();
-    target.selected = true;
+    // if (!targetIndex) return;
+    // this.unselectedMonthSlides(id);
+    this.selectMonthSlide(id);
+    // this.monthSlides target.selected = true;
     carousel?.to(id);
   }
 
-  isNextMonthSlide(index: number): boolean {
-    if (!index || index >= this.monthSlides.length) return false;
+  // isNextMonthSlide(index: number): boolean {
+  //   if (!index || index >= this.monthSlides.length) return false;
 
-    return !!this.monthSlides[index - 1].selected;
+  //   return !!this.monthSlides[index - 1].selected;
+  // }
+  private isNextMonthSlide(index: number, monthSlides: MonthSlide[]): boolean {
+    if (!index || index >= monthSlides.length) return false;
+
+    return !!monthSlides[index - 1].selected;
   }
 
   private getUniqueMonthsFromSlides(): MonthSlide[] {
@@ -171,18 +192,61 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   }
 
   private buildMonthSlide(month: string, year: number): MonthSlide {
-    return { id: this.getMonthSlideId(month, year), month, year };
+    return {
+      id: this.getMonthSlideId(month, year),
+      month,
+      year,
+      isNextMonth: false,
+      selected: false,
+    };
   }
 
   private getMonthSlideId(month: string, year: number): string {
     return `${ElementIds.MonthCarouselSlide}${month}${year}`;
   }
 
-  private unselectSlides(): void {
-    this.slides.forEach((slide) => (slide.selected = false));
+  // private selectSlide(id: string): void {
+  //   const index = this.slides.findIndex((slide) => slide.id === id);
+
+  //   if (index < 0) return;
+
+  //   this.slides[index] = { ...this.slides[index], selected: true };
+  // }
+
+  // private selectMonthSlide(id: string): void {
+  //   const index = this.monthSlides.findIndex((slide) => slide.id === id);
+
+  //   this.monthSlides[index] = { ...this.monthSlides[index], selected: true };
+  // }
+
+  private selectSlide(id: string): void {
+    const index = this.slides.findIndex((slide) => slide.id === id);
+
+    if (index < 0) return;
+
+    this.slides = this.slides.map((slide) => {
+      // if (slide.selected) return { ...slide, selected: false };
+      // return slide;
+      if (slide.id === id) return { ...slide, selected: true };
+      if (slide.selected) return { ...slide, selected: false };
+      return slide;
+    });
+    // Unselect all slides with immutability
+    // this.slides = this.slides.map((slide) => ({ ...slide, selected: false }));
   }
 
-  private unselectedMonthSlides(): void {
-    this.monthSlides.forEach((slide) => (slide.selected = false));
+  private selectMonthSlide(id: string): void {
+    const slide = this.monthSlides.find((slide) => slide.id === id);
+
+    if (slide?.selected) return;
+
+    this.monthSlides = this.monthSlides.map((slide, i, curr) => {
+      if (slide.id === id) return { ...slide, selected: true, isNextMonth: false };
+      const isNextMonth = this.isNextMonthSlide(i, curr);
+      if (slide.selected) return { ...slide, selected: false, isNextMonth };
+      if (slide.isNextMonth !== slide.isNextMonth) return { ...slide, isNextMonth };
+      return slide;
+    });
+    // this.monthSlides.forEach((slide) => (slide.selected = false));
   }
 }

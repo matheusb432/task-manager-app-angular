@@ -1,36 +1,37 @@
+<div>{{checkRender()}}</div>
 <div
-class="slide"
-(click)="onSlideClick(slide)"
-[ngClass]="{
+  class="slide"
+  (click)="onSlideClick(slide)"
+  [ngClass]="{
   weekend: slide.isWeekend,
   active: slide.selected,
   holiday: slide.isHoliday,
   special: slide.isSpecial,
 }"
 >
-<header class="slide-header">
-  <div>
-    <span class="day">
-      {{ slide.day }}
+  <header class="slide-header">
+    <div>
+      <span class="day">
+        {{ slide.day }}
+      </span>
+      <span class="day-of-week">
+        {{ slide.dayOfWeek }}
+      </span>
+    </div>
+  </header>
+  <div class="slide-body">
+    <!-- TODO add timesheet data -->
+    <span class="tasks" title="5 total tasks">
+      <app-icon [icon]="Icons.Assignment" [size]="24"></app-icon>
+      5
     </span>
-    <span class="day-of-week">
-      {{ slide.dayOfWeek }}
+    <span class="hours completed" title="5 out of 8 hours completed">
+      <app-icon [icon]="Icons.Timelapse" [size]="24"></app-icon>
+      5/8
+    </span>
+    <span class="rating failed" title="3.6 average rating">
+      <app-icon [icon]="Icons.Star" [size]="24"></app-icon>
+      3.6
     </span>
   </div>
-</header>
-<div class="slide-body">
-  <!-- TODO add timesheet data -->
-  <span class="tasks" title="5 total tasks">
-    <app-icon [icon]="Icons.Assignment" [size]="24"></app-icon>
-    5
-  </span>
-  <span class="hours completed" title="5 out of 8 hours completed">
-    <app-icon [icon]="Icons.Timelapse" [size]="24"></app-icon>
-    5/8
-  </span>
-  <span class="rating failed" title="3.6 average rating">
-    <app-icon [icon]="Icons.Star" [size]="24"></app-icon>
-    3.6
-  </span>
-</div>
 </div>

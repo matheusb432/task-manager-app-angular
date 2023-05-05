@@ -1,5 +1,8 @@
+<!-- TODO remove -->
+<div>{{checkRender()}}</div>
 <header class="main-header mat-elevation-z6">
   <app-breadcrumb></app-breadcrumb>
+
   <section class="user-data" *ngIf="setLoggedUser$ | async as loggedUser">
     <span>{{ loggedUser.name }}</span>
     <app-icon [icon]="Icons.AccountCircle"></app-icon>

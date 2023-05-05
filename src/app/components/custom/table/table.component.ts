@@ -111,6 +111,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   canShowActions = () => StringUtil.notEmpty(this.icons);
 
   getItemId(index: number, item: T): number {
+    console.log('HEi');
     return item?.id ?? index;
   }
 

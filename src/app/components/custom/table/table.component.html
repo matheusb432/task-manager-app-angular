@@ -36,11 +36,11 @@
           [url]="icon.urlType != null ? buildUrl() : undefined"
           [queryParams]="
             icon.urlType != null
-              ? buildQueryParams(getItemId(itemIndex, item), icon.urlType)
+              ? buildQueryParams(item.id!, icon.urlType)
               : undefined
           "
           [clickable]="true"
-          (clicked)="icon.onClick?.(getItemId(itemIndex, item))"
+          (clicked)="icon.onClick?.(item.id!)"
         ></app-icon>
       </td>
     </tr>

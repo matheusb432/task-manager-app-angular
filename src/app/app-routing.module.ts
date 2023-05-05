@@ -12,12 +12,17 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: Pages.Auth,
+    redirectTo: `${Pages.Auth}/${Pages.Login}`,
+    pathMatch: 'full',
+  },
+  {
     path: Pages.Home,
     component: HomeComponent,
     canActivate: [() => canActivateAuth()],
   },
   {
-    path: '',
+    path: Pages.Auth,
     loadChildren: () =>
       import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule),
     canActivateChild: [() => canActivateAuthPage()],

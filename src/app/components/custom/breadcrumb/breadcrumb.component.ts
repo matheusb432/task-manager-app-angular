@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { Crumb } from 'src/app/models';
 import { PageService } from 'src/app/services';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
@@ -10,11 +11,13 @@ import { Icons } from 'src/app/util';
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent implements OnInit {
-  get crumbs(): Crumb[] {
-    return this.service.crumbs;
-  }
+  // get crumbs(): Crumb[] {
+  //   return this.service.crumbs;
+  // }
+  crumbs$!: Observable<Crumb[]>;
 
   Icons = Icons;
 
@@ -22,7 +25,9 @@ export class BreadcrumbComponent implements OnInit {
     private service: BreadcrumbService,
     private pageService: PageService,
     private router: Router
-  ) {}
+  ) {
+    this.crumbs$ = this.service.crumbs$;
+  }
 
   ngOnInit(): void {
     this.service.setByUrl(this.pageService.getPathWithoutParams());
@@ -32,5 +37,14 @@ export class BreadcrumbComponent implements OnInit {
         tap(() => this.service.setByUrl(this.pageService.getPathWithoutParams()))
       )
       .subscribe();
+  }
+
+  ngOnChanges(): void {
+    console.warn(`breadcrumb changes!`);
+  }
+
+  checkRender(): boolean {
+    console.log('checkRender breadcrumb');
+    return true;
   }
 }

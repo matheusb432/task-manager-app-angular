@@ -1,7 +1,8 @@
-<nav aria-label="breadcrumb" *ngIf="crumbs.length > 0">
+<div>{{checkRender()}}</div>
+<nav aria-label="breadcrumb" >
   <ol class="breadcrumb">
     <li
-      *ngFor="let crumb of crumbs; let last = last"
+      *ngFor="let crumb of crumbs$ | async; let last = last"
       class="breadcrumb-item"
       [ngClass]="{ 'clickable-crumb': !last }"
     >
