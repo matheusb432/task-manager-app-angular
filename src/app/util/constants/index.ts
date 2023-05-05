@@ -8,3 +8,4 @@ export * from './alert-types.enum';
 export * from './pages';
 export * from './constants.enum';
 export * from './form-types.enum';
+export * from './card-defaults';

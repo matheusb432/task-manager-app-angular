@@ -44,6 +44,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     console.table(err?.error?.errors);
 
-    console.log(err);
+    console.error(err);
   }
 }

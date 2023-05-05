@@ -1,11 +1,9 @@
 import { AddMap } from 'mapper-ts/lib-esm';
+import { TimePipe } from 'src/app/pipes/time.pipe';
+import { TableItemConfig } from '../configs';
+import { TableItem } from '../types';
 import { ProfilePresetTaskItem } from './profile-preset-task-item';
 import { ProfileType } from './profile-type';
-import { TableItem } from '../types';
-import { TableItemConfig } from '../configs';
-import { PercentPipe } from '@angular/common';
-import { TimePipe } from 'src/app/pipes/time.pipe';
-import { GetPipe } from 'src/app/pipes';
 
 export class Profile implements TableItem {
   id?: number;

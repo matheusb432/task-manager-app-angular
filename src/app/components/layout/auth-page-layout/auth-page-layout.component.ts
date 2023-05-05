@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, tap } from 'rxjs/operators';
+import { Image } from 'src/app/models';
 import { paths } from 'src/app/util';
 
 @Component({
@@ -10,6 +11,14 @@ import { paths } from 'src/app/util';
 })
 export class AuthPageLayoutComponent implements OnInit {
   switchPageLabel = 'Already have an account? Login';
+
+  authImage: Image = {
+    src: 'assets/img/auth-bg.png',
+    alt: 'auth',
+    priority: true,
+    width: 500,
+    height: 429,
+  };
 
   get isLoginPage(): boolean {
     return this.router.url === paths.login;

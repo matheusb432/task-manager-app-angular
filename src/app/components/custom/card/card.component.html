@@ -1,6 +1,6 @@
-<app-card-layout [imgUrl]="imgUrl ?? ''" [imgAlt]="imgAlt ?? ''">
-  <h2 class="card-title">{{titleText}}</h2>
+<app-card-layout [image]="card.image">
+  <h2 class="card-title">{{card.title}}</h2>
   <span class="card-content">
-   {{content}}
+   {{card.content}}
   </span>
 </app-card-layout>

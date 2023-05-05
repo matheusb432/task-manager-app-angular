@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { InputComponent } from '../components/custom/inputs/input/input.component';
@@ -8,7 +8,7 @@ import { SearchComponent } from '../components/custom/inputs/search/search.compo
 
 @NgModule({
   declarations: [InputComponent, SelectComponent, SearchComponent],
-  imports: [CommonModule, PageModule, NgOptimizedImage],
+  imports: [CommonModule, PageModule],
   exports: [InputComponent, SelectComponent, SearchComponent],
 })
 export class CrudPageModule {}

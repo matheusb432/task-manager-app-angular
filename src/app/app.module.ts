@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import jwtDecode from 'jwt-decode';
 
-import { DatePipe, NgOptimizedImage, PercentPipe } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,9 +16,6 @@ import { LocalStorageService } from './services';
 import { STORE_SERVICE } from './services/interfaces';
 import { TOKEN_DECODER_FN } from './services/token.service';
 import { PageModule } from './shared';
-import { DynamicPipe } from './pipes/dynamic.pipe';
-import { TimePipe } from './pipes/time.pipe';
-import { GetPipe } from './pipes/get.pipe';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent],
@@ -31,7 +27,6 @@ import { GetPipe } from './pipes/get.pipe';
     PageModule,
     AppRoutingModule,
     HttpClientModule,
-    NgOptimizedImage,
   ],
   exports: [PageModule],
   providers: [

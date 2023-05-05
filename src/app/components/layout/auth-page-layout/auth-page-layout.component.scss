@@ -1,6 +1,6 @@
-$image-width: 500px;
-$content-min-width: 280px;
-$page: 784px;
+$image-width: 638px;
+$content-min-width: 344px;
+$page: $image-width + $content-min-width;
 
 .auth-container {
   display: flex;
@@ -11,18 +11,16 @@ $page: 784px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 4;
+  flex: 1;
 
-  img {
+  app-image {
     width: $image-width;
   }
 }
 
 .page-content {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  width: 100%;
   min-width: $content-min-width;
   background: var(--secondary-dark);
   color: #fff;
@@ -32,15 +30,11 @@ $page: 784px;
 }
 
 @media screen and (max-width: $page) {
-  .auth-container {
-    flex-direction: column;
+  .page-content {
+    flex: 1;
   }
 
   .side-image {
-    flex: 1;
-
-    img {
-      width: 460px;
-    }
+    display: none;
   }
 }

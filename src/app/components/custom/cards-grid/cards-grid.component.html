@@ -2,11 +2,8 @@
   <mat-grid-tile *ngFor="let c of cards">
     <app-card
       [id]="c.id"
-      [titleText]="c.title"
-      [content]="c.content"
-      [imgUrl]="c.imgUrl"
-      [imgAlt]="c.title"
       [routerLink]="'/' + c.url"
+      [card]="c"
     ></app-card>
   </mat-grid-tile>
 </mat-grid-list>
