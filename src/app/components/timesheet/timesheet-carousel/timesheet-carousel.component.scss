@@ -19,6 +19,10 @@
   background: timesheetVars.$carousel-header-bg;
 }
 
+.carousel-actions {
+  text-align: center;
+}
+
 ::ng-deep .owl-nav {
   display: none;
 }

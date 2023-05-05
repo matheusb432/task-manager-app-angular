@@ -16,7 +16,7 @@ import { ElementIds, Icons } from 'src/app/utils';
 @Component({
   selector: 'app-timesheet-carousel [slides]',
   templateUrl: './timesheet-carousel.component.html',
-  styleUrls: ['./timesheet-carousel.component.scss']
+  styleUrls: ['./timesheet-carousel.component.scss'],
 })
 export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;
@@ -64,7 +64,6 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
     return this.carousel.navData.next.disabled;
   }
 
-
   constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -94,6 +93,13 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
 
   prev(): void {
     this.carousel?.prev();
+  }
+
+  goToToday(): void {
+    const todaySlide = this.slides.find((slide) => slide.isToday);
+
+    if (!todaySlide) return;
+    this.carousel?.to(todaySlide.id);
   }
 
   handleChange(event: SlidesOutputData): void {

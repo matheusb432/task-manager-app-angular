@@ -64,22 +64,32 @@ export class DateUtilsService {
     return dayOfWeek === WeekDay.Saturday || dayOfWeek === WeekDay.Sunday;
   };
 
+  static isToday = (date: number, month: number, year: number): boolean => {
+    const today = new Date();
+    return date === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+  };
+
   static getDateValues(date: Date): DateValues {
     const dayIndex = date.getDay();
 
+    const dateNumber = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
     const formattedDate = DateUtilsService.formatDate(date);
-    const day = DateUtilsService.formatDayFromNumber(date.getDate());
+    const day = DateUtilsService.formatDayFromNumber(dateNumber);
     const dayOfWeek = DateUtilsService.toDayOfWeek(dayIndex);
     const isWeekend = DateUtilsService.isWeekend(dayIndex);
-    const month = DateUtilsService.getMonthName(date.getMonth() + 1);
+    const month = DateUtilsService.getMonthName(monthIndex + 1);
 
     return {
       date: formattedDate,
       dayOfWeek,
       day,
       month,
-      year: date.getFullYear(),
+      year,
       isWeekend,
+      isToday: DateUtilsService.isToday(dateNumber, monthIndex, year),
     };
   }
 }

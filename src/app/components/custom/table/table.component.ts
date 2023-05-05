@@ -62,7 +62,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   set orderedItems(value: T[]) {
     const itemType = this.config?.itemType;
     if (itemType == null) {
-      this.orderedItems = value;
+      this._orderedItems = value;
       return;
     }
 
