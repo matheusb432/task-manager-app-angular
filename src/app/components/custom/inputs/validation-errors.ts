@@ -12,8 +12,8 @@ export enum ValidationErrorKeys {
 
 export const validationErrorMessages: { [key in ValidationErrorKeys]: string } = {
   [ValidationErrorKeys.Required]: 'This field is required',
-  [ValidationErrorKeys.MaxLength]: 'This field must be less than {{requiredLength}} characters',
-  [ValidationErrorKeys.MinLength]: 'This field must be at least {{requiredLength}} characters',
+  [ValidationErrorKeys.MaxLength]: 'This field has too many characters',
+  [ValidationErrorKeys.MinLength]: 'This field has too few characters',
   [ValidationErrorKeys.NonNullable]: 'This field is required',
   [ValidationErrorKeys.Pattern]: 'This field is invalid',
   [ValidationErrorKeys.Email]: 'This field must be a valid email',

@@ -7,9 +7,17 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { Mapper } from 'mapper-ts/lib-esm';
 import { of } from 'rxjs';
 import { us } from 'src/app/helpers';
-import { IconConfig, OrderByConfig, TableConfig, TableItem, TableItemConfig, TableKey } from 'src/app/models';
+import {
+  IconConfig,
+  OrderByConfig,
+  TableConfig,
+  TableItem,
+  TableItemConfig,
+  TableKey,
+} from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { DetailsTypes, Icons } from 'src/app/utils';
 
@@ -26,7 +34,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Output() deleteItem = new EventEmitter<number>();
   @Output() orderByChanged = new EventEmitter<OrderByConfig<T> | null>();
 
-  orderedItems: T[] = [];
+  private _orderedItems: T[] = [];
 
   isLoading$ = of(false);
 
@@ -46,6 +54,19 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
 
   get detailsUrl(): string {
     return this.config.detailsUrl;
+  }
+
+  get orderedItems(): T[] {
+    return this._orderedItems;
+  }
+  set orderedItems(value: T[]) {
+    const itemType = this.config?.itemType;
+    if (itemType == null) {
+      this.orderedItems = value;
+      return;
+    }
+
+    this._orderedItems = new Mapper(itemType).map(value) as T[];
   }
 
   ngOnInit(): void {

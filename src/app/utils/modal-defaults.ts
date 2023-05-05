@@ -18,6 +18,12 @@ const saveModalData = (): ModalConfirmData => ({
   confirmText: 'Yes, save',
 });
 
+const unsavedChangesModalData = (): ModalConfirmData => ({
+  title: 'Unsaved Changes',
+  message: 'Are you sure you want to leave? All unsaved changes will be lost.',
+  confirmText: 'Yes, leave',
+});
+
 const logoutModalData = (): ModalConfirmData => ({
   title: 'Logout',
   message: 'Are you sure you want to logout?',
@@ -29,4 +35,4 @@ const successModalData = (): ModalConfirmData => ({
   message: 'Your changes have been saved successfully!',
 });
 
-export { cancelModalData, deleteModalData, saveModalData, successModalData, logoutModalData };
+export { cancelModalData, deleteModalData, unsavedChangesModalData, saveModalData, successModalData, logoutModalData };

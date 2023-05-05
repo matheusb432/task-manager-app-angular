@@ -25,6 +25,8 @@ export class ArrayUtilsService {
   }
 
   static sumNumberProp<T>(items: T[] | Nullish, property: keyof T): number {
+    if (!items) return 0;
+
     return (
       items?.reduce((prev, curr) => {
         const value = Number(curr?.[property]);

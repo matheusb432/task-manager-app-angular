@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, NgOptimizedImage, PercentPipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe, NgOptimizedImage, PercentPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CardComponent } from '../components/custom/card/card.component';
 import { ImageComponent } from '../components/custom/image/image.component';
@@ -119,6 +119,6 @@ import { GetPipe, TimePipe } from '../pipes';
     TimePipe,
     GetPipe,
   ],
-  providers: [DynamicPipe, DatePipe, TimePipe, GetPipe],
+  providers: [DynamicPipe, TimePipe, GetPipe, DatePipe, DecimalPipe],
 })
 export class PageModule {}

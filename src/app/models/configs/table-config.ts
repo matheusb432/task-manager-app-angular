@@ -1,9 +1,11 @@
 import { PipeTransform, ProviderToken } from "@angular/core";
+import { Ctor } from "./api-request";
 
 export interface TableConfig<T = unknown> {
   itemConfigs: TableItemConfig<T>[];
   orderBy: OrderByConfig<T> | null;
   detailsUrl: string;
+  itemType?: Ctor<T>;
   hasCopy?: boolean;
   hasEdit?: boolean;
   hasDelete?: boolean;
@@ -13,6 +15,7 @@ export interface TableConfig<T = unknown> {
 export interface TableItemConfig<T = unknown> {
   header: string;
   key: TableKey<T>;
+  disabledOrderBy?: boolean;
   pipe?: ProviderToken<PipeTransform>;
   pipeArgs?: unknown[];
 }

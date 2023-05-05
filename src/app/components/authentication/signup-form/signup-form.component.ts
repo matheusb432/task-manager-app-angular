@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { SignupForm, SignupFormGroup } from './signup-form-group';
-import { ElementIds, Icons } from 'src/app/utils';
-import { IconConfig } from 'src/app/models';
 import { FormUtilsService } from 'src/app/helpers';
+import { IconConfig } from 'src/app/models';
+import { ElementIds, Icons } from 'src/app/utils';
+import { SignupForm, SignupFormGroup } from './signup-form-group';
 
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss'],
 })
-export class SignupFormComponent {
+export class SignupFormComponent  {
   @Input() form!: SignupFormGroup;
 
   @Output() save = new EventEmitter<SignupFormGroup>();

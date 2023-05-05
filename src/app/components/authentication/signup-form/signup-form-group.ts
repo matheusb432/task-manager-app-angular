@@ -4,7 +4,12 @@ import { Signup } from 'src/app/models';
 
 export class SignupFormGroup extends FormGroup<SignupForm> {
   static from(form: SignupForm): SignupFormGroup {
-    return new SignupFormGroup(form, { validators: passwordsAreEqual });
+    // const fg = new SignupFormGroup(form);
+
+    // fg.controls.confirmPassword.addValidators(passwordsAreEqual());
+    return new SignupFormGroup(form, {validators: passwordsAreEqual()});
+    // TODO undo
+    // return new SignupFormGroup(form, { validators: passwordsAreEqual });
   }
 
   static getFormKeys(): (keyof SignupForm)[] {
@@ -49,6 +54,7 @@ export const getSignupForm = (): SignupForm => ({
   }),
   confirmPassword: new FormControl('', {
     nonNullable: true,
+    // validators: [...passwordValidators, passwordsAreEqual()],
     validators: passwordValidators,
   }),
 });
@@ -62,4 +68,3 @@ function passwordStrengthValidator(): ValidatorFn {
     return null;
   };
 }
-

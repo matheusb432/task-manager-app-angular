@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
+import { ProfileForm, ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
 import { us } from 'src/app/helpers';
-import { PageConfig, PageData, ProfileType } from 'src/app/models';
+import { CanDeactivateForm, PageConfig, PageData, ProfileType } from 'src/app/models';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
 import { DetailsTypes, FormTypes } from 'src/app/utils';
 
@@ -11,7 +11,7 @@ import { DetailsTypes, FormTypes } from 'src/app/utils';
   templateUrl: './profile-details.component.html',
   styleUrls: ['./profile-details.component.scss'],
 })
-export class ProfileDetailsComponent implements OnInit, OnDestroy {
+export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivateForm<ProfileForm> {
   detailsPage!: PageConfig;
   form!: ProfileFormGroup;
   pageData?: PageData;

@@ -4,6 +4,8 @@ import { TimesheetNote } from './timesheet-note';
 import { TableItem } from '../types';
 import { TableItemConfig } from '../configs';
 import { ArrayUtilsService } from 'src/app/helpers';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { TimePipe } from 'src/app/pipes';
 
 export class Timesheet implements TableItem {
   id?: number;
@@ -19,13 +21,13 @@ export class Timesheet implements TableItem {
     return this.taskItems?.length ?? 0;
   }
 
-  // TODO test
   get totalHours(): number {
     return ArrayUtilsService.sumNumberProp(this.taskItems, 'time');
   }
 
-  // TODO test
   get averageRating(): number {
+    if (!this.totalTaskItems) return 0;
+
     const sum = ArrayUtilsService.sumNumberProp(this.taskItems, 'rating');
 
     return sum / this.totalTaskItems;
@@ -33,7 +35,16 @@ export class Timesheet implements TableItem {
 
   static tableItems = (): TableItemConfig<Timesheet>[] => [
     { header: '#', key: 'id' },
-    { header: 'Date', key: 'date' },
+    { header: 'Date', key: 'date', pipe: DatePipe },
     { header: 'Finished', key: 'finished' },
+    { header: 'Total Tasks', key: 'totalTaskItems', disabledOrderBy: true },
+    { header: 'Hours', key: 'totalHours', disabledOrderBy: true, pipe: TimePipe },
+    {
+      header: 'Rating',
+      key: 'averageRating',
+      disabledOrderBy: true,
+      pipe: DecimalPipe,
+      pipeArgs: ['1.1-2'],
+    },
   ];
 }

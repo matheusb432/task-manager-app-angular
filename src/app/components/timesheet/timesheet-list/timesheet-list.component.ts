@@ -11,7 +11,7 @@ import { ElementIds, deleteModalData, paths } from 'src/app/utils';
 @Component({
   selector: 'app-timesheet-list',
   templateUrl: './timesheet-list.component.html',
-  styleUrls: ['./timesheet-list.component.css'],
+  styleUrls: ['./timesheet-list.component.scss'],
 })
 export class TimesheetListComponent implements OnInit {
   @Input() items!: Timesheet[];
@@ -24,6 +24,7 @@ export class TimesheetListComponent implements OnInit {
   config: TableConfig<Timesheet> = {
     itemConfigs: Timesheet.tableItems(),
     orderBy: { key: 'id', direction: 'asc' },
+    itemType: Timesheet,
     detailsUrl: paths.timesheetsDetails,
     hasCopy: true,
     hasDelete: true,

@@ -4,6 +4,7 @@ import { PageStates } from 'src/app/utils';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 import { ProfilesComponent } from './profiles/profiles.component';
+import { canDeactivateForm } from 'src/app/guards/form.guard';
 
 const routes: Routes = [
   {
@@ -13,10 +14,12 @@ const routes: Routes = [
       {
         path: PageStates.Create,
         component: CreateProfileComponent,
+        canDeactivate: [canDeactivateForm]
       },
       {
         path: PageStates.Details,
         component: ProfileDetailsComponent,
+        canDeactivate: [canDeactivateForm]
       },
     ],
   },

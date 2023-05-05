@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
-import { ProfileType } from 'src/app/models';
+import { ProfileForm, ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
+import { CanDeactivateForm, ProfileType } from 'src/app/models';
 import { ToastService } from 'src/app/services';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -11,7 +11,7 @@ import { DetailsTypes, FormTypes } from 'src/app/utils';
   templateUrl: './create-profile.component.html',
   styleUrls: ['./create-profile.component.scss'],
 })
-export class CreateProfileComponent implements OnInit {
+export class CreateProfileComponent implements OnInit, CanDeactivateForm<ProfileForm> {
   form!: ProfileFormGroup;
 
   formType = FormTypes.Create;
