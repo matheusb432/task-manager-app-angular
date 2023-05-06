@@ -9,7 +9,7 @@ import { ElementIds } from '../util';
 })
 export class DatesCarouselService {
   private slides$ = new BehaviorSubject<DateSlide[]>(
-    DatesCarouselService.buildDatesCarousel(new Date(), 60)
+    DatesCarouselService.buildDatesCarousel(new Date(), 30)
   );
 
   getSlides(): Observable<DateSlide[]> {

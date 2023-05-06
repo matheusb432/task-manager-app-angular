@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -19,15 +18,30 @@ import { ElementIds, Icons } from 'src/app/util';
   styleUrls: ['./timesheet-carousel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
+export class TimesheetCarouselComponent implements OnChanges {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;
   @ViewChild('carouselHeader', { static: false }) carouselHeader?: CarouselComponent;
 
   @Input() slides!: DateSlide[];
 
+  private _slidesToRender!: DateSlide[];
+  public get slidesToRender(): DateSlide[] {
+    return this._slidesToRender;
+  }
+  public set slidesToRender(value: DateSlide[]) {
+    this._slidesToRender = value;
+    this.onSlideChanges();
+  }
+
   @Output() selectedDate = new EventEmitter<string>();
 
-  monthSlides: MonthSlide[] = [];
+  private _monthSlides: MonthSlide[] = [];
+  public get monthSlides(): MonthSlide[] {
+    return this._monthSlides;
+  }
+  public set monthSlides(value: MonthSlide[]) {
+    this._monthSlides = value;
+  }
 
   slideWidth = 160;
 
@@ -35,6 +49,11 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
     dots: false,
     items: this.calculateDateItemsFor24PxMargin(),
     nav: true,
+    lazyLoad: true,
+    // TODO keep disabled?
+    // pullDrag: false,
+    // mouseDrag: false,
+    lazyLoadEager: 10,
     navSpeed: 300,
   };
 
@@ -66,11 +85,9 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['slides']) this.onSlideChanges();
-  }
-
-  ngAfterViewInit(): void {
-    this.moveToSelected();
+    if (changes['slides']) {
+      this.slidesToRender = this.slides;
+    }
   }
 
   onSlideClick(slide: DateSlide): void {
@@ -82,8 +99,15 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   }
 
   private onSlideChanges(): void {
+    const todayPosition = Math.floor(this.slidesToRender?.length / 2);
+    const centerTodayPosition = Math.ceil(
+      Math.max(0, todayPosition - (this.carouselOptions.items ?? 0) / 2)
+    );
+
+    this.carouselOptions.startPosition = centerTodayPosition;
     this.monthSlides = this.getUniqueMonthsFromSlides();
     this.carouselHeaderOptions.items = this.calculateMonthItems();
+    this.setMonthStartPosition(todayPosition);
   }
 
   next(): void {
@@ -95,7 +119,7 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   }
 
   goToToday(): void {
-    const todaySlide = this.slides.find((slide) => slide.isToday);
+    const todaySlide = this.slidesToRender.find((slide) => slide.isToday);
 
     if (!todaySlide) return;
     this.carousel?.to(todaySlide.id);
@@ -105,9 +129,26 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
     const startPosition = event?.startPosition ?? -1;
     if (!(startPosition > 0)) return;
 
-    const startSlide = this.slides[startPosition];
+    const startSlide = this.slidesToRender[startPosition];
     const monthSlideId = this.getMonthSlideId(startSlide.month, startSlide.year);
+
+    if (!monthSlideId) return;
+
+    this.selectMonthSlide(monthSlideId);
     this.moveToMonthById(this.carouselHeader, monthSlideId);
+  }
+
+  private setMonthStartPosition(startPosition: number) {
+    const startSlide = this.slidesToRender[startPosition];
+    const monthSlideId = this.getMonthSlideId(startSlide.month, startSlide.year);
+    if (!monthSlideId) return;
+
+    this.selectMonthSlide(monthSlideId);
+    this.carouselHeaderOptions.startPosition = this.getSelectedMonthIndex();
+  }
+
+  private getSelectedMonthIndex(): number {
+    return this.monthSlides.findIndex((slide) => slide.selected);
   }
 
   private calculateDateItemsFor24PxMargin(): number {
@@ -124,38 +165,29 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   }
 
   moveToSelected(): void {
-    const selectedSlide = this.slides.find((slide) => slide.selected);
+    const selectedSlide = this.slidesToRender.find((slide) => slide.selected);
 
     if (!selectedSlide) return;
 
     this.carousel?.to(selectedSlide.id);
   }
 
+  moveToSelectedMonth(): void {
+    const selectedMonthSlide = this.monthSlides.find((slide) => slide.selected);
+
+    if (!selectedMonthSlide) return;
+
+    this.carouselHeader?.to(selectedMonthSlide.id);
+  }
+
   moveToMonthById(carousel: CarouselComponent | undefined, id: string | undefined): void {
     if (!id) return;
 
-    // const targetIndex = this.monthSlides.find((slide) => slide.id === id);
-
-    // if (!targetIndex) return;
-    // this.unselectedMonthSlides(id);
-    this.selectMonthSlide(id);
-    // this.monthSlides target.selected = true;
     carousel?.to(id);
   }
 
-  // isNextMonthSlide(index: number): boolean {
-  //   if (!index || index >= this.monthSlides.length) return false;
-
-  //   return !!this.monthSlides[index - 1].selected;
-  // }
-  private isNextMonthSlide(index: number, monthSlides: MonthSlide[]): boolean {
-    if (!index || index >= monthSlides.length) return false;
-
-    return !!monthSlides[index - 1].selected;
-  }
-
   private getUniqueMonthsFromSlides(): MonthSlide[] {
-    const monthSlides = this.slides
+    const monthSlides = this.slidesToRender
       .map(this.uniqueMonthFromSlideOrDefault.bind(this))
       .filter((slide) => slide != null) as MonthSlide[];
 
@@ -188,48 +220,44 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
     return `${ElementIds.MonthCarouselSlide}${month}${year}`;
   }
 
-  // private selectSlide(id: string): void {
-  //   const index = this.slides.findIndex((slide) => slide.id === id);
-
-  //   if (index < 0) return;
-
-  //   this.slides[index] = { ...this.slides[index], selected: true };
-  // }
-
-  // private selectMonthSlide(id: string): void {
-  //   const index = this.monthSlides.findIndex((slide) => slide.id === id);
-
-  //   this.monthSlides[index] = { ...this.monthSlides[index], selected: true };
-  // }
-
   private selectSlide(id: string): void {
-    const index = this.slides.findIndex((slide) => slide.id === id);
+    const index = this.slidesToRender.findIndex((slide) => slide.id === id);
 
     if (index < 0) return;
 
-    this.slides = this.slides.map((slide) => {
-      // if (slide.selected) return { ...slide, selected: false };
-      // return slide;
-      if (slide.id === id) return { ...slide, selected: true };
-      if (slide.selected) return { ...slide, selected: false };
-      return slide;
-    });
-    // Unselect all slides with immutability
-    // this.slides = this.slides.map((slide) => ({ ...slide, selected: false }));
+    const selectedSlideIndex = this.slidesToRender.findIndex((slide) => slide.selected);
+    if (selectedSlideIndex >= 0) {
+      this.slidesToRender[selectedSlideIndex] = {
+        ...this.slidesToRender[selectedSlideIndex],
+        selected: false,
+      };
+    }
+
+    this.slidesToRender[index] = { ...this.slidesToRender[index], selected: true };
   }
 
   private selectMonthSlide(id: string): void {
-    const slide = this.monthSlides.find((slide) => slide.id === id);
+    const slideIndex = this.monthSlides.findIndex((slide) => slide.id === id);
 
-    if (slide?.selected) return;
+    if (slideIndex >= 0 && this.monthSlides[slideIndex].selected) return;
 
-    this.monthSlides = this.monthSlides.map((slide, i, curr) => {
-      if (slide.id === id) return { ...slide, selected: true, isNextMonth: false };
-      const isNextMonth = this.isNextMonthSlide(i, curr);
-      if (slide.selected) return { ...slide, selected: false, isNextMonth };
-      if (slide.isNextMonth !== slide.isNextMonth) return { ...slide, isNextMonth };
-      return slide;
+    this.monthSlides = this.monthSlides.map((slide) => {
+      if (!slide.selected && !slide.isNextMonth) return slide;
+
+      return { ...slide, selected: false, isNextMonth: false };
     });
-    // this.monthSlides.forEach((slide) => (slide.selected = false));
+
+    if (slideIndex >= 0) {
+      this.monthSlides[slideIndex] = {
+        ...this.monthSlides[slideIndex],
+        selected: true,
+        isNextMonth: false,
+      };
+      this.monthSlides[slideIndex + 1] = {
+        ...this.monthSlides[slideIndex + 1],
+        selected: false,
+        isNextMonth: true,
+      };
+    }
   }
 }
