@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { DetailsTypes, Icons } from 'src/app/util';
 
@@ -8,32 +16,39 @@ import { DetailsTypes, Icons } from 'src/app/util';
   styleUrls: ['./icon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IconComponent {
+export class IconComponent implements OnChanges {
   @Input() icon!: Icons;
   @Input() color: ThemePalette = 'primary';
   @Input() ariaLabelText = 'Icon';
   @Input() url?: string;
   @Input() size = 24;
   @Input() clickable = false;
-  @Input() queryParams?: Record<string, string>;
+  @Input() urlType?: DetailsTypes;
   @Input() title = '';
   @Input() elId = '';
+  @Input() itemId?: number | undefined;
 
   @Output() clicked = new EventEmitter<void>();
 
+  queryParams?: Record<string, string>;
+
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.warn('changes in icon!');
+    if (changes['urlType'] || changes['itemId']) {
+      this.updateQueryParamsIfNecessary();
+    }
   }
 
-  checkRender(): boolean {
-    if(this.url)console.log(this.url);
-    console.log('checkRender icon');
-    return true;
-  }
-
-  buildQueryParams = (id: number, type: DetailsTypes): { id: string; type: DetailsTypes } => ({
+  private buildQueryParams = (
+    id: number,
+    type: DetailsTypes
+  ): { id: string; type: DetailsTypes } => ({
     id: id.toString(),
     type,
   });
+
+  private updateQueryParamsIfNecessary(): void {
+    if (!this.urlType || this.itemId == null) return;
+
+    this.queryParams = this.buildQueryParams(this.itemId, this.urlType);
+  }
 }

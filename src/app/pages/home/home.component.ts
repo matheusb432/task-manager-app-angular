@@ -1,22 +1,18 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Card } from 'src/app/models';
 import { ModalService } from 'src/app/services/modal.service';
-import { Pages, homeCards, successModalData } from 'src/app/util';
+import { homeCards, successModalData } from 'src/app/util';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   cards: Card[] = homeCards;
 
-  constructor(private router: Router, private modalService: ModalService) {}
-
-  isLandingPage(): boolean {
-    return this.router.url === '/';
-  }
+  constructor(private modalService: ModalService) {}
 
   openFeedbackModal = () => this.modalService.feedback(successModalData());
 }

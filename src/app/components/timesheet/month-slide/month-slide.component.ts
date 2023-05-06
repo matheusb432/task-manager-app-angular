@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MonthSlide } from 'src/app/models';
 
 @Component({
@@ -9,16 +9,4 @@ import { MonthSlide } from 'src/app/models';
 })
 export class MonthSlideComponent {
   @Input() slide!: MonthSlide;
-
-  // TODO remove
-  ngOnChanges(changes: SimpleChanges): void {
-    console.warn('changes in month slide!');
-    console.warn(changes);
-  }
-
-  // TODO remove any checkRenders
-  checkRender(): boolean {
-    console.log('checkRender monthSlide');
-    return true;
-  }
 }

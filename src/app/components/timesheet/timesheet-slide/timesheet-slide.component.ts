@@ -15,18 +15,7 @@ export class TimesheetSlideComponent {
 
   Icons = Icons;
 
-  // TODO remove
-  ngOnChanges(): void {
-    console.warn('changes in timesheet slide!');
-  }
-
   onSlideClick(slide: DateSlide): void {
     this.selectedSlide.emit(slide);
-  }
-
-  // TODO remove any checkRenders
-  checkRender(): boolean {
-    console.log('checkRender slide');
-    return true;
   }
 }

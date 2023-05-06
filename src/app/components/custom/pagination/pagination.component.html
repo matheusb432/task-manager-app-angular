@@ -1,7 +1,7 @@
 <mat-paginator
   [length]="totalItems"
   [pageSize]="itemsPerPage"
-  [pageSizeOptions]="[5, 10, 25, 50]"
+  [pageSizeOptions]="pageSizeOptions"
   [color]="color"
   [showFirstLastButtons]="true"
   (page)="pageChanged.emit($event)"

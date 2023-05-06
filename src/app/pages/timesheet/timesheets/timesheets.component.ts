@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { DateSlide } from 'src/app/models';
 import { DatesCarouselService, TimesheetService } from 'src/app/services';
@@ -22,22 +22,11 @@ export class TimesheetsComponent implements OnInit {
 
   constructor(
     private service: TimesheetService,
-    private datesCarouselService: DatesCarouselService,
-    private cdRef: ChangeDetectorRef
+    private datesCarouselService: DatesCarouselService
   ) {}
 
   ngOnInit(): void {
     this.slides$ = this.datesCarouselService.getSlides();
     this.service.loadListData();
   }
-
-  ngOnChanges(): void {
-    console.warn(`timesheets changes!`);
-  }
-
-  checkRender(): boolean {
-    console.log('checkRender timesheets');
-    return true;
-  }
-
 }

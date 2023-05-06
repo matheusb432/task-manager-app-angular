@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ODataOperators } from 'src/app/helpers/odata';
@@ -11,6 +11,7 @@ import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
   selector: 'app-timesheet-list',
   templateUrl: './timesheet-list.component.html',
   styleUrls: ['./timesheet-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetListComponent implements OnInit {
   @Input() items!: Timesheet[];

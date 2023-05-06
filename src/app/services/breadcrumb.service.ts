@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Crumb } from 'src/app/models';
 import { crumbDefaults, paths } from '../util';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,19 +10,10 @@ export class BreadcrumbService {
   private _crumbs$ = new BehaviorSubject<Crumb[]>([]);
 
   get crumbs$() {
-    return this._crumbs$.asObservable().pipe(tap(console.log));
+    return this._crumbs$.asObservable();
   }
 
-  // get crumbs(): Crumb[] {
-  //   return this._crumbs;
-  // }
-
-  // private set crumbs(value: Crumb[]) {
-  //   this._crumbs = value;
-  // }
-
   set(crumbs: Crumb[]): void {
-    // this.crumbs = crumbs;
     this._crumbs$.next(crumbs);
   }
 

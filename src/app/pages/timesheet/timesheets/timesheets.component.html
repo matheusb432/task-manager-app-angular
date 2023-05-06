@@ -1,10 +1,7 @@
 <app-page-layout>
-  <div>{{checkRender()}}</div>
   <app-title titleText="Timesheets"></app-title>
   <!-- TODO implement integration to timesheets feature -->
   <app-timesheet-carousel [slides]="(slides$ | async) ?? []"></app-timesheet-carousel>
-  <!-- TODO remove -->
-  <app-button>TEST</app-button>
   <app-timesheet-list [items]="listItems" [totalItems]="total"></app-timesheet-list>
   <router-outlet></router-outlet>
 </app-page-layout>

@@ -18,17 +18,8 @@ export class MainHeaderComponent implements OnInit {
 
   constructor(private authService: AuthService, private modalService: ModalService) {}
 
-  ngOnChanges(): void {
-    console.warn(`mainheader changes!`);
-  }
-
   ngOnInit(): void {
     this.setLoggedUser$ = this.authService.setLoggedUser$;
-  }
-
-  checkRender(): boolean {
-    console.log('checkRender main header');
-    return true;
   }
 
   logout(): void {

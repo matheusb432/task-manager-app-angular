@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -25,6 +26,7 @@ import { ArrayUtil, DetailsTypes, Icons, StringUtil } from 'src/app/util';
   selector: 'app-table [items] [config]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() items!: T[];
@@ -102,16 +104,9 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
     this.icons = icons as IconConfig<number>[];
   }
 
-  buildUrl = (): string => this.detailsUrl;
-  buildQueryParams = (id: number, type: DetailsTypes): { id: string; type: DetailsTypes } => ({
-    id: id.toString(),
-    type,
-  });
-
   canShowActions = () => StringUtil.notEmpty(this.icons);
 
   getItemId(index: number, item: T): number {
-    console.log('HEi');
     return item?.id ?? index;
   }
 
@@ -120,7 +115,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   }
 
   private setOrderBy(orderBy: OrderByConfig<T> | null): void {
-    this.config.orderBy = orderBy;
+    this.config.orderBy = orderBy == null ? null : { ...orderBy };
     this.orderedItems = this.orderItems(this.items);
     this.orderByChanged.emit(orderBy);
   }

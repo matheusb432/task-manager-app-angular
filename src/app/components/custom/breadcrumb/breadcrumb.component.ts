@@ -14,9 +14,7 @@ import { Icons } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent implements OnInit {
-  // get crumbs(): Crumb[] {
-  //   return this.service.crumbs;
-  // }
+
   crumbs$!: Observable<Crumb[]>;
 
   Icons = Icons;
@@ -39,12 +37,6 @@ export class BreadcrumbComponent implements OnInit {
       .subscribe();
   }
 
-  ngOnChanges(): void {
-    console.warn(`breadcrumb changes!`);
-  }
 
-  checkRender(): boolean {
-    console.log('checkRender breadcrumb');
-    return true;
-  }
+
 }

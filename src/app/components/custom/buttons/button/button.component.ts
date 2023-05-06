@@ -1,11 +1,12 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { Subscription } from 'rxjs';
@@ -16,6 +17,7 @@ import { PubSubUtil } from 'src/app/util';
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() disabled = false;

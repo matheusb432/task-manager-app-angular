@@ -33,9 +33,4 @@ export class SidebarComponent {
   ];
 
   Icons = Icons;
-
-  checkRender(): boolean {
-    console.log('checkRender sidebar');
-    return true;
-  }
 }

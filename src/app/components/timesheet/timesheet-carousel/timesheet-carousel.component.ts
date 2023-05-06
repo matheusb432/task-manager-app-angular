@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -66,33 +65,17 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
     return this.carousel.navData.next.disabled;
   }
 
-  constructor(private cdRef: ChangeDetectorRef) {}
-
-  checkRender(): boolean {
-    console.log('checkRender');
-    return true;
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    console.warn('changes in carousel!');
-    console.warn(changes);
-    if (changes['slides']) {
-      this.onSlideChanges();
-    }
+    if (changes['slides']) this.onSlideChanges();
   }
 
   ngAfterViewInit(): void {
     this.moveToSelected();
-    console.log('afterViewInit');
-    // TODO clean
-    // this.cdRef.detectChanges();
   }
 
   onSlideClick(slide: DateSlide): void {
     if (slide.selected) return;
 
-    // this.unselectSlides();
-    // slide = { ...slide, selected: true };
     this.selectSlide(slide.id);
 
     this.selectedDate.emit(slide.date);
@@ -137,7 +120,7 @@ export class TimesheetCarouselComponent implements OnChanges, AfterViewInit {
   }
 
   getItemId<T extends { id: string }>(index: number, item: T): string {
-    return item?.id ?? index.toString();
+    return item.id;
   }
 
   moveToSelected(): void {

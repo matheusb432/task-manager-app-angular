@@ -33,13 +33,10 @@
           [elId]="'cTable' + icon.id + itemIndex"
           [icon]="icon.icon"
           [color]="icon.color"
-          [url]="icon.urlType != null ? buildUrl() : undefined"
-          [queryParams]="
-            icon.urlType != null
-              ? buildQueryParams(item.id!, icon.urlType)
-              : undefined
-          "
           [clickable]="true"
+          [url]="icon.urlType != null ? detailsUrl : undefined"
+          [urlType]="icon.urlType"
+          [itemId]="item.id"
           (clicked)="icon.onClick?.(item.id!)"
         ></app-icon>
       </td>
