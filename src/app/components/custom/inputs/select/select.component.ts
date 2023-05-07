@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SelectOption } from 'src/app/models';
@@ -10,6 +17,7 @@ import { PubSubUtil, StringUtil } from 'src/app/util';
   selector: 'app-select [fcName] [control] [fg] [labelText] [options]',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent implements OnDestroy, OnChanges {
   @Input() fcName!: string;
@@ -33,6 +41,10 @@ export class SelectComponent implements OnDestroy, OnChanges {
 
   subscriptions: Subscription[] = [];
 
+  get disabled(): boolean {
+    return !!this.control?.disabled;
+  }
+
   constructor(private loadingService: LoadingService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -51,20 +63,20 @@ export class SelectComponent implements OnDestroy, OnChanges {
 
   initLoadingSubscription(): void {
     PubSubUtil.unsub(this.subscriptions);
+    const loadingSub = this.loadingService
+      .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .subscribe((isLoading) => {
+        this.isLoading = isLoading;
 
-    this.subscriptions.push(
-      this.loadingService
-        .isAnyLoadingPipeFactory([this.elId, this.formId])
-        .subscribe((isLoading) => {
-          this.isLoading = isLoading;
+        this.changeControlEnabled();
+      });
 
-          this.changeControlEnabled();
-        })
-    );
+    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {
-    if (!this.isLoading && StringUtil.notEmpty(this.options) && this.canEdit) this.control?.enable();
+    if (!this.isLoading && StringUtil.notEmpty(this.options) && this.canEdit)
+      this.control?.enable();
     else this.control?.disable();
   }
 
@@ -74,9 +86,5 @@ export class SelectComponent implements OnDestroy, OnChanges {
     ) as (keyof typeof validationErrorMessages)[];
 
     return validationErrorMessages[errorKeys[0]] || 'Invalid field';
-  }
-
-  get disabled(): boolean {
-    return !!this.control?.disabled;
   }
 }

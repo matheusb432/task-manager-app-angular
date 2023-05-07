@@ -24,7 +24,7 @@ import { ButtonComponent } from '../components/custom/buttons/button/button.comp
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
 import { NavItemsComponent } from '../components/custom/nav-items/nav-items.component';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from '../components/custom/breadcrumb/breadcrumb.component';
 import { IconComponent } from '../components/custom/icon/icon.component';
 import { LoadingComponent } from '../components/custom/loading/loading.component';
@@ -63,7 +63,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule,
     ReactiveFormsModule,
     MatSidenavModule,
     MatGridListModule,
@@ -107,7 +106,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatDialogModule,
     MatPaginatorModule,
     LoadingComponent,
-    FormsModule,
     FocusInitialDirective,
     SetIdDirective,
     ReactiveFormsModule,

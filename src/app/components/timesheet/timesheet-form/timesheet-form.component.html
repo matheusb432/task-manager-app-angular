@@ -15,17 +15,16 @@
       [formId]="elIds.TimesheetForm"
       [maxDate]="tomorrow"
     ></app-datepicker>
-
-    <!-- TODO checkbox form input -->
-    <app-input
+    <app-checkbox
       fcName="finished"
       [control]="finished"
       labelText="Is Finished"
       elId="cTimesheetFormFinished"
       [fg]="form"
       [canEdit]="canEdit"
-      [formId]="elIds.TimesheetForm"
-    ></app-input>
+    >
+    </app-checkbox>
+
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
         <app-button

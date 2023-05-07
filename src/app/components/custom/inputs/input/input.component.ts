@@ -6,6 +6,7 @@ import {
   SimpleChanges,
   OnChanges,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -18,6 +19,7 @@ import { PubSubUtil } from 'src/app/util';
   selector: 'app-input [fcName] [control] [fg] [labelText]',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent implements OnDestroy, OnChanges {
   @Input() fcName!: string;
@@ -67,16 +69,15 @@ export class InputComponent implements OnDestroy, OnChanges {
 
   initLoadingSubscription(): void {
     PubSubUtil.unsub(this.subscriptions);
+    const loadingSub = this.loadingService
+      .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .subscribe((isLoading) => {
+        this.isLoading = isLoading;
 
-    this.subscriptions.push(
-      this.loadingService
-        .isAnyLoadingPipeFactory([this.elId, this.formId])
-        .subscribe((isLoading) => {
-          this.isLoading = isLoading;
+        this.changeControlEnabled();
+      });
 
-          this.changeControlEnabled();
-        })
-    );
+    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {

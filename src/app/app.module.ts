@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import jwtDecode from 'jwt-decode';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +16,6 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LocalStorageService } from './services';
 import { STORE_SERVICE } from './services/interfaces';
 import { TOKEN_DECODER_FN } from './services/token.service';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { PageModule } from './shared';
 
 @NgModule({
@@ -23,7 +23,6 @@ import { PageModule } from './shared';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
     ReactiveFormsModule,
     PageModule,
     AppRoutingModule,

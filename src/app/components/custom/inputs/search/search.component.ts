@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { IconConfig } from 'src/app/models';
 import { Icons } from 'src/app/util';
@@ -7,6 +7,7 @@ import { Icons } from 'src/app/util';
   selector: 'app-search [fcName] [control] [fg] [labelText]',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   @Input() fcName!: string;

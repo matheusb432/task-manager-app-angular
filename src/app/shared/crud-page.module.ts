@@ -11,8 +11,8 @@ import {
 } from '../components/custom/inputs';
 
 @NgModule({
-  declarations: [InputComponent, SelectComponent, SearchComponent, CheckboxComponent],
-  imports: [CommonModule, PageModule, DatepickerComponent],
+  declarations: [InputComponent, SelectComponent, SearchComponent],
+  imports: [CommonModule, PageModule, DatepickerComponent, CheckboxComponent],
   exports: [
     InputComponent,
     SelectComponent,

@@ -1,5 +1,12 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
+import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services';
 import { PubSubUtil } from 'src/app/util';
@@ -9,15 +16,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validationErrorMessages } from '../validation-errors';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-datepicker',
+  selector: 'app-datepicker [fcName] [control] [fg] [labelText]',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     NgIf,
-    FormsModule,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -51,7 +59,6 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
   constructor(private loadingService: LoadingService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
       this.initLoadingSubscription();
     }
@@ -67,16 +74,15 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
 
   initLoadingSubscription(): void {
     PubSubUtil.unsub(this.subscriptions);
+    const loadingSub = this.loadingService
+      .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .subscribe((isLoading) => {
+        this.isLoading = isLoading;
 
-    this.subscriptions.push(
-      this.loadingService
-        .isAnyLoadingPipeFactory([this.elId, this.formId])
-        .subscribe((isLoading) => {
-          this.isLoading = isLoading;
+        this.changeControlEnabled();
+      });
 
-          this.changeControlEnabled();
-        })
-    );
+    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {
