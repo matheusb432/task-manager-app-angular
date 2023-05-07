@@ -9,6 +9,7 @@ export class FormUtil {
   static onSubmit<T extends FormGroup>(form: T, save: EventEmitter<T>) {
     if (!form.valid) return form.markAllAsTouched();
     save.emit(form);
+    form.markAsPristine();
   }
 
   static isCreateForm = (type: FormTypes) => type === FormTypes.Create;

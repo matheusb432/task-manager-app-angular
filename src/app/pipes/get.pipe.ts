@@ -4,7 +4,7 @@ import { ObjectUtil } from '../util';
 @Pipe({
   name: 'get',
 })
-/*
+/**
  * @class GetPipe
  * Pipe to get a nested value from an object.
  * Usage:

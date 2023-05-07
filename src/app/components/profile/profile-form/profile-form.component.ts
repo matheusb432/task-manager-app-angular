@@ -6,9 +6,11 @@ import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import {
   ElementIds,
-  FormTypes, FormUtil, cancelModalData,
+  FormTypes,
+  FormUtil,
+  cancelModalData,
   deleteModalData,
-  saveModalData
+  saveModalData,
 } from 'src/app/util';
 import { ProfileForm, ProfileFormGroup } from './profile-form-group';
 
@@ -76,32 +78,14 @@ export class ProfileFormComponent {
   }
 
   openCancelModal(): void {
-    const ref = this.modalService.confirmation(cancelModalData());
-
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      this.cancel.emit();
-    });
+    this.modalService.confirmation(cancelModalData(), () => this.cancel.emit());
   }
 
   openDeleteModal(): void {
-    const ref = this.modalService.confirmation(deleteModalData());
-
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      this.remove.emit();
-    });
+    this.modalService.confirmation(deleteModalData(), () => this.remove.emit());
   }
 
   openSaveModal(): void {
-    const ref = this.modalService.confirmation(saveModalData());
-
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      FormUtil.onSubmit(this.form, this.save);
-    });
+    this.modalService.confirmation(saveModalData(), () => FormUtil.onSubmit(this.form, this.save));
   }
 }

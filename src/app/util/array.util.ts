@@ -7,9 +7,13 @@ import { ObjectUtil } from './object.util';
   providedIn: 'root',
 })
 export class ArrayUtil {
-  /*
+  /**
    * Returns true if every item is equal in value and position, does not check for deep equality
    *
+   * @param array1 The first array to compare
+   * @param array2 The second array to compare
+   *
+   * @returns The result of the comparison
    */
   static areEqualShallow<T>(
     array1: T[] | undefined | null,
