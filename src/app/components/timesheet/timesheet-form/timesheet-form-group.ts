@@ -20,11 +20,11 @@ export interface TimesheetForm {
   finished: FormControl<boolean>;
 }
 
-export const getTimesheetForm = (defaultDate: Date) => {
+export const getTimesheetForm = (today: Date) => {
   const tomorrow = DateUtil.addDays(new Date(), 1);
 
   return {
-    date: new FormControl(defaultDate, {
+    date: new FormControl(today, {
       nonNullable: true,
       validators: [Validators.required, dateMaxValidator(tomorrow)],
     }),

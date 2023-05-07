@@ -15,6 +15,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LocalStorageService } from './services';
 import { STORE_SERVICE } from './services/interfaces';
 import { TOKEN_DECODER_FN } from './services/token.service';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { PageModule } from './shared';
 
 @NgModule({
@@ -27,12 +28,14 @@ import { PageModule } from './shared';
     PageModule,
     AppRoutingModule,
     HttpClientModule,
+    MatNativeDateModule,
   ],
   exports: [PageModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     { provide: STORE_SERVICE, useClass: LocalStorageService },
     { provide: TOKEN_DECODER_FN, useValue: jwtDecode },
   ],

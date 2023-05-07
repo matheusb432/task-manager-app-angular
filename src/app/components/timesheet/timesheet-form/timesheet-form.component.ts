@@ -3,6 +3,7 @@ import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService, TimesheetService } from 'src/app/services';
 import {
+  DateUtil,
   ElementIds,
   FormTypes,
   FormUtil,
@@ -29,6 +30,8 @@ export class TimesheetFormComponent {
   elIds = ElementIds;
 
   subscriptions: Subscription[] = [];
+
+  tomorrow = DateUtil.addDays(new Date(), 1);
 
   get controls(): TimesheetForm {
     return this.form.controls;

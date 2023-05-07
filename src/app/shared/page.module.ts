@@ -15,7 +15,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -49,7 +48,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ButtonComponent,
     TableComponent,
     IconComponent,
-    LoadingComponent,
+
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -76,9 +75,9 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule,
     ImageComponent,
     CardLayoutComponent,
+    LoadingComponent,
   ],
   exports: [
     SidebarComponent,
@@ -92,7 +91,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ButtonComponent,
     TableComponent,
     IconComponent,
-    LoadingComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -108,7 +106,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule,
+    LoadingComponent,
     FormsModule,
     FocusInitialDirective,
     SetIdDirective,

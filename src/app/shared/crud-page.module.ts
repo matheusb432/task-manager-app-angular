@@ -1,14 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { InputComponent } from '../components/custom/inputs/input/input.component';
-import { SelectComponent } from '../components/custom/inputs/select/select.component';
 import { PageModule } from './page.module';
-import { SearchComponent } from '../components/custom/inputs/search/search.component';
+import {
+  CheckboxComponent,
+  DatepickerComponent,
+  InputComponent,
+  SearchComponent,
+  SelectComponent,
+} from '../components/custom/inputs';
 
 @NgModule({
-  declarations: [InputComponent, SelectComponent, SearchComponent],
-  imports: [CommonModule, PageModule],
-  exports: [InputComponent, SelectComponent, SearchComponent],
+  declarations: [InputComponent, SelectComponent, SearchComponent, CheckboxComponent],
+  imports: [CommonModule, PageModule, DatepickerComponent],
+  exports: [
+    InputComponent,
+    SelectComponent,
+    SearchComponent,
+    DatepickerComponent,
+    CheckboxComponent,
+  ],
 })
 export class CrudPageModule {}

@@ -1,3 +1,52 @@
-<p>
-  timesheet-form works!
-</p>
+<form
+  [id]="elIds.TimesheetForm"
+  class="form-layout"
+  [formGroup]="form"
+  (ngSubmit)="openSaveModal()"
+>
+  <div class="form-grid">
+    <app-datepicker
+      fcName="date"
+      [control]="date"
+      labelText="Date"
+      elId="cTimesheetFormDate"
+      [fg]="form"
+      [canEdit]="canEdit"
+      [formId]="elIds.TimesheetForm"
+      [maxDate]="tomorrow"
+    ></app-datepicker>
+
+    <!-- TODO checkbox form input -->
+    <app-input
+      fcName="finished"
+      [control]="finished"
+      labelText="Is Finished"
+      elId="cTimesheetFormFinished"
+      [fg]="form"
+      [canEdit]="canEdit"
+      [formId]="elIds.TimesheetForm"
+    ></app-input>
+    <div class="form-buttons">
+      <div *ngIf="showDelete()" class="left-buttons">
+        <app-button
+          model="raised"
+          [elId]="elIds.TimesheetDelete"
+          (clicked)="openDeleteModal()"
+          color="warn"
+          >Delete</app-button
+        >
+      </div>
+
+      <app-button
+        model="raised"
+        elId="cTimesheetFormCancel"
+        (clicked)="openCancelModal()"
+        color="accent"
+        >Cancel</app-button
+      >
+      <app-button model="raised" [elId]="elIds.TimesheetSubmit" *ngIf="canEdit" type="submit">{{
+        submitLabel
+      }}</app-button>
+    </div>
+  </div>
+</form>

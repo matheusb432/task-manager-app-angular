@@ -13,13 +13,9 @@ import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
   styleUrls: ['./timesheet-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimesheetListComponent implements OnInit {
+export class TimesheetListComponent {
   @Input() items!: Timesheet[];
   @Input() totalItems = 0;
-
-  filterForm!: FormGroup<{
-    date: FormControl<Date>;
-  }>;
 
   config: TableConfig<Timesheet> = {
     itemConfigs: Timesheet.tableItems(),
@@ -31,8 +27,6 @@ export class TimesheetListComponent implements OnInit {
     hasEdit: true,
     hasView: true,
   };
-
-  prevFilter?: string;
 
   elIds = ElementIds;
 
@@ -51,33 +45,16 @@ export class TimesheetListComponent implements OnInit {
     private filterService: FilterService
   ) {}
 
-  ngOnInit(): void {
-    // TODO implement
-    // this.initFilterForm();
-  }
-
-  // initFilterForm(): void {
-  //   const form = new FormGroup({
-  //     date: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(250)] }),
-  //   });
-
-  //   this.filterForm = form;
-  // }
-
   onFilter(): void {
-    this.filterService.filterDebounced(this.loadFilteredItems.bind(this));
+    this.filterService.filterDebounced(this.loadItems.bind(this));
   }
 
   applyFilter(): void {
     this.filterService.cancelPreviousCall();
-    this.loadFilteredItems();
+    this.loadItems();
   }
 
-  async loadFilteredItems(): Promise<void> {
-    // const { name: nameFilter } = this.filterForm.value;
-
-    // if (nameFilter === this.prevFilter) return;
-    // this.prevFilter = nameFilter;
+  async loadItems(): Promise<void> {
     await this.service.loadListItems(this.getPaginationQuery(1));
   }
 
@@ -97,19 +74,12 @@ export class TimesheetListComponent implements OnInit {
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
     return PaginationOptions.from(page, itemsPerPage ?? this.itemsPerPage, {
-      filter: { name: this.prevFilter ? [ODataOperators.Contains, this.prevFilter] : undefined },
       orderBy: QueryUtil.orderByToOData(this.config.orderBy),
     });
   }
 
   openDeleteModal(id: number): void {
-    const ref = this.modalService.confirmation(deleteModalData());
-
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      this.deleteItem(id);
-    });
+    this.modalService.confirmation(deleteModalData(), () => this.deleteItem(id));
   }
 
   handleOrderBy(): void {

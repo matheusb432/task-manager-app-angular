@@ -7,6 +7,7 @@ import { TimesheetRoutingModule } from './timesheet-routing.module';
 import { TimesheetsComponent } from './timesheets/timesheets.component';
 import { MonthSlideComponent, TimesheetCarouselComponent, TimesheetFormComponent, TimesheetListComponent, TimesheetSlideComponent } from 'src/app/components/timesheet';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { CrudPageModule } from 'src/app/shared/crud-page.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     TimesheetListComponent,
     TimesheetFormComponent,
   ],
-  imports: [CommonModule, PageModule, TimesheetRoutingModule, CarouselModule],
+  imports: [CommonModule, PageModule, CrudPageModule, TimesheetRoutingModule, CarouselModule],
 })
 export class TimesheetModule {}
