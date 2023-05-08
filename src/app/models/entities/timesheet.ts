@@ -17,6 +17,9 @@ export class Timesheet implements TableItem {
   @AddMap(TaskItem)
   taskItems?: TaskItem[];
 
+  // TODO remove
+  tempNote?: string;
+
   get totalTaskItems(): number {
     return this.taskItems?.length ?? 0;
   }

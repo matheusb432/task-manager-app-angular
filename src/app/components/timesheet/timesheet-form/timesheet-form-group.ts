@@ -18,6 +18,7 @@ export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
 export interface TimesheetForm {
   date: FormControl<Date>;
   finished: FormControl<boolean>;
+  tempNote: FormControl<string>;
 }
 
 export const getTimesheetForm = (today: Date) => {
@@ -29,6 +30,7 @@ export const getTimesheetForm = (today: Date) => {
       validators: [Validators.required, dateMaxValidator(tomorrow)],
     }),
     finished: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
+    tempNote: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     // TODO add timesheet notes & task items form arrays
   };
 };

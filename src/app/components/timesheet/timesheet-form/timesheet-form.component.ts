@@ -45,6 +45,11 @@ export class TimesheetFormComponent {
     return this.controls.finished;
   }
 
+  // TODO remove
+  get tempNote(): AbstractControl {
+    return this.controls.tempNote;
+  }
+
   get submitLabel(): string {
     return FormUtil.getSubmitLabel(this.formType);
   }
