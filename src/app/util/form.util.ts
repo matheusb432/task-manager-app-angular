@@ -6,7 +6,7 @@ import { FormTypes } from '../util';
   providedIn: 'root',
 })
 export class FormUtil {
-  static onSubmit<T extends FormGroup>(form: T, save: EventEmitter<T>) {
+  static onSubmit<T extends FormGroup>(form: T, save: EventEmitter<T>): void {
     if (!form.valid) return form.markAllAsTouched();
     save.emit(form);
     form.markAsPristine();

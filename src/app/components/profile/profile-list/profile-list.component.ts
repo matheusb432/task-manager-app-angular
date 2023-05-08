@@ -17,8 +17,6 @@ import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileListComponent implements OnInit {
-  // @Input() items!: Profile[];
-  // @Input() totalItems = 0;
   listItems$!: Observable<Profile[]>;
   total$!: Observable<number>;
   lastOptions$!: Observable<PaginationOptions>;
@@ -40,14 +38,6 @@ export class ProfileListComponent implements OnInit {
   prevFilter?: string;
 
   elIds = ElementIds;
-
-  // get currentPage(): number {
-  //   return this.service.currentPage;
-  // }
-
-  // get itemsPerPage(): number {
-  //   return this.service.itemsPerPage;
-  // }
 
   constructor(
     private service: ProfileService,
@@ -112,11 +102,7 @@ export class ProfileListComponent implements OnInit {
   }
 
   openDeleteModal(id: number): void {
-   this.modalService.confirmation(deleteModalData(), () =>
-      this.deleteItem(id)
-
-    );
-
+    this.modalService.confirmation(deleteModalData(), () => this.deleteItem(id));
   }
 
   handleOrderBy(): void {

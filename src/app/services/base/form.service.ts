@@ -42,7 +42,6 @@ export abstract class FormService<TEntity extends TableItem> {
     }
 
     const res = await this.api.getPaginated(options);
-    console.log(res);
 
     this._listItems$.next(res.items);
     this._total$.next(res.total);
@@ -61,7 +60,6 @@ export abstract class FormService<TEntity extends TableItem> {
     if (item?.id === parsedId) return item;
 
     const res = await this.api.getById(parsedId);
-    console.log(res);
 
     this.item$.next(res);
 

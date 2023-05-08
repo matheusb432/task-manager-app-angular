@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { CarouselComponent, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 import { DateSlide, MonthSlide } from 'src/app/models';
-import { ElementIds, Icons } from 'src/app/util';
+import { DateUtil, ElementIds, Icons } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheet-carousel [slides]',
@@ -24,6 +24,9 @@ export class TimesheetCarouselComponent implements OnChanges {
 
   @Input() slides!: DateSlide[];
 
+  @Output() selectedDate = new EventEmitter<Date>();
+
+  // TODO refactor?
   private _slidesToRender!: DateSlide[];
   public get slidesToRender(): DateSlide[] {
     return this._slidesToRender;
@@ -32,8 +35,6 @@ export class TimesheetCarouselComponent implements OnChanges {
     this._slidesToRender = value;
     this.onSlideChanges();
   }
-
-  @Output() selectedDate = new EventEmitter<string>();
 
   private _monthSlides: MonthSlide[] = [];
   public get monthSlides(): MonthSlide[] {
@@ -95,7 +96,7 @@ export class TimesheetCarouselComponent implements OnChanges {
 
     this.selectSlide(slide.id);
 
-    this.selectedDate.emit(slide.date);
+    this.selectedDate.emit(DateUtil.dateStringToDate(slide.date));
   }
 
   private onSlideChanges(): void {

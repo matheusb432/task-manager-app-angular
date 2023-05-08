@@ -1,5 +1,5 @@
-import { PipeTransform, ProviderToken } from "@angular/core";
-import { Ctor } from "./api-request";
+import { PipeTransform, ProviderToken } from '@angular/core';
+import { Ctor } from './api-request';
 
 export interface TableConfig<T = unknown> {
   itemConfigs: TableItemConfig<T>[];
@@ -25,4 +25,4 @@ export interface OrderByConfig<T = unknown> {
   direction: 'asc' | 'desc';
 }
 
-export type TableKey<T = unknown> = keyof T | [keyof T, string];
+export type TableKey<T = unknown> = (keyof T & string) | [keyof T & string, string];

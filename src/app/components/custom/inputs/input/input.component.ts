@@ -9,10 +9,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { IconConfig } from 'src/app/models';
+import { takeUntil } from 'rxjs';
+import { IconConfig, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { PubSubUtil } from 'src/app/util';
 import { validationErrorMessages } from '../validation-errors';
 
 @Component({
@@ -21,7 +20,7 @@ import { validationErrorMessages } from '../validation-errors';
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputComponent implements OnDestroy, OnChanges {
+export class InputComponent extends WithDestroyed implements OnDestroy, OnChanges {
   @Input() fcName!: string;
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
@@ -41,8 +40,6 @@ export class InputComponent implements OnDestroy, OnChanges {
 
   isLoading = false;
 
-  destroyed$ = new Subject<boolean>();
-
   get invalid(): boolean {
     return this.isInvalid();
   }
@@ -51,7 +48,9 @@ export class InputComponent implements OnDestroy, OnChanges {
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService) {
+    super();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
@@ -61,10 +60,6 @@ export class InputComponent implements OnDestroy, OnChanges {
     if (changes['control'] || changes['canEdit']) {
       this.changeControlEnabled();
     }
-  }
-
-  ngOnDestroy(): void {
-    PubSubUtil.completeDestroy(this.destroyed$);
   }
 
   initLoadingSubscription(): void {

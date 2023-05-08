@@ -42,7 +42,6 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
   async create(): Promise<void> {
     const { id } = await this.service.insert(this.form);
 
-    this.ts.success('Timesheet created successfully');
     this.service.goToDetails(id, DetailsTypes.View);
   }
 

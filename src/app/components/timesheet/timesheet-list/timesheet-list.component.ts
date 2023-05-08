@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ODataOperators } from 'src/app/helpers/odata';
-import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { TableConfig, Timesheet } from 'src/app/models';
+import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { FilterService, ModalService, TimesheetService, ToastService } from 'src/app/services';
 import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
 

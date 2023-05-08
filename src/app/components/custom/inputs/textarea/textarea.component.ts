@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,16 +7,14 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { LoadingComponent } from '../../loading/loading.component';
-import { PubSubUtil } from 'src/app/util';
-import { LoadingService } from 'src/app/services';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { IconConfig } from 'src/app/models';
-import { validationErrorMessages } from '../validation-errors';
 import { MatInputModule } from '@angular/material/input';
+import { takeUntil } from 'rxjs';
+import { WithDestroyed } from 'src/app/models';
+import { LoadingService } from 'src/app/services';
+import { LoadingComponent } from '../../loading/loading.component';
+import { validationErrorMessages } from '../validation-errors';
 
 @Component({
   selector: 'app-textarea',
@@ -25,7 +24,7 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./textarea.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextareaComponent implements OnChanges, OnDestroy {
+export class TextareaComponent extends WithDestroyed implements OnChanges, OnDestroy {
   @Input() fcName!: string;
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
@@ -40,8 +39,6 @@ export class TextareaComponent implements OnChanges, OnDestroy {
 
   isLoading = false;
 
-  destroyed$ = new Subject<boolean>();
-
   get invalid(): boolean {
     return this.isInvalid();
   }
@@ -50,7 +47,9 @@ export class TextareaComponent implements OnChanges, OnDestroy {
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService) {
+    super();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
@@ -62,12 +61,8 @@ export class TextareaComponent implements OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    PubSubUtil.completeDestroy(this.destroyed$)
-  }
-
   initLoadingSubscription(): void {
-     this.loadingService
+    this.loadingService
       .isAnyLoadingPipeFactory([this.elId, this.formId])
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
@@ -75,7 +70,6 @@ export class TextareaComponent implements OnChanges, OnDestroy {
 
         this.changeControlEnabled();
       });
-
   }
 
   changeControlEnabled(): void {

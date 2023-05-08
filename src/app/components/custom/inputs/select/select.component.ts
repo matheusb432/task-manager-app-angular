@@ -7,8 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { SelectOption } from 'src/app/models';
+import { SelectOption, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { PubSubUtil, StringUtil } from 'src/app/util';
 import { validationErrorMessages } from '../validation-errors';
@@ -19,7 +18,7 @@ import { validationErrorMessages } from '../validation-errors';
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent implements OnDestroy, OnChanges {
+export class SelectComponent extends WithDestroyed implements OnDestroy, OnChanges {
   @Input() fcName!: string;
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
@@ -39,13 +38,13 @@ export class SelectComponent implements OnDestroy, OnChanges {
 
   isLoading = false;
 
-  destroyed$ = new Subject<boolean>();
-
   get disabled(): boolean {
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService) {
+    super();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
@@ -57,19 +56,15 @@ export class SelectComponent implements OnDestroy, OnChanges {
     }
   }
 
-  ngOnDestroy(): void {
-    PubSubUtil.completeDestroy(this.destroyed$);
-  }
-
   initLoadingSubscription(): void {
-    this.loadingService
-      .isAnyLoadingPipeFactory([this.elId, this.formId])
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((isLoading) => {
-        this.isLoading = isLoading;
+    PubSubUtil.untilDestroyed(
+      this.loadingService.isAnyLoadingPipeFactory([this.elId, this.formId]),
+      this.destroyed$
+    ).subscribe((isLoading) => {
+      this.isLoading = isLoading;
 
-        this.changeControlEnabled();
-      });
+      this.changeControlEnabled();
+    });
   }
 
   changeControlEnabled(): void {

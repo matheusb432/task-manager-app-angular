@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { Crumb } from 'src/app/models';
 import { PageService } from 'src/app/services';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';

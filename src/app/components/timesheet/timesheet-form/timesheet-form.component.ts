@@ -7,9 +7,8 @@ import {
   ElementIds,
   FormTypes,
   FormUtil,
-  cancelModalData,
   deleteModalData,
-  saveModalData,
+  saveModalData
 } from 'src/app/util';
 import { TimesheetForm, TimesheetFormGroup } from './timesheet-form-group';
 

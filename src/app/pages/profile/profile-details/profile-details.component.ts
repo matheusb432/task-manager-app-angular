@@ -5,8 +5,8 @@ import {
   ProfileFormGroup,
   getProfileForm,
 } from 'src/app/components/profile/profile-form';
-import { CanDeactivateForm, PageConfig, PageData, ProfileType } from 'src/app/models';
-import { PageService, ProfileService, ToastService } from 'src/app/services';
+import { CanDeactivateForm, PageConfig, PageData } from 'src/app/models';
+import { PageService, ProfileService } from 'src/app/services';
 import { DetailsTypes, FormTypes, PubSubUtil, StringUtil } from 'src/app/util';
 
 @Component({
@@ -21,11 +21,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   formType = FormTypes.Edit;
   subscriptions: Subscription[] = [];
 
-  constructor(
-    private service: ProfileService,
-    private ts: ToastService,
-    private pageService: PageService
-  ) {}
+  constructor(private service: ProfileService, private pageService: PageService) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
@@ -64,7 +60,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
       return;
     }
 
-    // this.service.convertToForm(this.form, loadedItem);
     this.form = this.service.convertToForm(loadedItem);
   }
 
@@ -91,13 +86,11 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
 
   async editItem(): Promise<void> {
     await this.service.update(this.pageData?.id, this.service.toEntity(this.form));
-    this.ts.success('Profile updated successfully');
   }
 
   async duplicateItem(): Promise<void> {
     const { id: createdId } = await this.service.duplicate(this.service.toEntity(this.form));
 
-    this.ts.success('Profile duplicated successfully');
     this.service.goToDetails(createdId, DetailsTypes.View);
   }
 

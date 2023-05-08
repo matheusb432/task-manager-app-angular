@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,16 +8,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { LoadingService } from 'src/app/services';
-import { PubSubUtil } from 'src/app/util';
-import { LoadingComponent } from '../../loading/loading.component';
-import { NgIf } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { takeUntil } from 'rxjs';
+import { WithDestroyed } from 'src/app/models';
+import { LoadingService } from 'src/app/services';
+import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-datepicker [fcName] [control] [fg] [labelText]',
@@ -33,7 +32,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     LoadingComponent,
   ],
 })
-export class DatepickerComponent implements OnChanges, OnDestroy {
+export class DatepickerComponent extends WithDestroyed implements OnChanges, OnDestroy {
   @Input() fcName!: string;
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
@@ -46,8 +45,6 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
 
   isLoading = false;
 
-  destroyed$ = new Subject<boolean>();
-
   get invalid(): boolean {
     return !!this.control && this.control.invalid && this.control.touched;
   }
@@ -56,7 +53,9 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService) {
+    super();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
@@ -66,10 +65,6 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
     if (changes['control'] || changes['canEdit']) {
       this.changeControlEnabled();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next(true);
   }
 
   initLoadingSubscription(): void {

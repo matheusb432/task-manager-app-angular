@@ -5,7 +5,6 @@ import {
   getProfileForm,
 } from 'src/app/components/profile/profile-form';
 import { CanDeactivateForm } from 'src/app/models';
-import { ToastService } from 'src/app/services';
 import { ProfileService } from 'src/app/services/profile.service';
 import { DetailsTypes, FormTypes } from 'src/app/util';
 

@@ -1,6 +1,5 @@
 @use 'src/_mixins.scss' as mxs;
 
 .cards-grid {
-
   @include mxs.dash(bottom, 32px, 2px);
 }

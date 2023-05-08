@@ -1,3 +1,4 @@
+export * from './base-components'
 export * from './table-config';
 export * from './crumb';
 export * from './form-control-config';
