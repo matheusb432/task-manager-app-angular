@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { FormTypes } from '../util';
 
 @Injectable({
@@ -26,4 +26,16 @@ export class FormUtil {
 
     return submitLabels[type] || '';
   };
+
+  static setFormFromItem<T>(fg: FormGroup, item: T, formKeys: (keyof T & string)[]): void {
+    for (const key of formKeys) {
+      const control = fg.get(key) as AbstractControl;
+
+      if (control == null) continue;
+
+      const value = item[key as keyof T];
+
+      control.setValue(value == null ? '' : value);
+    }
+  }
 }

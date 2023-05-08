@@ -2,67 +2,40 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 
-import { AbstractControl } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { ProfileFormGroup } from '../components/profile/profile-form';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PostReturn, Profile, ProfileType } from 'src/app/models';
+import { ProfileFormGroup, getProfileForm } from '../components/profile/profile-form';
 import { PaginationOptions } from '../models/configs/pagination-options';
-import { Profile, ProfileType, PostReturn } from 'src/app/models';
-import { Constants, DetailsTypes, ElementIds, ObjectUtil, StringUtil, paths } from '../util';
+import { TimePipe } from '../pipes';
+import { Constants, DetailsTypes, ElementIds, FormUtil, StringUtil, paths } from '../util';
 import { ProfileApiService } from './api';
+import { LoadingService } from './loading.service';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
-import { LoadingService } from './loading.service';
-import { TimePipe } from '../pipes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
-  private item?: Profile;
+  private item$ = new BehaviorSubject<Profile | undefined>(undefined);
+  private types$ = new BehaviorSubject<ProfileType[]>([]);
+  private _listItems$ = new BehaviorSubject<Profile[]>([]);
+  private _total$ = new BehaviorSubject(0);
+  private _lastOptions$ = new BehaviorSubject<PaginationOptions>(PaginationOptions.default());
 
-  private _types: ProfileType[] = [];
-  private _listItems: Profile[] = [];
-  private _total = 0;
-
-  private _typesSet = new BehaviorSubject<void>(undefined);
-
-  private _lastOptions?: PaginationOptions;
-
-  typeOptions$ = this._typesSet.pipe(map(() => ProfileTypeService.toOptions(this.types)));
-
-  get types(): ProfileType[] {
-    return this._types;
+  get listItems$(): Observable<Profile[]> {
+    return this._listItems$.asObservable();
   }
 
-  private set types(value: ProfileType[]) {
-    this._types = value;
-
-    this._typesSet.next();
+  get total$(): Observable<number> {
+    return this._total$.asObservable();
   }
 
-  get listItems(): Profile[] {
-    return this._listItems;
+  get lastOptions$(): Observable<PaginationOptions> {
+    return this._lastOptions$.asObservable();
   }
 
-  private set listItems(value: Profile[]) {
-    this._listItems = value;
-  }
-
-  get total(): number {
-    return this._total;
-  }
-
-  private set total(value: number) {
-    this._total = value;
-  }
-
-  get itemsPerPage(): number {
-    return this._lastOptions?.itemsPerPage ?? Constants.DefaultItemsPerPage;
-  }
-
-  get currentPage(): number {
-    return this._lastOptions?.page ?? 1;
-  }
+  typeOptions$ = this.types$.pipe(map((types) => ProfileTypeService.toOptions(types)));
 
   constructor(
     private api: ProfileApiService,
@@ -111,18 +84,33 @@ export class ProfileService {
   };
 
   private removeFromMemory = (id: number): void => {
-    if (this.item?.id === id) this.item = undefined;
+    const item = this.item$.getValue();
+    if (item?.id === id) this.item$.next(undefined);
 
-    if (!this.listItems?.some((x) => x.id === id)) return;
+    const listItems = this._listItems$.getValue();
 
-    this.listItems = this.listItems.filter((x) => x.id !== id);
-    this.total--;
+    if (!listItems.some((x) => x.id === id)) return;
 
-    if (this.listItems.length === 0) {
-      if (this._lastOptions?.page) this._lastOptions.page--;
+    const filteredListItems = listItems.filter((x) => x.id !== id);
+    this._listItems$.next(filteredListItems);
+    this._total$.next(this._total$.getValue() - 1);
+
+    if (filteredListItems.length === 0) {
+      this.decrementPage();
 
       this.loadListItems();
     }
+  };
+
+  private decrementPage = (): void => {
+    const lastOptions = this._lastOptions$.getValue();
+    if (!lastOptions?.page) return;
+
+    this._lastOptions$.next({ ...lastOptions, page: lastOptions.page - 1 });
+  };
+
+  getItemsPerPage = (): number => {
+    return this._lastOptions$.getValue()?.itemsPerPage ?? Constants.DefaultItemsPerPage;
   };
 
   deleteItem = async (id: string | number | null | undefined): Promise<void> => {
@@ -156,15 +144,15 @@ export class ProfileService {
 
   async loadListItems(options?: PaginationOptions): Promise<void> {
     if (options == null) {
-      options = this._lastOptions ?? PaginationOptions.default();
+      options = this._lastOptions$.getValue() ?? PaginationOptions.default();
     } else {
-      this._lastOptions = options;
+      this._lastOptions$.next(options);
     }
 
     const res = await this.api.getPaginated(options);
 
-    this.total = res.total;
-    this.listItems = res.items;
+    this._listItems$.next(res.items);
+    this._total$.next(res.total);
   }
 
   async loadItem(id: string | null | undefined): Promise<Profile | null> {
@@ -175,37 +163,37 @@ export class ProfileService {
     }
 
     const parsedId = +id;
+    const item = this.item$.getValue();
 
-    if (this.item?.id === parsedId) return ObjectUtil.deepClone(this.item);
+    if (item?.id === parsedId) return item;
 
-    this.item = await this.api.getById(parsedId);
+    const res = await this.api.getById(parsedId);
 
-    if (this.item == null) this.ts.error("Couldn't fetch data!");
+    this.item$.next(res);
 
-    return ObjectUtil.deepClone(this.item);
+    if (res == null) this.ts.error("Couldn't fetch data!");
+
+    return res;
   }
 
   loadProfileTypes = async (): Promise<void> => {
-    if (StringUtil.notEmpty(this.types)) return;
+    if (StringUtil.notEmpty(this.types$.getValue())) return;
 
-    this.types = await this.profileTypeService.getItems({
+    const res = await this.profileTypeService.getItems({
       loadings: LoadingService.createManyFromId(ElementIds.ProfileFormType),
     });
+
+    this.types$.next(res);
   };
 
-  convertToForm(fg: ProfileFormGroup, item: Profile): void {
-    const keys = ProfileFormGroup.getFormKeys();
-    for (const key of keys) {
-      const control = fg.get(key) as AbstractControl<unknown>;
+  convertToForm(item: Profile): ProfileFormGroup {
+    const newFg = ProfileFormGroup.from(getProfileForm());
 
-      if (control == null) continue;
+    FormUtil.setFormFromItem(newFg, item, ProfileFormGroup.getFormKeys());
 
-      let value = item[key] == null ? '' : item[key];
+    newFg.controls.timeTarget.setValue(TimePipe.formatTimeHhMm(item.timeTarget));
 
-      if (key === 'timeTarget') value = TimePipe.formatTimeHhMm(value);
-
-      control.setValue(value);
-    }
+    return newFg;
   }
 
   goToList = () => this.router.navigateByUrl(paths.profiles);

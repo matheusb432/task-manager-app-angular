@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Constants, DetailsTypes, ObjectUtil, paths } from '../util';
+import { Constants, DetailsTypes, FormUtil, ObjectUtil, paths } from '../util';
 import { AbstractControl } from '@angular/forms';
-import { TimesheetFormGroup } from '../components/timesheet/timesheet-form';
+import { TimesheetFormGroup, getTimesheetForm } from '../components/timesheet/timesheet-form';
 import { PostReturn, Timesheet } from '../models';
 import { PaginationOptions } from '../models/configs/pagination-options';
 import { TimesheetApiService } from './api';
@@ -158,15 +158,12 @@ export class TimesheetService {
     return ObjectUtil.deepClone(this.item);
   }
 
-  convertToForm(fg: TimesheetFormGroup, item: Timesheet): void {
-    const keys = TimesheetFormGroup.getFormKeys();
-    for (const key of keys) {
-      const control = fg.get(key) as AbstractControl<unknown>;
+  convertToForm(item: Timesheet): TimesheetFormGroup {
+    const newFg = TimesheetFormGroup.from(getTimesheetForm(new Date()));
 
-      if (control == null) continue;
+    FormUtil.setFormFromItem(newFg, item, TimesheetFormGroup.getFormKeys());
 
-      control.setValue(item[key] == null ? '' : item[key]);
-    }
+    return newFg;
   }
 
   goToList = () => this.router.navigateByUrl(paths.timesheets);

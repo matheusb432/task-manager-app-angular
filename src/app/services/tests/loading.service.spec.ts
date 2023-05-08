@@ -4,7 +4,7 @@ import { Loading } from 'src/app/models';
 import { AppService } from '../app.service';
 import { LoadingService } from '../loading.service';
 
-describe('LoadingService', () => {
+describe('Service: Loading', () => {
   let service: LoadingService;
   let appService: jasmine.SpyObj<AppService>;
   const mockElId = 'elId';

@@ -3,7 +3,7 @@ import { DateSlide, DaysOfWeek } from 'src/app/models';
 import { ElementIds } from 'src/app/util';
 import { DatesCarouselService } from '../dates-carousel.service';
 
-describe('Service: Carousel', () => {
+describe('Service: DatesCarousel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DatesCarouselService],

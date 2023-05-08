@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ProfileForm, ProfileFormGroup, getProfileForm } from 'src/app/components/profile/profile-form';
+import {
+  ProfileForm,
+  ProfileFormGroup,
+  getProfileForm,
+} from 'src/app/components/profile/profile-form';
 import { CanDeactivateForm, PageConfig, PageData, ProfileType } from 'src/app/models';
 import { PageService, ProfileService, ToastService } from 'src/app/services';
 import { DetailsTypes, FormTypes, PubSubUtil, StringUtil } from 'src/app/util';
@@ -16,10 +20,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   pageData?: PageData;
   formType = FormTypes.Edit;
   subscriptions: Subscription[] = [];
-
-  get types(): ProfileType[] {
-    return this.service.types;
-  }
 
   constructor(
     private service: ProfileService,
@@ -64,7 +64,8 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
       return;
     }
 
-    this.service.convertToForm(this.form, loadedItem);
+    // this.service.convertToForm(this.form, loadedItem);
+    this.form = this.service.convertToForm(loadedItem);
   }
 
   initForm(): void {

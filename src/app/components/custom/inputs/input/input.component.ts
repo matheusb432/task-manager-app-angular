@@ -54,10 +54,7 @@ export class InputComponent implements OnDestroy, OnChanges {
   constructor(private loadingService: LoadingService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.warn('changes!');
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
-      console.log('reinit');
       this.initLoadingSubscription();
     }
 

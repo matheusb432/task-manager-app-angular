@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ProfileType } from 'src/app/models';
@@ -8,9 +8,8 @@ import {
   ElementIds,
   FormTypes,
   FormUtil,
-  cancelModalData,
   deleteModalData,
-  saveModalData,
+  saveModalData
 } from 'src/app/util';
 import { ProfileForm, ProfileFormGroup } from './profile-form-group';
 
@@ -18,6 +17,7 @@ import { ProfileForm, ProfileFormGroup } from './profile-form-group';
   selector: 'app-profile-form [form] [formType] [cancel]',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileFormComponent {
   @Input() form!: ProfileFormGroup;
@@ -53,10 +53,6 @@ export class ProfileFormComponent {
 
   get profileTypeId(): AbstractControl {
     return this.controls.profileTypeId;
-  }
-
-  get types(): ProfileType[] {
-    return this.service.types;
   }
 
   get submitLabel(): string {

@@ -10,12 +10,16 @@ import { Constants } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
-  @Input() totalItems!: number;
+  @Input() totalItems!: number | null;
   @Input() itemsPerPage: 5 | 10 | 25 | 50 = Constants.DefaultItemsPerPage;
   @Input() color: ThemePalette = 'primary';
   @Input() currentPage = 1;
 
   @Output() pageChanged = new EventEmitter<PageEvent>();
+
+  get total(): number {
+    return this.totalItems ?? 0;
+  }
 
   pageSizeOptions = [5, 10, 25, 50];
 }
