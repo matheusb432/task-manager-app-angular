@@ -1,39 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Loading, AppRequestData } from 'src/app/models';
+import { AppRequestData, Loading } from 'src/app/models';
+import { StringUtil } from '../util';
 import { AppService } from './app.service';
-import { ObjectUtil, StringUtil } from '../util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingService {
-  private _loadings: Loading[] = [];
-  private _loadingsSet = new BehaviorSubject<void>(undefined);
-
-  get loadings(): Loading[] {
-    return ObjectUtil.deepClone(this._loadings);
-  }
-
-  private set loadings(value: Loading[]) {
-    this._loadings = value;
-
-    this._loadingsSet.next();
-  }
+  private loadings$ = new BehaviorSubject<Loading[]>([]);
 
   constructor(private appService: AppService) {}
 
   addLoading(id: string, loading: Loading): void {
-    loading.id = id;
-
-    this.loadings = [...this._loadings, loading];
+    this.loadings$.next([...this.loadings$.getValue(), { ...loading, id }]);
   }
 
   addLoadings(id: string, loadings: Loading[]): void {
-    loadings.forEach((x) => (x.id = id));
+    const loadingsToAdd = loadings.map((x) => ({ ...x, id }));
 
-    this.loadings = [...this._loadings, ...loadings];
+    this.loadings$.next([...this.loadings$.getValue(), ...loadingsToAdd]);
   }
 
   shouldBeLoading(targetElId: string | undefined): boolean {
@@ -45,29 +32,29 @@ export class LoadingService {
   getLoadingByElId(targetElId: string | undefined): Loading | undefined {
     if (!StringUtil.notEmpty(targetElId)) return;
 
-    return this._loadings.find((x) => x.targetElId === targetElId);
+    return this.loadings$.getValue().find((x) => x.targetElId === targetElId);
   }
 
   removeLoading(loading: Loading | undefined): void {
     if (loading == null) return;
 
-    this.removeLoadingById(loading.id);
+    this.removeLoadingsById(loading.id);
   }
 
   removeLoadings(loadings: (Loading | undefined)[]): void {
     if (!StringUtil.notEmpty(loadings)) return;
 
-    loadings.forEach((x) => this.removeLoading(x));
+    this.loadings$.next(
+      this.loadings$.getValue().filter((x) => !loadings.some((y) => y?.id === x.id))
+    );
   }
 
-  removeLoadingById(id: string | undefined): void {
-    if (!StringUtil.notEmpty(id)) return;
-
-    this.loadings = this._loadings.filter((x) => x.id !== id);
+  removeLoadingsById(id: string | undefined): void {
+    this.loadings$.next(this.loadings$.getValue().filter((x) => x.id !== id));
   }
 
   removeAllLoadings(): void {
-    this.loadings = [];
+    this.loadings$.next([]);
   }
 
   private getCurrentDataFromAppRequests(url: string): [string, AppRequestData] | null {
@@ -82,11 +69,11 @@ export class LoadingService {
   }
 
   isLoadingPipeFactory(elId: string): Observable<boolean> {
-    return this._loadingsSet.asObservable().pipe(map(() => this.shouldBeLoading(elId)));
+    return this.loadings$.asObservable().pipe(map(() => this.shouldBeLoading(elId)));
   }
 
   isAnyLoadingPipeFactory(elIds: string[]): Observable<boolean> {
-    return this._loadingsSet
+    return this.loadings$
       .asObservable()
       .pipe(map(() => elIds.some(this.shouldBeLoading.bind(this))));
   }

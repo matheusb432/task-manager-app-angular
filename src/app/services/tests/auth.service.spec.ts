@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AuthResponse, Login, Signup } from 'src/app/models';
-import { StoreKeys } from 'src/app/util';
+import { Pages, StoreKeys } from 'src/app/util';
 import { AuthService } from '../auth.service';
 import { STORE_SERVICE } from '../interfaces';
 import { LocalStorageService } from '../local-storage.service';
@@ -34,8 +34,9 @@ describe('Service: Auth', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([
-        { path: 'home', component: class {} },
-        { path: 'login', component: class {} },
+        { path: Pages.Home, component: class {} },
+        { path: `${Pages.Auth}/${Pages.Login}`, component: class {} },
+        { path: `${Pages.Auth}/${Pages.Signup}`, component: class {} },
       ])],
       providers: [
         AuthService,

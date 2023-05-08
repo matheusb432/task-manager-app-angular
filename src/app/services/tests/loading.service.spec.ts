@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Loading } from 'src/app/models';
 import { AppService } from '../app.service';
@@ -23,7 +24,7 @@ describe('LoadingService', () => {
 
       service.addLoading(id, loading);
 
-      expect(service.loadings).toEqual([{ id, ...loading }]);
+      expect(service['loadings$'].getValue()).toEqual([{ id, ...loading }]);
     });
   });
 
@@ -34,7 +35,7 @@ describe('LoadingService', () => {
 
       service.addLoadings(id, loadings);
 
-      expect(service.loadings).toEqual([
+      expect(service['loadings$'].getValue()).toEqual([
         { id, ...loadings[0] },
         { id, ...loadings[1] },
       ]);
@@ -44,7 +45,9 @@ describe('LoadingService', () => {
   describe('shouldBeLoading', () => {
     it('should return true if should be loading', () => {
       const targetElId = 'target';
-      service['loadings'] = [{ id: 'id', targetElId, size: 100 }];
+      service['loadings$'] = new BehaviorSubject([
+        { id: 'id', targetElId, size: 100 },
+      ] as Loading[]);
 
       const result = service.shouldBeLoading(targetElId);
       expect(result).toBeTrue();
@@ -52,7 +55,9 @@ describe('LoadingService', () => {
 
     it('should return false if should not be loading', () => {
       const targetElId = 'target';
-      service['loadings'] = [{ id: 'id', targetElId, size: 100 }];
+      service['loadings$'] = new BehaviorSubject([
+        { id: 'id', targetElId, size: 100 },
+      ] as Loading[]);
 
       const result = service.shouldBeLoading('other');
 
@@ -63,7 +68,7 @@ describe('LoadingService', () => {
   describe('getLoadingByElId', () => {
     it('should get loading by element id', () => {
       const loading: Loading = { id: 'testId', targetElId: 'target', size: 50 };
-      service['loadings'] = [loading];
+      service['loadings$'] = new BehaviorSubject([loading]);
 
       const result = service.getLoadingByElId('target');
 
@@ -72,7 +77,7 @@ describe('LoadingService', () => {
 
     it('should not get loading if element id is undefined', () => {
       const loading: Loading = { id: 'testId', targetElId: 'target', size: 100 };
-      service['loadings'] = [loading];
+      service['loadings$'] = new BehaviorSubject([loading]);
 
       const result = service.getLoadingByElId(undefined);
 
@@ -84,10 +89,10 @@ describe('LoadingService', () => {
     it('should remove loading by id', () => {
       const loading: Loading = { id: 'testId', targetElId: 'target', size: 100 };
 
-      service['loadings'] = [loading];
-      service.removeLoadingById('testId');
+      service['loadings$'] = new BehaviorSubject([loading]);
+      service.removeLoadingsById('testId');
 
-      expect(service.loadings).toEqual([]);
+      expect(service['loadings$'].getValue()).toEqual([]);
     });
   });
 });

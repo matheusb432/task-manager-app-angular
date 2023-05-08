@@ -12,8 +12,8 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { IconConfig } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { validationErrorMessages } from '../validation-errors';
 import { PubSubUtil } from 'src/app/util';
+import { validationErrorMessages } from '../validation-errors';
 
 @Component({
   selector: 'app-input [fcName] [control] [fg] [labelText]',
@@ -54,7 +54,10 @@ export class InputComponent implements OnDestroy, OnChanges {
   constructor(private loadingService: LoadingService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    console.warn('changes!');
     if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
+      console.log('reinit');
       this.initLoadingSubscription();
     }
 

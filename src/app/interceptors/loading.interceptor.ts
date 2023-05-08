@@ -18,7 +18,7 @@ export class LoadingInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       finalize(() => {
-        this.service.removeLoadings(loadings);
+        this.service.removeLoadingsById(key);
         this.appService.removeRequestData(key as string);
       })
     );

@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { QueryUtil } from '../query.util';
-import { ODataOperators } from '../odata';
 import { environment } from 'src/environments/environment';
 import { ApiEndpoints } from 'src/app/util';
+import { ODataOperators } from 'src/app/helpers/odata';
 
 describe('Util: Query', () => {
   beforeEach(() => {
