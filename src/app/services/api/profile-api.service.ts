@@ -12,11 +12,12 @@ import {
   ProfilePostDto,
   ProfilePutDto,
 } from 'src/app/models';
+import { FormApiService } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProfileApiService {
+export class ProfileApiService implements FormApiService<Profile> {
   private url = QueryUtil.buildApiUrl(ApiEndpoints.Profiles);
 
   constructor(private api: ApiService) {}

@@ -101,6 +101,7 @@ export class ProfileListComponent implements OnInit {
 
   private deleteItem = async (id: number) => {
     await this.service.deleteItem(id);
+    this.service.goToList();
   };
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
@@ -111,13 +112,11 @@ export class ProfileListComponent implements OnInit {
   }
 
   openDeleteModal(id: number): void {
-    const ref = this.modalService.confirmation(deleteModalData());
+   this.modalService.confirmation(deleteModalData(), () =>
+      this.deleteItem(id)
 
-    ref.afterClosed().subscribe((result) => {
-      if (!result) return;
+    );
 
-      this.deleteItem(id);
-    });
   }
 
   handleOrderBy(): void {

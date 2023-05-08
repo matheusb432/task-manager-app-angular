@@ -11,11 +11,12 @@ import { LoadingService } from '../loading.service';
 import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
 import { ApiService } from './api.service';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
+import { FormApiService } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TimesheetApiService {
+export class TimesheetApiService implements FormApiService<Timesheet> {
   private url = QueryUtil.buildApiUrl(ApiEndpoints.Timesheets);
 
   constructor(private api: ApiService) {}

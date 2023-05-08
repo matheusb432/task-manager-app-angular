@@ -90,19 +90,20 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   }
 
   async editItem(): Promise<void> {
-    await this.service.update(this.pageData?.id, this.form);
+    await this.service.update(this.pageData?.id, this.service.toEntity(this.form));
     this.ts.success('Profile updated successfully');
   }
 
   async duplicateItem(): Promise<void> {
-    const { id: createdId } = await this.service.duplicate(this.form);
+    const { id: createdId } = await this.service.duplicate(this.service.toEntity(this.form));
 
     this.ts.success('Profile duplicated successfully');
     this.service.goToDetails(createdId, DetailsTypes.View);
   }
 
   async onRemove(): Promise<void> {
-    this.service.deleteItem(this.pageData?.id);
+    await this.service.deleteItem(this.pageData?.id);
+    this.service.goToList();
   }
 
   onCancel(): Promise<boolean> {

@@ -19,7 +19,7 @@ export class CreateProfileComponent implements OnInit, CanDeactivateForm<Profile
 
   formType = FormTypes.Create;
 
-  constructor(private service: ProfileService, private ts: ToastService) {}
+  constructor(private service: ProfileService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -40,9 +40,8 @@ export class CreateProfileComponent implements OnInit, CanDeactivateForm<Profile
   }
 
   async create(): Promise<void> {
-    const { id } = await this.service.insert(this.form);
+    const { id } = await this.service.insert(this.service.toEntity(this.form));
 
-    this.ts.success('Profile created successfully');
     this.service.goToDetails(id, DetailsTypes.View);
   }
 
