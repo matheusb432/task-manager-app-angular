@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoadingComponent } from '../../loading/loading.component';
 import { PubSubUtil } from 'src/app/util';
 import { LoadingService } from 'src/app/services';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { IconConfig } from 'src/app/models';
 import { validationErrorMessages } from '../validation-errors';
 import { MatInputModule } from '@angular/material/input';
@@ -40,7 +40,7 @@ export class TextareaComponent implements OnChanges, OnDestroy {
 
   isLoading = false;
 
-  subscriptions: Subscription[] = [];
+  destroyed$ = new Subject<boolean>();
 
   get invalid(): boolean {
     return this.isInvalid();
@@ -63,20 +63,19 @@ export class TextareaComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    PubSubUtil.unsub(this.subscriptions);
+    PubSubUtil.completeDestroy(this.destroyed$)
   }
 
   initLoadingSubscription(): void {
-    PubSubUtil.unsub(this.subscriptions);
-    const loadingSub = this.loadingService
+     this.loadingService
       .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
       });
 
-    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {

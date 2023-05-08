@@ -1,15 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  Output,
-  SimpleChanges,
   OnChanges,
   OnDestroy,
-  ChangeDetectionStrategy,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { IconConfig } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { validationErrorMessages } from '../validation-errors';
@@ -41,7 +41,7 @@ export class InputComponent implements OnDestroy, OnChanges {
 
   isLoading = false;
 
-  subscriptions: Subscription[] = [];
+  destroyed$ = new Subject<boolean>();
 
   get invalid(): boolean {
     return this.isInvalid();
@@ -64,20 +64,18 @@ export class InputComponent implements OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    PubSubUtil.unsub(this.subscriptions);
+    PubSubUtil.completeDestroy(this.destroyed$);
   }
 
   initLoadingSubscription(): void {
-    PubSubUtil.unsub(this.subscriptions);
-    const loadingSub = this.loadingService
+    this.loadingService
       .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
       });
-
-    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {

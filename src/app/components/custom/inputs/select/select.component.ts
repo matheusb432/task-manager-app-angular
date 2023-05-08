@@ -7,11 +7,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { SelectOption } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { validationErrorMessages } from '../validation-errors';
 import { PubSubUtil, StringUtil } from 'src/app/util';
+import { validationErrorMessages } from '../validation-errors';
 
 @Component({
   selector: 'app-select [fcName] [control] [fg] [labelText] [options]',
@@ -39,7 +39,7 @@ export class SelectComponent implements OnDestroy, OnChanges {
 
   isLoading = false;
 
-  subscriptions: Subscription[] = [];
+  destroyed$ = new Subject<boolean>();
 
   get disabled(): boolean {
     return !!this.control?.disabled;
@@ -58,20 +58,18 @@ export class SelectComponent implements OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    PubSubUtil.unsub(this.subscriptions);
+    PubSubUtil.completeDestroy(this.destroyed$);
   }
 
   initLoadingSubscription(): void {
-    PubSubUtil.unsub(this.subscriptions);
-    const loadingSub = this.loadingService
+    this.loadingService
       .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
       });
-
-    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {

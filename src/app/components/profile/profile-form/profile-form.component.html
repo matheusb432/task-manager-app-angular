@@ -1,5 +1,5 @@
 <form [id]="elIds.ProfileForm" class="form-layout" [formGroup]="form" (ngSubmit)="openSaveModal()">
-  <div class="form-grid">
+  <div class="form-grid" [appScrollTo]="true">
     <app-input
       fcName="name"
       [control]="name"
@@ -69,7 +69,7 @@
       <app-button
         model="raised"
         elId="cProfileFormCancel"
-        (clicked)="openCancelModal()"
+        (clicked)="onCancel()"
         color="accent"
         >Cancel</app-button
       >

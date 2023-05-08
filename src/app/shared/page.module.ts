@@ -32,7 +32,7 @@ import { ModalConfirmComponent, ModalFeedbackComponent } from '../components/cus
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 import { TableComponent } from '../components/custom/table/table.component';
 import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
-import { FocusInitialDirective, SetIdDirective } from '../directives';
+import { FocusInitialDirective, SetIdDirective, ScrollToDirective } from '../directives';
 import { GetPipe, TimePipe } from '../pipes';
 import { DynamicPipe } from '../pipes/dynamic.pipe';
 
@@ -48,7 +48,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ButtonComponent,
     TableComponent,
     IconComponent,
-
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -77,6 +76,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ImageComponent,
     CardLayoutComponent,
     LoadingComponent,
+    ScrollToDirective,
   ],
   exports: [
     SidebarComponent,
@@ -108,6 +108,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     LoadingComponent,
     FocusInitialDirective,
     SetIdDirective,
+    ScrollToDirective,
     ReactiveFormsModule,
     DynamicPipe,
     TimePipe,

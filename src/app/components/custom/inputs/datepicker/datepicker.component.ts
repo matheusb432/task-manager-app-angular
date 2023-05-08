@@ -7,7 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LoadingService } from 'src/app/services';
 import { PubSubUtil } from 'src/app/util';
 import { LoadingComponent } from '../../loading/loading.component';
@@ -46,7 +46,7 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
 
   isLoading = false;
 
-  subscriptions: Subscription[] = [];
+  destroyed$ = new Subject<boolean>();
 
   get invalid(): boolean {
     return !!this.control && this.control.invalid && this.control.touched;
@@ -69,20 +69,18 @@ export class DatepickerComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    PubSubUtil.unsub(this.subscriptions);
+    this.destroyed$.next(true);
   }
 
   initLoadingSubscription(): void {
-    PubSubUtil.unsub(this.subscriptions);
-    const loadingSub = this.loadingService
+    this.loadingService
       .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
       });
-
-    this.subscriptions = [loadingSub];
   }
 
   changeControlEnabled(): void {

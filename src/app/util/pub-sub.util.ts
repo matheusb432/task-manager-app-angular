@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, Injectable } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,5 +9,10 @@ export class PubSubUtil {
     if (!subscriptions?.length) return;
 
     subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  static completeDestroy(destroyed$: Subject<boolean>): void {
+    destroyed$.next(true);
+    destroyed$.complete();
   }
 }

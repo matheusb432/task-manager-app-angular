@@ -64,8 +64,8 @@ export class TimesheetFormComponent {
     return FormUtil.isEditForm(this.formType);
   }
 
-  openCancelModal(): void {
-    this.modalService.confirmation(cancelModalData(), () => this.cancel.emit());
+  onCancel(): void {
+    this.cancel.emit();
   }
 
   openDeleteModal(): void {
