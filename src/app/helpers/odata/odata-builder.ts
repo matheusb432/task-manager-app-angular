@@ -1,3 +1,4 @@
+import { DateUtil } from 'src/app/util';
 import { ODataFilter } from './odata-filter';
 import { ODataOperators } from './odata-operators.enum';
 import { ODataOptions } from './odata-options';
@@ -44,15 +45,15 @@ export class ODataBuilder {
       if (value === undefined) continue;
 
       if (value instanceof Array) {
-        const [operator, filter] = value;
+        value.forEach(([operator, filter]) => {
+          if (operator === ODataOperators.Contains) {
+            filterString += `contains(${key}, ${this.normalizeValue(filter)}) and `;
 
-        if (operator === ODataOperators.Contains) {
-          filterString += `contains(${key}, ${this.normalizeValue(filter)}) and `;
+            return;
+          }
 
-          continue;
-        }
-
-        filterString += `(${key} ${value[0]} ${this.normalizeValue(value[1])}) and `;
+          filterString += `(${key} ${operator} ${this.normalizeValue(filter)}) and `;
+        });
       } else {
         filterString += `(${key} eq ${this.normalizeValue(value)}) and `;
       }
@@ -62,6 +63,8 @@ export class ODataBuilder {
   }
 
   private normalizeValue(value: ODataFilterValue): string {
+    if (value instanceof Date) return DateUtil.formatDateToUniversalFormat(value);
+
     return typeof value === 'string' ? `'${value}'` : `${value}`;
   }
 

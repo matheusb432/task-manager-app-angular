@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Observable } from 'rxjs';
 import { TableConfig, Timesheet } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { FilterService, ModalService, TimesheetService, ToastService } from 'src/app/services';
@@ -12,8 +13,9 @@ import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetListComponent {
-  @Input() items!: Timesheet[];
-  @Input() totalItems = 0;
+  listItems$: Observable<Timesheet[]>;
+  total$: Observable<number>;
+  lastOptions$: Observable<PaginationOptions>;
 
   config: TableConfig<Timesheet> = {
     itemConfigs: Timesheet.tableItems(),
@@ -28,20 +30,16 @@ export class TimesheetListComponent {
 
   elIds = ElementIds;
 
-  get currentPage(): number {
-    return this.service.currentPage;
-  }
-
-  get itemsPerPage(): number {
-    return this.service.itemsPerPage;
-  }
-
   constructor(
     private service: TimesheetService,
     private ts: ToastService,
     private modalService: ModalService,
     private filterService: FilterService
-  ) {}
+  ) {
+    this.listItems$ = this.service.listItems$;
+    this.total$ = this.service.total$;
+    this.lastOptions$ = this.service.lastOptions$;
+  }
 
   onFilter(): void {
     this.filterService.filterDebounced(this.loadItems.bind(this));
@@ -68,10 +66,11 @@ export class TimesheetListComponent {
 
   private deleteItem = async (id: number) => {
     await this.service.deleteItem(id);
+    this.service.goToList();
   };
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
-    return PaginationOptions.from(page, itemsPerPage ?? this.itemsPerPage, {
+    return PaginationOptions.from(page, itemsPerPage ?? this.service.getItemsPerPage(), {
       orderBy: QueryUtil.orderByToOData(this.config.orderBy),
     });
   }

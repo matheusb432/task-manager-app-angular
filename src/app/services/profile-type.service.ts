@@ -39,7 +39,7 @@ export class ProfileTypeService {
     const hasDates = !!dateRangeStart && !!dateRangeEnd;
 
     return hasDates
-      ? ' (' + DateUtil.formatDate(dateRangeStart) + ' - ' + DateUtil.formatDate(dateRangeEnd) + ')'
+      ? ' (' + DateUtil.formatDateToUniversalFormat(dateRangeStart) + ' - ' + DateUtil.formatDateToUniversalFormat(dateRangeEnd) + ')'
       : '';
   }
 }

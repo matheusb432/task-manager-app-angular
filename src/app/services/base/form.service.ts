@@ -68,20 +68,20 @@ export abstract class FormService<TEntity extends TableItem> {
     return res;
   }
 
-  update = async (id: string | null | undefined, item: TEntity): Promise<void> => {
+  update = async (id: string | null | undefined, item: Partial<TEntity>): Promise<void> => {
     if (id == null) {
       this.ts.error(this.toastMessages.updateIdError);
       return;
     }
 
-    await this.api.update({ id: +id, ...item });
+    await this.api.update({ ...item, id: +id });
 
     this.ts.success(this.toastMessages.updateSuccess);
 
     await this.loadListItems();
   };
 
-  insert = async (item: TEntity): Promise<PostReturn> => {
+  insert = async (item: Partial<TEntity>): Promise<PostReturn> => {
     const res = await this.api.insert(item);
 
     this.ts.success(this.toastMessages.createSuccess);
@@ -91,7 +91,7 @@ export abstract class FormService<TEntity extends TableItem> {
     return res;
   };
 
-  duplicate = async (item: TEntity): Promise<PostReturn> => {
+  duplicate = async (item: Partial<TEntity>): Promise<PostReturn> => {
     const res = await this.api.duplicate(item);
 
     this.ts.success(this.toastMessages.duplicateSuccess);

@@ -14,20 +14,20 @@ describe('Util: Date', () => {
     expect(service).toBeTruthy();
   }));
 
-  describe('formatDate', () => {
+  describe('formatDateToUniversalFormat', () => {
     it('should return an empty string when given a falsy value', () => {
-      expect(DateUtil.formatDate(null as unknown as Date)).toEqual('');
-      expect(DateUtil.formatDate(undefined as unknown as Date)).toEqual('');
+      expect(DateUtil.formatDateToUniversalFormat(null as unknown as Date)).toEqual('');
+      expect(DateUtil.formatDateToUniversalFormat(undefined as unknown as Date)).toEqual('');
     });
 
     it('should format a date correctly', () => {
       const date = new Date(2023, 3, 21);
-      expect(DateUtil.formatDate(date)).toEqual('21/04/2023');
+      expect(DateUtil.formatDateToUniversalFormat(date)).toEqual('2023-04-21');
     });
 
     it('should not modify the original date', () => {
       const date = new Date(2023, 3, 21, 12, 0, 0, 0);
-      DateUtil.formatDate(date);
+      DateUtil.formatDateToUniversalFormat(date);
       expect(date).toEqual(new Date(2023, 3, 21, 12, 0, 0, 0));
     });
   });
@@ -92,7 +92,7 @@ describe('Util: Date', () => {
         day: '01',
         dayOfWeek: DaysOfWeek.Monday,
         month: 'May',
-        date: '01/05/2023',
+        date: '2023-05-01',
         year: 2023,
         isWeekend: false,
         isToday: false,

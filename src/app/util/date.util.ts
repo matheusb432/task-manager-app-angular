@@ -12,12 +12,28 @@ import { DateValues, DaysOfWeek } from 'src/app/models';
   providedIn: 'root',
 })
 export class DateUtil {
-  static formatDate = (date: Date): string => {
+  static formatDateToUniversalFormat = (date: Date): string => {
     if (!date) return '';
 
     const datePipe = new DatePipe('en-US');
 
-    const formattedDate = datePipe.transform(date, 'dd/MM/yyyy');
+    const formattedDate = datePipe.transform(date, 'yyyy-MM-dd');
+
+    return formattedDate || '';
+  };
+
+  static dateStringToDate = (dateString: string): Date => {
+    const [year, monthIndex, day] = dateString.split('-').map((x) => +x);
+
+    return new Date(year, monthIndex - 1, day);
+  };
+
+  static formatDateTimeToUniversalFormat = (date: Date): string => {
+    if (!date) return '';
+
+    const datePipe = new DatePipe('en-US');
+
+    const formattedDate = datePipe.transform(date, 'yyyy-MM-ddTHH:mm:ss');
 
     return formattedDate || '';
   };
@@ -76,7 +92,7 @@ export class DateUtil {
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
 
-    const formattedDate = DateUtil.formatDate(date);
+    const formattedDate = DateUtil.formatDateToUniversalFormat(date);
     const day = DateUtil.formatDayFromNumber(dateNumber);
     const dayOfWeek = DateUtil.toDayOfWeek(dayIndex);
     const isWeekend = DateUtil.isWeekend(dayIndex);

@@ -5,8 +5,8 @@ import {
   getTimesheetForm,
 } from 'src/app/components/timesheet/timesheet-form';
 import { CanDeactivateForm } from 'src/app/models';
-import { TimesheetService, ToastService } from 'src/app/services';
-import { DetailsTypes, FormTypes } from 'src/app/util';
+import { PageService, TimesheetService, ToastService } from 'src/app/services';
+import { DateUtil, DetailsTypes, FormTypes } from 'src/app/util';
 
 @Component({
   selector: 'app-create-timesheet',
@@ -16,31 +16,49 @@ import { DetailsTypes, FormTypes } from 'src/app/util';
 })
 export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<TimesheetForm> {
   form!: TimesheetFormGroup;
+  date?: Date;
 
   formType = FormTypes.Create;
 
-  constructor(private service: TimesheetService, private ts: ToastService) {}
+  constructor(
+    private service: TimesheetService,
+    private pageService: PageService,
+    private ts: ToastService
+  ) {}
 
   ngOnInit(): void {
-    this.initForm();
+    this.initSubscriptions();
+  }
 
-    this.loadData();
+  runInitMethods(): void {
+    this.initUrlParams();
+    this.initForm();
+  }
+
+  initSubscriptions(): void {
+    this.pageService.getQueryParamsObservable().subscribe(() => {
+      this.runInitMethods();
+    });
+  }
+
+  initUrlParams(): void {
+    const dateString = this.pageService.getParam('date');
+
+    if (dateString) this.date = DateUtil.dateStringToDate(dateString);
   }
 
   initForm(): void {
-    this.form = TimesheetFormGroup.from(getTimesheetForm(new Date()));
+    this.form = TimesheetFormGroup.from(getTimesheetForm(this.date ?? new Date()));
   }
 
-  async loadData(): Promise<void> {
-    await this.service.loadCreateData();
-  }
+
 
   submitForm(): Promise<void> {
     return this.create();
   }
 
   async create(): Promise<void> {
-    const { id } = await this.service.insert(this.form);
+    const { id } = await this.service.insert(this.service.toEntity(this.form));
 
     this.service.goToDetails(id, DetailsTypes.View);
   }

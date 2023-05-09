@@ -17,9 +17,9 @@ import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileListComponent implements OnInit {
-  listItems$!: Observable<Profile[]>;
-  total$!: Observable<number>;
-  lastOptions$!: Observable<PaginationOptions>;
+  listItems$: Observable<Profile[]>;
+  total$: Observable<number>;
+  lastOptions$: Observable<PaginationOptions>;
 
   filterForm!: FormGroup<{
     name: FormControl<string>;
@@ -96,7 +96,7 @@ export class ProfileListComponent implements OnInit {
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
     return PaginationOptions.from(page, itemsPerPage ?? this.service.getItemsPerPage(), {
-      filter: { name: this.prevFilter ? [ODataOperators.Contains, this.prevFilter] : undefined },
+      filter: { name: this.prevFilter ? [[ODataOperators.Contains, this.prevFilter]] : undefined },
       orderBy: QueryUtil.orderByToOData(this.config.orderBy),
     });
   }

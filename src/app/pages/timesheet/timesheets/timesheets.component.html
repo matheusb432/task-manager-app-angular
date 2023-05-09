@@ -1,7 +1,7 @@
 <app-page-layout>
   <app-title titleText="Timesheets"></app-title>
   <!-- TODO implement integration to timesheets feature -->
-  <app-timesheet-carousel [slides]="(slides$ | async) ?? []"></app-timesheet-carousel>
-  <app-timesheet-list [items]="listItems" [totalItems]="total"></app-timesheet-list>
+  <app-timesheet-carousel [slides]="(slides$ | async) ?? []" (selectedDate)="onSelectDate($event)"></app-timesheet-carousel>
+  <app-timesheet-list></app-timesheet-list>
   <router-outlet></router-outlet>
 </app-page-layout>

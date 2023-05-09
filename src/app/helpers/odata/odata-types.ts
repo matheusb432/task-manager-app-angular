@@ -1,4 +1,4 @@
-type ODataFilterValue = string | number | boolean | undefined | null;
+type ODataFilterValue = string | number | Date | boolean | undefined | null;
 type ODataOrderBy = [string | string[], 'asc' | 'desc'];
 
 export { ODataFilterValue, ODataOrderBy };

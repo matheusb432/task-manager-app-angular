@@ -3,4 +3,5 @@ export enum ApiEndpoints {
   Profiles = '/profiles',
   ProfileTypes = '/profiles/types',
   Timesheets = '/timesheets',
+  TimesheetMetrics = '/timesheets/metrics',
 }

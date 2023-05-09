@@ -18,7 +18,7 @@ describe('Util: Query', () => {
   describe('buildODataQuery', () => {
     it('should build an OData query string', () => {
       const result1 = QueryUtil.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] },
+        filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
         orderBy: ['name', 'asc'],
       });
 
@@ -36,7 +36,7 @@ describe('Util: Query', () => {
       }
 
       const result2 = QueryUtil.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: [ODataOperators.GreaterThanOrEqualTo, 20] },
+        filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
         orderBy: [['nested', 'prop', 'test'], 'asc'],
       });
 
@@ -54,6 +54,45 @@ describe('Util: Query', () => {
       }
     });
 
+    it('should handle nested orderby props', () => {
+      const result2 = QueryUtil.buildODataQuery('https://example.com', {
+        filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
+        orderBy: [['nested', 'prop', 'test'], 'asc'],
+      });
+
+      const expectedParams2 = {
+        filter: "$filter=(name eq 'John') and (age ge 20)",
+        orderBy: '$orderby=nested/prop/test asc',
+      };
+
+      expect(result2.length).toEqual(
+        "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=nested/prop/test asc"
+          .length
+      );
+      for (const param of Object.values(expectedParams2)) {
+        expect(result2).toContain(param);
+      }
+    });
+
+    it('should handle date filters', () => {
+      const date = new Date(2023, 4, 1);
+      const result = QueryUtil.buildODataQuery('https://example.com', {
+        filter: { date },
+      });
+
+      const expectedParams = {
+        filter: "$filter=(date eq 2023-05-01)",
+      };
+
+      expect(result.length).toEqual(
+        "https://example.com/odata?$filter=(date eq 2023-05-01)"
+          .length
+      );
+      for (const param of Object.values(expectedParams)) {
+        expect(result).toContain(param);
+      }
+    });
+
     it('should build an OData query string with default options when options are not provided', () => {
       const result = QueryUtil.buildODataQuery('https://example.com');
       expect(result).toEqual('https://example.com/odata');
@@ -61,7 +100,7 @@ describe('Util: Query', () => {
 
     it('should ignore undefined filters', () => {
       const result = QueryUtil.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: undefined, height: [ODataOperators.LessThanOrEqualTo, 180] },
+        filter: { name: 'John', age: undefined, height: [[ODataOperators.LessThanOrEqualTo, 180]] },
       });
 
       const expectedParams = {

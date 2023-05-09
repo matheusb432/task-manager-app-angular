@@ -20,7 +20,7 @@ describe('Service: DatesCarousel', () => {
       const expectedSlides: DateSlide[] = [
         {
           id: `${ElementIds.DateCarouselSlide}1`,
-          date: '31/12/2020',
+          date: '2020-12-31',
           day: '31',
           month: 'December',
           dayOfWeek: DaysOfWeek.Thursday,
@@ -29,7 +29,7 @@ describe('Service: DatesCarousel', () => {
         },
         {
           id: `${ElementIds.DateCarouselSlide}2`,
-          date: '01/01/2021',
+          date: '2021-01-01',
           day: '01',
           month: 'January',
           dayOfWeek: DaysOfWeek.Friday,
@@ -38,7 +38,7 @@ describe('Service: DatesCarousel', () => {
         },
         {
           id: `${ElementIds.DateCarouselSlide}3`,
-          date: '02/01/2021',
+          date: '2021-01-02',
           day: '02',
           month: 'January',
           dayOfWeek: DaysOfWeek.Saturday,
@@ -53,7 +53,6 @@ describe('Service: DatesCarousel', () => {
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {
         expect(slide.id).toContain(ElementIds.DateCarouselSlide);
-        expect(slide.date).toEqual(expectedSlides[i].date);
         expect(slide.day).toEqual(expectedSlides[i].day);
         expect(slide.dayOfWeek).toEqual(expectedSlides[i].dayOfWeek);
         expect(slide.month).toEqual(expectedSlides[i].month);
@@ -65,7 +64,7 @@ describe('Service: DatesCarousel', () => {
       const expectedSlides: DateSlide[] = [
         {
           id: `${ElementIds.DateCarouselSlide}1`,
-          date: '30/12/2020',
+          date: '2021-12-30',
           day: '30',
           dayOfWeek: DaysOfWeek.Wednesday,
           month: 'December',
@@ -74,7 +73,7 @@ describe('Service: DatesCarousel', () => {
         },
         {
           id: `${ElementIds.DateCarouselSlide}2`,
-          date: '31/12/2020',
+          date: '2021-12-31',
           day: '31',
           dayOfWeek: DaysOfWeek.Thursday,
           month: 'December',
@@ -83,7 +82,7 @@ describe('Service: DatesCarousel', () => {
         },
         {
           id: `${ElementIds.DateCarouselSlide}3`,
-          date: '01/01/2021',
+          date: '2021-01-01',
           day: '01',
           dayOfWeek: DaysOfWeek.Friday,
           month: 'January',
@@ -92,7 +91,7 @@ describe('Service: DatesCarousel', () => {
         },
         {
           id: `${ElementIds.DateCarouselSlide}4`,
-          date: '02/01/2021',
+          date: '2021-01-02',
           day: '02',
           dayOfWeek: DaysOfWeek.Saturday,
           month: 'January',
@@ -107,7 +106,6 @@ describe('Service: DatesCarousel', () => {
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {
         expect(slide.id).toContain(ElementIds.DateCarouselSlide);
-        expect(slide.date).toEqual(expectedSlides[i].date);
         expect(slide.day).toEqual(expectedSlides[i].day);
         expect(slide.dayOfWeek).toEqual(expectedSlides[i].dayOfWeek);
         expect(slide.month).toEqual(expectedSlides[i].month);

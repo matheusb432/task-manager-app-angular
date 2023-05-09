@@ -1,173 +1,106 @@
 import { Injectable } from '@angular/core';
+import { FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TimesheetFormGroup, getTimesheetForm } from '../components/timesheet/timesheet-form';
-import { PostReturn, Timesheet } from '../models';
-import { PaginationOptions } from '../models/configs/pagination-options';
-import { Constants, DetailsTypes, FormUtil, ObjectUtil, paths } from '../util';
+import { BehaviorSubject } from 'rxjs';
+import {
+  TimesheetFormGroup,
+  getTimesheetForm,
+  getTimesheetNoteFormGroup,
+} from '../components/timesheet/timesheet-form';
+import { ODataOperators } from '../helpers/odata';
+import { Timesheet } from '../models';
+import { TimesheetMetricsDto } from '../models/dtos/timesheet/timesheet-metrics-dto';
+import { DateUtil, DetailsTypes, paths } from '../util';
 import { TimesheetApiService } from './api';
+import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TimesheetService {
-  private item?: Timesheet;
+export class TimesheetService extends FormService<Timesheet> {
+  private metrics$ = new BehaviorSubject<TimesheetMetricsDto[]>([]);
 
-  private _listItems: Timesheet[] = [];
-  private _total = 0;
-
-  private _lastOptions?: PaginationOptions;
-
-  get listItems(): Timesheet[] {
-    return this._listItems;
+  constructor(
+    protected override api: TimesheetApiService,
+    protected override ts: ToastService,
+    private router: Router
+  ) {
+    super(ts, api);
+    this.setToastMessages();
   }
 
-  private set listItems(value: Timesheet[]) {
-    this._listItems = value;
-  }
+  loadMetricsByRange = async (from: Date, to: Date): Promise<void> => {
+    const metrics = await this.api.getMetricsQuery({
+      filter: {
+        date: [
+          [ODataOperators.GreaterThanOrEqualTo, from],
+          [ODataOperators.LessThanOrEqualTo, to],
+        ],
+      },
+    });
 
-  get total(): number {
-    return this._total;
-  }
-
-  private set total(value: number) {
-    this._total = value;
-  }
-
-  get itemsPerPage(): number {
-    return this._lastOptions?.itemsPerPage ?? Constants.DefaultItemsPerPage;
-  }
-
-  get currentPage(): number {
-    return this._lastOptions?.page ?? 1;
-  }
-
-  constructor(private api: TimesheetApiService, private ts: ToastService, private router: Router) {}
-
-  update = async (id: string | null | undefined, fg: TimesheetFormGroup): Promise<void> => {
-    if (id == null) {
-      this.ts.error("Error while updating Timesheet, couldn't fetch ID!");
-      return;
-    }
-
-    const item = TimesheetFormGroup.toEntity(fg.value);
-
-    await this.api.update({ id: +id, ...item });
-
-    this.ts.success('Timesheet updated successfully!');
-
-    await this.loadListItems();
+    this.metrics$.next(metrics);
   };
 
-  insert = async (fg: TimesheetFormGroup): Promise<PostReturn> => {
-    const item = TimesheetFormGroup.toEntity(fg.value);
+  goToCreateOrDetailsBasedOnDate = async (date: Date): Promise<boolean> => {
+    const existingItem = await this.api.getQuery({ filter: { date: date } });
 
-    const res = await this.api.insert(item);
+    const item = existingItem?.[0];
 
-    this.ts.success('Timesheet created successfully!');
+    if (item?.id == null) return this.goToCreate(date);
 
-    await this.loadListItems();
+    this.item$.next(item);
 
-    return res;
+    return this.goToDetails(item.id, DetailsTypes.Edit);
   };
-
-  duplicate = async (fg: TimesheetFormGroup): Promise<PostReturn> => {
-    const item = TimesheetFormGroup.toEntity(fg.value);
-
-    const res = await this.api.duplicate(item);
-
-    this.ts.success('Timesheet duplicated successfully');
-
-    await this.loadListItems();
-
-    return res;
-  };
-
-  private removeFromMemory = (id: number): void => {
-    if (this.item?.id === id) this.item = undefined;
-
-    if (!this.listItems?.some((x) => x.id === id)) return;
-
-    this.listItems = this.listItems.filter((x) => x.id !== id);
-    this.total--;
-
-    if (this.listItems.length === 0) {
-      if (this._lastOptions?.page) this._lastOptions.page--;
-
-      this.loadListItems();
-    }
-  };
-
-  deleteItem = async (id: string | number | null | undefined): Promise<void> => {
-    if (!id) {
-      this.ts.error("Couldn't fetch ID!");
-
-      return;
-    }
-    const parsedId = +id;
-
-    await this.api.remove(parsedId);
-    this.removeFromMemory(parsedId);
-
-    this.ts.success('Timesheet deleted successfully!');
-
-    this.goToList();
-  };
-
-  loadListData = async (): Promise<void> => {
-    await this.loadListItems(PaginationOptions.default());
-  };
-
-  // TODO implement or remove
-  loadCreateData = async () => {};
 
   loadEditData = async (id: string | null | undefined): Promise<Timesheet | null> => {
-    await this.loadCreateData();
     return this.loadItem(id);
   };
-
-  async loadListItems(options?: PaginationOptions): Promise<void> {
-    if (options == null) {
-      options = this._lastOptions ?? PaginationOptions.default();
-    } else {
-      this._lastOptions = options;
-    }
-
-    const res = await this.api.getPaginated(options);
-
-    this.total = res.total;
-    this.listItems = res.items;
-  }
-
-  async loadItem(id: string | null | undefined): Promise<Timesheet | null> {
-    if (!id) {
-      this.ts.error("Couldn't fetch ID!");
-
-      return null;
-    }
-
-    const parsedId = +id;
-
-    if (this.item?.id === parsedId) return ObjectUtil.deepClone(this.item);
-
-    this.item = await this.api.getById(parsedId);
-
-    if (this.item == null) this.ts.error("Couldn't fetch data!");
-
-    return ObjectUtil.deepClone(this.item);
-  }
 
   convertToForm(item: Timesheet): TimesheetFormGroup {
     const newFg = TimesheetFormGroup.from(getTimesheetForm(new Date()));
 
-    FormUtil.setFormFromItem(newFg, item, TimesheetFormGroup.getFormKeys());
+    const controls = newFg.controls;
+
+    controls.date.setValue(new Date(item.date ?? ''));
+    controls.finished.setValue(!!item.finished);
+    controls.notes = new FormArray(
+      // TODO to mapping method
+      item?.timesheetNotes?.map((n) => {
+        const noteFg = getTimesheetNoteFormGroup();
+
+        noteFg.controls.comment.setValue(n.comment ?? '');
+
+        return noteFg;
+      }) ?? []
+    );
 
     return newFg;
   }
 
+  toEntity(fg: TimesheetFormGroup): Partial<Timesheet> {
+    return TimesheetFormGroup.toEntity(fg.value);
+  }
+
+  private setToastMessages(): void {
+    this.toastMessages = {
+      ...this.toastMessages,
+      noItem: "Couldn't fetch timesheet!",
+      createSuccess: 'Timesheet created successfully!',
+      updateSuccess: 'Timesheet updated successfully!',
+      updateIdError: "Couldn't update timesheet, couldn't fetch ID!",
+      deleteSuccess: 'Timesheet deleted successfully!',
+      duplicateSuccess: 'Timesheet duplicated successfully!',
+    };
+  }
+
   goToList = () => this.router.navigateByUrl(paths.timesheets);
-  goToCreate = () => this.router.navigateByUrl(paths.timesheetsCreate);
-  goToDetails = async (id: number, type: DetailsTypes) => {
+  goToCreate = (date?: Date) =>
+    this.router.navigate([paths.timesheetsCreate], {
+      queryParams: { date: DateUtil.formatDateToUniversalFormat(date ?? new Date()) },
+    });
+  goToDetails = async (id: number, type: DetailsTypes) =>
     this.router.navigate([paths.timesheetsDetails], { queryParams: { id, type } });
-  };
 }
