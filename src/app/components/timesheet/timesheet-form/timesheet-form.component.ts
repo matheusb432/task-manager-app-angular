@@ -43,19 +43,19 @@ export class TimesheetFormComponent {
     return this.form.controls;
   }
 
-  get date(): AbstractControl {
+  get date() {
     return this.controls.date;
   }
 
-  get finished(): AbstractControl {
+  get finished() {
     return this.controls.finished;
   }
 
-  get noteForms(): FormArray<FormGroup<TimesheetNoteForm>> {
+  get noteForms() {
     return this.controls.notes;
   }
 
-  get taskForms(): FormArray<FormGroup<TaskItemForm>> {
+  get taskForms() {
     return this.controls.tasks;
   }
 

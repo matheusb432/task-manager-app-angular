@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -37,7 +38,7 @@ export class ButtonComponent implements OnChanges, OnDestroy {
     return this.isLoading || this.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['elId'] && !!this.elId) {
@@ -57,6 +58,7 @@ export class ButtonComponent implements OnChanges, OnDestroy {
     this.subscriptions.push(
       this.loadingService.isLoadingPipeFactory(this.elId).subscribe((isLoading) => {
         this.isLoading = isLoading;
+        this.cdRef.detectChanges();
       })
     );
   }

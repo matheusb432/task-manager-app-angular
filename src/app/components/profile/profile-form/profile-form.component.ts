@@ -34,23 +34,23 @@ export class ProfileFormComponent {
     return this.form.controls;
   }
 
-  get name(): AbstractControl {
+  get name() {
     return this.controls.name;
   }
 
-  get timeTarget(): AbstractControl {
+  get timeTarget() {
     return this.controls.timeTarget;
   }
 
-  get tasksTarget(): AbstractControl {
+  get tasksTarget() {
     return this.controls.tasksTarget;
   }
 
-  get priority(): AbstractControl {
+  get priority() {
     return this.controls.priority;
   }
 
-  get profileTypeId(): AbstractControl {
+  get profileTypeId() {
     return this.controls.profileTypeId;
   }
 

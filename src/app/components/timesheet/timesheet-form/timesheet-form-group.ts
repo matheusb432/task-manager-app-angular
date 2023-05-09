@@ -46,8 +46,6 @@ export const getTimesheetNoteForm = (): TimesheetNoteForm => {
   };
 };
 
-export type TaskItemFormValue = FormValue<TaskItemForm>;
-
 export interface TaskItemForm {
   title: FormControl<string>;
   comment: FormControl<string>;
@@ -60,7 +58,7 @@ export const getTaskItemFormGroup = (): FormGroup<TaskItemForm> => {
   return new FormGroup(getTaskItemForm());
 };
 
-export const getTaskItemForm = () => {
+export const getTaskItemForm = (): TaskItemForm => {
   return {
     title: new FormControl('', {
       nonNullable: true,
@@ -68,11 +66,11 @@ export const getTaskItemForm = () => {
     }),
     comment: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(100)],
+      validators: [Validators.required],
     }),
     time: new FormControl('00:00', { nonNullable: true, validators: [Validators.required] }),
     rating: new FormControl<number | null>(null, {
-      validators: [Validators.required, Validators.min(0), Validators.max(5)],
+      validators: [Validators.min(0), Validators.max(5)],
     }),
     importance: new FormControl(1, {
       validators: [Validators.required, Validators.min(1), Validators.max(3)],

@@ -1,6 +1,5 @@
 .input-container {
-  display: flex;
-
+  margin-bottom: 0;
   input[matinput]::-webkit-outer-spin-button,
   input[matinput]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -8,9 +7,9 @@
   }
 }
 
-
 .helper {
   display: block;
+  color: #9ca3af;
   margin-bottom: 1rem;
 
   .invalid-helper {

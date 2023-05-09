@@ -119,6 +119,11 @@ h3 {
   margin-bottom: .5rem;
 }
 
+mat-form-field.input-container {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
 .input-loading-container {
   position: absolute;
   width: 50px;

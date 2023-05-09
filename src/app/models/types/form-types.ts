@@ -12,6 +12,6 @@ export type FormValue<TForm> = {
     : TForm[TKey] extends FormArray<infer TArrayForm>
     ? TArrayForm extends FormGroup<infer TArrayFormGroup>
       ? Partial<FormValue<TArrayFormGroup>>[]
-      : Partial<FormValue<TArrayForm>>
+      : Partial<FormValue<TArrayForm>>[]
     : never;
 };

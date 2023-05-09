@@ -15,6 +15,7 @@ import { AuthApiService } from './api';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
 import { TokenService } from './token.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -76,6 +77,7 @@ export class AuthService implements OnDestroy {
 
   constructor(
     private api: AuthApiService,
+    private ts: ToastService,
     private pageService: PageService,
     @Inject(STORE_SERVICE) private store: StoreService,
     private tokenService: TokenService
@@ -150,9 +152,16 @@ export class AuthService implements OnDestroy {
   private async fetchUser(email: string): Promise<void> {
     if (!email) return;
 
-    const newUser = await this.api.getUserByEmail(email);
-
-    this._setLoggedUser.next(newUser);
+    try {
+      const newUser = await this.api.getUserByEmail(email);
+      if (!newUser) {
+        this.ts.info('Your user was not found. Please login again.');
+        return this.logout();
+      }
+      this._setLoggedUser.next(newUser);
+    } catch {
+      this.logout();
+    }
   }
 
   private decodeAuthToken(token: string): DecodedAuthToken | null {
