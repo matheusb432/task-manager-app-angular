@@ -1,6 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateUtil } from 'src/app/util';
-import { TaskItem, Timesheet } from 'src/app/models';
+import { FormValue, TaskItem, Timesheet } from 'src/app/models';
 import { dateMaxValidator } from 'src/app/helpers';
 import { Mapper } from 'mapper-ts/lib-esm';
 
@@ -30,16 +30,7 @@ export interface TimesheetForm {
   tasks: FormArray<FormGroup<TaskItemForm>>;
 }
 
-interface TimesheetFormValue {
-  date: Date;
-  finished: boolean;
-  notes: Partial<TimesheetNoteFormValue>[];
-  tasks: Partial<TaskItemFormValue>[];
-}
-
-interface TimesheetNoteFormValue {
-  comment: string;
-}
+type TimesheetFormValue = FormValue<TimesheetForm>;
 
 export interface TimesheetNoteForm {
   comment: FormControl<string>;
@@ -55,13 +46,7 @@ export const getTimesheetNoteForm = (): TimesheetNoteForm => {
   };
 };
 
-export interface TaskItemFormValue {
-  title: string;
-  comment: string;
-  time: string;
-  rating: number | null;
-  importance: number | null;
-}
+export type TaskItemFormValue = FormValue<TaskItemForm>;
 
 export interface TaskItemForm {
   title: FormControl<string>;
@@ -106,6 +91,5 @@ export const getTimesheetForm = (today: Date): TimesheetForm => {
     finished: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
     notes: new FormArray([getTimesheetNoteFormGroup()]),
     tasks: new FormArray([getTaskItemFormGroup()]),
-    // TODO add task items form array
   };
 };
