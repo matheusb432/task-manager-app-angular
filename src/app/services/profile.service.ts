@@ -64,7 +64,7 @@ export class ProfileService extends FormService<Profile> {
   }
 
   toEntity(fg: ProfileFormGroup): Profile {
-    return ProfileFormGroup.toEntity(fg.value);
+    return ProfileFormGroup.toEntity(fg);
   }
 
   private setToastMessages = () => {

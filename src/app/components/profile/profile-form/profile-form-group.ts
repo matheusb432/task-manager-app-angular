@@ -12,15 +12,14 @@ export class ProfileFormGroup extends FormGroup<ProfileForm> {
     return ['name', 'timeTarget', 'tasksTarget', 'priority', 'profileTypeId'];
   }
 
-  static toEntity = (value: Partial<ProfileFormValue>): Profile => {
+  static toEntity = (fg: ProfileFormGroup): Profile => {
+    const value = fg.getRawValue();
     return new Mapper(Profile).map({
       ...value,
       timeTarget: TimePipe.formatTimeHhMm(value.timeTarget),
     }) as Profile;
   };
 }
-
-type ProfileFormValue = FormValue<ProfileForm>;
 
 export interface ProfileForm {
   name: FormControl<string>;

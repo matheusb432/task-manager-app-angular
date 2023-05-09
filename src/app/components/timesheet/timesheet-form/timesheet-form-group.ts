@@ -1,6 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateUtil } from 'src/app/util';
-import { FormValue, TaskItem, Timesheet } from 'src/app/models';
+import { FormValue, TaskItem, Timesheet, TimesheetNote } from 'src/app/models';
 import { dateMaxValidator } from 'src/app/helpers';
 import { Mapper } from 'mapper-ts/lib-esm';
 
@@ -13,17 +13,20 @@ export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
     return ['date', 'finished', 'notes'];
   }
 
-  static toEntity = (value: Partial<TimesheetFormValue>): Partial<Timesheet> => {
+  static toEntity = (fg: TimesheetFormGroup): Partial<Timesheet> => {
+    const value = fg.getRawValue();
     return {
       date: value.date?.toISOString(),
       finished: value.finished,
-      timesheetNotes: value.notes?.map((n) => ({ comment: n.comment })) ?? [],
+      timesheetNotes:
+        value.notes?.map((n) => new Mapper(TimesheetNote).map(n) as TimesheetNote) ?? [],
       taskItems: value.tasks?.map((t) => new Mapper(TaskItem).map(t) as TaskItem) ?? [],
     };
   };
 }
 
 export interface TimesheetForm {
+  id: FormControl<number | null>;
   date: FormControl<Date>;
   finished: FormControl<boolean>;
   notes: FormArray<FormGroup<TimesheetNoteForm>>;
@@ -33,6 +36,8 @@ export interface TimesheetForm {
 type TimesheetFormValue = FormValue<TimesheetForm>;
 
 export interface TimesheetNoteForm {
+  id: FormControl<number | null>;
+  timesheetId: FormControl<number | null>;
   comment: FormControl<string>;
 }
 
@@ -42,11 +47,15 @@ export const getTimesheetNoteFormGroup = (): FormGroup<TimesheetNoteForm> => {
 
 export const getTimesheetNoteForm = (): TimesheetNoteForm => {
   return {
+    id: new FormControl(0),
+    timesheetId: new FormControl(0),
     comment: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   };
 };
 
 export interface TaskItemForm {
+  id: FormControl<number | null>;
+  timesheetId: FormControl<number | null>;
   title: FormControl<string>;
   comment: FormControl<string>;
   time: FormControl<string>;
@@ -60,6 +69,8 @@ export const getTaskItemFormGroup = (): FormGroup<TaskItemForm> => {
 
 export const getTaskItemForm = (): TaskItemForm => {
   return {
+    id: new FormControl(0),
+    timesheetId: new FormControl(0),
     title: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(100)],
@@ -82,6 +93,7 @@ export const getTimesheetForm = (today: Date): TimesheetForm => {
   const tomorrow = DateUtil.addDays(new Date(), 1);
 
   return {
+    id: new FormControl(0),
     date: new FormControl(today, {
       nonNullable: true,
       validators: [Validators.required, dateMaxValidator(tomorrow)],

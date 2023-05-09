@@ -24,7 +24,7 @@ export class SignupComponent implements OnInit {
   }
 
   async signup(form: SignupFormGroup): Promise<void> {
-    const signup = SignupFormGroup.toEntity(form.value);
+    const signup = SignupFormGroup.toEntity(form);
 
     await this.service.signup(signup);
 
