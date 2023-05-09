@@ -4,6 +4,7 @@ import {
   PaginatedResult,
   PostReturn,
   Timesheet,
+  TimesheetMetricsDto,
   TimesheetPostDto,
   TimesheetPutDto,
 } from 'src/app/models';
@@ -13,7 +14,6 @@ import { ApiService } from './api.service';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { FormApiService } from '../interfaces';
 import { ODataOptions } from 'src/app/helpers/odata';
-import { TimesheetMetricsDto } from 'src/app/models/dtos/timesheet/timesheet-metrics-dto';
 
 @Injectable({
   providedIn: 'root',

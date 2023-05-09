@@ -16,6 +16,15 @@
   background: linear-gradient(to $position, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
 
+@mixin sticky-container($paddingX) {
+  position: sticky;
+  z-index: 100;
+  width: calc(100% + $paddingX * 2);
+  margin-left: -$paddingX;
+  padding-right: $paddingX;
+  padding-left: $paddingX;
+}
+
 @keyframes pulse {
   0% {
     background: #fff;

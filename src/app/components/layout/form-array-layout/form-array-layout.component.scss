@@ -1,0 +1,36 @@
+:host {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease-in-out;
+
+  .forms-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+}
+
+:host ::ng-deep li.form-item {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(800px);
+  }
+  70% {
+    transform: translateX(-40px);
+  }
+  90% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}

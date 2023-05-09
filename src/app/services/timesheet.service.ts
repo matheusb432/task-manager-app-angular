@@ -8,8 +8,7 @@ import {
   getTimesheetNoteFormGroup,
 } from '../components/timesheet/timesheet-form';
 import { ODataOperators } from '../helpers/odata';
-import { Timesheet } from '../models';
-import { TimesheetMetricsDto } from '../models/dtos/timesheet/timesheet-metrics-dto';
+import { PaginationOptions, Timesheet, TimesheetMetricsDto } from '../models';
 import { DateUtil, DetailsTypes, paths } from '../util';
 import { TimesheetApiService } from './api';
 import { FormService } from './base/form.service';
@@ -53,6 +52,10 @@ export class TimesheetService extends FormService<Timesheet> {
     this.item$.next(item);
 
     return this.goToDetails(item.id, DetailsTypes.Edit);
+  };
+
+  loadListData = async (): Promise<void> => {
+    await this.loadListItems(PaginationOptions.default());
   };
 
   loadEditData = async (id: string | null | undefined): Promise<Timesheet | null> => {

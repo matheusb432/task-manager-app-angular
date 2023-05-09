@@ -4,7 +4,7 @@
   [formGroup]="form"
   (ngSubmit)="openSaveModal()"
 >
-  <div class="form-grid">
+  <div class="form-grid" [appScrollTo]="true">
     <app-datepicker
       fcName="date"
       [control]="date"
@@ -15,20 +15,17 @@
       [formId]="elIds.TimesheetForm"
       [maxDate]="tomorrow"
     ></app-datepicker>
-    <app-checkbox
-      fcName="finished"
-      [control]="finished"
-      labelText="Is Finished"
-      elId="cTimesheetFormFinished"
-      [fg]="form"
-      [canEdit]="canEdit"
+    <ul
+      app-form-array-layout
+      titleText="Notes"
+      formArrayName="notes"
+      [showButtons]="canEdit"
+      buttonId="Note"
+      (added)="addNote()"
     >
-    </app-checkbox>
-    <ul class="note-forms" formArrayName="notes">
-      <h2 class="forms-title">Notes</h2>
-      <li class="note-form" *ngFor="let noteForm of noteForms.controls; let i = index">
+      <li class="form-item" *ngFor="let noteForm of noteForms.controls; let i = index">
         <app-textarea
-          fcName="note"
+          fcName="comment"
           [control]="noteForm.controls.comment"
           labelText="Note"
           [elId]="'cTimesheetFormNote' + i"
@@ -46,20 +43,92 @@
           >Remove Note</app-button
         >
       </li>
-      <div class="form-buttons">
+    </ul>
+    <ul
+      app-form-array-layout
+      titleText="Tasks"
+      formArrayName="tasks"
+      [showButtons]="canEdit"
+      buttonId="Task"
+      (added)="addTask()"
+    >
+      <li class="form-item" *ngFor="let taskForm of taskForms.controls; let i = index">
+        <app-input
+          fcName="title"
+          [control]="taskForm.controls.title"
+          labelText="Task"
+          [elId]="'cTimesheetFormTaskTitle' + i"
+          placeholder="Enter the task title"
+          [fg]="taskForm"
+          [canEdit]="canEdit"
+        >
+        </app-input>
+        <app-textarea
+          fcName="comment"
+          [control]="taskForm.controls.comment"
+          labelText="Comment"
+          [elId]="'cTimesheetFormTaskComment' + i"
+          placeholder="Enter a Comment"
+          [fg]="taskForm"
+          [canEdit]="canEdit"
+        >
+        </app-textarea>
+        <app-input
+          fcName="time"
+          [control]="taskForm.controls.time"
+          labelText="Time"
+          type="time"
+          [elId]="'cTimesheetFormTaskTime' + i"
+          [fg]="taskForm"
+          [helpers]="['hh:mm']"
+          [canEdit]="canEdit"
+        ></app-input>
+
+        <app-input
+          fcName="rating"
+          [control]="taskForm.controls.rating"
+          labelText="Rating"
+          type="number"
+          [elId]="'cTimesheetFormTaskRating' + i"
+          placeholder="Rate the task"
+          [fg]="taskForm"
+          [helpers]="['0-5']"
+          [canEdit]="canEdit"
+        ></app-input>
+        <app-input
+          fcName="importance"
+          [control]="taskForm.controls.importance"
+          labelText="Importance"
+          type="number"
+          [elId]="'cTimesheetFormTaskImportance' + i"
+          placeholder="Rate the importance of the task"
+          [fg]="taskForm"
+          [helpers]="['1-3']"
+          [canEdit]="canEdit"
+        ></app-input>
+
         <app-button
           model="raised"
-          elId="TimesheetFormAddNote"
-          (clicked)="addNote()"
+          [elId]="'TimesheetFormRemoveTask' + i"
+          (clicked)="removeTask(i)"
           *ngIf="canEdit"
-          color="accent"
-          >Add Note</app-button
+          color="warn"
+          >Remove Task</app-button
         >
-      </div>
+      </li>
     </ul>
 
-    <div class="form-buttons">
-      <div *ngIf="showDelete()" class="left-buttons">
+    <app-checkbox
+      fcName="finished"
+      [control]="finished"
+      labelText="Finished"
+      elId="cTimesheetFormFinished"
+      [fg]="form"
+      [canEdit]="canEdit"
+    >
+    </app-checkbox>
+    <footer app-fixed-buttons-layout>
+      <ng-container leftButtons>
         <app-button
           model="raised"
           [elId]="elIds.TimesheetDelete"
@@ -67,14 +136,21 @@
           color="warn"
           >Delete</app-button
         >
-      </div>
+      </ng-container>
 
-      <app-button model="raised" elId="cTimesheetFormCancel" (clicked)="onCancel()" color="accent"
-        >Cancel</app-button
-      >
-      <app-button model="raised" [elId]="elIds.TimesheetSubmit" *ngIf="canEdit" [disabled]="form.invalid" type="submit">{{
-        submitLabel
-      }}</app-button>
-    </div>
+      <ng-container rightButtons>
+        <app-button model="raised" elId="cTimesheetFormCancel" (clicked)="onCancel()" color="accent"
+          >Cancel</app-button
+        >
+        <app-button
+          model="raised"
+          [elId]="elIds.TimesheetSubmit"
+          *ngIf="canEdit"
+          [disabled]="form.invalid"
+          type="submit"
+          >{{ submitLabel }}</app-button
+        >
+      </ng-container>
+    </footer>
   </div>
 </form>

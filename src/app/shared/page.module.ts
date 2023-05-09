@@ -5,8 +5,6 @@ import { ImageComponent } from '../components/custom/image/image.component';
 import { MainHeaderComponent } from '../components/custom/main-header/main-header.component';
 import { SidebarComponent } from '../components/custom/sidebar/sidebar.component';
 import { TitleComponent } from '../components/custom/title/title.component';
-import { CardLayoutComponent } from '../components/layout/card-layout/card-layout.component';
-import { PageLayoutComponent } from './../components/layout/page-layout/page-layout.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -31,10 +29,15 @@ import { LoadingComponent } from '../components/custom/loading/loading.component
 import { ModalConfirmComponent, ModalFeedbackComponent } from '../components/custom/modals';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 import { TableComponent } from '../components/custom/table/table.component';
-import { ModalLayoutComponent } from '../components/layout/modal-layout/modal-layout.component';
 import { FocusInitialDirective, SetIdDirective, ScrollToDirective } from '../directives';
 import { GetPipe, TimePipe } from '../pipes';
 import { DynamicPipe } from '../pipes/dynamic.pipe';
+import {
+  CardLayoutComponent,
+  FixedButtonsLayoutComponent,
+  ModalLayoutComponent,
+  PageLayoutComponent,
+} from '../components/layout';
 
 @NgModule({
   declarations: [
@@ -76,6 +79,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ImageComponent,
     CardLayoutComponent,
     LoadingComponent,
+    FixedButtonsLayoutComponent,
     ScrollToDirective,
   ],
   exports: [
@@ -106,6 +110,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatDialogModule,
     MatPaginatorModule,
     LoadingComponent,
+    FixedButtonsLayoutComponent,
     FocusInitialDirective,
     SetIdDirective,
     ScrollToDirective,

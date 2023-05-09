@@ -20,6 +20,7 @@ export class TimesheetsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.service.loadListData();
     this.slides$ = this.datesCarouselService.getSlides();
     // TODO remove
     this.service.loadMetricsByRange(new Date(2022, 1, 1), new Date(2023, 11, 31));

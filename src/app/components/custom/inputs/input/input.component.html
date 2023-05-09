@@ -28,6 +28,6 @@
 </mat-form-field>
 <small class="helper" *ngIf="!!helpers && !disabled">
   <ul>
-    <li *ngFor="let helper of helpers" [ngClass]="{'invalid-helper': invalid}">{{ helper }}</li>
+    <li *ngFor="let helper of helpers" [ngClass]="{ 'invalid-helper': invalid }">- {{ helper }}</li>
   </ul>
 </small>

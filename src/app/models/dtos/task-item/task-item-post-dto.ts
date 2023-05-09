@@ -1,5 +1,4 @@
-import { AddMap, IgnoreMap } from 'mapper-ts/lib-esm';
-import { TaskItemNotePostDto } from './task-item-note-post-dto';
+import { IgnoreMap } from 'mapper-ts/lib-esm';
 
 @IgnoreMap('id')
 export class TaskItemPostDto {
@@ -8,6 +7,5 @@ export class TaskItemPostDto {
   rating?: number;
   importance?: number;
   timesheetId?: number;
-  @AddMap(TaskItemNotePostDto)
-  taskItemNotes?: TaskItemNotePostDto[];
+  comment?: string;
 }

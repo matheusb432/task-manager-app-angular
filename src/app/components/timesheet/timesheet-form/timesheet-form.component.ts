@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService, TimesheetService } from 'src/app/services';
+import { ModalService } from 'src/app/services';
 import {
   DateUtil,
   ElementIds,
@@ -11,10 +11,12 @@ import {
   saveModalData,
 } from 'src/app/util';
 import {
+  TaskItemForm,
   TimesheetForm,
   TimesheetFormGroup,
   TimesheetNoteForm,
-  getTimesheetNoteFormGroup
+  getTaskItemFormGroup,
+  getTimesheetNoteFormGroup,
 } from './timesheet-form-group';
 
 @Component({
@@ -53,6 +55,10 @@ export class TimesheetFormComponent {
     return this.controls.notes;
   }
 
+  get taskForms(): FormArray<FormGroup<TaskItemForm>> {
+    return this.controls.tasks;
+  }
+
   get submitLabel(): string {
     return FormUtil.getSubmitLabel(this.formType);
   }
@@ -61,7 +67,7 @@ export class TimesheetFormComponent {
     return !FormUtil.isViewForm(this.formType);
   }
 
-  constructor(private service: TimesheetService, private modalService: ModalService) {}
+  constructor(private modalService: ModalService) {}
 
   addNote(): void {
     this.noteForms.push(getTimesheetNoteFormGroup());
@@ -69,6 +75,14 @@ export class TimesheetFormComponent {
 
   removeNote(index: number): void {
     this.noteForms.removeAt(index);
+  }
+
+  addTask(): void {
+    this.taskForms.push(getTaskItemFormGroup());
+  }
+
+  removeTask(index: number): void {
+    this.taskForms.removeAt(index);
   }
 
   showDelete(): boolean {
@@ -84,8 +98,6 @@ export class TimesheetFormComponent {
   }
 
   openSaveModal(): void {
-    this.modalService.confirmation(saveModalData(), () => {
-      FormUtil.onSubmit(this.form, this.save);
-    });
+    this.modalService.confirmation(saveModalData(), () => FormUtil.onSubmit(this.form, this.save));
   }
 }

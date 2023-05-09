@@ -10,9 +10,10 @@ import {
   SelectComponent,
 } from '../components/custom/inputs';
 import { TextareaComponent } from '../components/custom/inputs/textarea/textarea.component';
+import { FormArrayLayoutComponent } from '../components/layout/form-array-layout/form-array-layout.component';
 
 @NgModule({
-  declarations: [InputComponent, SelectComponent, SearchComponent],
+  declarations: [InputComponent, SelectComponent, SearchComponent, FormArrayLayoutComponent],
   imports: [CommonModule, PageModule, DatepickerComponent, CheckboxComponent, TextareaComponent],
   exports: [
     InputComponent,
@@ -21,6 +22,7 @@ import { TextareaComponent } from '../components/custom/inputs/textarea/textarea
     DatepickerComponent,
     CheckboxComponent,
     TextareaComponent,
+    FormArrayLayoutComponent,
   ],
 })
 export class CrudPageModule {}
