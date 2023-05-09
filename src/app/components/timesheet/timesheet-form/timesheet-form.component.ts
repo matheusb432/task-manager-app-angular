@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService, TimesheetService } from 'src/app/services';
 import {
@@ -8,9 +8,14 @@ import {
   FormTypes,
   FormUtil,
   deleteModalData,
-  saveModalData
+  saveModalData,
 } from 'src/app/util';
-import { TimesheetForm, TimesheetFormGroup } from './timesheet-form-group';
+import {
+  TimesheetForm,
+  TimesheetFormGroup,
+  TimesheetNoteForm,
+  getTimesheetNoteFormGroup
+} from './timesheet-form-group';
 
 @Component({
   selector: 'app-timesheet-form',
@@ -44,9 +49,8 @@ export class TimesheetFormComponent {
     return this.controls.finished;
   }
 
-  // TODO remove
-  get tempNote(): AbstractControl {
-    return this.controls.tempNote;
+  get noteForms(): FormArray<FormGroup<TimesheetNoteForm>> {
+    return this.controls.notes;
   }
 
   get submitLabel(): string {
@@ -58,6 +62,14 @@ export class TimesheetFormComponent {
   }
 
   constructor(private service: TimesheetService, private modalService: ModalService) {}
+
+  addNote(): void {
+    this.noteForms.push(getTimesheetNoteFormGroup());
+  }
+
+  removeNote(index: number): void {
+    this.noteForms.removeAt(index);
+  }
 
   showDelete(): boolean {
     return FormUtil.isEditForm(this.formType);
@@ -72,6 +84,8 @@ export class TimesheetFormComponent {
   }
 
   openSaveModal(): void {
-    this.modalService.confirmation(saveModalData(), () => FormUtil.onSubmit(this.form, this.save));
+    this.modalService.confirmation(saveModalData(), () => {
+      FormUtil.onSubmit(this.form, this.save);
+    });
   }
 }

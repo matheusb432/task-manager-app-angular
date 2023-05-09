@@ -27,6 +27,5 @@ export class TimesheetsComponent implements OnInit {
 
   onSelectDate(date: Date): void {
     this.service.goToCreateOrDetailsBasedOnDate(date);
-
   }
 }

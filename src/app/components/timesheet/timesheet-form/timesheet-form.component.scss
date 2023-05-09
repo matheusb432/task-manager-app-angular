@@ -1,0 +1,22 @@
+@use 'src/_mixins.scss' as mxs;
+
+.note-forms {
+  @include mxs.dash(top, 24px, 2px);
+  @include mxs.dash(bottom, 24px, 2px);
+  list-style: none;
+  padding-right: 0;
+  padding-left: 0;
+  margin-bottom: 1rem;
+
+  .forms-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .note-form {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+}

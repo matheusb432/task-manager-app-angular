@@ -24,17 +24,39 @@
       [canEdit]="canEdit"
     >
     </app-checkbox>
-    <!-- TODO to form array with multiple notes -->
-    <app-textarea
-      fcName="tempNote"
-      [control]="tempNote"
-      labelText="Temp Note"
-      elId="cTimesheetFormNote"
-      placeholder="Enter a note"
-      [fg]="form"
-      [canEdit]="canEdit"
-    >
-    </app-textarea>
+    <ul class="note-forms" formArrayName="notes">
+      <h2 class="forms-title">Notes</h2>
+      <li class="note-form" *ngFor="let noteForm of noteForms.controls; let i = index">
+        <app-textarea
+          fcName="note"
+          [control]="noteForm.controls.comment"
+          labelText="Note"
+          [elId]="'cTimesheetFormNote' + i"
+          placeholder="Enter a note"
+          [fg]="noteForm"
+          [canEdit]="canEdit"
+        >
+        </app-textarea>
+        <app-button
+          model="raised"
+          [elId]="'TimesheetFormRemoveNote' + i"
+          (clicked)="removeNote(i)"
+          *ngIf="canEdit"
+          color="warn"
+          >Remove Note</app-button
+        >
+      </li>
+      <div class="form-buttons">
+        <app-button
+          model="raised"
+          elId="TimesheetFormAddNote"
+          (clicked)="addNote()"
+          *ngIf="canEdit"
+          color="accent"
+          >Add Note</app-button
+        >
+      </div>
+    </ul>
 
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
@@ -47,14 +69,10 @@
         >
       </div>
 
-      <app-button
-        model="raised"
-        elId="cTimesheetFormCancel"
-        (clicked)="onCancel()"
-        color="accent"
+      <app-button model="raised" elId="cTimesheetFormCancel" (clicked)="onCancel()" color="accent"
         >Cancel</app-button
       >
-      <app-button model="raised" [elId]="elIds.TimesheetSubmit" *ngIf="canEdit" type="submit">{{
+      <app-button model="raised" [elId]="elIds.TimesheetSubmit" *ngIf="canEdit" [disabled]="form.invalid" type="submit">{{
         submitLabel
       }}</app-button>
     </div>
