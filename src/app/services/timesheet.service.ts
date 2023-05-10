@@ -10,7 +10,7 @@ import {
 } from '../components/timesheet/timesheet-form';
 import { ODataOperators } from '../helpers/odata';
 import { PaginationOptions, Timesheet, TimesheetMetricsDto } from '../models';
-import { DateUtil, DetailsTypes, StringUtil, paths } from '../util';
+import { DateUtil, DetailsTypes, FormUtil, StringUtil, paths } from '../util';
 import { TimesheetApiService } from './api';
 import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
@@ -66,47 +66,31 @@ export class TimesheetService extends FormService<Timesheet> {
   convertToForm(item: Timesheet): TimesheetFormGroup {
     const newFg = TimesheetFormGroup.from(getTimesheetForm(new Date()));
 
-    const controls = newFg.controls;
+    FormUtil.setFormFromItem(newFg, {
+      ...item,
+      date: new Date(item.date ?? ''),
+      notes: [],
+      tasks: [],
+    });
 
-    if (item.id) controls.id.setValue(item.id);
-    controls.date.setValue(new Date(item.date ?? ''));
-    controls.finished.setValue(!!item.finished);
-    controls.notes = new FormArray(
-      // TODO to mapping method
-      item?.timesheetNotes?.map((n) => {
-        const noteFg = getTimesheetNoteFormGroup();
-
-        if (n.id) noteFg.controls.id.setValue(n.id);
-        if (n.timesheetId) noteFg.controls.timesheetId.setValue(n.timesheetId);
-        if (n.comment) noteFg.controls.comment.setValue(n.comment);
-
-        return noteFg;
-      }) ?? []
-    );
-    controls.tasks = new FormArray(
-      // TODO to mapping method
-      item?.taskItems?.map((n) => {
-        const taskItemFg = getTaskItemFormGroup();
-
-        if (n.id) taskItemFg.controls.id.setValue(n.id);
-        if (n.timesheetId) taskItemFg.controls.timesheetId.setValue(n.timesheetId);
-        if (n.title) taskItemFg.controls.title.setValue(n.title);
-        if (n.comment) taskItemFg.controls.comment.setValue(n.comment);
-        if (n.time) {
-          taskItemFg.controls.time.setValue(StringUtil.numberToTime(n.time as unknown as number));
-        }
-        if (n.rating) taskItemFg.controls.rating.setValue(n.rating);
-        if (n.importance) taskItemFg.controls.importance.setValue(n.importance);
-
-        return taskItemFg;
-      }) ?? []
-    );
+    if (item?.notes) {
+      newFg.controls.notes = FormUtil.buildFormArray(item.notes, getTimesheetNoteFormGroup);
+    }
+    if (item?.tasks) {
+      newFg.controls.tasks = FormUtil.buildFormArray(
+        item.tasks.map((x) => ({
+          ...x,
+          time: StringUtil.numberToTime(x.time as unknown as number),
+        })),
+        getTaskItemFormGroup
+      );
+    }
 
     return newFg;
   }
 
-  toEntity(fg: TimesheetFormGroup): Partial<Timesheet> {
-    return TimesheetFormGroup.toEntity(fg);
+  toJson(fg: TimesheetFormGroup): Partial<Timesheet> {
+    return TimesheetFormGroup.toJson(fg);
   }
 
   private setToastMessages(): void {

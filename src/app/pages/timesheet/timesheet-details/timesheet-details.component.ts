@@ -87,11 +87,11 @@ export class TimesheetDetailsComponent
   }
 
   async editItem(): Promise<void> {
-    await this.service.update(this.pageData?.id, this.service.toEntity(this.form));
+    await this.service.update(this.pageData?.id, this.service.toJson(this.form));
   }
 
   async duplicateItem(): Promise<void> {
-    const { id: createdId } = await this.service.duplicate(this.service.toEntity(this.form));
+    const { id: createdId } = await this.service.duplicate(this.service.toJson(this.form));
 
     this.service.goToDetails(createdId, DetailsTypes.View);
   }

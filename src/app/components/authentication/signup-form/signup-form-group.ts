@@ -11,7 +11,7 @@ export class SignupFormGroup extends FormGroup<SignupForm> {
     return ['userName', 'email', 'name', 'password'];
   }
 
-  static toEntity(value: SignupFormGroup): Signup {
+  static toJson(value: SignupFormGroup): Signup {
     return value.getRawValue();
   }
 }

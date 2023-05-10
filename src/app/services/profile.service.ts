@@ -56,15 +56,15 @@ export class ProfileService extends FormService<Profile> {
   convertToForm(item: Profile): ProfileFormGroup {
     const newFg = ProfileFormGroup.from(getProfileForm());
 
-    FormUtil.setFormFromItem(newFg, item, ProfileFormGroup.getFormKeys());
+    FormUtil.setFormFromItem(newFg, item);
 
     newFg.controls.timeTarget.setValue(TimePipe.formatTimeHhMm(item.timeTarget));
 
     return newFg;
   }
 
-  toEntity(fg: ProfileFormGroup): Profile {
-    return ProfileFormGroup.toEntity(fg);
+  toJson(fg: ProfileFormGroup): Profile {
+    return ProfileFormGroup.toJson(fg);
   }
 
   private setToastMessages = () => {

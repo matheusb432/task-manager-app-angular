@@ -13,15 +13,13 @@ export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
     return ['date', 'finished', 'notes'];
   }
 
-  static toEntity = (fg: TimesheetFormGroup): Partial<Timesheet> => {
+  static toJson = (fg: TimesheetFormGroup): Partial<Timesheet> => {
     const value = fg.getRawValue();
+
     return {
-      date: value.date?.toISOString(),
-      finished: value.finished,
-      timesheetNotes:
-        value.notes?.map((n) => new Mapper(TimesheetNote).map(n) as TimesheetNote) ?? [],
-      taskItems: value.tasks?.map((t) => new Mapper(TaskItem).map(t) as TaskItem) ?? [],
-    };
+      ...value,
+      date: DateUtil.formatDateToUniversalFormat(value.date),
+    } as Partial<Timesheet>;
   };
 }
 
@@ -33,11 +31,8 @@ export interface TimesheetForm {
   tasks: FormArray<FormGroup<TaskItemForm>>;
 }
 
-type TimesheetFormValue = FormValue<TimesheetForm>;
-
 export interface TimesheetNoteForm {
   id: FormControl<number | null>;
-  timesheetId: FormControl<number | null>;
   comment: FormControl<string>;
 }
 
@@ -48,14 +43,12 @@ export const getTimesheetNoteFormGroup = (): FormGroup<TimesheetNoteForm> => {
 export const getTimesheetNoteForm = (): TimesheetNoteForm => {
   return {
     id: new FormControl(0),
-    timesheetId: new FormControl(0),
     comment: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   };
 };
 
 export interface TaskItemForm {
   id: FormControl<number | null>;
-  timesheetId: FormControl<number | null>;
   title: FormControl<string>;
   comment: FormControl<string>;
   time: FormControl<string>;
@@ -70,7 +63,6 @@ export const getTaskItemFormGroup = (): FormGroup<TaskItemForm> => {
 export const getTaskItemForm = (): TaskItemForm => {
   return {
     id: new FormControl(0),
-    timesheetId: new FormControl(0),
     title: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(100)],

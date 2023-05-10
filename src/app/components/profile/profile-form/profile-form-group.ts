@@ -12,12 +12,12 @@ export class ProfileFormGroup extends FormGroup<ProfileForm> {
     return ['name', 'timeTarget', 'tasksTarget', 'priority', 'profileTypeId'];
   }
 
-  static toEntity = (fg: ProfileFormGroup): Profile => {
+  static toJson = (fg: ProfileFormGroup): Partial<Profile> => {
     const value = fg.getRawValue();
-    return new Mapper(Profile).map({
+    return {
       ...value,
       timeTarget: TimePipe.formatTimeHhMm(value.timeTarget),
-    }) as Profile;
+    } as Partial<Profile>;
   };
 }
 

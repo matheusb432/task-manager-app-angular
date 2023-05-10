@@ -100,4 +100,11 @@ export class TimesheetFormComponent {
   openSaveModal(): void {
     this.modalService.confirmation(saveModalData(), () => FormUtil.onSubmit(this.form, this.save));
   }
+
+  getFormItemId(
+    index: number,
+    item: FormGroup<TaskItemForm> | FormGroup<TimesheetNoteForm>
+  ): number {
+    return item.controls.id.value ?? index;
+  }
 }

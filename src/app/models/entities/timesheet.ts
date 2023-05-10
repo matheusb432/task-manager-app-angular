@@ -13,31 +13,31 @@ export class Timesheet implements TableItem {
   userId?: number;
   finished?: boolean;
   @AddMap(TimesheetNote)
-  timesheetNotes?: TimesheetNote[];
+  notes?: TimesheetNote[];
   @AddMap(TaskItem)
-  taskItems?: TaskItem[];
+  tasks?: TaskItem[];
 
-  get totalTaskItems(): number {
-    return this.taskItems?.length ?? 0;
+  get totalTasks(): number {
+    return this.tasks?.length ?? 0;
   }
 
   get totalHours(): number {
-    return ArrayUtil.sumNumberProp(this.taskItems, 'time');
+    return ArrayUtil.sumNumberProp(this.tasks, 'time');
   }
 
   get averageRating(): number {
-    if (!this.totalTaskItems) return 0;
+    if (!this.totalTasks) return 0;
 
-    const sum = ArrayUtil.sumNumberProp(this.taskItems, 'rating');
+    const sum = ArrayUtil.sumNumberProp(this.tasks, 'rating');
 
-    return sum / this.totalTaskItems;
+    return sum / this.totalTasks;
   }
 
   static tableItems = (): TableItemConfig<Timesheet>[] => [
     { header: '#', key: 'id' },
     { header: 'Date', key: 'date', pipe: DatePipe },
     { header: 'Finished', key: 'finished' },
-    { header: 'Total Tasks', key: 'totalTaskItems', disabledOrderBy: true },
+    { header: 'Total Tasks', key: 'totalTasks', disabledOrderBy: true },
     { header: 'Hours', key: 'totalHours', disabledOrderBy: true, pipe: TimePipe },
     {
       header: 'Rating',

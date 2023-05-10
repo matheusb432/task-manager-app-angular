@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { FormTypes } from '../util';
 
 @Injectable({
@@ -27,15 +27,18 @@ export class FormUtil {
     return submitLabels[type] || '';
   };
 
-  static setFormFromItem<T>(fg: FormGroup, item: T, formKeys: (keyof T & string)[]): void {
-    for (const key of formKeys) {
-      const control = fg.get(key) as AbstractControl;
+  static setFormFromItem<T extends object>(fg: FormGroup, item: T): void {
+    fg.patchValue(item);
+  }
 
-      if (control == null) continue;
+  static buildFormArray<T extends object>(items: T[], getFg: () => FormGroup): FormArray {
 
-      const value = item[key as keyof T];
-
-      control.setValue(value == null ? '' : value);
-    }
+    return new FormArray(
+      items.map((item) => {
+        const fg = getFg();
+        this.setFormFromItem(fg, item);
+        return fg;
+      })
+    );
   }
 }

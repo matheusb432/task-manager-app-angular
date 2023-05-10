@@ -23,7 +23,7 @@
       buttonId="Note"
       (added)="addNote()"
     >
-      <li class="form-item" *ngFor="let noteForm of noteForms.controls; let i = index">
+      <li class="form-item" *ngFor="let noteForm of noteForms.controls; let i = index; trackBy: getFormItemId">
         <app-textarea
           fcName="comment"
           [control]="noteForm.controls.comment"
@@ -52,7 +52,7 @@
       buttonId="Task"
       (added)="addTask()"
     >
-      <li class="form-item" *ngFor="let taskForm of taskForms.controls; let i = index">
+      <li class="form-item" *ngFor="let taskForm of taskForms.controls; let i = index; trackBy: getFormItemId">
         <app-input
           fcName="title"
           [control]="taskForm.controls.title"
