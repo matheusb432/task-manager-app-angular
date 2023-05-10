@@ -1,4 +1,4 @@
-import { DateSlide } from 'src/app/models';
+import { DateSlide, TimesheetMetricsDto } from 'src/app/models';
 import { Icons } from 'src/app/util';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
@@ -12,6 +12,10 @@ export class TimesheetSlideComponent {
   @Input() slide!: DateSlide;
 
   @Output() selectedSlide = new EventEmitter<DateSlide>();
+
+  get metrics(): TimesheetMetricsDto | undefined {
+    return this.slide.metrics;
+  }
 
   Icons = Icons;
 

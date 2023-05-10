@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DateSlide } from 'src/app/models';
-import { DatesCarouselService, TimesheetService } from 'src/app/services';
+import { TimesheetCarouselService, TimesheetService } from 'src/app/services';
 import { paths } from 'src/app/util';
 
 @Component({
@@ -11,19 +11,18 @@ import { paths } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetsComponent implements OnInit {
-  slides$: Observable<DateSlide[]> = of([]);
+  slides$: Observable<DateSlide[]>;
   paths = paths;
 
   constructor(
     private service: TimesheetService,
-    private datesCarouselService: DatesCarouselService
-  ) {}
+    private carouselService: TimesheetCarouselService
+  ) {
+    this.slides$ = this.carouselService.getSlides();
+  }
 
   ngOnInit(): void {
     this.service.loadListData();
-    this.slides$ = this.datesCarouselService.getSlides();
-    // TODO remove
-    this.service.loadMetricsByRange(new Date(2022, 1, 1), new Date(2023, 11, 31));
   }
 
   onSelectDate(date: Date): void {

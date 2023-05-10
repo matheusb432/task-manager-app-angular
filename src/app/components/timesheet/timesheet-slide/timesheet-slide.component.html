@@ -18,19 +18,19 @@
       </span>
     </div>
   </header>
-  <div class="slide-body">
-    <!-- TODO add timesheet metrics data -->
-    <span class="tasks" title="5 total tasks">
+  <!-- TODO test -->
+  <div class="slide-body" *ngIf="metrics">
+    <span class="tasks" title="{{ metrics.totalTasks }} total tasks">
       <app-icon [icon]="Icons.Assignment" [size]="24"></app-icon>
-      5
+      {{ metrics.totalTasks }}
     </span>
-    <span class="hours completed" title="5 out of 8 hours completed">
+    <span class="hours completed" title="Time spent: {{ metrics.workedHours }}">
       <app-icon [icon]="Icons.Timelapse" [size]="24"></app-icon>
-      5/8
+      {{ metrics.workedHours }}
     </span>
-    <span class="rating failed" title="3.6 average rating">
+    <span class="rating failed" title="{{ metrics.averageRating }} average rating">
       <app-icon [icon]="Icons.Star" [size]="24"></app-icon>
-      3.6
+      {{ metrics.averageRating }}
     </span>
   </div>
 </div>

@@ -1,16 +1,16 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { DateSlide, DaysOfWeek } from 'src/app/models';
 import { ElementIds } from 'src/app/util';
-import { DatesCarouselService } from '../dates-carousel.service';
+import { TimesheetCarouselService } from '../timesheet-carousel.service';
 
-describe('Service: DatesCarousel', () => {
+describe('Service: TimesheetCarousel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DatesCarouselService],
+      providers: [TimesheetCarouselService],
     });
   });
 
-  it('should create', inject([DatesCarouselService], (service: DatesCarouselService) => {
+  it('should create', inject([TimesheetCarouselService], (service: TimesheetCarouselService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -48,7 +48,7 @@ describe('Service: DatesCarousel', () => {
       ];
       const expectedSize = 3;
 
-      const result = DatesCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
+      const result = TimesheetCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
 
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {
@@ -101,7 +101,7 @@ describe('Service: DatesCarousel', () => {
       ];
       const expectedSize = 4;
 
-      const result = DatesCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
+      const result = TimesheetCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
 
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {

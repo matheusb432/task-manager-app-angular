@@ -96,7 +96,7 @@ describe('Util: Date', () => {
         year: 2023,
         isWeekend: false,
         isToday: false,
-      }
+      };
       expect(DateUtil.getDateValues(new Date(2023, 4, 1))).toEqual(expectedResult);
     });
   });
@@ -116,6 +116,24 @@ describe('Util: Date', () => {
       const day = new Date().getDate() + 1;
 
       expect(DateUtil.isToday(day, month, year)).toEqual(false);
+    });
+  });
+
+  describe('dateStringToDate', () => {
+    it('should return a date when given a valid date string', () => {
+      expect(DateUtil.dateStringToDate('2023-05-01')).toEqual(new Date(2023, 4, 1));
+    });
+  });
+
+  describe('dateTimeStringToDate', () => {
+    it('should return a date when given a valid date time string', () => {
+      expect(DateUtil.dateTimeStringToDate('2023-05-01T00:00:00')).toEqual(new Date(2023, 4, 1));
+    });
+  });
+
+  describe('dateTimeStringToDateString', () => {
+    it('should return a date string when given a valid date time string', () => {
+      expect(DateUtil.dateTimeStringToDateString('2023-05-01T00:00:00')).toEqual('2023-05-01');
     });
   });
 });

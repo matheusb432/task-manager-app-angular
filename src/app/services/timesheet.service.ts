@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import {
   TimesheetFormGroup,
   getTaskItemFormGroup,
   getTimesheetForm,
   getTimesheetNoteFormGroup,
 } from '../components/timesheet/timesheet-form';
-import { ODataOperators } from '../helpers/odata';
-import { PaginationOptions, Timesheet, TimesheetMetricsDto } from '../models';
+import { PaginationOptions, Timesheet } from '../models';
 import { DateUtil, DetailsTypes, FormUtil, StringUtil, paths } from '../util';
 import { TimesheetApiService } from './api';
 import { FormService } from './base/form.service';
@@ -19,8 +16,6 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class TimesheetService extends FormService<Timesheet> {
-  private metrics$ = new BehaviorSubject<TimesheetMetricsDto[]>([]);
-
   constructor(
     protected override api: TimesheetApiService,
     protected override ts: ToastService,
@@ -30,19 +25,6 @@ export class TimesheetService extends FormService<Timesheet> {
     this.setToastMessages();
   }
 
-  loadMetricsByRange = async (from: Date, to: Date): Promise<void> => {
-    const metrics = await this.api.getMetricsQuery({
-      filter: {
-        date: [
-          [ODataOperators.GreaterThanOrEqualTo, from],
-          [ODataOperators.LessThanOrEqualTo, to],
-        ],
-      },
-    });
-
-    this.metrics$.next(metrics);
-  };
-
   goToCreateOrDetailsBasedOnDate = async (date: Date): Promise<boolean> => {
     const existingItem = await this.api.getQuery({ filter: { date: date } });
 
@@ -50,7 +32,7 @@ export class TimesheetService extends FormService<Timesheet> {
 
     if (item?.id == null) return this.goToCreate(date);
 
-    this.item$.next(item);
+    this._item$.next(item);
 
     return this.goToDetails(item.id, DetailsTypes.Edit);
   };

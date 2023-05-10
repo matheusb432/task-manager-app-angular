@@ -9,7 +9,7 @@ import {
   TimesheetPutDto,
 } from 'src/app/models';
 import { LoadingService } from '../loading.service';
-import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
+import { ApiEndpoints, DateUtil, ElementIds, QueryUtil, StringUtil } from 'src/app/util';
 import { ApiService } from './api.service';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { FormApiService } from '../interfaces';
@@ -61,6 +61,14 @@ export class TimesheetApiService implements FormApiService<Timesheet> {
     const res = await this.api.get<TimesheetMetricsDto>({
       ...ApiRequest.get<TimesheetMetricsDto>(queryUrl, TimesheetMetricsDto),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.DateCarouselSlide) },
+      mapFn: (items: TimesheetMetricsDto[]) => {
+        if (!StringUtil.notEmpty(items)) return [];
+
+        return items.map((item) => ({
+          ...item,
+          workedHours: StringUtil.numberToTime(item.workedHours as unknown as number),
+        }));
+      },
     });
 
     return res;

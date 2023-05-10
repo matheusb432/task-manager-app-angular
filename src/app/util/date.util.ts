@@ -28,6 +28,16 @@ export class DateUtil {
     return new Date(year, monthIndex - 1, day);
   };
 
+  static dateTimeStringToDate = (dateTimeString: string): Date => {
+    const date = DateUtil.dateTimeStringToDateString(dateTimeString);
+    return DateUtil.dateStringToDate(date);
+  };
+
+  static dateTimeStringToDateString = (dateTimeString: string): string => {
+    const [date] = dateTimeString.split('T');
+    return date;
+  };
+
   static formatDateTimeToUniversalFormat = (date: Date): string => {
     if (!date) return '';
 
