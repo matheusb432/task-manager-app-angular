@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { DateSlide } from 'src/app/models';
-import { TimesheetCarouselService, TimesheetService } from 'src/app/services';
+import { TimesheetService } from 'src/app/services';
 import { paths } from 'src/app/util';
 
 @Component({
@@ -11,15 +9,9 @@ import { paths } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetsComponent implements OnInit {
-  slides$: Observable<DateSlide[]>;
   paths = paths;
 
-  constructor(
-    private service: TimesheetService,
-    private carouselService: TimesheetCarouselService
-  ) {
-    this.slides$ = this.carouselService.getSlides();
-  }
+  constructor(private service: TimesheetService) {}
 
   ngOnInit(): void {
     this.service.loadListData();

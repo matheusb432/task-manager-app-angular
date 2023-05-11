@@ -21,7 +21,7 @@ import { DateUtil, DetailsTypes, FormTypes } from 'src/app/util';
 })
 export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<TimesheetForm> {
   form!: TimesheetFormGroup;
-  date?: Date;
+  // date?: Date;
 
   formType = FormTypes.Create;
 
@@ -50,13 +50,12 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
   initUrlParams(): void {
     const dateString = this.pageService.getParam('date');
 
-    if (dateString) this.date = DateUtil.dateStringToDate(dateString);
-    // TODO remove
-    this.carouselService.setActiveSlide(dateString);
+    this.service.setActiveDate(dateString || DateUtil.formatDateTimeToUniversalFormat(new Date()));
   }
 
   initForm(): void {
-    this.form = TimesheetFormGroup.from(getTimesheetForm(this.date ?? new Date()));
+    const date = this.service.getActiveDate();
+    this.form = TimesheetFormGroup.from(getTimesheetForm(date));
   }
 
   submitForm(): Promise<void> {

@@ -1,9 +1,6 @@
 <app-page-layout>
   <app-title titleText="Timesheets"></app-title>
-  <app-timesheet-carousel
-    [slides]="(slides$ | async) ?? []"
-    (selectedDate)="onSelectDate($event)"
-  ></app-timesheet-carousel>
+  <app-timesheet-carousel (selectedDate)="onSelectDate($event)"></app-timesheet-carousel>
   <app-timesheet-list></app-timesheet-list>
   <router-outlet></router-outlet>
 </app-page-layout>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   TimesheetFormGroup,
@@ -6,16 +6,30 @@ import {
   getTimesheetForm,
   getTimesheetNoteFormGroup,
 } from '../components/timesheet/timesheet-form';
-import { PaginationOptions, Timesheet } from '../models';
-import { DateUtil, DetailsTypes, FormUtil, StringUtil, paths } from '../util';
+import { PaginationOptions, Timesheet, WithDestroyed } from '../models';
+import { DateUtil, DetailsTypes, FormUtil, PubSubUtil, StringUtil, paths } from '../util';
 import { TimesheetApiService } from './api';
 import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
+import { BehaviorSubject, Subject, map, takeUntil, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TimesheetService extends FormService<Timesheet> {
+export class TimesheetService extends FormService<Timesheet> implements OnDestroy {
+  private _activeDateString$ = new BehaviorSubject<string>(
+    DateUtil.formatDateTimeToUniversalFormat(new Date())
+  );
+  private destroyed$ = new Subject<boolean>();
+
+  public get activeDateString$() {
+    return this._activeDateString$.asObservable().pipe(map(DateUtil.dateTimeStringToDateString));
+  }
+
+  override get item$() {
+    return this._item$.asObservable();
+  }
+
   constructor(
     protected override api: TimesheetApiService,
     protected override ts: ToastService,
@@ -23,7 +37,38 @@ export class TimesheetService extends FormService<Timesheet> {
   ) {
     super(ts, api);
     this.setToastMessages();
+
+    this.initSubs();
   }
+
+  ngOnDestroy(): void {
+    PubSubUtil.completeDestroy(this.destroyed$);
+  }
+
+  initSubs(): void {
+    this.item$
+      .pipe(
+        takeUntil(this.destroyed$),
+        tap((item) => {
+          const itemDate = item?.date;
+
+          if (!itemDate) return;
+
+          this.setActiveDate(itemDate);
+        })
+      )
+      .subscribe();
+  }
+
+  getActiveDate(): Date {
+    return DateUtil.dateStringToDate(this._activeDateString$.getValue());
+  }
+
+  setActiveDate = (value: Date | string): void => {
+    this._activeDateString$.next(
+      typeof value === 'string' ? value : DateUtil.formatDateTimeToUniversalFormat(value)
+    );
+  };
 
   goToCreateOrDetailsBasedOnDate = async (date: Date): Promise<boolean> => {
     const existingItem = await this.api.getQuery({ filter: { date: date } });

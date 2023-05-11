@@ -2,39 +2,30 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
-  OnChanges,
+  OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { CarouselComponent, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
-import { DateSlide, MonthSlide } from 'src/app/models';
-import { DateUtil, ElementIds, Icons } from 'src/app/util';
+import { Observable, takeUntil, tap } from 'rxjs';
+import { DateSlide, MonthSlide, WithDestroyed } from 'src/app/models';
+import { TimesheetCarouselService } from 'src/app/services';
+import { DateUtil, ElementIds, Icons, ObjectUtil } from 'src/app/util';
 
 @Component({
-  selector: 'app-timesheet-carousel [slides]',
+  selector: 'app-timesheet-carousel',
   templateUrl: './timesheet-carousel.component.html',
   styleUrls: ['./timesheet-carousel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimesheetCarouselComponent implements OnChanges {
+export class TimesheetCarouselComponent extends WithDestroyed implements OnInit {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;
   @ViewChild('carouselHeader', { static: false }) carouselHeader?: CarouselComponent;
 
-  @Input() slides!: DateSlide[];
-
   @Output() selectedDate = new EventEmitter<Date>();
 
-  // TODO refactor?
-  private _slidesToRender!: DateSlide[];
-  public get slidesToRender(): DateSlide[] {
-    return this._slidesToRender;
-  }
-  public set slidesToRender(value: DateSlide[]) {
-    this._slidesToRender = value;
-    this.onSlideChanges();
-  }
+  slides$: Observable<DateSlide[]>;
+  slides: DateSlide[] = [];
 
   private _monthSlides: MonthSlide[] = [];
   public get monthSlides(): MonthSlide[] {
@@ -51,14 +42,10 @@ export class TimesheetCarouselComponent implements OnChanges {
     items: this.calculateDateItemsFor24PxMargin(),
     nav: true,
     lazyLoad: true,
-    // TODO keep disabled?
-    // pullDrag: false,
-    // mouseDrag: false,
     lazyLoadEager: 10,
     navSpeed: 300,
   };
 
-  // TODO enable carousel month clicking
   carouselHeaderOptions: OwlOptions = {
     dots: false,
     nav: false,
@@ -85,10 +72,21 @@ export class TimesheetCarouselComponent implements OnChanges {
     return this.carousel.navData.next.disabled;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['slides']) {
-      this.slidesToRender = this.slides;
-    }
+  constructor(private carouselService: TimesheetCarouselService) {
+    super();
+    this.slides$ = this.carouselService.getSlides();
+  }
+
+  ngOnInit() {
+    this.slides$
+      .pipe(
+        takeUntil(this.destroyed$),
+        tap((slides) => {
+          this.slides = slides;
+          this.onSlideChanges();
+        })
+      )
+      .subscribe();
   }
 
   onSlideClick(slide: DateSlide): void {
@@ -100,10 +98,10 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   private onSlideChanges(): void {
-    const selectedSlidePosition = this.slidesToRender.findIndex((slide) => slide.selected);
+    const selectedSlidePosition = this.slides.findIndex((slide) => slide.selected);
     let position = 0;
     if (selectedSlidePosition === -1) {
-      const todayPosition = Math.floor(this.slidesToRender?.length / 2);
+      const todayPosition = Math.floor(this.slides?.length / 2);
       position = todayPosition;
 
       this.carouselOptions = {
@@ -133,7 +131,7 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   goToToday(): void {
-    const todaySlide = this.slidesToRender.find((slide) => slide.isToday);
+    const todaySlide = this.slides.find((slide) => slide.isToday);
 
     if (!todaySlide) return;
     this.carousel?.to(todaySlide.id);
@@ -143,7 +141,7 @@ export class TimesheetCarouselComponent implements OnChanges {
     const startPosition = event?.startPosition ?? -1;
     if (!(startPosition > 0)) return;
 
-    const startSlide = this.slidesToRender[startPosition];
+    const startSlide = this.slides[startPosition];
     const monthSlideId = this.getMonthSlideId(startSlide.month, startSlide.year);
 
     if (!monthSlideId) return;
@@ -153,7 +151,7 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   private setMonthStartPosition(startPosition: number) {
-    const startSlide = this.slidesToRender[startPosition];
+    const startSlide = this.slides[startPosition];
     const monthSlideId = this.getMonthSlideId(startSlide.month, startSlide.year);
     if (!monthSlideId) return;
 
@@ -179,7 +177,7 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   moveToSelected(): void {
-    const selectedSlide = this.slidesToRender.find((slide) => slide.selected);
+    const selectedSlide = this.slides.find((slide) => slide.selected);
 
     if (!selectedSlide) return;
 
@@ -187,7 +185,7 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   moveToIndex(index: number): void {
-    const slide = this.slidesToRender[index];
+    const slide = this.slides[index];
 
     if (!slide) return;
 
@@ -213,7 +211,7 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   private getUniqueMonthsFromSlides(): MonthSlide[] {
-    const monthSlides = this.slidesToRender
+    const monthSlides = this.slides
       .map(this.uniqueMonthFromSlideOrDefault.bind(this))
       .filter((slide) => slide != null) as MonthSlide[];
 
@@ -247,19 +245,19 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   private selectSlide(id: string): void {
-    const index = this.slidesToRender.findIndex((slide) => slide.id === id);
+    const index = this.slides.findIndex((slide) => slide.id === id);
 
     if (index < 0) return;
 
-    const selectedSlideIndex = this.slidesToRender.findIndex((slide) => slide.selected);
+    const selectedSlideIndex = this.slides.findIndex((slide) => slide.selected);
     if (selectedSlideIndex >= 0) {
-      this.slidesToRender[selectedSlideIndex] = {
-        ...this.slidesToRender[selectedSlideIndex],
+      this.slides[selectedSlideIndex] = {
+        ...this.slides[selectedSlideIndex],
         selected: false,
       };
     }
 
-    this.slidesToRender[index] = { ...this.slidesToRender[index], selected: true };
+    this.slides[index] = { ...this.slides[index], selected: true };
   }
 
   private selectMonthSlide(id: string): void {
