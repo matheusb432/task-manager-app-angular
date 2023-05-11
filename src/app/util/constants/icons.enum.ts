@@ -1,5 +1,6 @@
 export enum Icons {
   Add = 'add',
+  AddCircleOutline = 'add_circle_outline',
   Close = 'close',
   Edit = 'edit',
   Delete = 'delete',

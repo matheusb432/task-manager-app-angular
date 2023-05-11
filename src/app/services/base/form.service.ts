@@ -5,10 +5,14 @@ import { FormApiService } from '../interfaces/form-api-service';
 import { ToastService } from '../toast.service';
 
 export abstract class FormService<TEntity extends TableItem> {
-  protected item$ = new BehaviorSubject<TEntity | undefined>(undefined);
+  protected _item$ = new BehaviorSubject<TEntity | undefined>(undefined);
   protected _listItems$ = new BehaviorSubject<TEntity[]>([]);
   protected _total$ = new BehaviorSubject(0);
   protected _lastOptions$ = new BehaviorSubject<PaginationOptions>(PaginationOptions.default());
+
+  get item$(): Observable<TEntity | undefined> {
+    return this._item$.asObservable();
+  }
 
   get listItems$(): Observable<TEntity[]> {
     return this._listItems$.asObservable();
@@ -55,13 +59,13 @@ export abstract class FormService<TEntity extends TableItem> {
     }
 
     const parsedId = +id;
-    const item = this.item$.getValue();
+    const item = this._item$.getValue();
 
     if (item?.id === parsedId) return item;
 
     const res = await this.api.getById(parsedId);
 
-    this.item$.next(res);
+    this._item$.next(res);
 
     if (res == null) this.ts.error(this.toastMessages.noItem);
 
@@ -120,8 +124,8 @@ export abstract class FormService<TEntity extends TableItem> {
   };
 
   protected removeFromMemory = (id: number): void => {
-    const item = this.item$.getValue();
-    if (item?.id === id) this.item$.next(undefined);
+    const item = this._item$.getValue();
+    if (item?.id === id) this._item$.next(undefined);
 
     const listItems = this._listItems$.getValue();
 

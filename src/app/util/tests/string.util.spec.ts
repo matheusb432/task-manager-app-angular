@@ -48,8 +48,13 @@ describe('Util: String', () => {
       expect(StringUtil.numberToTime(7)).toEqual('00:07');
       expect(StringUtil.numberToTime(0)).toEqual('00:00');
     });
-  });
 
+    it('should handle minutes above 60', () => {
+      expect(StringUtil.numberToTime(1294)).toEqual('13:34');
+      expect(StringUtil.numberToTime(565)).toEqual('06:05');
+      expect(StringUtil.numberToTime(63)).toEqual('01:03');
+    });
+  });
 
   describe('isEmail', () => {
     it('should return true when email is valid', () => {
@@ -96,5 +101,5 @@ describe('Util: String', () => {
       expect(result).toBeTruthy();
       expect(result.length).toBe(expectedLength);
     });
-  })
+  });
 });

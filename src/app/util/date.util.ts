@@ -6,7 +6,7 @@ import {
   getLocaleMonthNames,
 } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { DateValues, DaysOfWeek } from 'src/app/models';
+import { DateValues, DaysOfWeek, Nullish } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,9 @@ export class DateUtil {
     return DateUtil.dateStringToDate(date);
   };
 
-  static dateTimeStringToDateString = (dateTimeString: string): string => {
+  static dateTimeStringToDateString = (dateTimeString: string | Nullish): string => {
+    if (!dateTimeString) return '';
+
     const [date] = dateTimeString.split('T');
     return date;
   };

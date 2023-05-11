@@ -5,7 +5,12 @@ import {
   getTimesheetForm,
 } from 'src/app/components/timesheet/timesheet-form';
 import { CanDeactivateForm } from 'src/app/models';
-import { PageService, TimesheetService, ToastService } from 'src/app/services';
+import {
+  PageService,
+  TimesheetCarouselService,
+  TimesheetService,
+  ToastService,
+} from 'src/app/services';
 import { DateUtil, DetailsTypes, FormTypes } from 'src/app/util';
 
 @Component({
@@ -22,6 +27,7 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
 
   constructor(
     private service: TimesheetService,
+    private carouselService: TimesheetCarouselService,
     private pageService: PageService,
     private ts: ToastService
   ) {}
@@ -45,13 +51,13 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
     const dateString = this.pageService.getParam('date');
 
     if (dateString) this.date = DateUtil.dateStringToDate(dateString);
+    // TODO remove
+    this.carouselService.setActiveSlide(dateString);
   }
 
   initForm(): void {
     this.form = TimesheetFormGroup.from(getTimesheetForm(this.date ?? new Date()));
   }
-
-
 
   submitForm(): Promise<void> {
     return this.create();

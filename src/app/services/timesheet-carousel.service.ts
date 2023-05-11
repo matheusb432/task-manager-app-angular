@@ -1,20 +1,42 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { DateUtil } from '../util';
-import { DateSlide, TimesheetMetricsDto } from 'src/app/models';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, of, takeUntil } from 'rxjs';
+import { DateUtil, PubSubUtil } from '../util';
+import { DateSlide, Timesheet, TimesheetMetricsDto } from 'src/app/models';
 import { ElementIds } from '../util';
 import { ODataOperators } from '../helpers/odata';
 import { TimesheetApiService } from './api';
 import { ToastService } from './toast.service';
+import { TimesheetService } from './timesheet.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TimesheetCarouselService {
+// TODO move timesheet carousel component state to here
+export class TimesheetCarouselService implements OnDestroy {
   private slides$ = new BehaviorSubject<DateSlide[]>(TimesheetCarouselService.defaultCarousel());
+  private destroyed$ = new Subject<boolean>();
 
-  constructor(private timesheetApi: TimesheetApiService, private ts: ToastService) {
+  constructor(
+    private service: TimesheetService,
+    private timesheetApi: TimesheetApiService,
+    private ts: ToastService
+  ) {
     this.loadSlides(new Date(), 30);
+    this.initSubs();
+  }
+
+  initSubs(): void {
+    // TODO to activeDate$ ? To use on /create
+    this.service.item$.pipe(takeUntil(this.destroyed$)).subscribe((item) => {
+      const itemDateString = DateUtil.dateTimeStringToDateString(item?.date);
+      if (!itemDateString) return;
+
+      this.setActiveSlide(itemDateString);
+    });
+  }
+
+  ngOnDestroy(): void {
+    PubSubUtil.completeDestroy(this.destroyed$);
   }
 
   getSlides(): Observable<DateSlide[]> {
@@ -28,6 +50,20 @@ export class TimesheetCarouselService {
   addSlides(dateSlides: DateSlide[]): void {
     const currentSlides = this.slides$.getValue();
     this.slides$.next([...currentSlides, ...dateSlides]);
+  }
+
+  setActiveSlide(dateString: string): void {
+    const slides = this.slides$.getValue();
+    const activeSlide = slides.find((s) => s.date === dateString);
+    if (activeSlide == null) return;
+
+    const newSlides = slides.map((s) => {
+      const isActiveSlide = s === activeSlide;
+      if (s.selected === isActiveSlide) return s;
+      return { ...s, selected: isActiveSlide };
+    });
+
+    this.slides$.next(newSlides);
   }
 
   async loadSlides(centerDate: Date, size: number): Promise<void> {
@@ -47,13 +83,12 @@ export class TimesheetCarouselService {
         if (metrics == null) return;
 
         slide.metrics = metrics;
-        console.log(slide);
       });
     } catch (error) {
       this.ts.error('Error loading timesheet metrics!');
+
       throw error;
     } finally {
-      console.log(slides);
       this.slides$.next(slides);
     }
   }

@@ -18,19 +18,30 @@
       </span>
     </div>
   </header>
-  <!-- TODO test -->
-  <div class="slide-body" *ngIf="metrics">
-    <span class="tasks" title="{{ metrics.totalTasks }} total tasks">
-      <app-icon [icon]="Icons.Assignment" [size]="24"></app-icon>
-      {{ metrics.totalTasks }}
-    </span>
-    <span class="hours completed" title="Time spent: {{ metrics.workedHours }}">
-      <app-icon [icon]="Icons.Timelapse" [size]="24"></app-icon>
-      {{ metrics.workedHours }}
-    </span>
-    <span class="rating failed" title="{{ metrics.averageRating }} average rating">
-      <app-icon [icon]="Icons.Star" [size]="24"></app-icon>
-      {{ metrics.averageRating }}
-    </span>
+  <div class="slide-body">
+    <ng-template [ngIf]="metrics" [ngIfElse]="noMetrics">
+      <!-- TODO add integration to profiles (css for .completed & .failed) -->
+      <span class="tasks" title="{{ metrics.totalTasks }} total tasks">
+        <app-icon [icon]="Icons.Assignment"></app-icon>
+        {{ metrics.totalTasks }}
+      </span>
+      <span class="hours" title="Time spent: {{ metrics.workedHours }}">
+        <app-icon [icon]="Icons.Timelapse"></app-icon>
+        {{ metrics.workedHours }}
+      </span>
+      <span class="rating" title="{{ metrics.averageRating }} average rating">
+        <app-icon [icon]="Icons.Star"></app-icon>
+        {{ metrics.averageRating }}
+      </span>
+    </ng-template>
+    <ng-template #noMetrics>
+      <span class="no-metrics">
+        <app-icon
+          [title]="!slide.selected ? 'Add timesheet' : ''"
+          [icon]="Icons.AddCircleOutline"
+          [size]="48"
+        ></app-icon>
+      </span>
+    </ng-template>
   </div>
 </div>

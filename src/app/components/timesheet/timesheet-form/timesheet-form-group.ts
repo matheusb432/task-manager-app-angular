@@ -50,7 +50,7 @@ export const getTimesheetNoteForm = (): TimesheetNoteForm => {
 export interface TaskItemForm {
   id: FormControl<number | null>;
   title: FormControl<string>;
-  comment: FormControl<string>;
+  comment: FormControl<string | null>;
   time: FormControl<string>;
   rating: FormControl<number | null>;
   importance: FormControl<number | null>;
@@ -67,10 +67,7 @@ export const getTaskItemForm = (): TaskItemForm => {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(100)],
     }),
-    comment: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
+    comment: new FormControl(''),
     time: new FormControl('00:00', { nonNullable: true, validators: [Validators.required] }),
     rating: new FormControl<number | null>(null, {
       validators: [Validators.min(0), Validators.max(5)],

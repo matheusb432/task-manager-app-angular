@@ -18,14 +18,11 @@ export class StringUtil {
     return Number(hours + minutes);
   };
 
-  static numberToTime(numberTime: number | null | undefined): string {
-    if (numberTime == null || numberTime < 0 || numberTime > 9999) return '';
+  static numberToTime(numberTimeArg: number | null | undefined): string {
+    if (!StringUtil.isNumberValid(numberTimeArg)) return '';
 
-    let time = numberTime.toString();
-
-    if (time.length > 2) {
-      time = time.slice(0, -2) + ':' + time.slice(-2);
-    }
+    const numberTime = StringUtil.normalizeIfMinutesAbove60(numberTimeArg as number);
+    let time = StringUtil.separateTime(numberTime.toString());
 
     while (time.length < 5) {
       if (!time.includes(':')) time = `:${'0'.repeat(2 - time.length)}${time}`;
@@ -35,6 +32,25 @@ export class StringUtil {
 
     return time;
   }
+
+  private static isNumberValid = (number: number | null | undefined): boolean => {
+    return number != null && number >= 0 && number <= 9999;
+  };
+
+  private static separateTime = (time: string): string => {
+    if (time.length <= 2) return time;
+
+    return time.slice(0, -2) + ':' + time.slice(-2);
+  };
+
+  private static normalizeIfMinutesAbove60 = (numberTime: number): number => {
+    const minutesInHours = 60;
+    const timeHour = 100;
+    const lastTwoDigits = numberTime % timeHour;
+    if (lastTwoDigits < minutesInHours) return numberTime;
+
+    return numberTime + timeHour - minutesInHours;
+  };
 
   static isEmail = (email: string): boolean => {
     return RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email);

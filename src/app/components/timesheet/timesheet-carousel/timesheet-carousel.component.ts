@@ -100,15 +100,28 @@ export class TimesheetCarouselComponent implements OnChanges {
   }
 
   private onSlideChanges(): void {
-    const todayPosition = Math.floor(this.slidesToRender?.length / 2);
-    const centerTodayPosition = Math.ceil(
-      Math.max(0, todayPosition - (this.carouselOptions.items ?? 0) / 2)
-    );
+    const selectedSlidePosition = this.slidesToRender.findIndex((slide) => slide.selected);
+    let position = 0;
+    if (selectedSlidePosition === -1) {
+      const todayPosition = Math.floor(this.slidesToRender?.length / 2);
+      position = todayPosition;
 
-    this.carouselOptions.startPosition = centerTodayPosition;
+      this.carouselOptions = {
+        ...this.carouselOptions,
+        startPosition: this.getCenterPosition(position),
+      };
+    } else {
+      position = selectedSlidePosition;
+    }
+
+    this.moveToIndex(this.getCenterPosition(position));
+
     this.monthSlides = this.getUniqueMonthsFromSlides();
-    this.carouselHeaderOptions.items = this.calculateMonthItems();
-    this.setMonthStartPosition(todayPosition);
+    this.carouselHeaderOptions = {
+      ...this.carouselHeaderOptions,
+      items: this.calculateMonthItems(),
+    };
+    this.setMonthStartPosition(position);
   }
 
   next(): void {
@@ -173,6 +186,14 @@ export class TimesheetCarouselComponent implements OnChanges {
     this.carousel?.to(selectedSlide.id);
   }
 
+  moveToIndex(index: number): void {
+    const slide = this.slidesToRender[index];
+
+    if (!slide) return;
+
+    this.carousel?.to(slide.id);
+  }
+
   moveToSelectedMonth(): void {
     const selectedMonthSlide = this.monthSlides.find((slide) => slide.selected);
 
@@ -185,6 +206,10 @@ export class TimesheetCarouselComponent implements OnChanges {
     if (!id) return;
 
     carousel?.to(id);
+  }
+
+  private getCenterPosition(position: number): number {
+    return Math.ceil(Math.max(0, position - (this.carouselOptions.items ?? 0) / 2));
   }
 
   private getUniqueMonthsFromSlides(): MonthSlide[] {
