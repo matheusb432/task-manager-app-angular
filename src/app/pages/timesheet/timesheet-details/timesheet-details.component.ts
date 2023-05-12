@@ -1,31 +1,55 @@
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import {
   TimesheetForm,
   TimesheetFormGroup,
   getTimesheetForm,
 } from 'src/app/components/timesheet/timesheet-form';
-import { CanDeactivateForm, PageConfig, PageData, WithDestroyed } from 'src/app/models';
-import { DetailsTypes, FormTypes, StringUtil } from 'src/app/util';
+import { CanDeactivateForm, PageData, WithDestroyed } from 'src/app/models';
 import { PageService, TimesheetService } from 'src/app/services';
+import { DetailsTypes, FormTypes } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheet-details',
   templateUrl: './timesheet-details.component.html',
   styleUrls: ['./timesheet-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetDetailsComponent
   extends WithDestroyed
   implements OnInit, CanDeactivateForm<TimesheetForm>
 {
-  detailsPage!: PageConfig;
-  form!: TimesheetFormGroup;
-  pageData?: PageData;
-  formType = FormTypes.Edit;
+  private _form!: TimesheetFormGroup;
+  get form(): TimesheetFormGroup {
+    return this._form;
+  }
+  set form(value: TimesheetFormGroup) {
+    this._form = value;
+    this.disableFormIfView();
+  }
 
-  constructor(private service: TimesheetService, private pageService: PageService) {
+  get formType(): FormTypes {
+    if (!this.pageData?.type) return FormTypes.Edit;
+
+    return this.pageData?.type as unknown as FormTypes;
+  }
+
+  private _pageData?: PageData | undefined;
+  get pageData(): PageData | undefined {
+    return this._pageData;
+  }
+  set pageData(value: PageData | undefined) {
+    this._pageData = value;
+    this.disableFormIfView();
+  }
+
+  constructor(
+    private service: TimesheetService,
+    private pageService: PageService,
+    private cdRef: ChangeDetectorRef
+  ) {
     super();
+    this.initForm();
   }
 
   ngOnInit(): void {
@@ -35,8 +59,6 @@ export class TimesheetDetailsComponent
   runInitMethods(): void {
     this.initUrlParams();
     this.initForm();
-    this.initPage();
-    this.disableFormIfView();
 
     this.loadData();
   }
@@ -44,10 +66,14 @@ export class TimesheetDetailsComponent
   initSubscriptions(): void {
     this.pageService
       .getQueryParamsObservable()
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => {
-        this.runInitMethods();
-      });
+      .pipe(
+        takeUntil(this.destroyed$),
+        tap(() => {
+          this.runInitMethods();
+          this.disableFormIfView();
+        })
+      )
+      .subscribe();
   }
 
   initUrlParams(): void {
@@ -67,14 +93,6 @@ export class TimesheetDetailsComponent
 
   initForm(): void {
     this.form = TimesheetFormGroup.from(getTimesheetForm(new Date()));
-  }
-
-  initPage(): void {
-    const type = this.pageData?.type;
-    if (!type) return;
-
-    this.formType = type as unknown as FormTypes;
-    this.detailsPage = new PageConfig(`${StringUtil.capitalize(type)} Timesheet`);
   }
 
   submitForm(): Promise<void> {
@@ -106,7 +124,9 @@ export class TimesheetDetailsComponent
   }
 
   disableFormIfView(): void {
-    if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
+    if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) {
+      return;
+    }
 
     this.form?.disable();
   }

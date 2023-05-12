@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import {
   ProfileForm,
   ProfileFormGroup,
   getProfileForm,
 } from 'src/app/components/profile/profile-form';
-import { CanDeactivateForm, PageConfig, PageData } from 'src/app/models';
+import { CanDeactivateForm, PageData } from 'src/app/models';
 import { PageService, ProfileService } from 'src/app/services';
-import { DetailsTypes, FormTypes, PubSubUtil, StringUtil } from 'src/app/util';
+import { DetailsTypes, FormTypes, PubSubUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-profile-details',
@@ -15,10 +15,29 @@ import { DetailsTypes, FormTypes, PubSubUtil, StringUtil } from 'src/app/util';
   styleUrls: ['./profile-details.component.scss'],
 })
 export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivateForm<ProfileForm> {
-  detailsPage!: PageConfig;
-  form!: ProfileFormGroup;
-  pageData?: PageData;
-  formType = FormTypes.Edit;
+  private _form!: ProfileFormGroup;
+  get form(): ProfileFormGroup {
+    return this._form;
+  }
+  set form(value: ProfileFormGroup) {
+    this._form = value;
+    this.disableFormIfView();
+  }
+  get formType(): FormTypes {
+    if (!this.pageData?.type) return FormTypes.Edit;
+
+    return this.pageData?.type as unknown as FormTypes;
+  }
+
+  private _pageData?: PageData | undefined;
+  get pageData(): PageData | undefined {
+    return this._pageData;
+  }
+  set pageData(value: PageData | undefined) {
+    this._pageData = value;
+    this.disableFormIfView();
+  }
+
   subscriptions: Subscription[] = [];
 
   constructor(private service: ProfileService, private pageService: PageService) {}
@@ -34,17 +53,22 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   runInitMethods(): void {
     this.initUrlParams();
     this.initForm();
-    this.initPage();
-    this.disableFormIfView();
 
     this.loadData();
   }
 
   initSubscriptions(): void {
     this.subscriptions.push(
-      this.pageService.getQueryParamsObservable().subscribe(() => {
-        this.runInitMethods();
-      })
+      this.pageService
+        .getQueryParamsObservable()
+        .pipe(
+          tap(() => {
+            this.disableFormIfView();
+          })
+        )
+        .subscribe(() => {
+          this.runInitMethods();
+        })
     );
   }
 
@@ -65,14 +89,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
 
   initForm(): void {
     this.form = ProfileFormGroup.from(getProfileForm());
-  }
-
-  initPage(): void {
-    const type = this.pageData?.type;
-    if (!type) return;
-
-    this.formType = type as unknown as FormTypes;
-    this.detailsPage = new PageConfig(`${StringUtil.capitalize(type)} Profile`);
   }
 
   submitForm(): Promise<void> {
@@ -103,6 +119,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
     return this.service.goToList();
   }
 
+  // TODO refactor logic to service?
   disableFormIfView(): void {
     if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
 

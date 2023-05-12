@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ProfileService } from 'src/app/services';
 import { paths } from 'src/app/util';
 
@@ -6,6 +6,7 @@ import { paths } from 'src/app/util';
   selector: 'app-profiles',
   templateUrl: './profiles.component.html',
   styleUrls: ['./profiles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilesComponent implements OnInit {
   paths = paths;
