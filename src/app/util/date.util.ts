@@ -82,6 +82,12 @@ export class DateUtil {
     return result;
   };
 
+  static addMonths = (date: Date, months: number): Date => {
+    const result = new Date(date);
+    result.setMonth(result.getMonth() + months);
+    return result;
+  };
+
   static getMonthName = (month: number): string => {
     const monthNames = getLocaleMonthNames('en-US', FormStyle.Format, TranslationWidth.Wide);
 

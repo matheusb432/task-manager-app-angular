@@ -1,5 +1,16 @@
 <app-page-layout>
   <app-title titleText="Timesheets"></app-title>
+  <header class="search-bar">
+    <app-date-range-picker
+      fgName="range"
+      [controlGroup]="range"
+      labelText="Date Range"
+      elId="cTimesheetListDateRange"
+      [fg]="filterForm"
+      [minDate]="threeMonthsAgo"
+      [maxDate]="tomorrow"
+    ></app-date-range-picker>
+  </header>
   <app-timesheet-carousel (selectedDate)="onSelectDate($event)"></app-timesheet-carousel>
   <app-timesheet-list></app-timesheet-list>
   <router-outlet></router-outlet>

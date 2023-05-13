@@ -62,6 +62,24 @@ describe('Util: Date', () => {
     });
   });
 
+  describe('addMonths', () => {
+    it('should return the date with the added months', () => {
+      const date = new Date(2023, 4, 1);
+      expect(DateUtil.addMonths(date, 1)).toEqual(new Date(2023, 5, 1));
+    });
+
+    it('should move to the next year', () => {
+      const date = new Date(2023, 11, 1);
+      expect(DateUtil.addMonths(date, 1)).toEqual(new Date(2024, 0, 1));
+    });
+
+    it('should not modify the original date', () => {
+      const date = new Date(2023, 4, 1);
+      DateUtil.addMonths(date, 1);
+      expect(date).toEqual(new Date(2023, 4, 1));
+    });
+  });
+
   describe('formatDay', () => {
     it('should return the day with a leading zero', () => {
       expect(DateUtil.formatDay(new Date(2023, 4, 1))).toEqual('01');

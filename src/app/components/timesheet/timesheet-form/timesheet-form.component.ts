@@ -2,14 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService } from 'src/app/services';
-import {
-  DateUtil,
-  ElementIds,
-  FormTypes,
-  FormUtil,
-  deleteModalData,
-  saveModalData,
-} from 'src/app/util';
+import { ElementIds, FormTypes, FormUtil, deleteModalData, saveModalData } from 'src/app/util';
 import {
   TaskItemForm,
   TimesheetForm,
@@ -36,8 +29,6 @@ export class TimesheetFormComponent {
   elIds = ElementIds;
 
   subscriptions: Subscription[] = [];
-
-  tomorrow = DateUtil.addDays(new Date(), 1);
 
   get controls(): TimesheetForm {
     return this.form.controls;

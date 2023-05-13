@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { TimesheetService } from 'src/app/services';
-import { paths } from 'src/app/util';
+import { DateUtil, FormUtil, paths } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheets',
@@ -10,6 +11,18 @@ import { paths } from 'src/app/util';
 })
 export class TimesheetsComponent implements OnInit {
   paths = paths;
+
+  filterForm = new FormGroup({
+    range: FormUtil.buildDateRangeGroup(),
+  });
+
+  today = new Date();
+  threeMonthsAgo = DateUtil.addMonths(this.today, -3);
+  tomorrow = DateUtil.addDays(this.today, 1);
+
+  get range() {
+    return this.filterForm.controls.range;
+  }
 
   constructor(private service: TimesheetService) {}
 

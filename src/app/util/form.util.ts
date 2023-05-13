@@ -1,5 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { EventEmitter, Injectable } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { FormTypes } from '../util';
 
 @Injectable({
@@ -32,7 +32,6 @@ export class FormUtil {
   }
 
   static buildFormArray<T extends object>(items: T[], getFg: () => FormGroup): FormArray {
-
     return new FormArray(
       items.map((item) => {
         const fg = getFg();
@@ -40,5 +39,12 @@ export class FormUtil {
         return fg;
       })
     );
+  }
+
+  static buildDateRangeGroup() {
+    return new FormGroup({
+      start: new FormControl<Date | null>(null),
+      end: new FormControl<Date | null>(null),
+    });
   }
 }
