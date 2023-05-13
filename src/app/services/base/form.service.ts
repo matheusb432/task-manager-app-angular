@@ -29,6 +29,7 @@ export abstract class FormService<TEntity extends TableItem> {
   protected toastMessages = {
     noId: "Couldn't fetch ID!",
     noItem: "Couldn't fetch item!",
+    reloadError: "Couldn't reload item!",
     createSuccess: 'Item created successfully!',
     updateSuccess: 'Item updated successfully!',
     updateIdError: "Couldn't update item, couldn't fetch ID!",
@@ -82,7 +83,20 @@ export abstract class FormService<TEntity extends TableItem> {
 
     this.ts.success(this.toastMessages.updateSuccess);
 
+    this.reloadItem(id);
     await this.loadListItems();
+  };
+
+  // TODO test reload logic on update timesheet with metrics flow
+  private reloadItem = async (id: string | null | undefined): Promise<void> => {
+    if (!id) return;
+
+    try {
+      const item = await this.api.getById(+id);
+      this._item$.next(item);
+    } catch (error) {
+      this.ts.error(this.toastMessages.reloadError);
+    }
   };
 
   insert = async (item: Partial<TEntity>): Promise<PostReturn> => {
