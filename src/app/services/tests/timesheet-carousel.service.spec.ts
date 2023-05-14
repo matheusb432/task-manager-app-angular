@@ -14,7 +14,7 @@ describe('Service: TimesheetCarousel', () => {
     expect(service).toBeTruthy();
   }));
 
-  describe('buildDatesCarousel', () => {
+  describe('buildDatesCarouselFromCenterDate', () => {
     it('should return the date slides on odd sizes', () => {
       const mockBaseDate = new Date(2021, 0, 1);
       const expectedSlides: DateSlide[] = [
@@ -48,7 +48,10 @@ describe('Service: TimesheetCarousel', () => {
       ];
       const expectedSize = 3;
 
-      const result = TimesheetCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
+      const result = TimesheetCarouselService.buildDatesCarouselFromCenterDate(
+        mockBaseDate,
+        expectedSize
+      );
 
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {
@@ -101,7 +104,10 @@ describe('Service: TimesheetCarousel', () => {
       ];
       const expectedSize = 4;
 
-      const result = TimesheetCarouselService.buildDatesCarousel(mockBaseDate, expectedSize);
+      const result = TimesheetCarouselService.buildDatesCarouselFromCenterDate(
+        mockBaseDate,
+        expectedSize
+      );
 
       expect(result.length).toBe(expectedSize);
       result.forEach((slide, i) => {

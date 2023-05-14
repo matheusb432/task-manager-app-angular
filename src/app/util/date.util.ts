@@ -88,6 +88,11 @@ export class DateUtil {
     return result;
   };
 
+  static daysDiff = (startDate: Date, endDate: Date): number => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    return Math.round(Math.abs((startDate.getTime() - endDate.getTime()) / oneDay));
+  };
+
   static getMonthName = (month: number): string => {
     const monthNames = getLocaleMonthNames('en-US', FormStyle.Format, TranslationWidth.Wide);
 

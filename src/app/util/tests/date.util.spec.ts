@@ -92,6 +92,34 @@ describe('Util: Date', () => {
     });
   });
 
+  describe('daysDiff', () => {
+    it('should return the number of days between two dates', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 2);
+      expect(DateUtil.daysDiff(date1, date2)).toEqual(1);
+    });
+
+    it('should not return a negative number when the first date is after the second date', () => {
+      const date1 = new Date(2023, 4, 2);
+      const date2 = new Date(2023, 4, 1);
+      expect(DateUtil.daysDiff(date1, date2)).toEqual(1);
+    });
+
+    it('should return zero when the dates are the same', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 1);
+      expect(DateUtil.daysDiff(date1, date2)).toEqual(0);
+    });
+
+    it('should not modify the original dates', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 2);
+      DateUtil.daysDiff(date1, date2);
+      expect(date1).toEqual(new Date(2023, 4, 1));
+      expect(date2).toEqual(new Date(2023, 4, 2));
+    });
+  });
+
   describe('isWeekend', () => {
     it('should return true when the day index is a weekend', () => {
       expect(DateUtil.isWeekend(WeekDay.Saturday)).toEqual(true);

@@ -93,18 +93,32 @@ export class TimesheetCarouselService implements OnDestroy {
   static defaultCarousel = (): DateSlide[] => {
     const today = new Date();
 
-    return TimesheetCarouselService.buildDatesCarousel(today, 30);
+    return TimesheetCarouselService.buildDatesCarouselFromCenterDate(today, 30);
   };
 
-  static buildDatesCarousel(centerDate: Date, size: number): DateSlide[] {
+  // TODO test size diff for range generation
+  static buildDatesCarouselFromRange = (from: Date, to: Date): DateSlide[] => {
+    const size = DateUtil.daysDiff(from, to) + 1;
+
+    return TimesheetCarouselService.buildDatesCarousel(from, size);
+  };
+
+  static buildDatesCarouselFromCenterDate(centerDate: Date, size: number): DateSlide[] {
     if (centerDate == null) return [];
 
-    const slides: DateSlide[] = [];
     const daysToAdd = -Math.floor(size / 2);
-    let lastMonth = '';
+    return TimesheetCarouselService.buildDatesCarousel(centerDate, size, daysToAdd);
+  }
 
+  private static buildDatesCarousel(
+    initialDate: Date,
+    size: number,
+    daysToAdd = 0,
+    lastMonth = ''
+  ): DateSlide[] {
+    const slides: DateSlide[] = [];
     for (let days = 0; days < size; days++) {
-      const date = DateUtil.addDays(centerDate, days + daysToAdd);
+      const date = DateUtil.addDays(initialDate, days + daysToAdd);
       const dateValues = DateUtil.getDateValues(date);
 
       slides.push({

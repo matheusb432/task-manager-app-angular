@@ -12,6 +12,7 @@ import { TimesheetApiService } from './api';
 import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
 import { BehaviorSubject, Subject, map, takeUntil, tap } from 'rxjs';
+import { DateRangeValue } from '../components/custom/inputs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   private _activeDateString$ = new BehaviorSubject<string>(
     DateUtil.formatDateTimeToUniversalFormat(new Date())
   );
+  private _dateRange$ = new BehaviorSubject<DateRangeValue | null>(null);
   private destroyed$ = new Subject<boolean>();
+  readonly defaultRange: DateRangeValue = {
+    start: DateUtil.addDays(new Date(), -15),
+    end: DateUtil.addDays(new Date(), 15),
+  };
 
   public get activeDateString$() {
     return this._activeDateString$.asObservable().pipe(map(DateUtil.dateTimeStringToDateString));
@@ -114,6 +120,10 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     }
 
     return newFg;
+  }
+
+  setDateRange(value: DateRangeValue): void {
+    this._dateRange$.next(value);
   }
 
   toJson(fg: TimesheetFormGroup): Partial<Timesheet> {
