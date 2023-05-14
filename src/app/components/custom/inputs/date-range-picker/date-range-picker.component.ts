@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,7 @@ import { WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
+import { DateRangeForm } from './date-range-form-group';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -27,10 +28,7 @@ import { validationErrorMessages } from '../validation-errors';
 })
 export class DateRangePickerComponent extends WithDestroyed implements OnChanges {
   @Input() fgName!: string;
-  @Input() controlGroup!: FormGroup<{
-    start: FormControl<Date | null>;
-    end: FormControl<Date | null>;
-  }>;
+  @Input() controlGroup!: FormGroup<DateRangeForm>;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';

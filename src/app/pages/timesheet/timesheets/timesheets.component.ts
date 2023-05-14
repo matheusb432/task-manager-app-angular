@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TimesheetService } from 'src/app/services';
-import { DateUtil, FormUtil, paths } from 'src/app/util';
+import { DateUtil, FormUtil, PubSubUtil, paths } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheets',
@@ -28,6 +28,16 @@ export class TimesheetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.loadListData();
+    this.initSubs();
+  }
+
+  initSubs(): void {
+    this.range.valueChanges
+      .pipe(PubSubUtil.ignoreIrrelevantDateRangeChanges())
+      .subscribe((value) => {
+        // TODO pass data to service
+        console.warn(value);
+      });
   }
 
   onSelectDate(date: Date): void {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, filter, map, pairwise, takeUntil } from 'rxjs';
+import { DateRangeValue } from '../components/custom/inputs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,28 @@ export class PubSubUtil {
 
   static untilDestroyed<T>(source: Observable<T>, destroyed$: Subject<boolean>): Observable<T> {
     return source.pipe(takeUntil(destroyed$));
+  }
+
+  /**
+   * Custom RxJS operator that ignores irrelevant date range changes
+   *
+   * The component emits { start: newDate, end: oldDate } and then { start: newDate, end: null } when a new date range is selected
+   * So this ignores the date range change when a new date range selection starts
+   */
+  static ignoreIrrelevantDateRangeChanges() {
+    return (source: Observable<Partial<DateRangeValue>>) =>
+      source.pipe(
+        pairwise(),
+        filter(PubSubUtil.filterFromPair),
+        map(([, curr]) => curr)
+      );
+  }
+
+  private static filterFromPair<T extends Partial<DateRangeValue>>(pair: [T, T]) {
+    const [prev, curr] = pair;
+    if (!curr.start || !curr.end) return false;
+
+    const isIrrelevantChange = !(prev.start && prev.end && curr.start && curr.end);
+    return isIrrelevantChange;
   }
 }

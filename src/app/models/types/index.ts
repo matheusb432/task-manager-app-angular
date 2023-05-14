@@ -16,4 +16,3 @@ export * from './store-data';
 export * from './table-item';
 export * from './typed-form';
 export * from './utility-types';
-
