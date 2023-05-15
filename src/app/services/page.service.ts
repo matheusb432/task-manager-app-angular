@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageData } from '../models';
 import { DetailsTypes, paths } from '../util';
 
@@ -7,15 +7,20 @@ import { DetailsTypes, paths } from '../util';
   providedIn: 'root',
 })
 export class PageService {
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   goToHome = () => this.router.navigate([paths.home]);
   goToLogin = () => this.router.navigate([paths.login]);
 
   getParam = (param: string) => this.getUrlTree().queryParams[param];
+
+  addParams = (activeRoute: ActivatedRoute, params: Params) => {
+    this.router.navigate(['.'], {
+      relativeTo: activeRoute,
+      queryParams: params,
+      queryParamsHandling: 'merge',
+    });
+  };
 
   getQueryParamsObservable() {
     return this.activatedRoute.queryParams;

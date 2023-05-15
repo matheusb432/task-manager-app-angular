@@ -96,6 +96,22 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       .subscribe();
   }
 
+  // TODO search by logged user id also
+  async loadItemByDate(date: Date): Promise<Timesheet> {
+    const item = this._item$.getValue();
+    const itemDate = item?.date;
+
+    if (!!itemDate && DateUtil.dateStringToDate(itemDate) === date) {
+      return item;
+    }
+
+    const res = await this.api.getByDate(date);
+
+    this._item$.next(res);
+
+    return res;
+  }
+
   getActiveDate(): Date {
     return DateUtil.dateStringToDate(this._activeDateString$.getValue());
   }

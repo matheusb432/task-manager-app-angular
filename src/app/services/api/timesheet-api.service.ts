@@ -35,6 +35,16 @@ export class TimesheetApiService implements FormApiService<Timesheet> {
     return res;
   }
 
+  async getByDate(date: Date): Promise<Timesheet> {
+    return this.getQuery({
+      filter: {
+        date,
+      },
+    }).then((res) => {
+      return res[0];
+    });
+  }
+
   async getById(id: number): Promise<Timesheet> {
     const res = await this.api.getById<Timesheet>({
       ...ApiRequest.getById<Timesheet>(this.url, Timesheet, id),

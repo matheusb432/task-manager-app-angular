@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
@@ -45,8 +46,8 @@ export class TimesheetDetailsComponent
 
   constructor(
     private service: TimesheetService,
-    private pageService: PageService,
-    private cdRef: ChangeDetectorRef
+    private route: ActivatedRoute,
+    private pageService: PageService
   ) {
     super();
     this.initForm();
