@@ -120,6 +120,28 @@ describe('Util: Date', () => {
     });
   });
 
+  describe('datesEqual', () => {
+    it('should return true when the dates are equal', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 1);
+      expect(DateUtil.datesEqual(date1, date2)).toEqual(true);
+    });
+
+    it('should return false when the dates are not equal', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 2);
+      expect(DateUtil.datesEqual(date1, date2)).toEqual(false);
+    });
+
+    it('should not modify the original dates', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 1);
+      DateUtil.datesEqual(date1, date2);
+      expect(date1).toEqual(new Date(2023, 4, 1));
+      expect(date2).toEqual(new Date(2023, 4, 1));
+    });
+  });
+
   describe('isWeekend', () => {
     it('should return true when the day index is a weekend', () => {
       expect(DateUtil.isWeekend(WeekDay.Saturday)).toEqual(true);

@@ -74,7 +74,7 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
 
   constructor(private carouselService: TimesheetCarouselService) {
     super();
-    this.slides$ = this.carouselService.getSlides();
+    this.slides$ = this.carouselService.slides$;
   }
 
   ngOnInit() {

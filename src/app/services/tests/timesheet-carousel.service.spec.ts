@@ -118,4 +118,34 @@ describe('Service: TimesheetCarousel', () => {
       });
     });
   });
+
+  describe('buildDatesCarouselFromRange', () => {
+    it('should return the date slides on odd sizes', () => {
+      const mockFromDate = new Date(2021, 0, 1);
+      const mockToDate = new Date(2021, 0, 3);
+      const expectedStartDate = '2021-01-01';
+      const expectedEndDate = '2021-01-03';
+      const expectedSize = 3;
+
+      const result = TimesheetCarouselService.buildDatesCarouselFromRange(mockFromDate, mockToDate);
+
+      expect(result.length).toBe(expectedSize);
+      expect(result[0].date).toEqual(expectedStartDate);
+      expect(result[result.length - 1].date).toEqual(expectedEndDate);
+    });
+
+    it('should return the date slides on even sizes', () => {
+      const mockFromDate = new Date(2021, 0, 1);
+      const mockToDate = new Date(2021, 0, 4);
+      const expectedStartDate = '2021-01-01';
+      const expectedEndDate = '2021-01-04';
+      const expectedSize = 4;
+
+      const result = TimesheetCarouselService.buildDatesCarouselFromRange(mockFromDate, mockToDate);
+
+      expect(result.length).toBe(expectedSize);
+      expect(result[0].date).toEqual(expectedStartDate);
+      expect(result[result.length - 1].date).toEqual(expectedEndDate);
+    });
+  });
 });

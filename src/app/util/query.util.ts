@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ApiEndpoints, Constants } from '../util';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
-import { ODataBuilder, ODataOptions, ODataOrderBy } from 'src/app/helpers/odata';
+import {
+  ODataBuilder,
+  ODataFilter,
+  ODataOperators,
+  ODataOptions,
+  ODataOrderBy,
+} from 'src/app/helpers/odata';
 import { OrderByConfig, TableKey } from '../models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class QueryUtil {
   static buildApiUrl = (endpoint: ApiEndpoints): string => {
@@ -47,4 +53,13 @@ export class QueryUtil {
 
     return key.join('/');
   }
+
+  static getDateRangeFilter = (propKey: string, from: Date, to: Date): ODataFilter => {
+    return {
+      [propKey]: [
+        [ODataOperators.GreaterThanOrEqualTo, from],
+        [ODataOperators.LessThanOrEqualTo, to],
+      ],
+    };
+  };
 }

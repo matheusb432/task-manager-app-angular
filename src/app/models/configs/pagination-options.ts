@@ -26,4 +26,11 @@ export class PaginationOptions {
   static from(page: number, itemsPerPage: number, options?: ODataOptions): PaginationOptions {
     return new PaginationOptions(page, itemsPerPage, options);
   }
+
+  static fromOptions(options: ODataOptions): PaginationOptions {
+    return {
+      ...this.default(),
+      options,
+    };
+  }
 }
