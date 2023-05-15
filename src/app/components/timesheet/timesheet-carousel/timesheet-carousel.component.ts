@@ -10,7 +10,7 @@ import { CarouselComponent, OwlOptions, SlidesOutputData } from 'ngx-owl-carouse
 import { Observable, takeUntil, tap } from 'rxjs';
 import { DateSlide, MonthSlide, WithDestroyed } from 'src/app/models';
 import { TimesheetCarouselService } from 'src/app/services';
-import { DateUtil, ElementIds, Icons, ObjectUtil } from 'src/app/util';
+import { DateUtil, ElementIds, Icons } from 'src/app/util';
 
 @Component({
   selector: 'app-timesheet-carousel',

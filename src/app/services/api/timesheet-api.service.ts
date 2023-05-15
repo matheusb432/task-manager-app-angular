@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ODataOptions } from 'src/app/helpers/odata';
 import {
   ApiRequest,
   PaginatedResult,
@@ -8,12 +9,11 @@ import {
   TimesheetPostDto,
   TimesheetPutDto,
 } from 'src/app/models';
-import { LoadingService } from '../loading.service';
-import { ApiEndpoints, DateUtil, ElementIds, QueryUtil, StringUtil } from 'src/app/util';
-import { ApiService } from './api.service';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
+import { ApiEndpoints, ElementIds, QueryUtil, StringUtil } from 'src/app/util';
 import { FormApiService } from '../interfaces';
-import { ODataOptions } from 'src/app/helpers/odata';
+import { LoadingService } from '../loading.service';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',

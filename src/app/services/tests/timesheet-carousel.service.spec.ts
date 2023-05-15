@@ -2,11 +2,35 @@ import { TestBed, inject } from '@angular/core/testing';
 import { DateSlide, DaysOfWeek } from 'src/app/models';
 import { ElementIds } from 'src/app/util';
 import { TimesheetCarouselService } from '../timesheet-carousel.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TimesheetService } from '../timesheet.service';
+import { mockToastService } from './test-utils';
+import { ToastService } from '../toast.service';
+import { of } from 'rxjs';
 
 describe('Service: TimesheetCarousel', () => {
+  const toastService = mockToastService();
+
   beforeEach(() => {
+    const mockTimesheetService = {
+      defaultRange: jasmine.createSpy(),
+      activeDateString$: of(),
+      dateRange$: of(),
+    };
+
     TestBed.configureTestingModule({
-      providers: [TimesheetCarouselService],
+      imports: [HttpClientTestingModule],
+      providers: [
+        TimesheetCarouselService,
+        {
+          provide: TimesheetService,
+          useValue: mockTimesheetService,
+        },
+        {
+          provide: ToastService,
+          useValue: toastService,
+        },
+      ],
     });
   });
 

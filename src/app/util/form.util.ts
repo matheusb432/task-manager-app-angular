@@ -41,10 +41,10 @@ export class FormUtil {
     );
   }
 
-  static buildDateRangeGroup() {
+  static buildDateRangeGroup(start: Date | null = null, end: Date | null = null) {
     return new FormGroup({
-      start: new FormControl<Date | null>(null),
-      end: new FormControl<Date | null>(null),
+      start: new FormControl<Date | null>(start),
+      end: new FormControl<Date | null>(end),
     });
   }
 }

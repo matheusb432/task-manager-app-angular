@@ -12,11 +12,14 @@ import { TOKEN_DECODER_FN } from '../token.service';
 import { assertAreEqual } from './test-utils';
 import { AuthApiService } from '../api/auth-api.service';
 import { PageService } from '../page.service';
+import { ToastService } from '../toast.service';
 
 describe('Service: Auth', () => {
   let service: AuthService;
   let api: AuthApiService;
   let httpMock: HttpTestingController;
+  let toastService: jasmine.SpyObj<ToastService>;
+
   let url: string;
   const mockLogin: Login = { email: 'email', password: 'password' };
   const mockSignup: Signup = {
@@ -32,16 +35,22 @@ describe('Service: Auth', () => {
   };
 
   beforeEach(() => {
+    toastService = jasmine.createSpyObj('ToastService', ['info', 'error', 'success', 'warning']);
+
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([
-        { path: Pages.Home, component: class {} },
-        { path: `${Pages.Auth}/${Pages.Login}`, component: class {} },
-        { path: `${Pages.Auth}/${Pages.Signup}`, component: class {} },
-      ])],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: Pages.Home, component: class {} },
+          { path: `${Pages.Auth}/${Pages.Login}`, component: class {} },
+          { path: `${Pages.Auth}/${Pages.Signup}`, component: class {} },
+        ]),
+      ],
       providers: [
         AuthService,
         AuthApiService,
         PageService,
+        { provide: ToastService, useValue: toastService },
         { provide: STORE_SERVICE, useClass: LocalStorageService },
         { provide: TOKEN_DECODER_FN, useValue: (token: string, _: unknown) => token },
       ],

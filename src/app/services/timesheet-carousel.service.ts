@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, pairwise, takeUntil, tap } from 'rxjs';
 import { DateSlide, TimesheetMetricsDto } from 'src/app/models';
-import { ODataOperators } from '../helpers/odata';
+import { QueryUtil } from 'src/app/util';
 import { DateUtil, ElementIds, PubSubUtil } from '../util';
 import { TimesheetApiService } from './api';
 import { TimesheetService } from './timesheet.service';
@@ -12,15 +12,18 @@ import { ToastService } from './toast.service';
 })
 // TODO move timesheet carousel component state to here
 export class TimesheetCarouselService implements OnDestroy {
-  private slides$ = new BehaviorSubject<DateSlide[]>(TimesheetCarouselService.defaultCarousel());
+  private _slides$ = new BehaviorSubject<DateSlide[]>([]);
   private destroyed$ = new Subject<boolean>();
+
+  get slides$() {
+    return this._slides$.asObservable();
+  }
 
   constructor(
     private service: TimesheetService,
     private timesheetApi: TimesheetApiService,
     private ts: ToastService
   ) {
-    this.loadSlides();
     this.initSubs();
   }
 
@@ -30,27 +33,40 @@ export class TimesheetCarouselService implements OnDestroy {
 
       this.setActiveSlide(dateString);
     });
+    this.slides$
+      .pipe(
+        takeUntil(this.destroyed$),
+        pairwise(),
+        tap(([prevSlides, currSlides]) => {
+          if (!this.shouldLoadSlides(prevSlides, currSlides)) return;
+
+          this.loadSlides();
+        })
+      )
+      .subscribe();
+    this.service.dateRange$.pipe(takeUntil(this.destroyed$)).subscribe((dateRange) => {
+      if (dateRange == null) return;
+
+      const { start, end } = dateRange;
+      this.setSlides(TimesheetCarouselService.buildDatesCarouselFromRange(start, end));
+    });
   }
 
   ngOnDestroy(): void {
     PubSubUtil.completeDestroy(this.destroyed$);
   }
 
-  getSlides(): Observable<DateSlide[]> {
-    return this.slides$.asObservable();
-  }
-
   setSlides(dateSlides: DateSlide[]): void {
-    this.slides$.next(dateSlides);
+    this._slides$.next(dateSlides);
   }
 
   addSlides(dateSlides: DateSlide[]): void {
-    const currentSlides = this.slides$.getValue();
-    this.slides$.next([...currentSlides, ...dateSlides]);
+    const currentSlides = this._slides$.getValue();
+    this._slides$.next([...currentSlides, ...dateSlides]);
   }
 
   setActiveSlide(dateString: string): void {
-    const slides = this.slides$.getValue();
+    const slides = this._slides$.getValue();
     const activeSlide = slides.find((s) => s.date === dateString);
     if (activeSlide == null) return;
 
@@ -61,19 +77,20 @@ export class TimesheetCarouselService implements OnDestroy {
       return { ...s, selected: isActiveSlide };
     });
 
-    this.slides$.next(newSlides);
+    this._slides$.next(newSlides);
   }
 
   async loadSlides(): Promise<void> {
-    const slides = this.slides$.getValue();
+    const slides = this._slides$.getValue();
 
-    const firstDate = DateUtil.dateStringToDate(slides[0].date);
-    const lastDate = DateUtil.dateStringToDate(slides[slides.length - 1].date);
+    const dates = TimesheetCarouselService.getSlidesFirstAndLastDates(slides);
+    if (dates == null) return;
+    const { first, last } = dates;
 
     try {
-      const metricsList = await this.getMetricsByRange(firstDate, lastDate);
+      const metricsList = await this.getMetricsByRange(first, last);
 
-      const newSlides = this.slides$.getValue().map((slide) => {
+      const newSlides = this._slides$.getValue().map((slide) => {
         const metrics = metricsList.find(
           (m) => m.date != null && DateUtil.dateTimeStringToDateString(m.date) === slide.date
         );
@@ -82,7 +99,7 @@ export class TimesheetCarouselService implements OnDestroy {
 
         return { ...slide, metrics };
       });
-      this.slides$.next(newSlides);
+      this._slides$.next(newSlides);
     } catch (error) {
       this.ts.error('Error loading timesheet metrics!');
 
@@ -90,13 +107,44 @@ export class TimesheetCarouselService implements OnDestroy {
     }
   }
 
-  static defaultCarousel = (): DateSlide[] => {
-    const today = new Date();
+  shouldLoadSlides(prevSlides: DateSlide[], currSlides: DateSlide[]): boolean {
+    const prevDates = TimesheetCarouselService.getSlidesFirstAndLastDates(prevSlides);
+    const currDates = TimesheetCarouselService.getSlidesFirstAndLastDates(currSlides);
 
-    return TimesheetCarouselService.buildDatesCarouselFromCenterDate(today, 30);
+    if (prevDates == null) return true;
+    if (currDates == null) return false;
+
+    return (
+      !DateUtil.datesEqual(prevDates.first, currDates.first) ||
+      !DateUtil.datesEqual(prevDates.last, currDates.last)
+    );
+  }
+
+  getMetricsByRange = async (from: Date, to: Date): Promise<TimesheetMetricsDto[]> => {
+    const metrics = await this.timesheetApi.getMetricsQuery({
+      filter: {
+        ...QueryUtil.getDateRangeFilter('date', from, to),
+      },
+    });
+
+    return metrics;
   };
 
-  // TODO test size diff for range generation
+  defaultCarousel(): DateSlide[] {
+    const { start, end } = this.service.defaultRange;
+
+    return TimesheetCarouselService.buildDatesCarouselFromRange(start, end);
+  }
+
+  static getSlidesFirstAndLastDates = (slides: DateSlide[]): { first: Date; last: Date } | null => {
+    if (slides.length === 0) return null;
+
+    const first = DateUtil.dateStringToDate(slides[0].date);
+    const last = DateUtil.dateStringToDate(slides[slides.length - 1].date);
+
+    return { first, last };
+  };
+
   static buildDatesCarouselFromRange = (from: Date, to: Date): DateSlide[] => {
     const size = DateUtil.daysDiff(from, to) + 1;
 
@@ -133,17 +181,4 @@ export class TimesheetCarouselService implements OnDestroy {
 
     return slides;
   }
-
-  getMetricsByRange = async (from: Date, to: Date): Promise<TimesheetMetricsDto[]> => {
-    const metrics = await this.timesheetApi.getMetricsQuery({
-      filter: {
-        date: [
-          [ODataOperators.GreaterThanOrEqualTo, from],
-          [ODataOperators.LessThanOrEqualTo, to],
-        ],
-      },
-    });
-
-    return metrics;
-  };
 }

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { tap } from 'rxjs';
-import { DateRangeValue } from 'src/app/components/custom/inputs';
+import { DateRangeForm, DateRangeValue } from 'src/app/components/custom/inputs';
+import { AsNonNullable } from 'src/app/models';
 import { TimesheetService } from 'src/app/services';
 import { DateUtil, FormUtil, PubSubUtil, paths } from 'src/app/util';
 
@@ -14,9 +15,9 @@ import { DateUtil, FormUtil, PubSubUtil, paths } from 'src/app/util';
 export class TimesheetsComponent implements OnInit {
   paths = paths;
 
-  filterForm = new FormGroup({
-    range: FormUtil.buildDateRangeGroup(),
-  });
+  filterForm: FormGroup<{
+    range: FormGroup<DateRangeForm>;
+  }>;
 
   today = new Date();
   threeMonthsAgo = DateUtil.addMonths(this.today, -3);
@@ -26,7 +27,12 @@ export class TimesheetsComponent implements OnInit {
     return this.filterForm.controls.range;
   }
 
-  constructor(private service: TimesheetService) {}
+  constructor(private service: TimesheetService) {
+    const { start, end } = this.service.defaultRange;
+    this.filterForm = new FormGroup({
+      range: FormUtil.buildDateRangeGroup(start, end),
+    });
+  }
 
   ngOnInit(): void {
     this.service.loadListData();
@@ -37,7 +43,7 @@ export class TimesheetsComponent implements OnInit {
     this.range.valueChanges
       .pipe(
         PubSubUtil.ignoreIrrelevantDateRangeChanges(),
-        tap((value) => this.service.setDateRange(value as DateRangeValue))
+        tap((value) => this.service.setDateRange(value as AsNonNullable<DateRangeValue>))
       )
       .subscribe();
   }

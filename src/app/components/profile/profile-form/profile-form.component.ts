@@ -1,15 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import {
-  ElementIds,
-  FormTypes,
-  FormUtil,
-  deleteModalData,
-  saveModalData
-} from 'src/app/util';
+import { ElementIds, FormTypes, FormUtil, deleteModalData, saveModalData } from 'src/app/util';
 import { ProfileForm, ProfileFormGroup } from './profile-form-group';
 
 @Component({
