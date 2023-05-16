@@ -46,26 +46,21 @@
     display: flex;
     padding: 0.25rem;
     align-items: flex-end;
+    justify-content: space-between;
     color: var(--primary-darker);
     background: var(--primary-lighter);
     transition: all 0.3s ease-in-out;
 
+    span {
+      font-weight: 700;
+    }
+
     .day {
       font-size: 1.5rem;
-      font-weight: 700;
     }
 
     .day-of-week {
       font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .month {
-      display: block;
-      margin-left: auto;
-      text-align: start;
-      font-size: 1rem;
-      font-weight: 700;
     }
   }
 

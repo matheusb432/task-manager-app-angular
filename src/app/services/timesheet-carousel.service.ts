@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject, pairwise, takeUntil, tap } from 'rxjs';
-import { DateSlide, TimesheetMetricsDto } from 'src/app/models';
+import { DateSlide, Timesheet, TimesheetMetricsDto } from 'src/app/models';
 import { QueryUtil } from 'src/app/util';
 import { DateUtil, ElementIds, PubSubUtil } from '../util';
 import { TimesheetApiService } from './api';
@@ -10,7 +10,6 @@ import { ToastService } from './toast.service';
 @Injectable({
   providedIn: 'root',
 })
-// TODO move timesheet carousel component state to here
 export class TimesheetCarouselService implements OnDestroy {
   private _slides$ = new BehaviorSubject<DateSlide[]>([]);
   private destroyed$ = new Subject<boolean>();
@@ -28,6 +27,12 @@ export class TimesheetCarouselService implements OnDestroy {
   }
 
   initSubs(): void {
+    this.service.item$.pipe(takeUntil(this.destroyed$)).subscribe((timesheet) => {
+      if (timesheet?.date == null || !(timesheet instanceof Timesheet)) return;
+
+      const metrics = Timesheet.buildMetricsDto(timesheet);
+      this.setMetric(DateUtil.dateTimeStringToDateString(timesheet.date), metrics);
+    });
     this.service.activeDateString$.pipe(takeUntil(this.destroyed$)).subscribe((dateString) => {
       if (!dateString) return;
 
@@ -40,7 +45,7 @@ export class TimesheetCarouselService implements OnDestroy {
         tap(([prevSlides, currSlides]) => {
           if (!this.shouldLoadSlides(prevSlides, currSlides)) return;
 
-          this.loadSlides();
+          this.loadSlidesMetrics();
         })
       )
       .subscribe();
@@ -80,7 +85,7 @@ export class TimesheetCarouselService implements OnDestroy {
     this._slides$.next(newSlides);
   }
 
-  async loadSlides(): Promise<void> {
+  async loadSlidesMetrics(): Promise<void> {
     const slides = this._slides$.getValue();
 
     const dates = TimesheetCarouselService.getSlidesFirstAndLastDates(slides);
@@ -105,6 +110,20 @@ export class TimesheetCarouselService implements OnDestroy {
 
       throw error;
     }
+  }
+
+  setMetric(dateString: string, metric: TimesheetMetricsDto): void {
+    const slides = this._slides$.getValue();
+    const slide = slides.find((s) => s.date === dateString);
+    if (slide == null) return;
+
+    const newSlides = slides.map((s) => {
+      if (s !== slide) return s;
+
+      return { ...s, metrics: metric };
+    });
+
+    this._slides$.next(newSlides);
   }
 
   shouldLoadSlides(prevSlides: DateSlide[], currSlides: DateSlide[]): boolean {

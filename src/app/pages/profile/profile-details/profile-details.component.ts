@@ -119,7 +119,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
     return this.service.goToList();
   }
 
-  // TODO refactor logic to service?
   disableFormIfView(): void {
     if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
 

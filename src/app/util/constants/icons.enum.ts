@@ -38,4 +38,5 @@ export enum Icons {
   Timelapse = 'timelapse',
   CheckBox = 'check_box',
   Assignment = 'assignment',
+  Today = 'today',
 }

@@ -18,6 +18,7 @@
         {{ slide.dayOfWeek }}
       </span>
     </div>
+    <app-icon *ngIf="slide.isToday" title="Today" [icon]="Icons.Today"></app-icon>
   </header>
   <div class="slide-body">
     <ng-template [ngIf]="metrics" [ngIfElse]="noMetrics">

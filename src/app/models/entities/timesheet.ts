@@ -3,9 +3,10 @@ import { TaskItem } from './task-item';
 import { TimesheetNote } from './timesheet-note';
 import { TableItem } from '../types';
 import { TableItemConfig } from '../configs';
-import { ArrayUtil } from 'src/app/util';
+import { ArrayUtil, StringUtil } from 'src/app/util';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimePipe } from 'src/app/pipes';
+import { TimesheetMetricsDto } from '../dtos';
 
 export class Timesheet implements TableItem {
   id?: number;
@@ -47,4 +48,16 @@ export class Timesheet implements TableItem {
       pipeArgs: ['1.1-2'],
     },
   ];
+
+  static buildMetricsDto = (timesheet: Timesheet): TimesheetMetricsDto => {
+    const { id, date, totalTasks, totalHours, averageRating } = timesheet;
+
+    return {
+      id,
+      date,
+      totalTasks,
+      workedHours: StringUtil.numberToTime(totalHours),
+      averageRating,
+    };
+  };
 }

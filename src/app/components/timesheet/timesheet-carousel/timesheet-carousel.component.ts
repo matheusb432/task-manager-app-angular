@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   OnInit,
@@ -72,7 +73,7 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     return this.carousel.navData.next.disabled;
   }
 
-  constructor(private carouselService: TimesheetCarouselService) {
+  constructor(private carouselService: TimesheetCarouselService, private cdRef: ChangeDetectorRef) {
     super();
     this.slides$ = this.carouselService.slides$;
   }
@@ -84,6 +85,7 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
         tap((slides) => {
           this.slides = slides;
           this.onSlideChanges();
+          this.cdRef.detectChanges();
         })
       )
       .subscribe();
@@ -131,10 +133,11 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   }
 
   goToToday(): void {
-    const todaySlide = this.slides.find((slide) => slide.isToday);
+    const todayIndex = this.slides.findIndex((slide) => slide.isToday);
 
-    if (!todaySlide) return;
-    this.carousel?.to(todaySlide.id);
+    if (todayIndex === -1) return;
+
+    this.moveToIndex(this.getCenterPosition(todayIndex));
   }
 
   handleChange(event: SlidesOutputData): void {
@@ -164,7 +167,6 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   }
 
   private calculateDateItemsFor24PxMargin(): number {
-    // TODO fix (bugs on startup if resolution is low)
     return Math.floor(window.innerWidth / (this.slideWidth * 1.25));
   }
 

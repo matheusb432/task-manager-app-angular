@@ -87,7 +87,6 @@ export abstract class FormService<TEntity extends TableItem> {
     await this.loadListItems();
   };
 
-  // TODO test reload logic on update timesheet with metrics flow
   private reloadItem = async (id: string | null | undefined): Promise<void> => {
     if (!id) return;
 
