@@ -13,6 +13,6 @@
   <mat-date-range-picker #picker></mat-date-range-picker>
   <mat-error *ngIf="invalid && !disabled">{{ getErrText() }}</mat-error>
   <span *ngIf="isLoading" class="input-loading-container">
-    <app-loading [isLoading]="isLoading" [size]="24"></app-loading>
+    <app-loading [size]="24"></app-loading>
   </span>
 </mat-form-field>

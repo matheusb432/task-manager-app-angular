@@ -11,6 +11,5 @@ import { NgIf } from '@angular/common';
   imports: [NgIf, MatProgressSpinnerModule],
 })
 export class LoadingComponent {
-  @Input() isLoading: boolean | null = true;
   @Input() size = 100;
 }

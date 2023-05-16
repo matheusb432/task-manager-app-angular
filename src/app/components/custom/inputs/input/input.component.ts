@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -48,7 +49,7 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {
+  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -70,6 +71,7 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
+        this.cdRef.detectChanges();
       });
   }
 

@@ -1,5 +1,12 @@
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -47,7 +54,7 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
     return !!this.controlGroup?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {
+  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -69,6 +76,7 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
+        this.cdRef.detectChanges();
       });
   }
 

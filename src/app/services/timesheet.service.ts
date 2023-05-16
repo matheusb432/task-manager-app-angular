@@ -32,7 +32,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   };
 
   private _activeDateString$ = new BehaviorSubject<string>(
-    DateUtil.formatDateTimeToUniversalFormat(new Date())
+    DateUtil.formatDateToUniversalFormat(new Date())
   );
   private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
   get dateRange$() {
@@ -113,7 +113,9 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   }
 
   getActiveDate(): Date {
-    return DateUtil.dateStringToDate(this._activeDateString$.getValue());
+    const activeDateString = this._activeDateString$.getValue();
+
+    return DateUtil.dateStringToDate(activeDateString);
   }
 
   setActiveDate = (value: Date | string): void => {

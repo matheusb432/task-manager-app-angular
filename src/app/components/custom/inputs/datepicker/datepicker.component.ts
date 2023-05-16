@@ -1,6 +1,7 @@
 import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -53,7 +54,7 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {
+  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -75,6 +76,7 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
+        this.cdRef.detectChanges();
       });
   }
 

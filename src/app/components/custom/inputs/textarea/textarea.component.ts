@@ -1,6 +1,7 @@
 import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -47,7 +48,7 @@ export class TextareaComponent extends WithDestroyed implements OnChanges, OnDes
     return !!this.control?.disabled;
   }
 
-  constructor(private loadingService: LoadingService) {
+  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -69,6 +70,7 @@ export class TextareaComponent extends WithDestroyed implements OnChanges, OnDes
         this.isLoading = isLoading;
 
         this.changeControlEnabled();
+        this.cdRef.detectChanges();
       });
   }
 
