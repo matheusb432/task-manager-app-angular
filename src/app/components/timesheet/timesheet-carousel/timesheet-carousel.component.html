@@ -1,7 +1,9 @@
 <section id="cDatesCarousel" class="carousel">
   <header id="cDatesCarouselHeader" class="carousel-header">
     <owl-carousel-o [options]="carouselHeaderOptions" #carouselHeader>
-      <ng-container *ngFor="let monthSlide of monthSlides; let i = index; trackBy: getItemId">
+      <ng-container
+        *ngFor="let monthSlide of monthSlides$ | async; let i = index; trackBy: getItemId"
+      >
         <ng-template carouselSlide [id]="monthSlide.id">
           <app-month-slide [slide]="monthSlide"></app-month-slide>
         </ng-template>
@@ -13,7 +15,7 @@
       <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true"></app-icon>
     </div>
     <owl-carousel-o [options]="carouselOptions" #carousel (changed)="handleChange($event)">
-      <ng-container *ngFor="let slide of slides; let i = index; trackBy: getItemId">
+      <ng-container *ngFor="let slide of slides$ | async; let i = index; trackBy: getItemId">
         <ng-template carouselSlide [id]="slide.id">
           <app-timesheet-slide
             [slide]="slide"

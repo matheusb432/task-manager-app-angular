@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, pairwise, takeUntil, tap } from 'rxjs';
-import { DateSlide, Timesheet, TimesheetMetricsDto } from 'src/app/models';
+import { BehaviorSubject, Subject, pairwise, shareReplay, takeUntil, tap } from 'rxjs';
+import { DateSlide, MonthSlide, Timesheet, TimesheetMetricsDto } from 'src/app/models';
 import { QueryUtil } from 'src/app/util';
 import { DateUtil, ElementIds, PubSubUtil } from '../util';
 import { TimesheetApiService } from './api';
@@ -12,10 +12,16 @@ import { ToastService } from './toast.service';
 })
 export class TimesheetCarouselService implements OnDestroy {
   private _slides$ = new BehaviorSubject<DateSlide[]>([]);
+  private _monthSlides$ = new BehaviorSubject<MonthSlide[]>([]);
+
   private destroyed$ = new Subject<boolean>();
 
   get slides$() {
     return this._slides$.asObservable();
+  }
+
+  get monthSlides$() {
+    return this._monthSlides$.asObservable();
   }
 
   constructor(
@@ -36,7 +42,7 @@ export class TimesheetCarouselService implements OnDestroy {
     this.service.activeDateString$.pipe(takeUntil(this.destroyed$)).subscribe((dateString) => {
       if (!dateString) return;
 
-      this.setActiveSlide(dateString);
+      this.selectSlideByDate(dateString);
     });
     this.slides$
       .pipe(
@@ -61,8 +67,12 @@ export class TimesheetCarouselService implements OnDestroy {
     PubSubUtil.completeDestroy(this.destroyed$);
   }
 
-  setSlides(dateSlides: DateSlide[]): void {
+  private setSlides(dateSlides: DateSlide[]): void {
     this._slides$.next(dateSlides);
+  }
+
+  private setMonthSlides(monthSlides: MonthSlide[]): void {
+    this._monthSlides$.next(monthSlides);
   }
 
   addSlides(dateSlides: DateSlide[]): void {
@@ -70,19 +80,11 @@ export class TimesheetCarouselService implements OnDestroy {
     this._slides$.next([...currentSlides, ...dateSlides]);
   }
 
-  setActiveSlide(dateString: string): void {
+  selectSlideByDate(dateString: string): void {
     const slides = this._slides$.getValue();
     const activeSlide = slides.find((s) => s.date === dateString);
     if (activeSlide == null) return;
-
-    const newSlides = slides.map((s) => {
-      const isActiveSlide = s === activeSlide;
-      if (s.selected === isActiveSlide) return s;
-
-      return { ...s, selected: isActiveSlide };
-    });
-
-    this._slides$.next(newSlides);
+    this.selectSlideByIdWithSlides(activeSlide.id, slides);
   }
 
   async loadSlidesMetrics(): Promise<void> {
@@ -199,5 +201,107 @@ export class TimesheetCarouselService implements OnDestroy {
     }
 
     return slides;
+  }
+
+  getSlides(): DateSlide[] {
+    return this._slides$.getValue();
+  }
+
+  selectSlideById(id: string): void {
+    const slides = this._slides$.getValue();
+    this.selectSlideByIdWithSlides(id, slides);
+  }
+
+  getMonthSlides(): MonthSlide[] {
+    return this._monthSlides$.getValue();
+  }
+
+  setMonthSlidesFromSlides(): MonthSlide[] {
+    const monthSlides = this.getUniqueMonthsFromSlides();
+    this.setMonthSlides(monthSlides);
+    return monthSlides;
+  }
+
+  private getUniqueMonthsFromSlides(): MonthSlide[] {
+    const slides = this.getSlides();
+
+    const monthSlides = slides
+      .map(TimesheetCarouselService.uniqueMonthFromSlideOrDefault)
+      .filter((slide) => slide != null) as MonthSlide[];
+
+    return monthSlides;
+  }
+
+  private static uniqueMonthFromSlideOrDefault(
+    slide: DateSlide,
+    index: number,
+    current: DateSlide[]
+  ): MonthSlide | undefined {
+    if (index === 0) return TimesheetCarouselService.buildMonthSlide(slide.month, slide.year);
+
+    return current[index - 1].month === slide.month
+      ? undefined
+      : TimesheetCarouselService.buildMonthSlide(slide.month, slide.year);
+  }
+
+  private static buildMonthSlide(month: string, year: number): MonthSlide {
+    return {
+      id: TimesheetCarouselService.buildMonthSlideId(month, year),
+      month,
+      year,
+      isNextMonth: false,
+      selected: false,
+    };
+  }
+
+  static buildMonthSlideId(month: string, year: number): string {
+    return `${ElementIds.MonthCarouselSlide}${month}${year}`;
+  }
+
+  private selectSlideByIdWithSlides(id: string, slides: DateSlide[]): void {
+    const newSlides = slides ?? this._slides$.getValue();
+    const slideToSelectIndex = newSlides.findIndex((slide) => slide.id === id);
+
+    if (slideToSelectIndex < 0) return;
+
+    const selectedSlideIndex = newSlides.findIndex((slide) => slide.selected);
+    if (selectedSlideIndex >= 0) {
+      newSlides[selectedSlideIndex] = {
+        ...newSlides[selectedSlideIndex],
+        selected: false,
+      };
+    }
+
+    newSlides[slideToSelectIndex] = { ...newSlides[slideToSelectIndex], selected: true };
+    this.setSlides(newSlides);
+  }
+
+  selectMonthSlideById(id: string): void {
+    let newMonthSlides = this._monthSlides$.getValue();
+
+    const slideIndex = newMonthSlides.findIndex((slide) => slide.id === id);
+
+    if (slideIndex >= 0 && newMonthSlides[slideIndex].selected) return;
+
+    newMonthSlides = newMonthSlides.map((slide) => {
+      if (!slide.selected && !slide.isNextMonth) return slide;
+
+      return { ...slide, selected: false, isNextMonth: false };
+    });
+
+    if (slideIndex >= 0) {
+      newMonthSlides[slideIndex] = {
+        ...newMonthSlides[slideIndex],
+        selected: true,
+        isNextMonth: false,
+      };
+      newMonthSlides[slideIndex + 1] = {
+        ...newMonthSlides[slideIndex + 1],
+        selected: false,
+        isNextMonth: true,
+      };
+    }
+
+    this.setMonthSlides(newMonthSlides);
   }
 }

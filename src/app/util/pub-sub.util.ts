@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, Subscription, filter, map, pairwise, takeUntil } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  Subscription,
+  filter,
+  fromEvent,
+  map,
+  pairwise,
+  takeUntil,
+} from 'rxjs';
 import { DateRangeValue } from '../components/custom/inputs';
 
 @Injectable({
@@ -42,5 +51,9 @@ export class PubSubUtil {
 
     const isIrrelevantChange = !(prev.start && prev.end && curr.start && curr.end);
     return isIrrelevantChange;
+  }
+
+  static windowResize$(): Observable<Event> {
+    return fromEvent(window, 'resize');
   }
 }
