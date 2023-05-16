@@ -6,6 +6,7 @@ export * from './modal-defaults';
 export * from './icons.enum';
 export * from './alert-types.enum';
 export * from './pages';
+export * from './profile-types.enum';
 export * from './constants.enum';
 export * from './form-types.enum';
 export * from './card-defaults';

@@ -1,9 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable } from 'rxjs';
-import { TableConfig, Timesheet } from 'src/app/models';
+import { Observable, tap } from 'rxjs';
+import { Profile, TableConfig, Timesheet, WithDestroyed } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
-import { FilterService, ModalService, TimesheetService, ToastService } from 'src/app/services';
+import {
+  FilterService,
+  ModalService,
+  ProfileService,
+  TimesheetService,
+  ToastService,
+} from 'src/app/services';
 import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
 
 @Component({
@@ -12,8 +18,9 @@ import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
   styleUrls: ['./timesheet-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimesheetListComponent {
+export class TimesheetListComponent extends WithDestroyed implements OnInit {
   listItems$: Observable<Timesheet[]>;
+  profiles$: Observable<Profile[]>;
   total$: Observable<number>;
   lastOptions$: Observable<PaginationOptions>;
 
@@ -32,13 +39,24 @@ export class TimesheetListComponent {
 
   constructor(
     private service: TimesheetService,
+    private profileService: ProfileService,
     private ts: ToastService,
     private modalService: ModalService,
     private filterService: FilterService
   ) {
+    super();
     this.listItems$ = this.service.listItems$;
     this.total$ = this.service.total$;
     this.lastOptions$ = this.service.lastOptions$;
+    this.profiles$ = this.profileService.listItems$;
+  }
+
+  ngOnInit() {
+    this.initSubs();
+  }
+
+  initSubs() {
+    // TODO set active profiles per profile/date range in profile service?
   }
 
   onFilter(): void {

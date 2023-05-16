@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, pairwise, shareReplay, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Subject, pairwise, takeUntil, tap } from 'rxjs';
 import { DateSlide, MonthSlide, Timesheet, TimesheetMetricsDto } from 'src/app/models';
 import { QueryUtil } from 'src/app/util';
 import { DateUtil, ElementIds, PubSubUtil } from '../util';

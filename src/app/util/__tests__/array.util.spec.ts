@@ -1,7 +1,7 @@
 import { OrderByConfig } from 'src/app/models';
 import { ArrayUtil } from '../array.util';
 import { TestBed, inject } from '@angular/core/testing';
-import { assertAreEqual } from 'src/app/services/tests/test-utils';
+import { assertAreEqual } from 'src/app/services/__tests__/test-utils';
 
 describe('Util: Array', () => {
   beforeEach(() => {

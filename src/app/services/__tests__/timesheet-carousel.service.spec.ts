@@ -16,6 +16,7 @@ describe('Service: TimesheetCarousel', () => {
       defaultRange: jasmine.createSpy(),
       activeDateString$: of(),
       dateRange$: of(),
+      item$: of(),
     };
 
     TestBed.configureTestingModule({

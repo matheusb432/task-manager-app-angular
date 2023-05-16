@@ -102,4 +102,16 @@ describe('Util: String', () => {
       expect(result.length).toBe(expectedLength);
     });
   });
+
+  describe('stringsEqual', () => {
+    it('should return true when strings are case insensitive equal', () => {
+      expect(StringUtil.stringsEqual('hello', 'hello')).toBeTrue();
+      expect(StringUtil.stringsEqual('HEllo', 'helLo')).toBeTrue();
+      expect(StringUtil.stringsEqual('HELLO', 'hello')).toBeTrue();
+    });
+
+    it('should return false when strings are not equal', () => {
+      expect(StringUtil.stringsEqual('hello', 'world')).toBeFalse();
+    });
+  });
 });
