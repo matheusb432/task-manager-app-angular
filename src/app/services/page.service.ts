@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageData } from '../models';
 import { DetailsTypes, paths } from '../util';
+import { filter } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,10 @@ export class PageService {
 
   getQueryParamsObservable() {
     return this.activatedRoute.queryParams;
+  }
+
+  getQueryParamsObservableForUrl(url: string) {
+    return this.getQueryParamsObservable().pipe(filter(() => this.getPathWithoutParams() === url));
   }
 
   getDetailsUrlParams(): PageData {

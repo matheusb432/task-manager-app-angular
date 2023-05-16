@@ -39,11 +39,7 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
   }
 
   initSubscriptions(): void {
-    this.pageService.getQueryParamsObservable().subscribe(() => {
-      // TODO implement this generically?
-      const path = this.pageService.getPathWithoutParams();
-      if (path !== paths.timesheetsCreate) return;
-
+    this.pageService.getQueryParamsObservableForUrl(paths.timesheetsCreate).subscribe(() => {
       this.runInitMethods();
     });
   }
