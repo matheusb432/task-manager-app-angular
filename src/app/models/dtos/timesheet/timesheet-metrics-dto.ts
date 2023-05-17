@@ -5,3 +5,7 @@ export class TimesheetMetricsDto {
   workedHours?: string;
   averageRating?: number;
 }
+
+export interface TimesheetMetricsDictionary {
+  byDate: Record<string, TimesheetMetricsDto>;
+}

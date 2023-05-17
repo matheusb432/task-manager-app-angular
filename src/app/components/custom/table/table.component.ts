@@ -77,7 +77,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['elId']) {
-      this.isLoading$ = this.loadingService.isLoadingPipeFactory(this.elId);
+      this.isLoading$ = this.loadingService.isLoadingById$(this.elId);
     }
 
     if (changes['items'] || changes['sortColumn'] || changes['sortDirection']) {

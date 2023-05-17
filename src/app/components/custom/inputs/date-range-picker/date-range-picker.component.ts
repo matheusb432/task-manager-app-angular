@@ -70,7 +70,7 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .isLoadingByIds$([this.elId, this.formId])
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;

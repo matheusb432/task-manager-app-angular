@@ -21,7 +21,7 @@
     <app-icon *ngIf="slide.isToday" title="Today" [icon]="Icons.Today"></app-icon>
   </header>
   <div class="slide-body">
-    <ng-template [ngIf]="metrics" [ngIfElse]="noMetrics">
+    <ng-template [ngIf]="metrics$ | async" let-metrics [ngIfElse]="noMetrics">
       <!-- TODO add integration to profiles (css for .completed & .failed) -->
       <span class="tasks" title="{{ metrics.totalTasks }} total tasks">
         <app-icon [icon]="Icons.Assignment"></app-icon>

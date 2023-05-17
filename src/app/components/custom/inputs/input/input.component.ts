@@ -65,7 +65,7 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .isLoadingByIds$([this.elId, this.formId])
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;

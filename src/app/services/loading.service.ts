@@ -68,11 +68,11 @@ export class LoadingService {
     return currentData;
   }
 
-  isLoadingPipeFactory(elId: string): Observable<boolean> {
+  isLoadingById$(elId: string): Observable<boolean> {
     return this.loadings$.asObservable().pipe(map(() => this.shouldBeLoading(elId)));
   }
 
-  isAnyLoadingPipeFactory(elIds: string[]): Observable<boolean> {
+  isLoadingByIds$(elIds: string[]): Observable<boolean> {
     return this.loadings$
       .asObservable()
       .pipe(map(() => elIds.some(this.shouldBeLoading.bind(this))));

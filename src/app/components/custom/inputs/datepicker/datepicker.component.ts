@@ -70,7 +70,7 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isAnyLoadingPipeFactory([this.elId, this.formId])
+      .isLoadingByIds$([this.elId, this.formId])
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;

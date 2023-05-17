@@ -1,11 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, pairwise, takeUntil, tap } from 'rxjs';
-import { DateSlide, MonthSlide, Timesheet, TimesheetMetricsDto } from 'src/app/models';
-import { QueryUtil } from 'src/app/util';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { DateSlide, MonthSlide } from 'src/app/models';
 import { DateUtil, ElementIds, PubSubUtil } from '../util';
-import { TimesheetApiService } from './api';
 import { TimesheetService } from './timesheet.service';
-import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,37 +21,16 @@ export class TimesheetCarouselService implements OnDestroy {
     return this._monthSlides$.asObservable();
   }
 
-  constructor(
-    private service: TimesheetService,
-    private timesheetApi: TimesheetApiService,
-    private ts: ToastService
-  ) {
+  constructor(private service: TimesheetService) {
     this.initSubs();
   }
 
   initSubs(): void {
-    this.service.item$.pipe(takeUntil(this.destroyed$)).subscribe((timesheet) => {
-      if (timesheet?.date == null || !(timesheet instanceof Timesheet)) return;
-
-      const metrics = Timesheet.buildMetricsDto(timesheet);
-      this.setMetric(DateUtil.dateTimeStringToDateString(timesheet.date), metrics);
-    });
     this.service.activeDateString$.pipe(takeUntil(this.destroyed$)).subscribe((dateString) => {
       if (!dateString) return;
 
       this.selectSlideByDate(dateString);
     });
-    this.slides$
-      .pipe(
-        takeUntil(this.destroyed$),
-        pairwise(),
-        tap(([prevSlides, currSlides]) => {
-          if (!this.shouldLoadSlides(prevSlides, currSlides)) return;
-
-          this.loadSlidesMetrics();
-        })
-      )
-      .subscribe();
     this.service.dateRange$.pipe(takeUntil(this.destroyed$)).subscribe((dateRange) => {
       if (dateRange == null) return;
 
@@ -87,47 +63,6 @@ export class TimesheetCarouselService implements OnDestroy {
     this.selectSlideByIdWithSlides(activeSlide.id, slides);
   }
 
-  async loadSlidesMetrics(): Promise<void> {
-    const slides = this._slides$.getValue();
-
-    const dates = TimesheetCarouselService.getSlidesFirstAndLastDates(slides);
-    if (dates == null) return;
-    const { first, last } = dates;
-
-    try {
-      const metricsList = await this.getMetricsByRange(first, last);
-
-      const newSlides = this._slides$.getValue().map((slide) => {
-        const metrics = metricsList.find(
-          (m) => m.date != null && DateUtil.dateTimeStringToDateString(m.date) === slide.date
-        );
-
-        if (metrics == null) return slide;
-
-        return { ...slide, metrics };
-      });
-      this._slides$.next(newSlides);
-    } catch (error) {
-      this.ts.error('Error loading timesheet metrics!');
-
-      throw error;
-    }
-  }
-
-  setMetric(dateString: string, metric: TimesheetMetricsDto): void {
-    const slides = this._slides$.getValue();
-    const slide = slides.find((s) => s.date === dateString);
-    if (slide == null) return;
-
-    const newSlides = slides.map((s) => {
-      if (s !== slide) return s;
-
-      return { ...s, metrics: metric };
-    });
-
-    this._slides$.next(newSlides);
-  }
-
   shouldLoadSlides(prevSlides: DateSlide[], currSlides: DateSlide[]): boolean {
     const prevDates = TimesheetCarouselService.getSlidesFirstAndLastDates(prevSlides);
     const currDates = TimesheetCarouselService.getSlidesFirstAndLastDates(currSlides);
@@ -140,16 +75,6 @@ export class TimesheetCarouselService implements OnDestroy {
       !DateUtil.datesEqual(prevDates.last, currDates.last)
     );
   }
-
-  getMetricsByRange = async (from: Date, to: Date): Promise<TimesheetMetricsDto[]> => {
-    const metrics = await this.timesheetApi.getMetricsQuery({
-      filter: {
-        ...QueryUtil.getDateRangeFilter('date', from, to),
-      },
-    });
-
-    return metrics;
-  };
 
   defaultCarousel(): DateSlide[] {
     const { start, end } = this.service.defaultRange;

@@ -59,7 +59,7 @@ export class SelectComponent extends WithDestroyed implements OnDestroy, OnChang
 
   initLoadingSubscription(): void {
     PubSubUtil.untilDestroyed(
-      this.loadingService.isAnyLoadingPipeFactory([this.elId, this.formId]),
+      this.loadingService.isLoadingByIds$([this.elId, this.formId]),
       this.destroyed$
     ).subscribe((isLoading) => {
       this.isLoading = isLoading;

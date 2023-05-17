@@ -56,7 +56,7 @@ export class ButtonComponent implements OnChanges, OnDestroy {
     if (!this.elId) return;
 
     this.subscriptions.push(
-      this.loadingService.isLoadingPipeFactory(this.elId).subscribe((isLoading) => {
+      this.loadingService.isLoadingById$(this.elId).subscribe((isLoading) => {
         this.isLoading = isLoading;
         this.cdRef.detectChanges();
       })

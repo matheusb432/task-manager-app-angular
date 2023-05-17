@@ -8,7 +8,13 @@ import {
   getTimesheetForm,
   getTimesheetNoteFormGroup,
 } from '../components/timesheet/timesheet-form';
-import { AsNonNullable, PaginationOptions, Timesheet } from '../models';
+import {
+  AsNonNullable,
+  PaginationOptions,
+  Timesheet,
+  TimesheetMetricsDictionary,
+  TimesheetMetricsDto,
+} from '../models';
 import {
   DateUtil,
   DetailsTypes,
@@ -31,21 +37,24 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     end: DateUtil.addMonths(new Date(), 1),
   };
 
+  private _metricsDict$ = new BehaviorSubject<TimesheetMetricsDictionary>({ byDate: {} });
   private _activeDateString$ = new BehaviorSubject<string>(
     DateUtil.formatDateToUniversalFormat(new Date())
   );
   private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
-  get dateRange$() {
-    return this._dateRange$.asObservable();
-  }
+
   private destroyed$ = new Subject<boolean>();
 
-  public get activeDateString$() {
+  get activeDateString$() {
     return this._activeDateString$.asObservable().pipe(map(DateUtil.dateTimeStringToDateString));
   }
 
-  override get item$() {
-    return this._item$.asObservable();
+  get metricsDict$() {
+    return this._metricsDict$.asObservable();
+  }
+
+  get dateRange$() {
+    return this._dateRange$.asObservable();
   }
 
   constructor(
@@ -84,6 +93,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
           const { start, end } = dateRange;
 
+          this.loadMetricsByRange(start, end);
           this.loadListItems(
             PaginationOptions.fromOptions({
               filter: {
@@ -112,10 +122,52 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return res;
   }
 
+  async loadMetricsByRange(from: Date, to: Date): Promise<void> {
+    const metricsList = await this.getMetricsByRange(from, to);
+
+    this.setMetricsList(metricsList);
+  }
+
+  private getMetricsByRange = async (
+    from: Date,
+    to: Date
+  ): Promise<TimesheetMetricsDto[]> | never => {
+    const metrics = await this.api
+      .getMetricsQuery({
+        filter: {
+          ...QueryUtil.getDateRangeFilter('date', from, to),
+        },
+      })
+      .catch((err) => {
+        this.ts.error('Error loading timesheet metrics!');
+        throw err;
+      });
+
+    return metrics;
+  };
+
   getActiveDate(): Date {
     const activeDateString = this._activeDateString$.getValue();
 
     return DateUtil.dateStringToDate(activeDateString);
+  }
+
+  /**
+   * @description Normalizing the metrics list state shape to a dictionary with date keys
+   */
+  private setMetricsList(metricsList: TimesheetMetricsDto[]): void {
+    const metricsDict: TimesheetMetricsDictionary = { byDate: {} };
+
+    metricsList.forEach((metrics) => {
+      const date = DateUtil.dateTimeStringToDateString(metrics.date);
+
+      if (!date) return;
+
+      metricsDict.byDate[date] = metrics;
+    });
+    console.warn(metricsDict);
+
+    this._metricsDict$.next(metricsDict);
   }
 
   setActiveDate = (value: Date | string): void => {
@@ -192,6 +244,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       deleteSuccess: 'Timesheet deleted successfully!',
       duplicateSuccess: 'Timesheet duplicated successfully!',
     };
+  }
+  /**
+   * @description Builds an observable stream from a given date in 'yyyy-MM-dd' format
+   */
+  metricsByDate$(date: string) {
+    return this.metricsDict$.pipe(map((m) => m.byDate[date]));
   }
 
   goToList = () => this.router.navigateByUrl(paths.timesheets);
