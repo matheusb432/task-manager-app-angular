@@ -11,3 +11,9 @@ export interface DateValues {
   isSpecial?: boolean;
   isToday?: boolean;
 }
+
+export interface ProfileDateValues {
+  formattedDate: string;
+  isWeekend: boolean;
+  isHoliday: boolean;
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Nullish, OrderByConfig, TableKey } from '../models';
-import { orderBy } from 'lodash-es';
+import { orderBy, sortBy } from 'lodash-es';
 import { ObjectUtil } from './object.util';
 
 @Injectable({
@@ -63,16 +63,9 @@ export class ArrayUtil {
 
   static orderItems<T>(items: T[], key: TableKey<T>, direction: 'asc' | 'desc'): T[] {
     if (!Array.isArray(key)) {
-      return ObjectUtil.deepClone(items).sort((a, b) => this.orderFn(a, b, key, direction));
+      return orderBy(items, key, direction);
     }
 
     return orderBy(items, ObjectUtil.keyToProp(key), direction);
-  }
-
-  private static orderFn<T>(a: T, b: T, key?: keyof T, direction?: string): number {
-    if (!key || !direction) return 0;
-    const multiplier = direction === 'asc' ? 1 : -1;
-
-    return a[key] < b[key] ? -multiplier : a[key] > b[key] ? multiplier : 0;
   }
 }

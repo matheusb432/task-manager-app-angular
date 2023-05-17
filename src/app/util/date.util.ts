@@ -62,6 +62,40 @@ export class DateUtil {
     return day.toString().padStart(2, '0');
   };
 
+  static isInDateRangeInclusive = (date: Date, start: Date, end: Date): boolean => {
+    if (!date || !start || !end) return false;
+
+    return date >= start && date <= end;
+  };
+
+  static areDatesInDateRangeInclusive = (dates: Date[], start: Date, end: Date): boolean => {
+    if (!dates.length || !start || !end) return false;
+
+    return dates.every((date) => DateUtil.isInDateRangeInclusive(date, start, end));
+  };
+
+  static areAnyDatesInDateRangeInclusive = (dates: Date[], start: Date, end: Date): boolean => {
+    if (!dates.length || !start || !end) return false;
+
+    return dates.some((date) => DateUtil.isInDateRangeInclusive(date, start, end));
+  };
+
+  static isRangeInRangeInclusive = (
+    range1: { start: Date; end: Date },
+    range2: { start: Date; end: Date }
+  ): boolean => {
+    if (!range1 || !range2) return false;
+
+    const { start: start1, end: end1 } = range1;
+    const { start: start2, end: end2 } = range2;
+    if (!start1 || !end1 || !start2 || !end2) return false;
+
+    return (
+      DateUtil.areAnyDatesInDateRangeInclusive([start1, end1], start2, end2) ||
+      DateUtil.areAnyDatesInDateRangeInclusive([start2, end2], start1, end1)
+    );
+  };
+
   static datesEqual = (date1: Date, date2: Date): boolean => {
     if (!date1 || !date2) return false;
 

@@ -124,13 +124,13 @@ describe('Util: Date', () => {
     it('should return true when the dates are equal', () => {
       const date1 = new Date(2023, 4, 1);
       const date2 = new Date(2023, 4, 1);
-      expect(DateUtil.datesEqual(date1, date2)).toEqual(true);
+      expect(DateUtil.datesEqual(date1, date2)).toBeTrue();
     });
 
     it('should return false when the dates are not equal', () => {
       const date1 = new Date(2023, 4, 1);
       const date2 = new Date(2023, 4, 2);
-      expect(DateUtil.datesEqual(date1, date2)).toEqual(false);
+      expect(DateUtil.datesEqual(date1, date2)).toBeFalse();
     });
 
     it('should not modify the original dates', () => {
@@ -144,13 +144,13 @@ describe('Util: Date', () => {
 
   describe('isWeekend', () => {
     it('should return true when the day index is a weekend', () => {
-      expect(DateUtil.isWeekend(WeekDay.Saturday)).toEqual(true);
-      expect(DateUtil.isWeekend(WeekDay.Sunday)).toEqual(true);
+      expect(DateUtil.isWeekend(WeekDay.Saturday)).toBeTrue();
+      expect(DateUtil.isWeekend(WeekDay.Sunday)).toBeTrue();
     });
 
     it('should return false when the day index is not a weekend', () => {
-      expect(DateUtil.isWeekend(WeekDay.Thursday)).toEqual(false);
-      expect(DateUtil.isWeekend(WeekDay.Friday)).toEqual(false);
+      expect(DateUtil.isWeekend(WeekDay.Thursday)).toBeFalse();
+      expect(DateUtil.isWeekend(WeekDay.Friday)).toBeFalse();
     });
   });
 
@@ -175,7 +175,7 @@ describe('Util: Date', () => {
       const month = new Date().getMonth();
       const day = new Date().getDate();
 
-      expect(DateUtil.isToday(day, month, year)).toEqual(true);
+      expect(DateUtil.isToday(day, month, year)).toBeTrue();
     });
 
     it('should return false when the date is not today', () => {
@@ -183,7 +183,7 @@ describe('Util: Date', () => {
       const month = new Date().getMonth();
       const day = new Date().getDate() + 1;
 
-      expect(DateUtil.isToday(day, month, year)).toEqual(false);
+      expect(DateUtil.isToday(day, month, year)).toBeFalse();
     });
   });
 
@@ -202,6 +202,124 @@ describe('Util: Date', () => {
   describe('dateTimeStringToDateString', () => {
     it('should return a date string when given a valid date time string', () => {
       expect(DateUtil.dateTimeStringToDateString('2023-05-01T00:00:00')).toEqual('2023-05-01');
+    });
+  });
+
+  describe('isInDateRangeInclusive', () => {
+    it('should return true when the date is in the range', () => {
+      const date = new Date(2023, 4, 1);
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 5, 1);
+      expect(DateUtil.isInDateRangeInclusive(date, start, end)).toBeTrue();
+    });
+
+    it('should return true when the date is start/end date', () => {
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 5, 1);
+      expect(DateUtil.isInDateRangeInclusive(start, start, end)).toBeTrue();
+      expect(DateUtil.isInDateRangeInclusive(end, start, end)).toBeTrue();
+    });
+
+    it('should return false when the date is not in the range', () => {
+      const dateBefore = new Date(2023, 2, 1);
+      const dateAfter = new Date(2023, 5, 1);
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 4, 1);
+
+      expect(DateUtil.isInDateRangeInclusive(dateBefore, start, end)).toBeFalse();
+      expect(DateUtil.isInDateRangeInclusive(dateAfter, start, end)).toBeFalse();
+    });
+  });
+
+  describe('areDatesInDateRangeInclusive', () => {
+    it('should return true when the dates are in the range', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 2);
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 5, 1);
+      const dates = [date1, date2, start, end];
+
+      expect(DateUtil.areDatesInDateRangeInclusive(dates, start, end)).toBeTrue();
+    });
+
+    it('should return true when the dates are in the range or start/end', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 2);
+      const dates = [date1, date2];
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 5, 1);
+
+      expect(DateUtil.areDatesInDateRangeInclusive(dates, start, end)).toBeTrue();
+    });
+
+    it('should return false when any date is not in the range', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 10);
+      const dates = [date1, date2];
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 4, 5);
+
+      expect(DateUtil.areDatesInDateRangeInclusive(dates, start, end)).toBeFalse();
+    });
+  });
+
+  describe('areAnyDatesInDateRangeInclusive', () => {
+    it('should return true when any date is in the range', () => {
+      const date1 = new Date(2023, 4, 1);
+      const date2 = new Date(2023, 4, 10);
+      const dates = [date1, date2];
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 4, 5);
+
+      expect(DateUtil.areAnyDatesInDateRangeInclusive(dates, start, end)).toBeTrue();
+    });
+
+    it('should return false when no date is in the range', () => {
+      const date1 = new Date(2023, 4, 5);
+      const date2 = new Date(2023, 4, 10);
+      const dates = [date1, date2];
+      const start = new Date(2023, 3, 1);
+      const end = new Date(2023, 4, 1);
+
+      expect(DateUtil.areAnyDatesInDateRangeInclusive(dates, start, end)).toBeFalse();
+    });
+  });
+
+  describe('isRangeInRangeInclusive', () => {
+    it('should return true when range1 is in range2', () => {
+      const start1 = new Date(2023, 4, 5);
+      const end1 = new Date(2023, 4, 10);
+      const start2 = new Date(2023, 4, 5);
+      const end2 = new Date(2023, 4, 15);
+
+      expect(
+        DateUtil.isRangeInRangeInclusive({ start: start1, end: end1 }, { start: start2, end: end2 })
+      ).toBeTrue();
+    });
+
+    it('should return true when there is intersection between ranges', () => {
+      const start1 = new Date(2023, 0, 1);
+      const end1 = new Date(2023, 1, 1);
+      const start2 = new Date(2023, 0, 15);
+      const end2 = new Date(2023, 1, 15);
+
+      expect(
+        DateUtil.isRangeInRangeInclusive({ start: start1, end: end1 }, { start: start2, end: end2 })
+      ).toBeTrue();
+      expect(
+        DateUtil.isRangeInRangeInclusive({ start: start2, end: end2 }, { start: start1, end: end1 })
+      ).toBeTrue();
+    });
+
+    it('should return true when there is no intersection between ranges', () => {
+      const start1 = new Date(2023, 4, 1);
+      const end1 = new Date(2023, 4, 10);
+      const start2 = new Date(2023, 4, 11);
+      const end2 = new Date(2023, 4, 15);
+
+      expect(
+        DateUtil.isRangeInRangeInclusive({ start: start1, end: end1 }, { start: start2, end: end2 })
+      ).toBeFalse();
     });
   });
 });
