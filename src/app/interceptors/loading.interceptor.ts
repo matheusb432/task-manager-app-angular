@@ -2,12 +2,11 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { AppService } from '../services/app.service';
-import { LoadingService } from '../services/loading.service';
+import { RequestService, LoadingService } from '../services';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
-  constructor(private service: LoadingService, private appService: AppService) {}
+  constructor(private service: LoadingService, private requestService: RequestService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const [key, data] = this.service.getKeyAndLoadingByUrlFromAppRequests(request.url);
@@ -19,7 +18,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       finalize(() => {
         this.service.removeLoadingsById(key);
-        this.appService.removeRequestData(key as string);
+        this.requestService.removeRequestData(key as string);
       })
     );
   }

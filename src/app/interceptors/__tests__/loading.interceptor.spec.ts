@@ -3,13 +3,13 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { tap } from 'rxjs';
 import { RequestData } from 'src/app/models';
-import { AppService, LoadingService } from 'src/app/services';
+import { RequestService, LoadingService } from 'src/app/services';
 import { LoadingInterceptor } from '../loading.interceptor';
 
 describe('Interceptor: Loading', () => {
   let httpMock: HttpTestingController;
   let loadingService: LoadingService;
-  let appService: AppService;
+  let requestService: RequestService;
   let httpClient: HttpClient;
 
   beforeEach(() => {
@@ -22,13 +22,13 @@ describe('Interceptor: Loading', () => {
           multi: true,
         },
         LoadingService,
-        AppService,
+        RequestService,
       ],
     });
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
     loadingService = TestBed.inject(LoadingService);
-    appService = TestBed.inject(AppService);
+    requestService = TestBed.inject(RequestService);
   });
 
   afterEach(() => {
@@ -41,7 +41,7 @@ describe('Interceptor: Loading', () => {
     const requestData: RequestData = {
       loadings: expectedLoadings,
     };
-    appService.registerRequestData(url, requestData);
+    requestService.registerRequestData(url, requestData);
     httpClient
       .get(url)
       .pipe(
@@ -64,7 +64,7 @@ describe('Interceptor: Loading', () => {
     const requestData: RequestData = {
       loadings: LoadingService.createManyFromIds(['loading1', 'loading2']),
     };
-    appService.registerRequestData(url, requestData);
+    requestService.registerRequestData(url, requestData);
     httpClient.get(url).subscribe({
       complete: () => {
         const actualLoadings =

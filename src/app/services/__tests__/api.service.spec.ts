@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { ApiService } from '../api';
-import { AppService } from '../app.service';
+import { RequestService } from '../request.service';
 import { ApiRequest } from 'src/app/models';
 import { assertAreEqual } from './test-utils';
 import { QueryUtil } from 'src/app/util';
@@ -19,7 +19,7 @@ describe('Service: Api', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ApiService, AppService],
+      providers: [ApiService, RequestService],
     });
     service = TestBed.inject(ApiService);
     httpMock = TestBed.inject(HttpTestingController);

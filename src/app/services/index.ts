@@ -2,6 +2,7 @@ export { TimesheetService } from './timesheet.service';
 export { TimesheetCarouselService } from './timesheet-carousel.service';
 export { TokenService } from './token.service';
 export { AppService } from './app.service';
+export { RequestService } from './request.service';
 export { AuthService } from './auth.service';
 export { BreadcrumbService } from './breadcrumb.service';
 export { FilterService } from './filter.service';

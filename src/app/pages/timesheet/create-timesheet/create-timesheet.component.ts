@@ -6,7 +6,7 @@ import {
   getTimesheetForm,
 } from 'src/app/components/timesheet/timesheet-form';
 import { CanDeactivateForm } from 'src/app/models';
-import { PageService, TimesheetService, ToastService } from 'src/app/services';
+import { AppService, PageService, TimesheetService, ToastService } from 'src/app/services';
 import { DateUtil, DetailsTypes, FormTypes, paths } from 'src/app/util';
 
 @Component({
@@ -22,6 +22,7 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
 
   constructor(
     private service: TimesheetService,
+    private app: AppService,
     private ts: ToastService,
     private route: ActivatedRoute,
     private pageService: PageService
@@ -61,11 +62,11 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
       return;
     }
 
-    this.service.setActiveDate(dateString);
+    this.app.setActiveDate(dateString);
   }
 
   initForm(): void {
-    const date = this.service.getActiveDate();
+    const date = this.app.getActiveDate();
     this.form = TimesheetFormGroup.from(getTimesheetForm(date));
   }
 

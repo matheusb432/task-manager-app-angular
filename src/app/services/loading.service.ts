@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppRequestData, Loading } from 'src/app/models';
 import { StringUtil } from '../util';
-import { AppService } from './app.service';
+import { RequestService } from './request.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { AppService } from './app.service';
 export class LoadingService {
   private loadings$ = new BehaviorSubject<Loading[]>([]);
 
-  constructor(private appService: AppService) {}
+  constructor(private requestService: RequestService) {}
 
   addLoading(id: string, loading: Loading): void {
     this.loadings$.next([...this.loadings$.getValue(), { ...loading, id }]);
@@ -58,7 +58,7 @@ export class LoadingService {
   }
 
   private getCurrentDataFromAppRequests(url: string): [string, AppRequestData] | null {
-    const datas = this.appService.getManyByUrl(url);
+    const datas = this.requestService.getManyByUrl(url);
     return datas?.[0];
   }
 

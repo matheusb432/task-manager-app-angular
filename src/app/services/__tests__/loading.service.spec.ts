@@ -1,18 +1,18 @@
 import { BehaviorSubject } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Loading } from 'src/app/models';
-import { AppService } from '../app.service';
+import { RequestService } from '../request.service';
 import { LoadingService } from '../loading.service';
 
 describe('Service: Loading', () => {
   let service: LoadingService;
-  let appService: jasmine.SpyObj<AppService>;
+  let requestService: jasmine.SpyObj<RequestService>;
   const mockElId = 'elId';
 
   beforeEach(() => {
-    appService = jasmine.createSpyObj('AppService', ['getManyByUrl']);
+    requestService = jasmine.createSpyObj('RequestService', ['getManyByUrl']);
     TestBed.configureTestingModule({
-      providers: [LoadingService, { provide: AppService, useValue: appService }],
+      providers: [LoadingService, { provide: RequestService, useValue: requestService }],
     });
     service = TestBed.inject(LoadingService);
   });

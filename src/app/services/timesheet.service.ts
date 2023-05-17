@@ -2,7 +2,6 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, map, takeUntil, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { DateRangeValue } from '../components/custom/inputs';
 import {
   TimesheetFormGroup,
   getTaskItemFormGroup,
@@ -10,7 +9,6 @@ import {
   getTimesheetNoteFormGroup,
 } from '../components/timesheet/timesheet-form';
 import {
-  AsNonNullable,
   PaginationOptions,
   Timesheet,
   TimesheetMetricsDictionary,
@@ -26,6 +24,7 @@ import {
   paths,
 } from '../util';
 import { TimesheetApiService } from './api';
+import { AppService } from './app.service';
 import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
 
@@ -33,41 +32,25 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class TimesheetService extends FormService<Timesheet> implements OnDestroy {
-  readonly defaultRange = {
-    start: DateUtil.addMonths(new Date(), -1),
-    end: DateUtil.addMonths(new Date(), 1),
-  };
-
   private _metricsDict$ = new BehaviorSubject<TimesheetMetricsDictionary>({
     byDate: {},
     dates: [],
   });
-  private _activeDateString$ = new BehaviorSubject<string>(
-    DateUtil.formatDateToUniversalFormat(new Date())
-  );
-  private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
-
   private destroyed$ = new Subject<boolean>();
 
   override get listItems$() {
     return this._listItems$.asObservable();
   }
 
-  get activeDateString$() {
-    return this._activeDateString$.asObservable().pipe(map(DateUtil.dateTimeStringToDateString));
-  }
-
   get metricsDict$() {
     return this._metricsDict$.asObservable();
-  }
-
-  get dateRange$() {
-    return this._dateRange$.asObservable();
   }
 
   constructor(
     protected override api: TimesheetApiService,
     protected override ts: ToastService,
+    private app: AppService,
+
     private router: Router
   ) {
     super(ts, api);
@@ -89,11 +72,11 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
           if (!itemDate) return;
 
-          this.setActiveDate(itemDate);
+          this.app.setActiveDate(itemDate);
         })
       )
       .subscribe();
-    this.dateRange$
+    this.app.dateRange$
       .pipe(
         takeUntil(this.destroyed$),
         tap((dateRange) => {
@@ -176,12 +159,6 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return metrics;
   };
 
-  getActiveDate(): Date {
-    const activeDateString = this._activeDateString$.getValue();
-
-    return DateUtil.dateStringToDate(activeDateString);
-  }
-
   /**
    * @description Normalizing the metrics list state shape to a dictionary with date keys
    */
@@ -213,12 +190,6 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     this._listItems$.next(newItems);
   }
 
-  setActiveDate = (value: Date | string): void => {
-    this._activeDateString$.next(
-      typeof value === 'string' ? value : DateUtil.formatDateTimeToUniversalFormat(value)
-    );
-  };
-
   goToCreateOrDetailsBasedOnDate = async (date: Date): Promise<boolean> => {
     const existingItem = await this.api.getQuery({ filter: { date: date } });
 
@@ -232,7 +203,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   };
 
   loadListData = async (): Promise<void> => {
-    this.setDateRange(this.defaultRange);
+    this.app.initDateRange();
   };
 
   loadEditData = async (id: string | null | undefined): Promise<Timesheet | null> => {
@@ -263,14 +234,6 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     }
 
     return newFg;
-  }
-
-  getDateRange() {
-    return this._dateRange$.getValue();
-  }
-
-  setDateRange(value: AsNonNullable<DateRangeValue>): void {
-    this._dateRange$.next(value);
   }
 
   toJson(fg: TimesheetFormGroup): Partial<Timesheet> {

@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { DateSlide, MonthSlide } from 'src/app/models';
 import { DateUtil, ElementIds, PubSubUtil } from '../util';
-import { TimesheetService } from './timesheet.service';
+import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,20 +21,15 @@ export class TimesheetCarouselService implements OnDestroy {
     return this._monthSlides$.asObservable();
   }
 
-  constructor(private service: TimesheetService) {
+  constructor(private app: AppService) {
     this.initSubs();
   }
 
   initSubs(): void {
-    this.service.activeDateString$.pipe(takeUntil(this.destroyed$)).subscribe((dateString) => {
-      if (!dateString) return;
-
+    this.app.activeDateString$.pipe(takeUntil(this.destroyed$)).subscribe((dateString) => {
       this.selectSlideByDate(dateString);
     });
-    this.service.dateRange$.pipe(takeUntil(this.destroyed$)).subscribe((dateRange) => {
-      if (dateRange == null) return;
-
-      const { start, end } = dateRange;
+    this.app.dateRange$.pipe(takeUntil(this.destroyed$)).subscribe(({ start, end }) => {
       this.setSlides(TimesheetCarouselService.buildDatesCarouselFromRange(start, end));
     });
   }
@@ -77,7 +72,7 @@ export class TimesheetCarouselService implements OnDestroy {
   }
 
   defaultCarousel(): DateSlide[] {
-    const { start, end } = this.service.defaultRange;
+    const { start, end } = this.app.getDateRangeOrDefault();
 
     return TimesheetCarouselService.buildDatesCarouselFromRange(start, end);
   }

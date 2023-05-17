@@ -1,47 +1,62 @@
 import { Injectable } from '@angular/core';
-import { AppRequestData, RequestData } from 'src/app/models';
-import { StringUtil } from '../util';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
+import { DateUtil } from '../util';
+import { DateRangeValue } from '../components/custom/inputs';
+import { AsNonNullable } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
-  private _reqDict = new Map<string, AppRequestData>();
-
-  registerRequestData = (url: string, customData: RequestData | undefined): void => {
-    if (customData == null) return;
-
-    const loadings = customData.loadings;
-    const resKey = `${url}|${StringUtil.unsafeRandomHex()}`;
-
-    this.addRequestData(resKey, { url, loadings, moment: Date.now() });
+  private readonly defaultRange = {
+    start: DateUtil.addMonths(new Date(), -1),
+    end: DateUtil.addMonths(new Date(), 1),
   };
 
-  private addRequestData(key: string, value: AppRequestData): void {
-    this._reqDict.set(key, value);
+  private _activeDateString$ = new BehaviorSubject<string>(
+    DateUtil.formatDateToUniversalFormat(new Date())
+  );
+  private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
+
+  get dateRange$() {
+    return this._dateRange$
+      .asObservable()
+      .pipe(filter((dateRange) => dateRange != null)) as Observable<AsNonNullable<DateRangeValue>>;
   }
 
-  getRequestData(key: string): AppRequestData | undefined {
-    return this._reqDict.get(key);
+  get activeDateString$() {
+    return this._activeDateString$.asObservable().pipe(
+      filter((dateString) => !!dateString),
+      map(DateUtil.dateTimeStringToDateString)
+    );
   }
 
-  getManyByUrl(url: string): [string, AppRequestData][] {
-    const result: [string, AppRequestData][] = [];
+  getActiveDate(): Date {
+    const activeDateString = this._activeDateString$.getValue();
 
-    for (const entry of this._reqDict.entries()) {
-      const valueUrl = entry[1]?.url;
-      if (!valueUrl || url !== valueUrl) continue;
-      result.push(entry);
-    }
-
-    return result;
+    return DateUtil.dateStringToDate(activeDateString);
   }
 
-  removeRequestData(key: string): boolean {
-    return this._reqDict.delete(key);
+  setActiveDate(value: Date | string): void {
+    this._activeDateString$.next(
+      typeof value === 'string' ? value : DateUtil.formatDateTimeToUniversalFormat(value)
+    );
   }
 
-  static sortByMostRecent(datas: [string, AppRequestData][]): void {
-    datas.sort((a, b) => b[1].moment - a[1].moment);
+  getDateRange() {
+    return this._dateRange$.getValue();
+  }
+
+  getDateRangeOrDefault() {
+    return this.getDateRange() ?? this.defaultRange;
+  }
+
+  setDateRange(value: AsNonNullable<DateRangeValue>): void {
+    this._dateRange$.next(value);
+  }
+
+  initDateRange(): void {
+    if (this.getDateRange() != null) return;
+    this.setDateRange(this.defaultRange);
   }
 }

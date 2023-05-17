@@ -6,14 +6,14 @@ import { map, tap } from 'rxjs/operators';
 
 import { ApiRequest, ErrorMessages, Requests } from 'src/app/models';
 import { Ctor, PaginatedResult, PostReturn } from 'src/app/models';
-import { AppService } from '../app.service';
+import { RequestService } from '../request.service';
 import { QueryUtil } from 'src/app/util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient, private appService: AppService) {}
+  constructor(private http: HttpClient, private requestService: RequestService) {}
 
   async get<T>(apiReq: ApiRequest<T>): Promise<T[]> {
     if (!this.isValidRequest[Requests.Get](apiReq)) {
@@ -145,7 +145,7 @@ export class ApiService {
   private async _returnAsync(req$: Observable<unknown>, apiReq: ApiRequest): Promise<unknown> {
     const { mapFn, tapFn, customData, url } = apiReq;
 
-    this.appService.registerRequestData(url, customData);
+    this.requestService.registerRequestData(url, customData);
 
     const piped$ = req$.pipe(
       map((res) => (mapFn != null ? mapFn(res) : res)),
