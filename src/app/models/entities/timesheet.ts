@@ -1,12 +1,11 @@
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { AddMap } from 'mapper-ts/lib-esm';
+import { TimePipe } from 'src/app/pipes';
+import { TableItemConfig } from '../configs';
+import { TimesheetMetricsDto } from '../dtos';
+import { TableItem } from '../types';
 import { TaskItem } from './task-item';
 import { TimesheetNote } from './timesheet-note';
-import { TableItem } from '../types';
-import { TableItemConfig } from '../configs';
-import { ArrayUtil, StringUtil } from 'src/app/util';
-import { DatePipe, DecimalPipe } from '@angular/common';
-import { TimePipe } from 'src/app/pipes';
-import { TimesheetMetricsDto } from '../dtos';
 
 export class Timesheet implements TableItem {
   id?: number;
@@ -18,46 +17,27 @@ export class Timesheet implements TableItem {
   @AddMap(TaskItem)
   tasks?: TaskItem[];
 
-  get totalTasks(): number {
-    return this.tasks?.length ?? 0;
-  }
-
-  get totalHours(): number {
-    return ArrayUtil.sumNumberProp(this.tasks, 'time');
-  }
-
-  get averageRating(): number {
-    if (!this.totalTasks) return 0;
-
-    const sum = ArrayUtil.sumNumberProp(this.tasks, 'rating');
-
-    return sum / this.totalTasks;
-  }
+  metrics?: TimesheetMetricsDto;
 
   static tableItems = (): TableItemConfig<Timesheet>[] => [
     { header: '#', key: 'id' },
     { header: 'Date', key: 'date', pipe: DatePipe },
     { header: 'Finished', key: 'finished' },
-    { header: 'Total Tasks', key: 'totalTasks', disabledOrderBy: true },
-    { header: 'Hours', key: 'totalHours', disabledOrderBy: true, pipe: TimePipe },
+    { header: 'Total Tasks', key: ['metrics', 'totalTasks'], defaultsTo: 0, disabledOrderBy: true },
+    {
+      header: 'Hours',
+      key: ['metrics', 'workedHours'],
+      defaultsTo: 0,
+      disabledOrderBy: true,
+      pipe: TimePipe,
+    },
     {
       header: 'Rating',
-      key: 'averageRating',
+      key: ['metrics', 'averageRating'],
       disabledOrderBy: true,
       pipe: DecimalPipe,
+      defaultsTo: 0,
       pipeArgs: ['1.1-2'],
     },
   ];
-
-  static buildMetricsDto = (timesheet: Timesheet): TimesheetMetricsDto => {
-    const { id, date, totalTasks, totalHours, averageRating } = timesheet;
-
-    return {
-      id,
-      date,
-      totalTasks,
-      workedHours: StringUtil.numberToTime(totalHours),
-      averageRating,
-    };
-  };
 }

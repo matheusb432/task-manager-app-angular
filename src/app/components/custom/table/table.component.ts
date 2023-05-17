@@ -125,10 +125,10 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
     this.setOrderBy(newOrderBy);
   }
 
-  getPropValue(item: T, key: TableKey<T>): unknown {
+  getPropValue(item: T, key: TableKey<T>, defaultsTo: unknown = null): unknown {
     if (!Array.isArray(key)) return item[key];
 
-    return ObjectUtil.getPropValue(item, ObjectUtil.keyToProp(key));
+    return ObjectUtil.getPropValue(item, ObjectUtil.keyToProp(key), defaultsTo);
   }
 
   orderItems(items: T[]): T[] {

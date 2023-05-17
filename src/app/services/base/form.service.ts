@@ -43,13 +43,13 @@ export abstract class FormService<TEntity extends TableItem> {
     if (options == null) {
       options = this._lastOptions$.getValue() ?? PaginationOptions.default();
     } else {
-      this._lastOptions$.next(options);
+      this.setLastOptions(options);
     }
 
     const res = await this.api.getPaginated(options);
 
-    this._listItems$.next(res.items);
-    this._total$.next(res.total);
+    this.setListItems(res.items);
+    this.setTotal(res.total);
   }
 
   async loadItem(id: string | null | undefined): Promise<TEntity | null> {
@@ -66,7 +66,7 @@ export abstract class FormService<TEntity extends TableItem> {
 
     const res = await this.api.getById(parsedId);
 
-    this._item$.next(res);
+    this.setItem(res);
 
     if (res == null) this.ts.error(this.toastMessages.noItem);
 
@@ -92,7 +92,7 @@ export abstract class FormService<TEntity extends TableItem> {
 
     try {
       const item = await this.api.getById(+id);
-      this._item$.next(item);
+      this.setItem(item);
     } catch (error) {
       this.ts.error(this.toastMessages.reloadError);
     }
@@ -136,17 +136,33 @@ export abstract class FormService<TEntity extends TableItem> {
     return this._lastOptions$.getValue()?.itemsPerPage ?? Constants.DefaultItemsPerPage;
   };
 
+  protected setListItems(items: TEntity[]): void {
+    this._listItems$.next(items);
+  }
+
+  protected setItem(item: TEntity | undefined): void {
+    this._item$.next(item);
+  }
+
+  protected setTotal(total: number): void {
+    this._total$.next(total);
+  }
+
+  protected setLastOptions(options: PaginationOptions): void {
+    this._lastOptions$.next(options);
+  }
+
   protected removeFromMemory = (id: number): void => {
     const item = this._item$.getValue();
-    if (item?.id === id) this._item$.next(undefined);
+    if (item?.id === id) this.setItem(undefined);
 
     const listItems = this._listItems$.getValue();
 
     if (!listItems.some((x) => x.id === id)) return;
 
     const filteredListItems = listItems.filter((x) => x.id !== id);
-    this._listItems$.next(filteredListItems);
-    this._total$.next(this._total$.getValue() - 1);
+    this.setListItems(filteredListItems);
+    this.setTotal(this._total$.getValue() - 1);
 
     if (filteredListItems.length === 0) {
       this.decrementPage();
@@ -159,6 +175,6 @@ export abstract class FormService<TEntity extends TableItem> {
     const lastOptions = this._lastOptions$.getValue();
     if (!lastOptions?.page) return;
 
-    this._lastOptions$.next({ ...lastOptions, page: lastOptions.page - 1 });
+    this.setLastOptions({ ...lastOptions, page: lastOptions.page - 1 });
   };
 }

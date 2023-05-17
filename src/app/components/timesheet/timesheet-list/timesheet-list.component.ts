@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Profile, TableConfig, Timesheet, WithDestroyed } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import {

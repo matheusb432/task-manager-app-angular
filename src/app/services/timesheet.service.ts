@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subject, map, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, takeUntil, tap } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { DateRangeValue } from '../components/custom/inputs';
 import {
   TimesheetFormGroup,
@@ -37,13 +38,20 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     end: DateUtil.addMonths(new Date(), 1),
   };
 
-  private _metricsDict$ = new BehaviorSubject<TimesheetMetricsDictionary>({ byDate: {} });
+  private _metricsDict$ = new BehaviorSubject<TimesheetMetricsDictionary>({
+    byDate: {},
+    dates: [],
+  });
   private _activeDateString$ = new BehaviorSubject<string>(
     DateUtil.formatDateToUniversalFormat(new Date())
   );
   private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
 
   private destroyed$ = new Subject<boolean>();
+
+  override get listItems$() {
+    return this._listItems$.asObservable();
+  }
 
   get activeDateString$() {
     return this._activeDateString$.asObservable().pipe(map(DateUtil.dateTimeStringToDateString));
@@ -94,16 +102,27 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
           const { start, end } = dateRange;
 
           this.loadMetricsByRange(start, end);
-          this.loadListItems(
-            PaginationOptions.fromOptions({
-              filter: {
-                ...QueryUtil.getDateRangeFilter('date', start, end),
-              },
-            })
-          );
+          this.loadListItemsByRange(start, end);
         })
       )
       .subscribe();
+    this.metricsDict$
+      .pipe(
+        takeUntil(this.destroyed$),
+        tap((metricsDict) => {
+          this.setTimesheetsMetrics(metricsDict);
+        })
+      )
+      .subscribe();
+  }
+
+  async loadListItemsByRange(from: Date, to: Date): Promise<void> {
+    const options = PaginationOptions.fromOptions({
+      filter: {
+        ...QueryUtil.getDateRangeFilter('date', from, to),
+      },
+    });
+    this.loadListItems(options);
   }
 
   // TODO search by logged user id also
@@ -126,6 +145,17 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     const metricsList = await this.getMetricsByRange(from, to);
 
     this.setMetricsList(metricsList);
+  }
+
+  private setTimesheetsMetrics(metricsDict: TimesheetMetricsDictionary): void {
+    const newItems = this._listItems$.getValue().map((item) => {
+      const date = item?.date;
+      if (!date) return item;
+
+      return { ...item, metrics: metricsDict.byDate[date] };
+    });
+
+    this._listItems$.next(newItems);
   }
 
   private getMetricsByRange = async (
@@ -156,7 +186,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
    * @description Normalizing the metrics list state shape to a dictionary with date keys
    */
   private setMetricsList(metricsList: TimesheetMetricsDto[]): void {
-    const metricsDict: TimesheetMetricsDictionary = { byDate: {} };
+    const metricsDict: TimesheetMetricsDictionary = { byDate: {}, dates: [] };
 
     metricsList.forEach((metrics) => {
       const date = DateUtil.dateTimeStringToDateString(metrics.date);
@@ -164,10 +194,23 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       if (!date) return;
 
       metricsDict.byDate[date] = metrics;
+      metricsDict.dates.push(date);
     });
-    console.warn(metricsDict);
 
     this._metricsDict$.next(metricsDict);
+  }
+
+  override setListItems(items: Timesheet[]): void {
+    const metricsDict = this._metricsDict$.getValue();
+    const newItems = items
+      .filter((item) => item?.date != null)
+      .map((timesheet) => {
+        const { date } = timesheet as Required<Timesheet>;
+        const dateString = DateUtil.dateTimeStringToDateString(date);
+        return { ...timesheet, date: dateString, metrics: metricsDict.byDate[dateString] };
+      });
+
+    this._listItems$.next(newItems);
   }
 
   setActiveDate = (value: Date | string): void => {
@@ -248,8 +291,11 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   /**
    * @description Builds an observable stream from a given date in 'yyyy-MM-dd' format
    */
-  metricsByDate$(date: string) {
-    return this.metricsDict$.pipe(map((m) => m.byDate[date]));
+  metricsByDate$(date: string): Observable<TimesheetMetricsDto> {
+    return this.metricsDict$.pipe(
+      filter((m) => m.byDate[date] != null),
+      map((m) => m.byDate[date])
+    );
   }
 
   goToList = () => this.router.navigateByUrl(paths.timesheets);

@@ -8,4 +8,5 @@ export class TimesheetMetricsDto {
 
 export interface TimesheetMetricsDictionary {
   byDate: Record<string, TimesheetMetricsDto>;
+  dates: string[];
 }

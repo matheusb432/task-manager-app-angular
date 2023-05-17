@@ -25,7 +25,10 @@
       class="table-row"
     >
       <td *ngFor="let itemConfig of itemConfigs" class="table-item">
-        {{ getPropValue(item, itemConfig.key) | dynamic : itemConfig.pipe : itemConfig.pipeArgs }}
+        {{
+          getPropValue(item, itemConfig.key, itemConfig.defaultsTo)
+            | dynamic : itemConfig.pipe : itemConfig.pipeArgs
+        }}
       </td>
       <td *ngIf="canShowActions()" class="text-right actions">
         <app-icon

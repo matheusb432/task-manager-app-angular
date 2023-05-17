@@ -16,6 +16,7 @@ export interface TableItemConfig<T = unknown> {
   header: string;
   key: TableKey<T>;
   disabledOrderBy?: boolean;
+  defaultsTo?: unknown;
   pipe?: ProviderToken<PipeTransform>;
   pipeArgs?: unknown[];
 }

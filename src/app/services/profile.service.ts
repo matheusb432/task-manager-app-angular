@@ -2,18 +2,18 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-import { BehaviorSubject, Subject, from } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Profile, ProfileType } from 'src/app/models';
 import { ProfileFormGroup, getProfileForm } from '../components/profile/profile-form';
 import { PaginationOptions } from '../models/configs/pagination-options';
 import { TimePipe } from '../pipes';
 import { DetailsTypes, ElementIds, FormUtil, PubSubUtil, paths } from '../util';
+import { ProfileUtil } from '../util/profile.util';
 import { ProfileApiService } from './api';
 import { FormService } from './base/form.service';
 import { LoadingService } from './loading.service';
 import { ProfileTypeService } from './profile-type.service';
 import { ToastService } from './toast.service';
-import { ProfileUtil } from '../util/profile.util';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +65,7 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
         filter((profile) => ProfileUtil.isCustomProfile(profile.profileType?.type)),
         tap((profile) => {
           // TODO set active date ranges on slides/timesheets?
-          console.warn(profile);
+          // console.warn(profile);
         })
       )
       .subscribe();

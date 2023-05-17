@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { get } from "lodash-es";
+import { Injectable } from '@angular/core';
+import { get } from 'lodash-es';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ObjectUtil {
   static deepClone<T>(obj: T): T {
@@ -22,8 +22,8 @@ export class ObjectUtil {
     return RegExp(/^\{.*\}$/).test(value) || RegExp(/^\[.*\]$/).test(value);
   }
 
-  static getPropValue = (obj: object, prop: string): unknown => {
-    return get(obj, prop, null);
+  static getPropValue = (obj: object, prop: string, defaultsTo: unknown = null): unknown => {
+    return get(obj, prop, defaultsTo);
   };
 
   static keyToProp = (key: [unknown, string]): string => {
