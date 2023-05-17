@@ -11,7 +11,7 @@ import {
 import {
   PaginationOptions,
   Timesheet,
-  TimesheetMetricsDictionary,
+  TimesheetMetricsStore,
   TimesheetMetricsDto,
 } from '../models';
 import {
@@ -32,7 +32,7 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class TimesheetService extends FormService<Timesheet> implements OnDestroy {
-  private _metricsDict$ = new BehaviorSubject<TimesheetMetricsDictionary>({
+  private _metricsStore$ = new BehaviorSubject<TimesheetMetricsStore>({
     byDate: {},
     dates: [],
   });
@@ -42,8 +42,8 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return this._listItems$.asObservable();
   }
 
-  get metricsDict$() {
-    return this._metricsDict$.asObservable();
+  get metricsStore$() {
+    return this._metricsStore$.asObservable();
   }
 
   constructor(
@@ -89,11 +89,11 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
         })
       )
       .subscribe();
-    this.metricsDict$
+    this.metricsStore$
       .pipe(
         takeUntil(this.destroyed$),
-        tap((metricsDict) => {
-          this.setTimesheetsMetrics(metricsDict);
+        tap((metricsStore) => {
+          this.setTimesheetsMetrics(metricsStore);
         })
       )
       .subscribe();
@@ -130,12 +130,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     this.setMetricsList(metricsList);
   }
 
-  private setTimesheetsMetrics(metricsDict: TimesheetMetricsDictionary): void {
+  private setTimesheetsMetrics(metricsStore: TimesheetMetricsStore): void {
     const newItems = this._listItems$.getValue().map((item) => {
       const date = item?.date;
       if (!date) return item;
 
-      return { ...item, metrics: metricsDict.byDate[date] };
+      return { ...item, metrics: metricsStore.byDate[date] };
     });
 
     this._listItems$.next(newItems);
@@ -160,31 +160,31 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   };
 
   /**
-   * @description Normalizing the metrics list state shape to a dictionary with date keys
+   * @description Normalizing the metrics list state shape to a data table with date keys
    */
   private setMetricsList(metricsList: TimesheetMetricsDto[]): void {
-    const metricsDict: TimesheetMetricsDictionary = { byDate: {}, dates: [] };
+    const metricsStore: TimesheetMetricsStore = { byDate: {}, dates: [] };
 
     metricsList.forEach((metrics) => {
       const date = DateUtil.dateTimeStringToDateString(metrics.date);
 
       if (!date) return;
 
-      metricsDict.byDate[date] = metrics;
-      metricsDict.dates.push(date);
+      metricsStore.byDate[date] = metrics;
+      metricsStore.dates.push(date);
     });
 
-    this._metricsDict$.next(metricsDict);
+    this._metricsStore$.next(metricsStore);
   }
 
   override setListItems(items: Timesheet[]): void {
-    const metricsDict = this._metricsDict$.getValue();
+    const metricsStore = this._metricsStore$.getValue();
     const newItems = items
       .filter((item) => item?.date != null)
       .map((timesheet) => {
         const { date } = timesheet as Required<Timesheet>;
         const dateString = DateUtil.dateTimeStringToDateString(date);
-        return { ...timesheet, date: dateString, metrics: metricsDict.byDate[dateString] };
+        return { ...timesheet, date: dateString, metrics: metricsStore.byDate[dateString] };
       });
 
     this._listItems$.next(newItems);
@@ -255,7 +255,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
    * @description Builds an observable stream from a given date in 'yyyy-MM-dd' format
    */
   metricsByDate$(date: string): Observable<TimesheetMetricsDto> {
-    return this.metricsDict$.pipe(
+    return this.metricsStore$.pipe(
       filter((m) => m.byDate[date] != null),
       map((m) => m.byDate[date])
     );

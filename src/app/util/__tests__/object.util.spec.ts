@@ -46,7 +46,6 @@ describe('Util: Object', () => {
     });
   });
 
-
   describe('isFromEnum', () => {
     it('should return true when value is from enum', () => {
       enum TestEnum {
@@ -95,12 +94,12 @@ describe('Util: Object', () => {
   });
 
   describe('getPropValue', () => {
-    it('should return value of property when property exists', () => {
+    it('should return value of property when it exists', () => {
       const obj = { name: 'John' };
       expect(ObjectUtil.getPropValue(obj, 'name')).toBe('John');
     });
 
-    it('should return null when property does not exist', () => {
+    it('should return nested property when it exists', () => {
       const obj = { user: { name: 'Nested' } };
       expect(ObjectUtil.getPropValue(obj, 'user.name')).toBe('Nested');
     });

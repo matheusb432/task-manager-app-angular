@@ -106,6 +106,12 @@ export class DateUtil {
     );
   };
 
+  static isDateInDates = (date: Date, dates: Date[]): boolean => {
+    if (!date || !dates.length) return false;
+
+    return dates.some((d) => DateUtil.datesEqual(date, d));
+  };
+
   static toDayOfWeek = (dayOfWeek: WeekDay): DaysOfWeek | '' => {
     const weekDays: { [key: number]: DaysOfWeek } = {
       [WeekDay.Sunday]: DaysOfWeek.Sunday,

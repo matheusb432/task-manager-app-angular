@@ -28,8 +28,8 @@ export class Profile implements TableItem {
   ];
 }
 
-export interface DateProfileIdsDictionary {
-  byDate: { [date: string]: number };
+export interface ProfileIdsStore {
+  byDate: Record<string, number>;
   dates: string[];
 }
 

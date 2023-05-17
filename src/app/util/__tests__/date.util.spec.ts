@@ -322,4 +322,20 @@ describe('Util: Date', () => {
       ).toBeFalse();
     });
   });
+
+  describe('isDateInDates', () => {
+    it('should return true when date is in dates', () => {
+      const date = new Date(2023, 4, 1);
+      const dates = [new Date(2023, 4, 1), new Date(2023, 4, 2)];
+
+      expect(DateUtil.isDateInDates(date, dates)).toBeTrue();
+    });
+
+    it('should return false when date is not in dates', () => {
+      const date = new Date(2023, 4, 1);
+      const dates = [new Date(2023, 4, 2), new Date(2023, 4, 3)];
+
+      expect(DateUtil.isDateInDates(date, dates)).toBeFalse();
+    });
+  });
 });

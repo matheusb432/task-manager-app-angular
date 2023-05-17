@@ -1,15 +1,16 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Profile, ProfileType } from 'src/app/models';
+import { BehaviorSubject, Subject, from } from 'rxjs';
+import { ActiveProfileIds, ProfileIdsStore, Profile, ProfileType } from 'src/app/models';
 import { ProfileFormGroup, getProfileForm } from '../components/profile/profile-form';
 import { PaginationOptions } from '../models/configs/pagination-options';
 import { TimePipe } from '../pipes';
 import { DetailsTypes, ElementIds, FormUtil, PubSubUtil, paths } from '../util';
 import { ProfileUtil } from '../util/profile.util';
 import { ProfileApiService } from './api';
+import { AppService } from './app.service';
 import { FormService } from './base/form.service';
 import { LoadingService } from './loading.service';
 import { ProfileTypeService } from './profile-type.service';
@@ -21,20 +22,33 @@ import { ToastService } from './toast.service';
 export class ProfileService extends FormService<Profile> implements OnDestroy {
   private destroyed$ = new Subject<boolean>();
   private types$ = new BehaviorSubject<ProfileType[]>([]);
-  private _weekdayProfile$ = new BehaviorSubject<Profile | null>(null);
-  private _weekendProfile$ = new BehaviorSubject<Profile | null>(null);
-  private _holidayProfile$ = new BehaviorSubject<Profile | null>(null);
 
-  get weekdayProfile$() {
-    return this._weekdayProfile$.asObservable();
-  }
+  private _activeProfileIds$ = new BehaviorSubject<ActiveProfileIds>({
+    weekday: null,
+    weekend: null,
+    holiday: null,
+    customDateRanges: [],
+  });
+  private _profileIdsStore$ = new BehaviorSubject<ProfileIdsStore>({
+    byDate: {},
+    dates: [],
+  });
 
-  get weekendProfile$() {
-    return this._weekendProfile$.asObservable();
-  }
+  // TODO setup from active profile ids
+  // get weekdayProfileId$() {
+  //   return this._weekdayProfileId$.asObservable();
+  // }
 
-  get holidayProfile$() {
-    return this._holidayProfile$.asObservable();
+  // get weekendProfileId$() {
+  //   return this._weekendProfileId$.asObservable();
+  // }
+
+  // get holidayProfileId$() {
+  //   return this._holidayProfileId$.asObservable();
+  // }
+
+  get profileIdsStore$() {
+    return this._profileIdsStore$.asObservable();
   }
 
   typeOptions$ = this.types$.pipe(map((types) => ProfileTypeService.toOptions(types)));
@@ -42,6 +56,7 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   constructor(
     protected override api: ProfileApiService,
     protected override ts: ToastService,
+    private app: AppService,
     private router: Router,
     private profileTypeService: ProfileTypeService
   ) {
@@ -58,14 +73,13 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
     this.listItems$
       .pipe(
         takeUntil(this.destroyed$),
-        tap((profiles) => {
-          this.setActiveProfiles(profiles);
+        switchMap((profiles) => {
+          this.setActiveProfileIds(profiles);
+
+          return from(this._activeProfileIds$.pipe(takeUntil(this.destroyed$)));
         }),
-        switchMap((profiles) => profiles),
-        filter((profile) => ProfileUtil.isCustomProfile(profile.profileType?.type)),
-        tap((profile) => {
-          // TODO set active date ranges on slides/timesheets?
-          // console.warn(profile);
+        tap((activeProfileIds) => {
+          this.setProfileIdsStore(activeProfileIds);
         })
       )
       .subscribe();
@@ -92,6 +106,14 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
     this.types$.next(res);
   };
 
+  private setProfileIdsStore = (activeProfileIds: ActiveProfileIds) => {
+    const range = this.app.getDateRangeOrDefault();
+
+    const store = ProfileUtil.buildProfileIdsStore(activeProfileIds, range);
+
+    this._profileIdsStore$.next(store);
+  };
+
   convertToForm(item: Profile): ProfileFormGroup {
     const newFg = ProfileFormGroup.from(getProfileForm());
 
@@ -112,10 +134,25 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
     this.router.navigate([paths.profilesDetails], { queryParams: { id, type } });
   };
 
-  private setActiveProfiles = (profiles: Profile[]) => {
-    this._weekdayProfile$.next(ProfileUtil.getActiveWeekdayProfile(profiles));
-    this._weekendProfile$.next(ProfileUtil.getActiveWeekendProfile(profiles));
-    this._holidayProfile$.next(ProfileUtil.getActiveHolidayProfile(profiles));
+  private setActiveProfileIds = (profiles: Profile[]) => {
+    const baseProfiles = profiles.filter(
+      (profile) => !ProfileUtil.isCustomProfile(profile.profileType?.type)
+    );
+    const customProfiles = profiles.filter((profile) =>
+      ProfileUtil.isCustomProfile(profile.profileType?.type)
+    );
+
+    const weekdayProfile = ProfileUtil.getActiveWeekdayProfile(baseProfiles);
+    const weekendProfile = ProfileUtil.getActiveWeekendProfile(baseProfiles);
+    const holidayProfile = ProfileUtil.getActiveHolidayProfile(baseProfiles);
+    const customDateRanges = ProfileUtil.getCustomProfileDateRanges(customProfiles);
+
+    this._activeProfileIds$.next({
+      weekday: weekdayProfile?.id ?? null,
+      weekend: weekendProfile?.id ?? null,
+      holiday: holidayProfile?.id ?? null,
+      customDateRanges,
+    });
   };
 
   private setToastMessages = () => {

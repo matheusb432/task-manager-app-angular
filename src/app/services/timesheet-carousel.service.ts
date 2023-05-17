@@ -106,6 +106,7 @@ export class TimesheetCarouselService implements OnDestroy {
     lastMonth = ''
   ): DateSlide[] {
     const slides: DateSlide[] = [];
+    // TODO to higher order function?
     for (let days = 0; days < size; days++) {
       const date = DateUtil.addDays(initialDate, days + daysToAdd);
       const dateValues = DateUtil.getDateValues(date);

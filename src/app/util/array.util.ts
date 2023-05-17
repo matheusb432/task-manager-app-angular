@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { orderBy } from 'lodash-es';
 import { Nullish, OrderByConfig, TableKey } from '../models';
-import { orderBy, sortBy } from 'lodash-es';
 import { ObjectUtil } from './object.util';
 
 @Injectable({

@@ -6,7 +6,7 @@ export class TimesheetMetricsDto {
   averageRating?: number;
 }
 
-export interface TimesheetMetricsDictionary {
+export interface TimesheetMetricsStore {
   byDate: Record<string, TimesheetMetricsDto>;
   dates: string[];
 }
