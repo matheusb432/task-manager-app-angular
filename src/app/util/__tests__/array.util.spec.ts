@@ -16,33 +16,33 @@ describe('Util: Array', () => {
 
   describe('areEqualShallow', () => {
     it('should return true when arrays are equal', () => {
-      expect(ArrayUtil.areEqualShallow([1, 2, 3], [1, 2, 3])).toBe(true);
-      expect(ArrayUtil.areEqualShallow(['a', 'b', 'c'], ['a', 'b', 'c'])).toBe(true);
-      expect(ArrayUtil.areEqualShallow([true, false], [true, false])).toBe(true);
+      expect(ArrayUtil.areEqualShallow([1, 2, 3], [1, 2, 3])).toBeTrue();
+      expect(ArrayUtil.areEqualShallow(['a', 'b', 'c'], ['a', 'b', 'c'])).toBeTrue();
+      expect(ArrayUtil.areEqualShallow([true, false], [true, false])).toBeTrue();
     });
 
     it('should return false when arrays are not equal', () => {
-      expect(ArrayUtil.areEqualShallow([1, 2, 3], [1, 2])).toBe(false);
-      expect(ArrayUtil.areEqualShallow([1, 2, 3], [1, 2, 4])).toBe(false);
-      expect(ArrayUtil.areEqualShallow(['a', 'b', 'c'], ['a', 'b', 'd'])).toBe(false);
-      expect(ArrayUtil.areEqualShallow([true, false], [true, true])).toBe(false);
+      expect(ArrayUtil.areEqualShallow([1, 2, 3], [1, 2])).toBeFalse();
+      expect(ArrayUtil.areEqualShallow([1, 2, 3], [1, 2, 4])).toBeFalse();
+      expect(ArrayUtil.areEqualShallow(['a', 'b', 'c'], ['a', 'b', 'd'])).toBeFalse();
+      expect(ArrayUtil.areEqualShallow([true, false], [true, true])).toBeFalse();
     });
 
     it('should return false when one or both of the arrays are null', () => {
       const nullArr = null as unknown as unknown[];
 
-      expect(ArrayUtil.areEqualShallow(nullArr, [1, 2, 3])).toBe(false);
-      expect(ArrayUtil.areEqualShallow([1, 2, 3], nullArr)).toBe(false);
-      expect(ArrayUtil.areEqualShallow(nullArr, nullArr)).toBe(false);
+      expect(ArrayUtil.areEqualShallow(nullArr, [1, 2, 3])).toBeFalse();
+      expect(ArrayUtil.areEqualShallow([1, 2, 3], nullArr)).toBeFalse();
+      expect(ArrayUtil.areEqualShallow(nullArr, nullArr)).toBeFalse();
     });
   });
 
   describe('areEqualDeep', () => {
     it('should return true when arrays are equal', () => {
-      expect(ArrayUtil.areEqualDeep([1, 2, 3], [1, 2, 3])).toBe(true);
-      expect(ArrayUtil.areEqualDeep(['a', 'b', 'c'], ['a', 'b', 'c'])).toBe(true);
-      expect(ArrayUtil.areEqualDeep([true, false], [true, false])).toBe(true);
-      expect(ArrayUtil.areEqualDeep([{ a: 1 }, { b: 2 }], [{ a: 1 }, { b: 2 }])).toBe(true);
+      expect(ArrayUtil.areEqualDeep([1, 2, 3], [1, 2, 3])).toBeTrue();
+      expect(ArrayUtil.areEqualDeep(['a', 'b', 'c'], ['a', 'b', 'c'])).toBeTrue();
+      expect(ArrayUtil.areEqualDeep([true, false], [true, false])).toBeTrue();
+      expect(ArrayUtil.areEqualDeep([{ a: 1 }, { b: 2 }], [{ a: 1 }, { b: 2 }])).toBeTrue();
       expect(
         ArrayUtil.areEqualDeep(
           [
@@ -54,15 +54,15 @@ describe('Util: Array', () => {
             [3, 4],
           ]
         )
-      ).toBe(true);
+      ).toBeTrue();
     });
 
     it('should return false when arrays are not equal', () => {
-      expect(ArrayUtil.areEqualDeep([1, 2, 3], [1, 2])).toBe(false);
-      expect(ArrayUtil.areEqualDeep([1, 2, 3], [1, 2, 4])).toBe(false);
-      expect(ArrayUtil.areEqualDeep(['a', 'b', 'c'], ['a', 'b', 'd'])).toBe(false);
-      expect(ArrayUtil.areEqualDeep([true, false], [true, true])).toBe(false);
-      expect(ArrayUtil.areEqualDeep([{ a: 1 }, { b: 20 }], [{ a: 1 }, { b: 2 }])).toBe(false);
+      expect(ArrayUtil.areEqualDeep([1, 2, 3], [1, 2])).toBeFalse();
+      expect(ArrayUtil.areEqualDeep([1, 2, 3], [1, 2, 4])).toBeFalse();
+      expect(ArrayUtil.areEqualDeep(['a', 'b', 'c'], ['a', 'b', 'd'])).toBeFalse();
+      expect(ArrayUtil.areEqualDeep([true, false], [true, true])).toBeFalse();
+      expect(ArrayUtil.areEqualDeep([{ a: 1 }, { b: 20 }], [{ a: 1 }, { b: 2 }])).toBeFalse();
       expect(
         ArrayUtil.areEqualDeep(
           [
@@ -74,15 +74,15 @@ describe('Util: Array', () => {
             [3, 4],
           ]
         )
-      ).toBe(false);
+      ).toBeFalse();
     });
 
     it('should return false when one or both of the arrays are null', () => {
       const nullArr = null as unknown as unknown[];
 
-      expect(ArrayUtil.areEqualDeep(nullArr, [1, 2, 3])).toBe(false);
-      expect(ArrayUtil.areEqualDeep([1, 2, 3], nullArr)).toBe(false);
-      expect(ArrayUtil.areEqualDeep(nullArr, nullArr)).toBe(false);
+      expect(ArrayUtil.areEqualDeep(nullArr, [1, 2, 3])).toBeFalse();
+      expect(ArrayUtil.areEqualDeep([1, 2, 3], nullArr)).toBeFalse();
+      expect(ArrayUtil.areEqualDeep(nullArr, nullArr)).toBeFalse();
     });
   });
 
@@ -245,6 +245,30 @@ describe('Util: Array', () => {
 
       expect(orderedNestedItems).not.toEqual(nestedItems);
       expect(unorderedNestedItems).toEqual(nestedItems);
+    });
+  });
+
+  describe('isEmpty', () => {
+    it('should return true when the array is empty or nullish', () => {
+      expect(ArrayUtil.isEmpty([])).toBeTrue();
+      expect(ArrayUtil.isEmpty(null as unknown as unknown[])).toBeTrue();
+      expect(ArrayUtil.isEmpty(undefined as unknown as unknown[])).toBeTrue();
+    });
+
+    it('should return false when the array is not empty', () => {
+      expect(ArrayUtil.isEmpty([1, 2, 3])).toBeFalse();
+    });
+  });
+
+  describe('isNotEmpty', () => {
+    it('should return false when the array is empty or nullish', () => {
+      expect(ArrayUtil.isNotEmpty([])).toBeFalse();
+      expect(ArrayUtil.isNotEmpty(null as unknown as unknown[])).toBeFalse();
+      expect(ArrayUtil.isNotEmpty(undefined as unknown as unknown[])).toBeFalse();
+    });
+
+    it('should return true when the array is not empty', () => {
+      expect(ArrayUtil.isNotEmpty([1, 2, 3])).toBeTrue();
     });
   });
 });

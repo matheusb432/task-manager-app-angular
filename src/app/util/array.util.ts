@@ -68,4 +68,12 @@ export class ArrayUtil {
 
     return orderBy(items, ObjectUtil.keyToProp(key), direction);
   }
+
+  static isEmpty<T>(array: T[] | undefined | null): boolean {
+    return !array?.length;
+  }
+
+  static isNotEmpty<T>(array: T[] | undefined | null): boolean {
+    return !this.isEmpty(array);
+  }
 }

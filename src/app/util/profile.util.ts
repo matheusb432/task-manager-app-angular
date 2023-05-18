@@ -28,73 +28,74 @@ export class ProfileUtil {
    * 4. Weekdays
    *
    */
-  // TODO tests then refactor
   static buildProfileIdsStore(
     activeIds: ActiveProfileIds,
     range: { start: Date; end: Date },
     holidays: Date[] = []
   ): ProfileIdsStore {
-    const dict: ProfileIdsStore = {
-      byDate: {},
-      dates: [],
-    };
+    const dict: ProfileIdsStore = this.getInitialProfileIdsStore();
     const { start: from, end: to } = range;
-    const { weekday, weekend, holiday, customDateRanges } = activeIds;
+    const { customDateRanges } = activeIds;
     const size = DateUtil.daysDiff(from, to) + 1;
 
-    const customDateRangesInRange = ArrayUtil.orderItems(
-      customDateRanges.filter((range) => {
-        const { start, end } = range;
-        return DateUtil.areDatesInDateRangeInclusive([start, end], from, to);
-      }),
-      'priority',
-      'desc'
+    const customDateRangesInRange = this.getOrderedCustomDateRangesInRange(
+      customDateRanges,
+      from,
+      to
     );
-
-    const hasCustom = !!customDateRangesInRange.length;
-    // TODO method to get custom date ranges for date range
 
     for (let daysToAdd = 0; daysToAdd < size; daysToAdd++) {
       const date = DateUtil.addDays(from, daysToAdd);
       const { formattedDate, isWeekend, isHoliday } = this.getDateValuesForProfile(date, holidays);
-      let dateProfileId: number | null = null;
 
-      // TODO to method that resolves value
-      if (hasCustom) {
-        const customDateRange = customDateRangesInRange.find((range) => {
-          const { start, end } = range;
-          return DateUtil.isInDateRangeInclusive(date, start, end);
-        });
+      const dateProfileId = this.resolveProfileIdForDate(
+        { date, isHoliday, isWeekend },
+        activeIds,
+        customDateRangesInRange
+      );
 
-        if (customDateRange != null) {
-          dateProfileId = customDateRange.profileId;
-          dict.byDate[formattedDate] = dateProfileId;
-          dict.dates.push(formattedDate);
-          continue;
-        }
-      }
-      if (isHoliday && holiday != null) {
-        dateProfileId = holiday;
-        dict.byDate[formattedDate] = dateProfileId;
-        dict.dates.push(formattedDate);
-        continue;
-      }
-      if (isWeekend && weekend != null) {
-        dateProfileId = weekend;
-        dict.byDate[formattedDate] = dateProfileId;
-        dict.dates.push(formattedDate);
-        continue;
-      }
-      if (weekday != null) {
-        dateProfileId = weekday;
-        // TODO dict type to generic type
-        dict.byDate[formattedDate] = dateProfileId;
-        dict.dates.push(formattedDate);
-        continue;
-      }
+      if (dateProfileId == null) continue;
+
+      dict.byDate[formattedDate] = dateProfileId;
+      dict.dates.push(formattedDate);
     }
 
     return dict;
+  }
+
+  private static resolveProfileIdForDate(
+    dateData: { date: Date; isHoliday: boolean; isWeekend: boolean },
+    activeIds: ActiveProfileIds,
+    customDateRanges: ProfileDateRange[]
+  ): number | null {
+    const { date, isHoliday, isWeekend } = dateData;
+    const { weekday, weekend, holiday } = activeIds;
+
+    const customId = this.resolveCustomProfileId(date, customDateRanges);
+    if (customId != null) return customId;
+    if (isHoliday) return holiday;
+    if (isWeekend) return weekend;
+    return weekday;
+  }
+
+  static getInitialProfileIdsStore(): ProfileIdsStore {
+    return {
+      byDate: {},
+      dates: [],
+    };
+  }
+
+  private static resolveCustomProfileId(
+    date: Date,
+    customDateRanges: ProfileDateRange[]
+  ): number | null {
+    if (ArrayUtil.isEmpty(customDateRanges)) return null;
+
+    const customDateRange = customDateRanges.find(({ start, end }) =>
+      DateUtil.isInDateRangeInclusive(date, start, end)
+    );
+
+    return customDateRange?.profileId ?? null;
   }
 
   static getOrderedCustomDateRangesInRange(

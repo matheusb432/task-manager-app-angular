@@ -29,23 +29,21 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
     holiday: null,
     customDateRanges: [],
   });
-  private _profileIdsStore$ = new BehaviorSubject<ProfileIdsStore>({
-    byDate: {},
-    dates: [],
-  });
+  private _profileIdsStore$ = new BehaviorSubject<ProfileIdsStore>(
+    ProfileUtil.getInitialProfileIdsStore()
+  );
 
-  // TODO setup from active profile ids
-  // get weekdayProfileId$() {
-  //   return this._weekdayProfileId$.asObservable();
-  // }
+  get weekdayProfileId$() {
+    return this._activeProfileIds$.pipe(map((ids) => ids.weekday));
+  }
 
-  // get weekendProfileId$() {
-  //   return this._weekendProfileId$.asObservable();
-  // }
+  get weekendProfileId$() {
+    return this._activeProfileIds$.pipe(map((ids) => ids.weekend));
+  }
 
-  // get holidayProfileId$() {
-  //   return this._holidayProfileId$.asObservable();
-  // }
+  get holidayProfileId$() {
+    return this._activeProfileIds$.pipe(map((ids) => ids.holiday));
+  }
 
   get profileIdsStore$() {
     return this._profileIdsStore$.asObservable();
