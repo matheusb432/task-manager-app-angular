@@ -1,18 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DateSlide, Profile, TimesheetMetricsDto } from 'src/app/models';
+import { DateSlide, Profile, TimesheetMetrics } from 'src/app/models';
+import { TimePipe } from 'src/app/pipes';
 import { ProfileService, TimesheetService } from 'src/app/services';
-import { Icons } from 'src/app/util';
+import { Icons, StringUtil } from 'src/app/util';
+import { IconComponent } from '../../custom/icon/icon.component';
+import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
 
 @Component({
   selector: 'app-timesheet-slide [slide]',
   templateUrl: './timesheet-slide.component.html',
   styleUrls: ['./timesheet-slide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, IconComponent, TimesheetSlideSpanComponent, TimePipe],
 })
 export class TimesheetSlideComponent {
   private _slide!: DateSlide;
-  metrics$!: Observable<TimesheetMetricsDto | undefined>;
+  metrics$!: Observable<TimesheetMetrics>;
   profile$!: Observable<Profile | null>;
 
   @Output() selectedSlide = new EventEmitter<DateSlide>();
@@ -24,7 +30,6 @@ export class TimesheetSlideComponent {
   set slide(value: DateSlide) {
     this._slide = value;
     this.metrics$ = this.service.metricsByDate$(value.date);
-    // TODO pipe to not be nullable?
     this.profile$ = this.profileService.byDate$(value.date);
   }
 
@@ -36,17 +41,27 @@ export class TimesheetSlideComponent {
     this.selectedSlide.emit(slide);
   }
 
-  getTotalHoursClasses(metrics: TimesheetMetricsDto, profile: Profile | null) {
+  getTotalHoursClasses(metrics: TimesheetMetrics, profile: Profile | null) {
+    if (profile == null) return {};
+    const timeTarget = StringUtil.timeToNumber(profile.timeTarget);
+    const workedHours = metrics.workedHours ?? 0;
+    const success = timeTarget < workedHours;
+
     return {
-      completed: (profile?.timeTarget ?? 0) < (metrics.workedHours ?? 0),
-      failed: (profile?.timeTarget ?? 0) >= (metrics.workedHours ?? 0),
+      success,
+      fail: !success,
     };
   }
 
-  getTasksClasses(metrics: TimesheetMetricsDto, profile: Profile | null) {
+  getTasksClasses(metrics: TimesheetMetrics, profile: Profile | null) {
+    if (profile == null) return {};
+    const tasksTarget = profile.tasksTarget ?? 0;
+    const totalTasks = metrics.totalTasks ?? 0;
+    const success = tasksTarget < totalTasks;
+
     return {
-      completed: (profile?.tasksTarget ?? 0) < (metrics.totalTasks ?? 0),
-      failed: (profile?.tasksTarget ?? 0) >= (metrics.totalTasks ?? 0),
+      success,
+      fail: !success,
     };
   }
 }

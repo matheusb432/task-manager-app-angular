@@ -10,8 +10,8 @@ export class StringUtil {
     return word[0].toUpperCase() + word.substring(1).toLowerCase();
   };
 
-  static timeToNumber = (timeHhMm: string): number => {
-    if (typeof timeHhMm !== 'string') return timeHhMm;
+  static timeToNumber = (timeHhMm: string | undefined): number => {
+    if (typeof timeHhMm !== 'string') return timeHhMm ?? 0;
 
     const splitTime = timeHhMm?.split(':');
     if (splitTime?.length !== 2) return 0;

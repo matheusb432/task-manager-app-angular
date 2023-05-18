@@ -12,6 +12,7 @@ import {
 import { TextareaComponent } from '../components/custom/inputs/textarea/textarea.component';
 import { FormArrayLayoutComponent } from '../components/layout/form-array-layout/form-array-layout.component';
 import { DateRangePickerComponent } from '../components/custom/inputs/date-range-picker/date-range-picker.component';
+import { IconComponent } from '../components/custom/icon/icon.component';
 
 @NgModule({
   declarations: [InputComponent, SelectComponent, SearchComponent, FormArrayLayoutComponent],
@@ -22,6 +23,7 @@ import { DateRangePickerComponent } from '../components/custom/inputs/date-range
     DateRangePickerComponent,
     CheckboxComponent,
     TextareaComponent,
+    IconComponent,
   ],
   exports: [
     InputComponent,

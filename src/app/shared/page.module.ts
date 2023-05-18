@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
@@ -29,15 +28,16 @@ import { LoadingComponent } from '../components/custom/loading/loading.component
 import { ModalConfirmComponent, ModalFeedbackComponent } from '../components/custom/modals';
 import { PaginationComponent } from '../components/custom/pagination/pagination.component';
 import { TableComponent } from '../components/custom/table/table.component';
-import { FocusInitialDirective, SetIdDirective, ScrollToDirective } from '../directives';
-import { GetPipe, TimePipe } from '../pipes';
-import { DynamicPipe } from '../pipes/dynamic.pipe';
 import {
   CardLayoutComponent,
   FixedButtonsLayoutComponent,
   ModalLayoutComponent,
   PageLayoutComponent,
 } from '../components/layout';
+import { TimesheetSlideSpanComponent } from '../components/timesheet';
+import { FocusInitialDirective, ScrollToDirective, SetIdDirective } from '../directives';
+import { GetPipe, TimePipe } from '../pipes';
+import { DynamicPipe } from '../pipes/dynamic.pipe';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,6 @@ import {
     NavItemsComponent,
     ButtonComponent,
     TableComponent,
-    IconComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -59,7 +58,6 @@ import {
     FocusInitialDirective,
     SetIdDirective,
     DynamicPipe,
-    TimePipe,
     GetPipe,
   ],
   imports: [
@@ -73,13 +71,14 @@ import {
     MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
     ImageComponent,
     CardLayoutComponent,
     LoadingComponent,
     FixedButtonsLayoutComponent,
+    TimesheetSlideSpanComponent,
+    IconComponent,
     ScrollToDirective,
   ],
   exports: [
@@ -93,7 +92,6 @@ import {
     NavItemsComponent,
     ButtonComponent,
     TableComponent,
-    IconComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
     ModalFeedbackComponent,
@@ -106,7 +104,6 @@ import {
     MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
     LoadingComponent,
@@ -116,7 +113,6 @@ import {
     ScrollToDirective,
     ReactiveFormsModule,
     DynamicPipe,
-    TimePipe,
     GetPipe,
   ],
   providers: [DynamicPipe, TimePipe, GetPipe, DatePipe, DecimalPipe],

@@ -13,6 +13,7 @@ import {
   Timesheet,
   TimesheetMetricsStore,
   TimesheetMetricsDto,
+  TimesheetMetrics,
 } from '../models';
 import {
   DateUtil,
@@ -21,6 +22,7 @@ import {
   PubSubUtil,
   QueryUtil,
   StringUtil,
+  TimesheetUtil,
   paths,
 } from '../util';
 import { TimesheetApiService } from './api';
@@ -131,11 +133,14 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   }
 
   private setTimesheetsMetrics(metricsStore: TimesheetMetricsStore): void {
-    const newItems = this._listItems$.getValue().map((item) => {
+    const newItems = this._listItems$.getValue().map((item): Timesheet => {
       const date = item?.date;
       if (!date) return item;
 
-      return { ...item, metrics: metricsStore.byDate[date] };
+      return {
+        ...item,
+        metrics: TimesheetUtil.mapMetricsToDto(metricsStore.byDate[date]),
+      };
     });
 
     this._listItems$.next(newItems);
@@ -165,14 +170,16 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   private setMetricsList(metricsList: TimesheetMetricsDto[]): void {
     const metricsStore: TimesheetMetricsStore = { byDate: {}, dates: [] };
 
-    metricsList.forEach((metrics) => {
-      const date = DateUtil.dateTimeStringToDateString(metrics.date);
+    metricsList
+      .filter((metrics): metrics is Required<TimesheetMetricsDto> => metrics?.date != null)
+      .forEach((metrics) => {
+        const date = DateUtil.dateTimeStringToDateString(metrics.date);
 
-      if (!date) return;
+        if (!date) return;
 
-      metricsStore.byDate[date] = metrics;
-      metricsStore.dates.push(date);
-    });
+        metricsStore.byDate[date] = TimesheetUtil.mapMetrics(metrics);
+        metricsStore.dates.push(date);
+      });
 
     this._metricsStore$.next(metricsStore);
   }
@@ -184,7 +191,11 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       .map((timesheet) => {
         const { date } = timesheet as Required<Timesheet>;
         const dateString = DateUtil.dateTimeStringToDateString(date);
-        return { ...timesheet, date: dateString, metrics: metricsStore.byDate[dateString] };
+        return {
+          ...timesheet,
+          date: dateString,
+          metrics: TimesheetUtil.mapMetricsToDto(metricsStore.byDate[dateString]),
+        };
       });
 
     this._listItems$.next(newItems);
@@ -255,19 +266,10 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   /**
    * @description Builds an observable stream from a given date in 'yyyy-MM-dd' format
    */
-  metricsByDate$(date: string): Observable<TimesheetMetricsDto> {
+  metricsByDate$(date: string): Observable<TimesheetMetrics> {
     return this.metricsStore$.pipe(
-      map((store) => {
-        const metrics = store.byDate[date];
-
-        if (!metrics) return metrics;
-
-        // TODO refactor
-        metrics.workedHours = StringUtil.timeToNumber(metrics.workedHours as any) as any;
-        return metrics;
-      }),
-      filter((metrics): metrics is TimesheetMetricsDto => metrics != null),
-      tap(console.log)
+      map((store) => store.byDate[date]),
+      filter((metrics): metrics is TimesheetMetrics => metrics != null)
     );
   }
 

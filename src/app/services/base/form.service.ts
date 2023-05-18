@@ -1,5 +1,5 @@
-import { switchMap, takeWhile, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, filter, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, filter, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Nullish, PaginationOptions, PostReturn, TableItem } from 'src/app/models';
 import { Constants } from 'src/app/util';
 import { FormApiService } from '../interfaces/form-api-service';

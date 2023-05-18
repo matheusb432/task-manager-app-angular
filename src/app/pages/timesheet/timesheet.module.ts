@@ -5,9 +5,16 @@ import { CreateTimesheetComponent } from './create-timesheet/create-timesheet.co
 import { TimesheetDetailsComponent } from './timesheet-details/timesheet-details.component';
 import { TimesheetRoutingModule } from './timesheet-routing.module';
 import { TimesheetsComponent } from './timesheets/timesheets.component';
-import { MonthSlideComponent, TimesheetCarouselComponent, TimesheetFormComponent, TimesheetListComponent, TimesheetSlideComponent } from 'src/app/components/timesheet';
+import {
+  MonthSlideComponent,
+  TimesheetCarouselComponent,
+  TimesheetFormComponent,
+  TimesheetListComponent,
+  TimesheetSlideComponent,
+} from 'src/app/components/timesheet';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CrudPageModule } from 'src/app/shared/crud-page.module';
+import { IconComponent } from 'src/app/components/custom/icon/icon.component';
 
 @NgModule({
   declarations: [
@@ -15,11 +22,18 @@ import { CrudPageModule } from 'src/app/shared/crud-page.module';
     CreateTimesheetComponent,
     TimesheetDetailsComponent,
     MonthSlideComponent,
-    TimesheetSlideComponent,
     TimesheetCarouselComponent,
     TimesheetListComponent,
     TimesheetFormComponent,
   ],
-  imports: [CommonModule, PageModule, CrudPageModule, TimesheetRoutingModule, CarouselModule],
+  imports: [
+    CommonModule,
+    PageModule,
+    CrudPageModule,
+    TimesheetRoutingModule,
+    CarouselModule,
+    IconComponent,
+    TimesheetSlideComponent,
+  ],
 })
 export class TimesheetModule {}

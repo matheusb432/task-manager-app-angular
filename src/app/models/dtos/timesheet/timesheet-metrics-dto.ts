@@ -6,7 +6,15 @@ export class TimesheetMetricsDto {
   averageRating?: number;
 }
 
+export interface TimesheetMetrics {
+  id: number;
+  date: string;
+  totalTasks: number;
+  workedHours: number;
+  averageRating: number;
+}
+
 export interface TimesheetMetricsStore {
-  byDate: Record<string, TimesheetMetricsDto | undefined>;
+  byDate: Record<string, TimesheetMetrics | undefined>;
   dates: string[];
 }

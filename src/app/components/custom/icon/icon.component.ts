@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,12 +10,16 @@ import {
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { DetailsTypes, Icons } from 'src/app/util';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-icon [icon]',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, MatIconModule, RouterModule],
 })
 export class IconComponent implements OnChanges {
   @Input() icon!: Icons;

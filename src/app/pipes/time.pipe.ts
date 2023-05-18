@@ -4,9 +4,10 @@ import { StringUtil } from '../util';
 
 @Pipe({
   name: 'time',
+  standalone: true,
 })
 export class TimePipe implements PipeTransform {
-  transform(value: string | number | Nullish): unknown {
+  transform(value: string | number | Nullish): string {
     return TimePipe.formatTimeHhMm(value);
   }
 

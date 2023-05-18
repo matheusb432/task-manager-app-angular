@@ -1,13 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, map, share, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, share, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { BehaviorSubject, Observable, Subject, from } from 'rxjs';
-import { ActiveProfileIds, ProfileIdsStore, Profile, ProfileType } from 'src/app/models';
+import { ActiveProfileIds, Profile, ProfileIdsStore, ProfileType } from 'src/app/models';
 import { ProfileFormGroup, getProfileForm } from '../components/profile/profile-form';
 import { PaginationOptions } from '../models/configs/pagination-options';
 import { TimePipe } from '../pipes';
-import { AsyncUtil, DetailsTypes, ElementIds, FormUtil, PubSubUtil, paths } from '../util';
+import { DetailsTypes, ElementIds, FormUtil, PubSubUtil, paths } from '../util';
 import { ProfileUtil } from '../util/profile.util';
 import { ProfileApiService } from './api';
 import { AppService } from './app.service';

@@ -23,29 +23,28 @@
   <div class="slide-body">
     <ng-template [ngIf]="metrics$ | async" let-metrics [ngIfElse]="noMetrics">
       <ng-template #slideBodyTemplate let-profile>
-        <!-- TODO refactor to component? -->
-        <span
-          class="tasks"
+        <app-timesheet-slide-span
+          [titleText]="metrics.totalTasks + ' total tasks'"
           [ngClass]="getTasksClasses(metrics, profile)"
-          title="{{ metrics.totalTasks }} total tasks"
+          [profileText]="profile?.tasksTarget"
+          [icon]="Icons.Assignment"
         >
-          <app-icon [icon]="Icons.Assignment"></app-icon>
           {{ metrics.totalTasks }}
-          <ng-container *ngIf="profile != null"> / {{ profile?.tasksTarget }} </ng-container>
-        </span>
-        <span
-          class="hours"
+        </app-timesheet-slide-span>
+        <app-timesheet-slide-span
+          [titleText]="'Time spent: ' + metrics.workedHours"
           [ngClass]="getTotalHoursClasses(metrics, profile)"
-          title="Time spent: {{ metrics.workedHours }}"
+          [profileText]="profile?.timeTarget | time"
+          [icon]="Icons.Timelapse"
         >
-          <app-icon [icon]="Icons.Timelapse"></app-icon>
           {{ metrics.workedHours | time }}
-          <ng-container *ngIf="profile != null"> / {{ profile?.timeTarget | time }} </ng-container>
-        </span>
-        <span class="rating" title="{{ metrics.averageRating }} average rating">
-          <app-icon [icon]="Icons.Star"></app-icon>
+        </app-timesheet-slide-span>
+        <app-timesheet-slide-span
+          [titleText]="metrics.averageRating + ' average rating'"
+          [icon]="Icons.Star"
+        >
           {{ metrics.averageRating }}
-        </span>
+        </app-timesheet-slide-span>
       </ng-template>
       <ng-container *ngTemplateOutlet="slideBodyTemplate; context: { $implicit: profile$ | async }">
       </ng-container>
