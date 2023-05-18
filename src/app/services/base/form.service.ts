@@ -1,5 +1,6 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { PaginationOptions, PostReturn, TableItem } from 'src/app/models';
+import { switchMap, takeWhile, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, filter, map, of } from 'rxjs';
+import { Nullish, PaginationOptions, PostReturn, TableItem } from 'src/app/models';
 import { Constants } from 'src/app/util';
 import { FormApiService } from '../interfaces/form-api-service';
 import { ToastService } from '../toast.service';
@@ -52,7 +53,7 @@ export abstract class FormService<TEntity extends TableItem> {
     this.setTotal(res.total);
   }
 
-  async loadItem(id: string | null | undefined): Promise<TEntity | null> {
+  async loadItem(id: number | string | Nullish): Promise<TEntity | null> {
     if (!id) {
       this.ts.error(this.toastMessages.noId);
 
@@ -73,7 +74,7 @@ export abstract class FormService<TEntity extends TableItem> {
     return res;
   }
 
-  update = async (id: string | null | undefined, item: Partial<TEntity>): Promise<void> => {
+  update = async (id: string | Nullish, item: Partial<TEntity>): Promise<void> => {
     if (id == null) {
       this.ts.error(this.toastMessages.updateIdError);
       return;
@@ -87,7 +88,7 @@ export abstract class FormService<TEntity extends TableItem> {
     await this.loadListItems();
   };
 
-  private reloadItem = async (id: string | null | undefined): Promise<void> => {
+  private reloadItem = async (id: string | Nullish): Promise<void> => {
     if (!id) return;
 
     try {
@@ -96,6 +97,15 @@ export abstract class FormService<TEntity extends TableItem> {
     } catch (error) {
       this.ts.error(this.toastMessages.reloadError);
     }
+  };
+
+  itemByIdFromCache$ = (id: number | string | Nullish): Observable<TEntity | null> => {
+    if (typeof id !== 'number') return of(null);
+
+    return this.listItems$.pipe(
+      switchMap((items) => items),
+      filter((x) => x.id === +id)
+    );
   };
 
   insert = async (item: Partial<TEntity>): Promise<PostReturn> => {
@@ -118,7 +128,7 @@ export abstract class FormService<TEntity extends TableItem> {
     return res;
   };
 
-  deleteItem = async (id: string | number | null | undefined): Promise<void> => {
+  deleteItem = async (id: string | number | Nullish): Promise<void> => {
     if (!id) {
       this.ts.error(this.toastMessages.noId);
 

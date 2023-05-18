@@ -22,19 +22,33 @@
   </header>
   <div class="slide-body">
     <ng-template [ngIf]="metrics$ | async" let-metrics [ngIfElse]="noMetrics">
-      <!-- TODO add integration to profiles (css for .completed & .failed) -->
-      <span class="tasks" title="{{ metrics.totalTasks }} total tasks">
-        <app-icon [icon]="Icons.Assignment"></app-icon>
-        {{ metrics.totalTasks }}
-      </span>
-      <span class="hours" title="Time spent: {{ metrics.workedHours }}">
-        <app-icon [icon]="Icons.Timelapse"></app-icon>
-        {{ metrics.workedHours }}
-      </span>
-      <span class="rating" title="{{ metrics.averageRating }} average rating">
-        <app-icon [icon]="Icons.Star"></app-icon>
-        {{ metrics.averageRating }}
-      </span>
+      <ng-template #slideBodyTemplate let-profile>
+        <!-- TODO refactor to component? -->
+        <span
+          class="tasks"
+          [ngClass]="getTasksClasses(metrics, profile)"
+          title="{{ metrics.totalTasks }} total tasks"
+        >
+          <app-icon [icon]="Icons.Assignment"></app-icon>
+          {{ metrics.totalTasks }}
+          <ng-container *ngIf="profile != null"> / {{ profile?.tasksTarget }} </ng-container>
+        </span>
+        <span
+          class="hours"
+          [ngClass]="getTotalHoursClasses(metrics, profile)"
+          title="Time spent: {{ metrics.workedHours }}"
+        >
+          <app-icon [icon]="Icons.Timelapse"></app-icon>
+          {{ metrics.workedHours | time }}
+          <ng-container *ngIf="profile != null"> / {{ profile?.timeTarget | time }} </ng-container>
+        </span>
+        <span class="rating" title="{{ metrics.averageRating }} average rating">
+          <app-icon [icon]="Icons.Star"></app-icon>
+          {{ metrics.averageRating }}
+        </span>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="slideBodyTemplate; context: { $implicit: profile$ | async }">
+      </ng-container>
     </ng-template>
     <ng-template #noMetrics>
       <span class="no-metrics">

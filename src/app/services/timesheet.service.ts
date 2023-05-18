@@ -251,13 +251,23 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       duplicateSuccess: 'Timesheet duplicated successfully!',
     };
   }
+
   /**
    * @description Builds an observable stream from a given date in 'yyyy-MM-dd' format
    */
   metricsByDate$(date: string): Observable<TimesheetMetricsDto> {
     return this.metricsStore$.pipe(
-      filter((m) => m.byDate[date] != null),
-      map((m) => m.byDate[date])
+      map((store) => {
+        const metrics = store.byDate[date];
+
+        if (!metrics) return metrics;
+
+        // TODO refactor
+        metrics.workedHours = StringUtil.timeToNumber(metrics.workedHours as any) as any;
+        return metrics;
+      }),
+      filter((metrics): metrics is TimesheetMetricsDto => metrics != null),
+      tap(console.log)
     );
   }
 

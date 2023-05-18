@@ -11,6 +11,8 @@ export class StringUtil {
   };
 
   static timeToNumber = (timeHhMm: string): number => {
+    if (typeof timeHhMm !== 'string') return timeHhMm;
+
     const splitTime = timeHhMm?.split(':');
     if (splitTime?.length !== 2) return 0;
 

@@ -7,6 +7,6 @@ export class TimesheetMetricsDto {
 }
 
 export interface TimesheetMetricsStore {
-  byDate: Record<string, TimesheetMetricsDto>;
+  byDate: Record<string, TimesheetMetricsDto | undefined>;
   dates: string[];
 }

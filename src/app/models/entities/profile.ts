@@ -29,7 +29,7 @@ export class Profile implements TableItem {
 }
 
 export interface ProfileIdsStore {
-  byDate: Record<string, number>;
+  byDate: Record<string, number | undefined>;
   dates: string[];
 }
 
