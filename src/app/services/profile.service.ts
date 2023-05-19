@@ -109,7 +109,6 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
 
     const store = ProfileUtil.buildProfileIdsStore(activeProfileIds, range);
 
-    console.log(store);
     this._profileIdsStore$.next(store);
   };
 

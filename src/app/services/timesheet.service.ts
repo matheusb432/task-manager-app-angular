@@ -69,12 +69,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     this.item$
       .pipe(
         takeUntil(this.destroyed$),
+        filter((item): item is Timesheet => item != null),
         tap((item) => {
-          const itemDate = item?.date;
+          const { id, date } = item;
 
-          if (!itemDate) return;
-
-          this.app.setActiveDate(itemDate);
+          if (id) this.reloadMetricsById(id);
+          if (date) this.app.setActiveDate(date);
         })
       )
       .subscribe();
@@ -129,7 +129,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   async loadMetricsByRange(from: Date, to: Date): Promise<void> {
     const metricsList = await this.getMetricsByRange(from, to);
 
-    this.setMetricsList(metricsList);
+    this.setMetricsStore(metricsList);
   }
 
   private setTimesheetsMetrics(metricsStore: TimesheetMetricsStore): void {
@@ -144,6 +144,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     });
 
     this._listItems$.next(newItems);
+  }
+
+  async reloadMetricsById(id: number) {
+    const metrics = await this.getMetricsById(id);
+
+    this.addMetrics(metrics);
   }
 
   private getMetricsByRange = async (
@@ -164,10 +170,25 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return metrics;
   };
 
+  private getMetricsById = async (id: number): Promise<TimesheetMetricsDto> | never => {
+    const metrics = await this.api
+      .getMetricsQuery({
+        filter: {
+          id,
+        },
+      })
+      .catch((err) => {
+        this.ts.error('Error reloading timesheet metrics!');
+        throw err;
+      });
+
+    return metrics[0];
+  };
+
   /**
    * @description Normalizing the metrics list state shape to a data table with date keys
    */
-  private setMetricsList(metricsList: TimesheetMetricsDto[]): void {
+  private setMetricsStore(metricsList: TimesheetMetricsDto[]): void {
     const metricsStore: TimesheetMetricsStore = { byDate: {}, dates: [] };
 
     metricsList
@@ -180,6 +201,21 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
         metricsStore.byDate[date] = TimesheetUtil.mapMetrics(metrics);
         metricsStore.dates.push(date);
       });
+
+    this._metricsStore$.next(metricsStore);
+  }
+
+  private addMetrics(metrics: TimesheetMetricsDto): void {
+    const metricsStore = this._metricsStore$.getValue();
+    const date = DateUtil.dateTimeStringToDateString(metrics.date);
+
+    if (!date) return;
+
+    metricsStore.byDate[date] =
+      metrics != null
+        ? TimesheetUtil.mapMetrics(metrics as Required<TimesheetMetricsDto>)
+        : undefined;
+    metricsStore.dates.push(date);
 
     this._metricsStore$.next(metricsStore);
   }
