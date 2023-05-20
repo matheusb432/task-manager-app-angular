@@ -19,10 +19,29 @@
       </span>
     </div>
     <div class="icons">
-      <app-button model="icon" (clicked)="onSlideClick(slide)">
-        <app-icon [icon]="Icons.Menu"></app-icon>
+      <!-- TODO refactor to component -->
+      <app-button
+        model="icon"
+        [styles]="{
+        width: '28px',
+        height: '28px',
+      }"
+        (clicked)="onSlideClick(slide)"
+        title="Open timesheet"
+      >
+        <app-icon [icon]="Icons.OpenInBrowser" [size]="20"></app-icon>
       </app-button>
-      <!-- <app-icon title="Finished" [icon]="Icons.Check" color="accent"></app-icon> -->
+      <!-- TODO open popover on click -->
+      <app-button
+        model="icon"
+        [styles]="{
+        width: '28px',
+        height: '28px',
+      }"
+        title="Actions menu"
+      >
+        <app-icon [icon]="Icons.Menu" [size]="20"></app-icon>
+      </app-button>
     </div>
   </header>
   <div class="slide-body">

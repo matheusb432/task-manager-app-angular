@@ -38,5 +38,6 @@ export enum Icons {
   Timelapse = 'timelapse',
   CheckBox = 'check_box',
   Assignment = 'assignment',
+  OpenInBrowser = 'open_in_browser',
   Today = 'today',
 }

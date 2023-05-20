@@ -8,17 +8,6 @@
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   background: timesheetVars.$carousel-header-bg;
 
-  // cursor: pointer;
-  // transition: all 0.15s ease-in-out;
-
-  // &:not(.active):hover {
-  //   filter: brightness(0.85);
-  // }
-
-  // &:not(.active):active {
-  //   filter: brightness(0.7);
-  // }
-
   &.weekend .slide-header {
     background: var(--warning);
     color: #000;
@@ -57,14 +46,9 @@
       font-weight: 700;
     }
 
-    // .title {
-    //   :first-child {
-    //     // position: absolute;
-    //     position: absolute;
-    //     right: 0;
-    //     // margin-right: 10rem;
-    //   }
-    // }
+    .icons {
+      display: flex;
+    }
 
     .day {
       font-size: 1.5rem;
