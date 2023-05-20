@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { DateSlide, Profile, TimesheetMetrics } from 'src/app/models';
 import { TimePipe } from 'src/app/pipes';
 import { ProfileService, TimesheetService } from 'src/app/services';
-import { Icons, StringUtil } from 'src/app/util';
+import { DetailsTypes, Icons, StringUtil } from 'src/app/util';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
 import { IconComponent } from '../../custom/icon/icon.component';
 import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
-import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { IconButtonComponent } from '../../custom/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-timesheet-slide [slide]',
@@ -15,12 +17,23 @@ import { ButtonComponent } from '../../custom/buttons/button/button.component';
   styleUrls: ['./timesheet-slide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, IconComponent, TimesheetSlideSpanComponent, ButtonComponent, TimePipe],
+  imports: [
+    CommonModule,
+    IconComponent,
+    TimesheetSlideSpanComponent,
+    ButtonComponent,
+    IconButtonComponent,
+    MatMenuModule,
+    TimePipe,
+  ],
 })
 export class TimesheetSlideComponent {
   private _slide!: DateSlide;
   metrics$!: Observable<TimesheetMetrics>;
   profile$!: Observable<Profile | null>;
+  isExistingTimesheet$!: Observable<boolean>;
+
+  DetailsTypes = DetailsTypes;
 
   @Output() selectedSlide = new EventEmitter<DateSlide>();
 
@@ -32,6 +45,7 @@ export class TimesheetSlideComponent {
     this._slide = value;
     this.metrics$ = this.service.metricsByDate$(value.date);
     this.profile$ = this.profileService.byDate$(value.date);
+    this.isExistingTimesheet$ = this.metrics$.pipe(map((metrics) => metrics != null));
   }
 
   constructor(private service: TimesheetService, private profileService: ProfileService) {}
@@ -64,5 +78,9 @@ export class TimesheetSlideComponent {
       success,
       fail: !success,
     };
+  }
+
+  onSlideMenuClick(type: DetailsTypes): void {
+    this.service.handleSlideMenuClick(this.slide.date, type);
   }
 }

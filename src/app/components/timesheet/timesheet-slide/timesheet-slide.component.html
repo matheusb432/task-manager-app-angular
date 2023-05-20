@@ -9,39 +9,43 @@
   [id]="'cTimesheetSlide' + slide.date"
 >
   <header class="slide-header">
-    <div class="title">
+    <div class="title" [title]="slide.isToday ? 'Today' : ''" [ngClass]="{ today: slide.isToday }">
       <span class="day">
         {{ slide.day }}
       </span>
       <span class="day-of-week">
         {{ slide.dayOfWeek }}
-        <app-icon *ngIf="slide.isToday" title="Today" [icon]="Icons.Today"></app-icon>
       </span>
     </div>
     <div class="icons">
-      <!-- TODO refactor to component -->
-      <app-button
-        model="icon"
+      <app-icon-button
+        [icon]="Icons.OpenInBrowser"
+        [iconSize]="20"
         [styles]="{
-        width: '28px',
-        height: '28px',
-      }"
+          color: slide.selected ? '#fff' : ''
+        }"
+        [disabled]="!!slide.selected"
         (clicked)="onSlideClick(slide)"
         title="Open timesheet"
-      >
-        <app-icon [icon]="Icons.OpenInBrowser" [size]="20"></app-icon>
-      </app-button>
-      <!-- TODO open popover on click -->
-      <app-button
-        model="icon"
-        [styles]="{
-        width: '28px',
-        height: '28px',
-      }"
-        title="Actions menu"
-      >
-        <app-icon [icon]="Icons.Menu" [size]="20"></app-icon>
-      </app-button>
+      ></app-icon-button>
+      <ng-template [ngIf]="isExistingTimesheet$ | async">
+        <app-icon-button
+          [icon]="Icons.Menu"
+          [iconSize]="20"
+          [styles]="{
+            color: slide.selected ? '#fff' : ''
+          }"
+          title="Actions menu"
+          [matMenuTriggerFor]="menu"
+        ></app-icon-button>
+        <mat-menu #menu="matMenu" yPosition="below">
+          <button mat-menu-item (click)="onSlideMenuClick(DetailsTypes.Edit)">Edit</button>
+          <button mat-menu-item (click)="onSlideMenuClick(DetailsTypes.View)">View</button>
+          <button mat-menu-item (click)="onSlideMenuClick(DetailsTypes.Duplicate)">
+            Duplicate
+          </button>
+        </mat-menu>
+      </ng-template>
     </div>
   </header>
   <div class="slide-body">

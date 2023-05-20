@@ -15,6 +15,7 @@ import {
   TimesheetMetricsDto,
   TimesheetMetrics,
   Nullish,
+  DateSlide,
 } from '../models';
 import {
   DateUtil,
@@ -55,7 +56,6 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       map((metricsStore) => metricsStore.dates.map(DateUtil.dateStringToDate))
     );
   }
-
   get dateFilterFn$(): Observable<DateFilterFn<Date | Nullish>> {
     return this.unavailableDates$.pipe(
       map((unavailableDates) => {
@@ -326,6 +326,34 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       filter((metrics): metrics is TimesheetMetrics => metrics != null)
     );
   }
+
+  async handleSlideMenuClick(dateString: string, type: DetailsTypes) {
+    const items = this._listItems$.getValue();
+
+    let item: Timesheet | Nullish = items.find((x) => x.date === dateString);
+    if (item?.id == null) {
+      const newDate = DateUtil.dateStringToDate(dateString);
+      item = await this.findTimesheetToNavigate(newDate);
+      if (item?.id == null) {
+        this.goToCreate(newDate);
+
+        return;
+      }
+    }
+    this.goToDetails(item.id, type);
+  }
+
+  private findTimesheetToNavigate = async (date: Date): Promise<Timesheet | null> => {
+    const item = await this.api.getByDate(date).catch((err) => {
+      this.ts.error('Error loading timesheet!');
+      throw err;
+    });
+    if (item?.id == null) {
+      this.ts.warning(`Timesheet of date ${date} not found!`);
+      return null;
+    }
+    return item;
+  };
 
   goToList = () => this.router.navigateByUrl(paths.timesheets);
   goToCreate = (date?: Date) =>

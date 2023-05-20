@@ -32,6 +32,7 @@ export class IconComponent implements OnChanges {
   @Input() title = '';
   @Input() elId = '';
   @Input() itemId?: number | undefined;
+  @Input() styles: Record<string, string> = {};
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -41,6 +42,15 @@ export class IconComponent implements OnChanges {
     if (changes['urlType'] || changes['itemId']) {
       this.updateQueryParamsIfNecessary();
     }
+  }
+
+  getStyles(): Record<string, string> {
+    return {
+      ...this.styles,
+      'font-size': this.size + 'px',
+      width: this.size + 'px',
+      height: this.size + 'px',
+    };
   }
 
   private buildQueryParams = (
