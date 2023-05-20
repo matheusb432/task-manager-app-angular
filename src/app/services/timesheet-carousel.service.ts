@@ -132,6 +132,12 @@ export class TimesheetCarouselService implements OnDestroy {
     return monthSlides;
   }
 
+  getFirstSlideOfMonthIndex(month: string, year: number): number {
+    return this.getSlides().findIndex(
+      (slide) => slide.firstOfMonth && slide.month === month && slide.year === year
+    );
+  }
+
   private getUniqueMonthsFromSlides(): MonthSlide[] {
     const slides = this.getSlides();
 
@@ -159,7 +165,6 @@ export class TimesheetCarouselService implements OnDestroy {
       id: TimesheetCarouselService.buildMonthSlideId(month, year),
       month,
       year,
-      isNextMonth: false,
       selected: false,
     };
   }
@@ -193,24 +198,12 @@ export class TimesheetCarouselService implements OnDestroy {
 
     if (slideIndex >= 0 && newMonthSlides[slideIndex].selected) return;
 
-    newMonthSlides = newMonthSlides.map((slide) => {
-      if (!slide.selected && !slide.isNextMonth) return slide;
+    newMonthSlides = newMonthSlides.map((slide, i) => {
+      if (i === slideIndex) return { ...slide, selected: true };
+      if (!slide.selected) return slide;
 
-      return { ...slide, selected: false, isNextMonth: false };
+      return { ...slide, selected: false };
     });
-
-    if (slideIndex >= 0) {
-      newMonthSlides[slideIndex] = {
-        ...newMonthSlides[slideIndex],
-        selected: true,
-        isNextMonth: false,
-      };
-      newMonthSlides[slideIndex + 1] = {
-        ...newMonthSlides[slideIndex + 1],
-        selected: false,
-        isNextMonth: true,
-      };
-    }
 
     this.setMonthSlides(newMonthSlides);
   }

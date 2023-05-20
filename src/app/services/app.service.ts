@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map, Observable } from 'rxjs';
-import { DateUtil } from '../util';
+import { BehaviorSubject, filter, map } from 'rxjs';
 import { DateRangeValue } from '../components/custom/inputs';
 import { AsNonNullable } from '../models';
+import { DateUtil } from '../util';
 
 @Injectable({
   providedIn: 'root',

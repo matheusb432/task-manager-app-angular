@@ -5,7 +5,10 @@
         *ngFor="let monthSlide of monthSlides$ | async; let i = index; trackBy: getItemId"
       >
         <ng-template carouselSlide [id]="monthSlide.id">
-          <app-month-slide [slide]="monthSlide"></app-month-slide>
+          <app-month-slide
+            [slide]="monthSlide"
+            (selectedSlide)="onMonthSlideClick($event)"
+          ></app-month-slide>
         </ng-template>
       </ng-container>
     </owl-carousel-o>

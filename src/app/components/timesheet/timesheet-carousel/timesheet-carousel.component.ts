@@ -94,6 +94,19 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     this.onSlideSelect(slide);
   }
 
+  onMonthSlideClick(slide: MonthSlide): void {
+    const { id, selected, month, year } = slide;
+    if (selected) return;
+
+    this.onMonthSlideSelect(id);
+
+    const firstSlideOfMonthIndex = this.carouselService.getFirstSlideOfMonthIndex(month, year);
+
+    if (firstSlideOfMonthIndex === -1) return;
+
+    this.moveToIndex(firstSlideOfMonthIndex);
+  }
+
   private onSlideChanges(slides: DateSlide[]): void {
     const selectedSlidePosition = slides.findIndex((slide) => slide.selected);
     let position = 0;
@@ -153,8 +166,7 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
 
     if (!monthSlideId) return;
 
-    this.carouselService.selectMonthSlideById(monthSlideId);
-    this.moveToMonthById(monthSlideId);
+    this.onMonthSlideSelect(monthSlideId);
   }
 
   private setMonthStartPosition(startPosition: number, slides: DateSlide[]) {
@@ -218,6 +230,11 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
 
   private onSlideSelect(slide: DateSlide) {
     this.selectedDate.emit(DateUtil.dateStringToDate(slide.date));
+  }
+
+  private onMonthSlideSelect(id: string) {
+    this.carouselService.selectMonthSlideById(id);
+    this.moveToMonthById(id);
   }
 
   private getCenterPosition(position: number): number {

@@ -3,29 +3,41 @@
 .month-slide {
   position: relative;
   padding: 1rem;
-  text-align: start;
 
   &.active {
-    text-align: center;
     .month,
     .year {
       color: timesheetVars.$carousel-primary;
     }
   }
 
-  &.next-month {
-    text-align: end;
-  }
-
   .month {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: #fff;
   }
 
   .year {
     font-size: 1rem;
+  }
+
+  .month,
+  .year {
     font-weight: 700;
     color: #fff;
+  }
+
+  &:not(.active) .clickable {
+    cursor: pointer;
+
+    span {
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover span {
+      color: timesheetVars.$carousel-primary;
+    }
+
+    &:active span {
+      color: var(--primary-darker);
+    }
   }
 }

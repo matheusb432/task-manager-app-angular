@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MonthSlide } from 'src/app/models';
 
 @Component({
@@ -9,4 +9,10 @@ import { MonthSlide } from 'src/app/models';
 })
 export class MonthSlideComponent {
   @Input() slide!: MonthSlide;
+
+  @Output() selectedSlide = new EventEmitter<MonthSlide>();
+
+  onSlideClick(): void {
+    this.selectedSlide.emit(this.slide);
+  }
 }

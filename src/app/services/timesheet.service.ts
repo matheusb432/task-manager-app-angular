@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { DateFilterFn } from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, map, takeUntil, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -9,13 +10,12 @@ import {
   getTimesheetNoteFormGroup,
 } from '../components/timesheet/timesheet-form';
 import {
+  Nullish,
   PaginationOptions,
   Timesheet,
-  TimesheetMetricsStore,
-  TimesheetMetricsDto,
   TimesheetMetrics,
-  Nullish,
-  DateSlide,
+  TimesheetMetricsDto,
+  TimesheetMetricsStore,
 } from '../models';
 import {
   DateUtil,
@@ -31,7 +31,6 @@ import { TimesheetApiService } from './api';
 import { AppService } from './app.service';
 import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
-import { DateFilterFn } from '@angular/material/datepicker';
 
 @Injectable({
   providedIn: 'root',

@@ -8,8 +8,17 @@ import { Icons } from 'src/app/util';
   selector: 'app-icon-button [icon] [iconSize]',
   standalone: true,
   imports: [CommonModule, IconComponent, ButtonComponent],
-  templateUrl: './icon-button.component.html',
-  styleUrls: ['./icon-button.component.scss'],
+  template: `
+    <app-button
+      model="icon"
+      [styles]="getButtonStyles()"
+      [title]="title"
+      [disabled]="disabled"
+      (clicked)="clicked.emit($event)"
+    >
+      <app-icon [icon]="icon" [styles]="styles" [size]="iconSize"></app-icon>
+    </app-button>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconButtonComponent {
