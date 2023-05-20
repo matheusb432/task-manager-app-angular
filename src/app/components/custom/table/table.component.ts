@@ -99,9 +99,9 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
           (id: number) => this.deleteItem.emit(id),
           'warn'
         ),
-    ].filter((i) => !!i);
+    ].filter((i): i is IconConfig<number> => !!i);
 
-    this.icons = icons as IconConfig<number>[];
+    this.icons = icons;
   }
 
   canShowActions = () => StringUtil.notEmpty(this.icons);

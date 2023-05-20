@@ -36,7 +36,8 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     nav: true,
     lazyLoad: true,
     lazyLoadEager: 10,
-    navSpeed: 300,
+    freeDrag: true,
+    navSpeed: 350,
   };
 
   carouselHeaderOptions: OwlOptions = {
@@ -46,7 +47,8 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     mouseDrag: false,
     touchDrag: false,
     freeDrag: false,
-    navSpeed: 300,
+    center: true,
+    navSpeed: 950,
     items: this.calculateMonthItems([]),
   };
 
@@ -89,12 +91,9 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   onSlideClick(slide: DateSlide): void {
     if (slide.selected) return;
 
-    this.carouselService.selectSlideById(slide.id);
-
-    this.selectedDate.emit(DateUtil.dateStringToDate(slide.date));
+    this.onSlideSelect(slide);
   }
 
-  // TODO move to service?
   private onSlideChanges(slides: DateSlide[]): void {
     const selectedSlidePosition = slides.findIndex((slide) => slide.selected);
     let position = 0;
@@ -114,11 +113,9 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
 
     const monthSlides = this.carouselService.setMonthSlidesFromSlides();
 
-    this.carouselHeaderOptions = {
-      ...this.carouselHeaderOptions,
-      items: this.calculateMonthItems(monthSlides),
-    };
-    this.setMonthStartPosition(position, slides, monthSlides);
+    const monthItemsCount = this.calculateMonthItems(monthSlides);
+    this.carouselHeaderOptions.items = monthItemsCount;
+    this.setMonthStartPosition(position, slides);
   }
 
   next(): void {
@@ -132,11 +129,15 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   goToToday(): void {
     const slides = this.carouselService.getSlides();
 
-    const todayIndex = slides.findIndex((slide) => slide.isToday);
+    const todaySlide = slides.find((slide) => slide.isToday);
 
-    if (todayIndex === -1) return;
+    if (!todaySlide) return;
 
-    this.moveToIndex(this.getCenterPosition(todayIndex));
+    if (!todaySlide.selected) {
+      this.onSlideSelect(todaySlide);
+    } else {
+      this.moveToIndex(this.getCenterPosition(slides.indexOf(todaySlide)));
+    }
   }
 
   handleChange(event: SlidesOutputData): void {
@@ -153,14 +154,10 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     if (!monthSlideId) return;
 
     this.carouselService.selectMonthSlideById(monthSlideId);
-    this.moveToMonthById(this.carouselHeader, monthSlideId);
+    this.moveToMonthById(monthSlideId);
   }
 
-  private setMonthStartPosition(
-    startPosition: number,
-    slides: DateSlide[],
-    monthSlides: MonthSlide[]
-  ) {
+  private setMonthStartPosition(startPosition: number, slides: DateSlide[]) {
     const startSlide = slides[startPosition];
     const monthSlideId = TimesheetCarouselService.buildMonthSlideId(
       startSlide.month,
@@ -169,11 +166,6 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     if (!monthSlideId) return;
 
     this.carouselService.selectMonthSlideById(monthSlideId);
-    this.carouselHeaderOptions.startPosition = this.getSelectedMonthIndex(monthSlides);
-  }
-
-  private getSelectedMonthIndex(monthSlides: MonthSlide[]): number {
-    return monthSlides.findIndex((slide) => slide.selected);
   }
 
   private calculateDateItemsFor24PxMargin(): number {
@@ -218,10 +210,14 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     this.carouselHeader?.to(selectedMonthSlide.id);
   }
 
-  moveToMonthById(carousel: CarouselComponent | undefined, id: string | undefined): void {
+  moveToMonthById(id: string | undefined): void {
     if (!id) return;
 
-    carousel?.to(id);
+    this.carouselHeader?.to(id);
+  }
+
+  private onSlideSelect(slide: DateSlide) {
+    this.selectedDate.emit(DateUtil.dateStringToDate(slide.date));
   }
 
   private getCenterPosition(position: number): number {

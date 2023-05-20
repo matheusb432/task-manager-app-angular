@@ -241,9 +241,9 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   override setListItems(items: Timesheet[]): void {
     const metricsStore = this._metricsStore$.getValue();
     const newItems = items
-      .filter((item) => item?.date != null)
+      .filter((item): item is Required<Timesheet> => item?.date != null)
       .map((timesheet) => {
-        const { date } = timesheet as Required<Timesheet>;
+        const { date } = timesheet;
         const dateString = DateUtil.dateTimeStringToDateString(date);
         return {
           ...timesheet,

@@ -46,12 +46,7 @@ export class TimesheetCarouselService implements OnDestroy {
     this._monthSlides$.next(monthSlides);
   }
 
-  addSlides(dateSlides: DateSlide[]): void {
-    const currentSlides = this._slides$.getValue();
-    this._slides$.next([...currentSlides, ...dateSlides]);
-  }
-
-  selectSlideByDate(dateString: string): void {
+  private selectSlideByDate(dateString: string): void {
     const slides = this._slides$.getValue();
     const activeSlide = slides.find((s) => s.date === dateString);
     if (activeSlide == null) return;
@@ -127,11 +122,6 @@ export class TimesheetCarouselService implements OnDestroy {
     return this._slides$.getValue();
   }
 
-  selectSlideById(id: string): void {
-    const slides = this._slides$.getValue();
-    this.selectSlideByIdWithSlides(id, slides);
-  }
-
   getMonthSlides(): MonthSlide[] {
     return this._monthSlides$.getValue();
   }
@@ -147,7 +137,7 @@ export class TimesheetCarouselService implements OnDestroy {
 
     const monthSlides = slides
       .map(TimesheetCarouselService.uniqueMonthFromSlideOrDefault)
-      .filter((slide) => slide != null) as MonthSlide[];
+      .filter((slide): slide is MonthSlide => slide != null);
 
     return monthSlides;
   }

@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { DateSlide, Profile, TimesheetMetrics } from 'src/app/models';
 import { TimePipe } from 'src/app/pipes';
 import { ProfileService, TimesheetService } from 'src/app/services';
 import { DetailsTypes, Icons, StringUtil } from 'src/app/util';
 import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { IconButtonComponent } from '../../custom/icon-button/icon-button.component';
 import { IconComponent } from '../../custom/icon/icon.component';
 import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
-import { IconButtonComponent } from '../../custom/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-timesheet-slide [slide]',

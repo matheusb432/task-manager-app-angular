@@ -130,7 +130,7 @@ export class ProfileUtil {
     return profiles
       .filter((p): p is Required<Profile> => p?.id != null && p.profileType != null)
       .filter(({ profileType: { type } }) => this.isCustomProfile(type))
-      .map((p): ProfileDateRange | null => {
+      .map((p) => {
         const {
           id,
           priority,
