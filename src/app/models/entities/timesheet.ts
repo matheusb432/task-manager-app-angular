@@ -1,6 +1,6 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { AddMap } from 'mapper-ts/lib-esm';
-import { TimePipe } from 'src/app/pipes';
+import { FinishedPipe, TimePipe } from 'src/app/pipes';
 import { TableItemConfig } from '../configs';
 import { TimesheetMetricsDto } from '../dtos';
 import { TableItem } from '../types';
@@ -22,7 +22,7 @@ export class Timesheet implements TableItem {
   static tableItems = (): TableItemConfig<Timesheet>[] => [
     { header: '#', key: 'id' },
     { header: 'Date', key: 'date', pipe: DatePipe },
-    { header: 'Finished', key: 'finished' },
+    { header: 'Completion', key: 'finished', pipe: FinishedPipe },
     { header: 'Total Tasks', key: ['metrics', 'totalTasks'], defaultsTo: 0, disabledOrderBy: true },
     {
       header: 'Hours',

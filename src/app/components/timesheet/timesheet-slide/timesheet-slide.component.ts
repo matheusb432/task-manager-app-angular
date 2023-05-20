@@ -7,6 +7,7 @@ import { ProfileService, TimesheetService } from 'src/app/services';
 import { Icons, StringUtil } from 'src/app/util';
 import { IconComponent } from '../../custom/icon/icon.component';
 import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
 
 @Component({
   selector: 'app-timesheet-slide [slide]',
@@ -14,7 +15,7 @@ import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-s
   styleUrls: ['./timesheet-slide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, IconComponent, TimesheetSlideSpanComponent, TimePipe],
+  imports: [CommonModule, IconComponent, TimesheetSlideSpanComponent, ButtonComponent, TimePipe],
 })
 export class TimesheetSlideComponent {
   private _slide!: DateSlide;

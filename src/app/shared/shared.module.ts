@@ -36,7 +36,7 @@ import {
 } from '../components/layout';
 import { TimesheetSlideSpanComponent } from '../components/timesheet';
 import { FocusInitialDirective, ScrollToDirective, SetIdDirective } from '../directives';
-import { GetPipe, TimePipe } from '../pipes';
+import { FinishedPipe, GetPipe, TimePipe } from '../pipes';
 import { DynamicPipe } from '../pipes/dynamic.pipe';
 
 @NgModule({
@@ -48,7 +48,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     CardComponent,
     CardsGridComponent,
     NavItemsComponent,
-    ButtonComponent,
     TableComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
@@ -79,6 +78,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     FixedButtonsLayoutComponent,
     TimesheetSlideSpanComponent,
     IconComponent,
+    ButtonComponent,
     ScrollToDirective,
   ],
   exports: [
@@ -90,7 +90,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ImageComponent,
     CardsGridComponent,
     NavItemsComponent,
-    ButtonComponent,
     TableComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
@@ -108,6 +107,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatPaginatorModule,
     LoadingComponent,
     FixedButtonsLayoutComponent,
+    ButtonComponent,
     FocusInitialDirective,
     SetIdDirective,
     ScrollToDirective,
@@ -115,6 +115,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     DynamicPipe,
     GetPipe,
   ],
-  providers: [DynamicPipe, TimePipe, GetPipe, DatePipe, DecimalPipe],
+  providers: [DynamicPipe, TimePipe, FinishedPipe, GetPipe, DatePipe, DecimalPipe],
 })
 export class SharedModule {}

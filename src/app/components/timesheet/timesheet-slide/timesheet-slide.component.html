@@ -1,6 +1,5 @@
 <div
   class="slide"
-  (click)="onSlideClick(slide)"
   [ngClass]="{
   weekend: slide.isWeekend,
   active: slide.selected,
@@ -10,15 +9,21 @@
   [id]="'cTimesheetSlide' + slide.date"
 >
   <header class="slide-header">
-    <div>
+    <div class="title">
       <span class="day">
         {{ slide.day }}
       </span>
       <span class="day-of-week">
         {{ slide.dayOfWeek }}
+        <app-icon *ngIf="slide.isToday" title="Today" [icon]="Icons.Today"></app-icon>
       </span>
     </div>
-    <app-icon *ngIf="slide.isToday" title="Today" [icon]="Icons.Today"></app-icon>
+    <div class="icons">
+      <app-button model="icon" (clicked)="onSlideClick(slide)">
+        <app-icon [icon]="Icons.Menu"></app-icon>
+      </app-button>
+      <!-- <app-icon title="Finished" [icon]="Icons.Check" color="accent"></app-icon> -->
+    </div>
   </header>
   <div class="slide-body">
     <ng-template [ngIf]="metrics$ | async" let-metrics [ngIfElse]="noMetrics">

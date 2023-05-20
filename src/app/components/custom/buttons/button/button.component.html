@@ -2,7 +2,7 @@
   <button
     *ngSwitchCase="'raised'"
     mat-raised-button
-    [appSetId]="elId"
+    [id]="elId"
     [color]="color"
     [type]="type"
     [disabled]="isDisabled"
@@ -14,7 +14,7 @@
   <button
     *ngSwitchCase="'stroked'"
     mat-stroked-button
-    [appSetId]="elId"
+    [id]="elId"
     [color]="color"
     [type]="type"
     [disabled]="isDisabled"
@@ -26,7 +26,7 @@
   <button
     *ngSwitchCase="'flat'"
     mat-flat-button
-    [appSetId]="elId"
+    [id]="elId"
     [color]="color"
     [type]="type"
     [disabled]="isDisabled"
@@ -38,7 +38,8 @@
   <button
     *ngSwitchCase="'icon'"
     mat-icon-button
-    [appSetId]="elId"
+    class="icon-btn"
+    [id]="elId"
     [color]="color"
     [type]="type"
     [disabled]="isDisabled"
@@ -61,7 +62,7 @@
   <button
     *ngSwitchCase="'mini-fab'"
     mat-mini-fab
-    [appSetId]="elId"
+    [id]="elId"
     [color]="color"
     [type]="type"
     [disabled]="isDisabled"
@@ -73,7 +74,7 @@
   <a
     *ngSwitchCase="'link'"
     mat-button
-    [appSetId]="elId"
+    [id]="elId"
     [color]="color"
     [routerLink]="url"
     class="link-button"
@@ -85,7 +86,7 @@
   <button
     *ngSwitchDefault
     mat-button
-    [appSetId]="elId"
+    [id]="elId"
     [color]="color"
     [type]="type"
     [disabled]="isDisabled"

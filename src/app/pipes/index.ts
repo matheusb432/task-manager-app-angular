@@ -1,3 +1,4 @@
-export { GetPipe } from './get.pipe';
-export { TimePipe } from './time.pipe';
-export { DynamicPipe } from './dynamic.pipe';
+export * from './finished.pipe';
+export * from './get.pipe';
+export * from './time.pipe';
+export * from './dynamic.pipe';

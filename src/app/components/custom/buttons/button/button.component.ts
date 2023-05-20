@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,16 +10,21 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { ThemePalette } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 import { PubSubUtil } from 'src/app/util';
+import { LoadingComponent } from '../../loading/loading.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, RouterModule, MatButtonModule, LoadingComponent],
 })
 export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() disabled = false;
