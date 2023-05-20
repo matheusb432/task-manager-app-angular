@@ -1,12 +1,15 @@
+@use 'src/_mixins.scss' as mxs;
+
 .button-content {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
+  gap: 8px;
 
-  app-loading {
-    margin-left: 8px;
+  .label {
+    @include mxs.scale-out-if-hidden();
   }
 }
 
@@ -16,6 +19,9 @@
 
 .active-link {
   background: var(--bg-color);
+  // border-radius: 16px;
+  // border-top-left-radius: 0;
+  // border-bottom-left-radius: 0;
 }
 
 .icon-btn {

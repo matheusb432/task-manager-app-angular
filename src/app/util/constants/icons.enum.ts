@@ -11,6 +11,7 @@ export enum Icons {
   ArrowUpward = 'arrow_upward',
   ArrowDownward = 'arrow_downward',
   Menu = 'menu',
+  BarChart = 'bar_chart',
   Home = 'home',
   Info = 'info',
   Warning = 'warning',

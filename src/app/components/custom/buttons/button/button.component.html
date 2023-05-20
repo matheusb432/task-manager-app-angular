@@ -107,7 +107,10 @@
 
 <ng-template #labelTemplate>
   <div class="button-content">
-    <ng-content></ng-content>
+    <ng-content select="[labelIcon]"></ng-content>
+    <span class="label" [ngClass]="{ hidden: iconOnly }">
+      <ng-content></ng-content>
+    </span>
     <ng-container *ngIf="isLoading">
       <app-loading [size]="20"></app-loading>
     </ng-container>

@@ -46,12 +46,30 @@ const timesheetCrumbs: Crumb[] = [
   },
 ];
 
+const timesheetCreateCrumbs: Crumb[] = [
+  ...timesheetCrumbs,
+  {
+    label: 'Create',
+    url: paths.timesheetsCreate,
+    icon: Icons.Add,
+  },
+];
+
+const timesheetDetailsCrumbs: Crumb[] = [
+  ...timesheetCrumbs,
+  {
+    label: 'Details',
+    url: paths.timesheetsDetails,
+    icon: Icons.PageView,
+  },
+];
+
 const metricCrumbs: Crumb[] = [
   ...homeCrumbs,
   {
     label: 'Metrics',
     url: paths.metrics,
-    icon: Icons.PageView,
+    icon: Icons.BarChart,
   },
 ];
 
@@ -61,5 +79,7 @@ export const crumbDefaults = {
   [paths.profilesCreate]: profileCreateCrumbs,
   [paths.profilesDetails]: profileDetailsCrumbs,
   [paths.timesheets]: timesheetCrumbs,
+  [paths.timesheetsCreate]: timesheetCreateCrumbs,
+  [paths.timesheetsDetails]: timesheetDetailsCrumbs,
   [paths.metrics]: metricCrumbs,
 };

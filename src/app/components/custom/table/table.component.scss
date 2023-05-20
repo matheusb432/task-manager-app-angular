@@ -88,22 +88,3 @@ td {
     margin-right: 1.5rem;
   }
 }
-
-.loading-item {
-  padding: 5rem;
-  animation: pulse 3s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    background: #fff;
-  }
-
-  50% {
-    background: var(--primary-lighter);
-  }
-
-  100% {
-    background: #fff;
-  }
-}

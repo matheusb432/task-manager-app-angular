@@ -9,4 +9,5 @@ import { NavItem } from 'src/app/models';
 })
 export class NavItemsComponent {
   @Input() items!: NavItem[];
+  @Input() iconOnly = false;
 }

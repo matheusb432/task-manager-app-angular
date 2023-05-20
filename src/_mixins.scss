@@ -16,6 +16,15 @@
   background: linear-gradient(to $position, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
 
+@mixin scale-out-if-hidden($duration: 0.3s) {
+  transition: all $duration ease-in-out;
+  &.hidden {
+    position: absolute;
+    transform: scale(0);
+    visibility: hidden;
+  }
+}
+
 @mixin sticky-container($paddingX) {
   position: sticky;
   z-index: 100;

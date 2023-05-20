@@ -7,20 +7,23 @@
     [fixedInViewport]="false"
     [fixedTopGap]="0"
     [fixedBottomGap]="0"
+    (mouseenter)="hovering = true"
+    (mouseleave)="hovering = false"
   >
-    <h1 class="logo">Task Manager App</h1>
-
-    <app-nav-items [items]="navItems"></app-nav-items>
-    <div class="sidebar-close" *ngIf="sidenav.opened" (click)="sidenav.close()">
-      <app-icon [icon]="Icons.ChevronLeft" color="accent" [size]="44" [clickable]="true" title="Hide Sidebar"></app-icon>
+    <div class="logo-container">
+      <h1 class="logo" title="Task Manager App">
+        <span *ngIf="!hovering; else fullLogo">TMA</span>
+        <ng-template #fullLogo>
+          <span>Task Manager App </span>
+        </ng-template>
+      </h1>
     </div>
+
+    <app-nav-items [items]="navItems" [iconOnly]="!hovering"></app-nav-items>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">
     <app-main-header></app-main-header>
     <ng-content></ng-content>
-    <div class="sidebar-open" *ngIf="!sidenav.opened">
-      <app-icon [icon]="Icons.ChevronRight" color="accent" [size]="44" [clickable]="true" title="Show Sidebar" (clicked)="sidenav.open()"></app-icon>
-    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

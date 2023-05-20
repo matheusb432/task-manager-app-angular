@@ -1,7 +1,7 @@
 import { IconComponent } from 'src/app/components/custom/icon/icon.component';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from '../buttons/button/button.component';
+import { ButtonComponent } from '../button/button.component';
 import { Icons } from 'src/app/util';
 
 @Component({

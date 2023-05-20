@@ -35,6 +35,7 @@ export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() elId?: string;
   @Input() title = '';
   @Input() styles: Record<string, string> = {};
+  @Input() iconOnly = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 

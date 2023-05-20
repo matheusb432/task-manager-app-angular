@@ -7,7 +7,7 @@ import { TimePipe } from 'src/app/pipes';
 import { ProfileService, TimesheetService } from 'src/app/services';
 import { DetailsTypes, Icons, StringUtil } from 'src/app/util';
 import { ButtonComponent } from '../../custom/buttons/button/button.component';
-import { IconButtonComponent } from '../../custom/icon-button/icon-button.component';
+import { IconButtonComponent } from '../../custom/buttons/icon-button/icon-button.component';
 import { IconComponent } from '../../custom/icon/icon.component';
 import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
 
