@@ -16,7 +16,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LocalStorageService } from './services';
 import { STORE_SERVICE } from './services/interfaces';
 import { TOKEN_DECODER_FN } from './services/token.service';
-import { PageModule } from './shared';
+import { SharedModule } from './shared';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent],
@@ -24,12 +24,12 @@ import { PageModule } from './shared';
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    PageModule,
+    SharedModule,
     AppRoutingModule,
     HttpClientModule,
     MatNativeDateModule,
   ],
-  exports: [PageModule],
+  exports: [SharedModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },

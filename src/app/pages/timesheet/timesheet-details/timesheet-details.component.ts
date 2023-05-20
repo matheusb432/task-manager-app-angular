@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
@@ -44,11 +43,7 @@ export class TimesheetDetailsComponent
     this.disableFormIfView();
   }
 
-  constructor(
-    private service: TimesheetService,
-    private route: ActivatedRoute,
-    private pageService: PageService
-  ) {
+  constructor(private service: TimesheetService, private pageService: PageService) {
     super();
     this.initForm();
   }
@@ -90,6 +85,7 @@ export class TimesheetDetailsComponent
     }
 
     this.form = this.service.convertToForm(loadedItem);
+    this.form.markAllAsTouched();
   }
 
   initForm(): void {

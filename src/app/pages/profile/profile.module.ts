@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfilesComponent } from './profiles/profiles.component';
-import { PageModule } from 'src/app/shared';
+import { SharedModule } from 'src/app/shared';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
@@ -16,6 +16,6 @@ import { ProfileFormComponent, ProfileListComponent } from 'src/app/components/p
     ProfileFormComponent,
     ProfileListComponent,
   ],
-  imports: [CommonModule, PageModule, CrudPageModule, ProfileRoutingModule],
+  imports: [CommonModule, SharedModule, CrudPageModule, ProfileRoutingModule],
 })
 export class ProfileModule {}

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { PageModule } from 'src/app/shared';
+import { SharedModule } from 'src/app/shared';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -16,7 +16,7 @@ import { LoginFormComponent, SignupFormComponent } from 'src/app/components/auth
     SignupFormComponent,
     AuthPageLayoutComponent,
   ],
-  imports: [CommonModule, AuthenticationRoutingModule, PageModule, CrudPageModule],
+  imports: [CommonModule, AuthenticationRoutingModule, SharedModule, CrudPageModule],
   exports: [LoginFormComponent, SignupFormComponent],
 })
 export class AuthenticationModule {}

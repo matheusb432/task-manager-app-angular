@@ -117,4 +117,4 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
   ],
   providers: [DynamicPipe, TimePipe, GetPipe, DatePipe, DecimalPipe],
 })
-export class PageModule {}
+export class SharedModule {}

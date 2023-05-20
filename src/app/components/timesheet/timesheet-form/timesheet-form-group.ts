@@ -77,14 +77,12 @@ export const getTaskItemForm = (): TaskItemForm => {
   };
 };
 
-export const getTimesheetForm = (today: Date): TimesheetForm => {
-  const tomorrow = DateUtil.addDays(new Date(), 1);
-
+export const getTimesheetForm = (initialDate: Date): TimesheetForm => {
   return {
     id: new FormControl(0),
-    date: new FormControl(today, {
+    date: new FormControl(initialDate, {
       nonNullable: true,
-      validators: [Validators.required, dateMaxValidator(tomorrow)],
+      validators: [Validators.required],
     }),
     finished: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
     notes: new FormArray([getTimesheetNoteFormGroup()]),

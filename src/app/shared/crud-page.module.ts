@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { PageModule } from './page.module';
+import { SharedModule } from './shared.module';
 import {
   CheckboxComponent,
   DatepickerComponent,
@@ -18,7 +18,7 @@ import { IconComponent } from '../components/custom/icon/icon.component';
   declarations: [InputComponent, SelectComponent, SearchComponent, FormArrayLayoutComponent],
   imports: [
     CommonModule,
-    PageModule,
+    SharedModule,
     DatepickerComponent,
     DateRangePickerComponent,
     CheckboxComponent,

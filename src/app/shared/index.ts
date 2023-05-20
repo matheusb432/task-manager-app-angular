@@ -1,1 +1,2 @@
-export { PageModule } from "./page.module";
+export { SharedModule } from './shared.module';
+export { CrudPageModule } from './crud-page.module';

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,7 +16,6 @@ import { takeUntil } from 'rxjs';
 import { Nullish, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
-import { validationErrorMessages } from '../validation-errors';
 
 @Component({
   selector: 'app-datepicker [fcName] [control] [fg] [labelText]',
@@ -31,6 +30,7 @@ import { validationErrorMessages } from '../validation-errors';
     MatFormFieldModule,
     MatDatepickerModule,
     LoadingComponent,
+    DatePipe,
   ],
 })
 export class DatepickerComponent extends WithDestroyed implements OnChanges, OnDestroy {
@@ -87,11 +87,7 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
   }
 
   getErrText(): string {
-    const errorKeys = Object.keys(
-      this.control?.errors ?? []
-    ) as (keyof typeof validationErrorMessages)[];
-
-    return validationErrorMessages[errorKeys[0]] || 'Invalid field';
+    return 'Invalid date!';
   }
 
   dateFilter: DateFilterFn<Date | Nullish> = (d) => {
