@@ -4,9 +4,7 @@
     mode="side"
     opened
     class="sidebar"
-    [fixedInViewport]="false"
-    [fixedTopGap]="0"
-    [fixedBottomGap]="0"
+    [fixedInViewport]="true"
     (mouseenter)="hovering = true"
     (mouseleave)="hovering = false"
   >
@@ -20,6 +18,7 @@
     </div>
 
     <app-nav-items [items]="navItems" [iconOnly]="!hovering"></app-nav-items>
+    <div class="scrollbar-hider"></div>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">

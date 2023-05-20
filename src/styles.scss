@@ -23,7 +23,7 @@
   --accent: #b0bec5;
   --bg-color: #212c31;
   --text-icons: #fff;
-  --scrollbar-radius: 10px;
+  --scrollbar-radius: 0px;
 }
 
 * {
@@ -132,8 +132,7 @@ mat-form-field.input-container {
 }
 
 ::-webkit-scrollbar {
-  height: 12px;
-  width: 10px;
+  width: 8px;
   background: var(--secondary);
 }
 

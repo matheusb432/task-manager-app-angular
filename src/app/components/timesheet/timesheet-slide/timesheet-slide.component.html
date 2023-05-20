@@ -83,6 +83,8 @@
           [title]="!slide.selected ? 'Add timesheet' : ''"
           [icon]="Icons.AddCircleOutline"
           [size]="48"
+          [clickable]="true"
+          (clicked)="onSlideClick(slide)"
         ></app-icon>
       </span>
     </ng-template>

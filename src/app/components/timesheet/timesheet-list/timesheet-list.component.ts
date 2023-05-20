@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Profile, TableConfig, Timesheet, WithDestroyed } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import {
+  AppService,
   FilterService,
   ModalService,
   ProfileService,
@@ -38,6 +39,7 @@ export class TimesheetListComponent extends WithDestroyed {
   elIds = ElementIds;
 
   constructor(
+    private app: AppService,
     private service: TimesheetService,
     private profileService: ProfileService,
     private ts: ToastService,
@@ -80,8 +82,13 @@ export class TimesheetListComponent extends WithDestroyed {
   };
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
+    const { start, end } = this.app.getDateRangeOrDefault();
+
     return PaginationOptions.from(page, itemsPerPage ?? this.service.getItemsPerPage(), {
       orderBy: QueryUtil.orderByToOData(this.config.orderBy),
+      filter: {
+        ...QueryUtil.getDateRangeFilter('date', start, end),
+      },
     });
   }
 
