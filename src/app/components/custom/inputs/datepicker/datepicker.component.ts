@@ -9,11 +9,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateFilterFn, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { takeUntil } from 'rxjs';
-import { WithDestroyed } from 'src/app/models';
+import { Nullish, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
@@ -43,6 +43,7 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
   @Input() formId = '';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
+  @Input() dateFilterFn: DateFilterFn<Date | undefined> | Nullish;
 
   isLoading = false;
 
@@ -92,4 +93,9 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
 
     return validationErrorMessages[errorKeys[0]] || 'Invalid field';
   }
+
+  dateFilter: DateFilterFn<Date | Nullish> = (d) => {
+    if (!this.dateFilterFn) return true;
+    return this.dateFilterFn(d);
+  };
 }

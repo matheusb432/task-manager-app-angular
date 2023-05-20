@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService } from 'src/app/services';
+import { AppService, ModalService, TimesheetService } from 'src/app/services';
 import { ElementIds, FormTypes, FormUtil, deleteModalData, saveModalData } from 'src/app/util';
 import {
   TaskItemForm,
@@ -25,6 +25,9 @@ export class TimesheetFormComponent {
   @Output() save = new EventEmitter<TimesheetFormGroup>();
   @Output() cancel = new EventEmitter<void>();
   @Output() remove = new EventEmitter<void>();
+
+  dateRangeOrDefault$ = this.app.dateRangeOrDefault$;
+  dateFilterFn$ = this.service.dateFilterFn$;
 
   elIds = ElementIds;
 
@@ -58,7 +61,15 @@ export class TimesheetFormComponent {
     return !FormUtil.isViewForm(this.formType);
   }
 
-  constructor(private modalService: ModalService) {}
+  get canEditDate(): boolean {
+    return FormUtil.isDuplicateForm(this.formType);
+  }
+
+  constructor(
+    private service: TimesheetService,
+    private modalService: ModalService,
+    private app: AppService
+  ) {}
 
   addNote(): void {
     this.noteForms.push(getTimesheetNoteFormGroup());

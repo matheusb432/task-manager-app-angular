@@ -14,6 +14,7 @@ import {
   TimesheetMetricsStore,
   TimesheetMetricsDto,
   TimesheetMetrics,
+  Nullish,
 } from '../models';
 import {
   DateUtil,
@@ -29,6 +30,7 @@ import { TimesheetApiService } from './api';
 import { AppService } from './app.service';
 import { FormService } from './base/form.service';
 import { ToastService } from './toast.service';
+import { DateFilterFn } from '@angular/material/datepicker';
 
 @Injectable({
   providedIn: 'root',
@@ -48,11 +50,27 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return this._metricsStore$.asObservable();
   }
 
+  get unavailableDates$() {
+    return this.metricsStore$.pipe(
+      map((metricsStore) => metricsStore.dates.map(DateUtil.dateStringToDate))
+    );
+  }
+
+  get dateFilterFn$(): Observable<DateFilterFn<Date | Nullish>> {
+    return this.unavailableDates$.pipe(
+      map((unavailableDates) => {
+        return (date) => {
+          if (!date) return false;
+          return !DateUtil.isDateInDates(date, unavailableDates);
+        };
+      })
+    );
+  }
+
   constructor(
     protected override api: TimesheetApiService,
     protected override ts: ToastService,
     private app: AppService,
-
     private router: Router
   ) {
     super(ts, api);

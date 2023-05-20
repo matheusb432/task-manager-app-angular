@@ -5,16 +5,26 @@
   (ngSubmit)="openSaveModal()"
 >
   <div class="form-grid">
-    <app-datepicker
-      fcName="date"
-      [control]="date"
-      labelText="Date"
-      elId="cTimesheetFormDate"
-      [fg]="form"
-      [canEdit]="false"
-      [formId]="elIds.TimesheetForm"
-      [appScrollTo]="true"
-    ></app-datepicker>
+    <ng-container
+      *ngIf="{
+        dateRange: dateRangeOrDefault$ | async,
+        dateFilterFn: dateFilterFn$ | async
+      } as values"
+    >
+      <app-datepicker
+        fcName="date"
+        [control]="date"
+        labelText="Date"
+        elId="cTimesheetFormDate"
+        [fg]="form"
+        [canEdit]="canEditDate"
+        [formId]="elIds.TimesheetForm"
+        [dateFilterFn]="values.dateFilterFn"
+        [minDate]="values.dateRange?.start"
+        [maxDate]="values.dateRange?.end"
+        [appScrollTo]="true"
+      ></app-datepicker>
+    </ng-container>
     <ul
       app-form-array-layout
       titleText="Notes"

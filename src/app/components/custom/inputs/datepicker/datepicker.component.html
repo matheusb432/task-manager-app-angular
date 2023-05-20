@@ -9,6 +9,7 @@
     [matDatepicker]="picker"
     [min]="minDate"
     [max]="maxDate"
+    [matDatepickerFilter]="dateFilter"
   />
   <mat-error *ngIf="invalid && !disabled">
     {{ getErrText() }}

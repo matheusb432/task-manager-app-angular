@@ -21,7 +21,11 @@ export class AppService {
   get dateRange$() {
     return this._dateRange$
       .asObservable()
-      .pipe(filter((dateRange) => dateRange != null)) as Observable<AsNonNullable<DateRangeValue>>;
+      .pipe(filter((dateRange): dateRange is AsNonNullable<DateRangeValue> => dateRange != null));
+  }
+
+  get dateRangeOrDefault$() {
+    return this.dateRange$.pipe(map((dateRange) => dateRange ?? this.defaultRange));
   }
 
   get activeDateString$() {
