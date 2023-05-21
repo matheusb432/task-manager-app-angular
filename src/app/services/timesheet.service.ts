@@ -111,8 +111,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
           const { start, end } = dateRange;
 
-          this.loadMetricsByRange(start, end);
-          this.loadListItemsByRange(start, end);
+          this.loadListDataByRange(start, end);
         })
       )
       .subscribe();
@@ -126,7 +125,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       .subscribe();
   }
 
-  async loadListItemsByRange(from: Date, to: Date): Promise<void> {
+  private async loadListItemsByRange(from: Date, to: Date): Promise<void> {
     const options = PaginationOptions.fromOptions({
       filter: {
         ...QueryUtil.getDateRangeFilter('date', from, to),
@@ -135,7 +134,6 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     this.loadListItems(options);
   }
 
-  // TODO search by logged user id also
   async loadItemByDate(date: Date): Promise<Timesheet> {
     const item = this._item$.getValue();
     const itemDate = item?.date;
@@ -151,7 +149,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return res;
   }
 
-  async loadMetricsByRange(from: Date, to: Date): Promise<void> {
+  private async loadMetricsByRange(from: Date, to: Date): Promise<void> {
     const metricsList = await this.getMetricsByRange(from, to);
 
     this.setMetricsStore(metricsList);
@@ -276,11 +274,15 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
   loadListData = async (): Promise<void> => {
     const hasInit = this.app.initDateRange();
+    if (hasInit) return;
 
-    if (!hasInit) {
-      const { start, end } = this.app.getDateRangeOrDefault();
-      this.loadListItemsByRange(start, end);
-    }
+    const { start, end } = this.app.getDateRangeOrDefault();
+    this.loadListDataByRange(start, end);
+  };
+
+  loadListDataByRange = async (from: Date, to: Date): Promise<void> => {
+    this.loadMetricsByRange(from, to);
+    this.loadListItemsByRange(from, to);
   };
 
   loadEditData = async (id: string | null | undefined): Promise<Timesheet | null> => {

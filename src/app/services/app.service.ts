@@ -12,10 +12,9 @@ export class AppService {
     start: DateUtil.addMonths(new Date(), -1),
     end: DateUtil.addMonths(new Date(), 1),
   };
+  private readonly initialDateString = DateUtil.formatDateToUniversalFormat(new Date());
 
-  private _activeDateString$ = new BehaviorSubject<string>(
-    DateUtil.formatDateToUniversalFormat(new Date())
-  );
+  private _activeDateString$ = new BehaviorSubject<string>(this.initialDateString);
   private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
   private _clearSessionState$ = new Subject<boolean>();
 
@@ -74,6 +73,9 @@ export class AppService {
   }
 
   activateClearSessionState(): void {
+    this._activeDateString$.next(this.initialDateString);
+    this._dateRange$.next(null);
+
     this._clearSessionState$.next(true);
   }
 }

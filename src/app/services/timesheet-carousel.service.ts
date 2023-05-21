@@ -26,6 +26,10 @@ export class TimesheetCarouselService implements OnDestroy {
   }
 
   initSubs(): void {
+    this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this._slides$.next([]);
+      this._monthSlides$.next([]);
+    });
     this.app.activeDateString$.pipe(takeUntil(this.destroyed$)).subscribe((dateString) => {
       this.selectSlideByDate(dateString);
     });
