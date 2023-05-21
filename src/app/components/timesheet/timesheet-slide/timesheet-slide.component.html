@@ -9,7 +9,11 @@
   [id]="'cTimesheetSlide' + slide.date"
 >
   <header class="slide-header">
-    <div class="title" [title]="slide.isToday ? 'Today' : ''" [ngClass]="{ today: slide.isToday }">
+    <div
+      class="title"
+      [matTooltip]="slide.isToday ? 'Today' : ''"
+      [ngClass]="{ today: slide.isToday }"
+    >
       <span class="day">
         {{ slide.day }}
       </span>
@@ -26,7 +30,7 @@
         }"
         [disabled]="!!slide.selected"
         (clicked)="onSlideClick(slide)"
-        title="Open timesheet"
+        matTooltip="Open timesheet"
       ></app-icon-button>
       <ng-template [ngIf]="isExistingTimesheet$ | async">
         <app-icon-button
@@ -35,7 +39,7 @@
           [styles]="{
             color: slide.selected ? '#fff' : ''
           }"
-          title="Actions menu"
+          matTooltip="Actions menu"
           [matMenuTriggerFor]="menu"
         ></app-icon-button>
         <mat-menu #menu="matMenu" yPosition="below">
@@ -80,7 +84,7 @@
     <ng-template #noMetrics>
       <span class="no-metrics">
         <app-icon
-          [title]="!slide.selected ? 'Add timesheet' : ''"
+          [matTooltip]="!slide.selected ? 'Add timesheet' : ''"
           [icon]="Icons.AddCircleOutline"
           [size]="48"
           [clickable]="true"

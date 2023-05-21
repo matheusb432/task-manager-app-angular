@@ -2,6 +2,7 @@ import { ThemePalette } from '@angular/material/core';
 import { DetailsTypes, Icons } from 'src/app/util';
 
 export class IconConfig<T = unknown> {
+  title?: string;
   size?: number;
 
   private constructor(
@@ -13,7 +14,7 @@ export class IconConfig<T = unknown> {
   ) {}
 
   static from(id: string, icon: Icons, color: ThemePalette = 'primary', size?: number): IconConfig {
-    const data = new IconConfig(id, icon, color)
+    const data = new IconConfig(id, icon, color);
 
     data.size = size;
 

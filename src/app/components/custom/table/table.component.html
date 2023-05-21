@@ -41,6 +41,7 @@
           [urlType]="icon.urlType"
           [itemId]="item.id"
           (clicked)="icon.onClick?.(item.id!)"
+          [matTooltip]="icon.title ?? ''"
         ></app-icon>
       </td>
     </tr>

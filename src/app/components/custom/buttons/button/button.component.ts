@@ -17,6 +17,7 @@ import { LoadingService } from 'src/app/services/loading.service';
 import { PubSubUtil } from 'src/app/util';
 import { LoadingComponent } from '../../loading/loading.component';
 import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-button',
@@ -24,7 +25,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, RouterModule, MatButtonModule, LoadingComponent],
+  imports: [CommonModule, RouterModule, MatButtonModule, MatTooltipModule, LoadingComponent],
 })
 export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() disabled = false;
@@ -33,7 +34,6 @@ export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() url?: string;
   @Input() model: 'raised' | 'stroked' | 'flat' | 'icon' | 'fab' | 'mini-fab' | 'link' | '' = '';
   @Input() elId?: string;
-  @Input() title = '';
   @Input() styles: Record<string, string> = {};
   @Input() iconOnly = false;
 

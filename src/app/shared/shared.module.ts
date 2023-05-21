@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { ButtonComponent } from '../components/custom/buttons/button/button.component';
 import { CardsGridComponent } from '../components/custom/cards-grid/cards-grid.component';
@@ -72,6 +73,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatSnackBarModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatTooltipModule,
     ImageComponent,
     CardLayoutComponent,
     LoadingComponent,
@@ -105,6 +107,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     MatSnackBarModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatTooltipModule,
     LoadingComponent,
     FixedButtonsLayoutComponent,
     ButtonComponent,

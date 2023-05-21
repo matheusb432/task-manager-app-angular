@@ -12,6 +12,7 @@ import { ThemePalette } from '@angular/material/core';
 import { DetailsTypes, Icons } from 'src/app/util';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-icon [icon]',
@@ -19,7 +20,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./icon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatIconModule, RouterModule],
+  imports: [CommonModule, MatIconModule, MatTooltipModule, RouterModule],
 })
 export class IconComponent implements OnChanges {
   @Input() icon!: Icons;

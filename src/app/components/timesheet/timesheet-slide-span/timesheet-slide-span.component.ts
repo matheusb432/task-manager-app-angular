@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../../custom/icon/icon.component';
 import { Icons } from 'src/app/util';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-timesheet-slide-span [titleText] [icon]',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [CommonModule, IconComponent, MatTooltipModule],
   template: `
-    <span class="data" [ngClass]="ngClass" [title]="titleText">
+    <span class="data" [ngClass]="ngClass" [matTooltip]="titleText">
       <app-icon [icon]="icon"></app-icon>
       <ng-content></ng-content>
       <ng-container *ngIf="profileText"> / {{ profileText }} </ng-container>

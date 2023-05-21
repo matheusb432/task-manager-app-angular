@@ -3,16 +3,17 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { Icons } from 'src/app/util';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-icon-button [icon] [iconSize]',
   standalone: true,
-  imports: [CommonModule, IconComponent, ButtonComponent],
+  imports: [CommonModule, IconComponent, ButtonComponent, MatTooltipModule],
   template: `
     <app-button
       model="icon"
       [styles]="getButtonStyles()"
-      [title]="title"
+      [matTooltip]="title"
       [disabled]="disabled"
       (clicked)="clicked.emit($event)"
     >

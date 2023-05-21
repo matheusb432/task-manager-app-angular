@@ -10,6 +10,7 @@ import { ButtonComponent } from '../../custom/buttons/button/button.component';
 import { IconButtonComponent } from '../../custom/buttons/icon-button/icon-button.component';
 import { IconComponent } from '../../custom/icon/icon.component';
 import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-timesheet-slide [slide]',
@@ -24,6 +25,7 @@ import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-s
     ButtonComponent,
     IconButtonComponent,
     MatMenuModule,
+    MatTooltipModule,
     TimePipe,
   ],
 })
