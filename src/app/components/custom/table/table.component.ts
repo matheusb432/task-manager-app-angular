@@ -87,29 +87,7 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
 
   initIcons(): void {
     const { hasCopy, hasDelete, hasEdit, hasView } = this.config;
-    // const icons = [
-    //   !!hasCopy && {
-    //     ...IconConfig.withUrlType('DuplicateIcon', Icons.ContentCopy, DetailsTypes.Duplicate),
-    //     title: 'Duplicate',
-    //   },
-    //   !!hasEdit && {
-    //     ...IconConfig.withUrlType('EditIcon', Icons.Edit, DetailsTypes.Edit),
-    //     title: 'Edit',
-    //   },
-    //   !!hasView && {
-    //     ...IconConfig.withUrlType('ViewIcon', Icons.PageView, DetailsTypes.View),
-    //     title: 'View',
-    //   },
-    //   !!hasDelete && {
-    //     ...IconConfig.withClick(
-    //       'DeleteIcon',
-    //       Icons.Delete,
-    //       (id: number) => this.deleteItem.emit(id),
-    //       'warn'
-    //     ),
-    //     title: 'Delete',
-    //   },
-    // ].filter((i): i is IconConfig<number> => !!i);
+
     const icons = [];
     if (hasCopy) {
       icons.push({

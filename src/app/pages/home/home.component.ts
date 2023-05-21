@@ -18,22 +18,9 @@ export class HomeComponent {
 
   openToast(): void {
     const now = new Date().getTime();
-    const randBetween1and4 = Math.floor(Math.random() * 4) + 1;
-    console.log(now);
-    console.log(randBetween1and4);
-    switch (randBetween1and4) {
-      case 1:
-        this.toastService.info('Toast of ' + now);
-        break;
-      case 2:
-        this.toastService.warning('Toast of ' + now);
-        break;
-      case 3:
-        this.toastService.error('Toast of ' + now);
-        break;
-      default:
-        this.toastService.success('Toast of ' + now);
-        break;
-    }
+
+    this.toastService.warning(
+      'The quick brown fox jumps over the lazy dog. With a hint of lorem ipsum'
+    );
   }
 }

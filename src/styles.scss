@@ -85,6 +85,11 @@ h3 {
 }
 
 .toast {
+  & .mat-mdc-snack-bar-label {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
   &.success div {
     @include mxs.set-background(#4caf50);
   }
@@ -98,12 +103,7 @@ h3 {
   }
 
   &.warning div {
-    @include mxs.set-background(#ff9800);
-    color: #000;
-
-    .mdc-button__label {
-      color: #000;
-    }
+    @include mxs.set-background(darken(#ff9800, 15%));
   }
 
   .mdc-button__label {

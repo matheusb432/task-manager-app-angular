@@ -4,15 +4,14 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarRef,
   MatSnackBarVerticalPosition,
-  SimpleSnackBar,
-  TextOnlySnackBar,
 } from '@angular/material/snack-bar';
 import { BehaviorSubject, Subject, concatMap, filter, takeUntil } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { ToastData } from 'src/app/models';
+import { ToastComponent } from '../components/custom/toast/toast.component';
 import { AlertTypes, PubSubUtil } from '../util';
 
-type ToastFn<T extends SimpleSnackBar = TextOnlySnackBar> = (prefix?: string) => MatSnackBarRef<T>;
+type ToastFn = () => MatSnackBarRef<ToastComponent>;
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,6 @@ type ToastFn<T extends SimpleSnackBar = TextOnlySnackBar> = (prefix?: string) =>
 export class ToastService implements OnDestroy {
   private readonly posXDefault: MatSnackBarHorizontalPosition = 'center';
   private readonly posYDefault: MatSnackBarVerticalPosition = 'top';
-  private readonly actionDefault = 'Close';
   private readonly durationDefault = 4000;
 
   private _toastQueue$ = new BehaviorSubject<ToastFn | void>(undefined);
@@ -45,17 +43,14 @@ export class ToastService implements OnDestroy {
         takeUntil(this.destroyed$),
         filter((toastQueue): toastQueue is ToastFn => {
           const isValidToast = toastQueue != null;
+
           if (isValidToast) this.incrementCount();
 
           return isValidToast;
         }),
         concatMap((toastQueue) => {
           const toastFn = toastQueue;
-          const count = this._toastCount$.getValue();
-          // TODO how to live update the toast message?
-          const prefix = count > 1 ? `(${count})` : undefined;
-
-          const ref = toastFn(prefix);
+          const ref = toastFn();
           return ref.afterDismissed().pipe(finalize(() => this.decrementCount()));
         })
       )
@@ -78,37 +73,36 @@ export class ToastService implements OnDestroy {
     this.open({ message }, AlertTypes.Warning);
   }
 
-  open({ message, action, positionX, positionY, duration }: ToastData, type: AlertTypes): void {
-    const actionToUse = action === null ? undefined : action || this.actionDefault;
+  open({ message, positionX, positionY, duration }: ToastData, type: AlertTypes): void {
     const durationToUse = duration === 0 ? undefined : duration || this.durationDefault;
     const typeClass = ['toast', type];
 
-    // TODO toast queue?
-    // this._snackBar.open(message, actionToUse, {
-    //   horizontalPosition: positionX || this.posXDefault,
-    //   verticalPosition: positionY || this.posYDefault,
-    //   duration: durationToUse,
-    //   panelClass: typeClass,
-    // });
-    const openFn = (prefix?: string) => {
-      const displayMessage = prefix ? `${prefix}: ${message}` : message;
-
-      return this._snackBar.open(displayMessage, actionToUse, {
+    const openFn = () => {
+      const ref = this._snackBar.openFromComponent(ToastComponent, {
         horizontalPosition: positionX || this.posXDefault,
         verticalPosition: positionY || this.posYDefault,
         duration: durationToUse,
         panelClass: typeClass,
+        data: message,
       });
+
+      return ref;
     };
 
     this.queueToast(openFn);
   }
 
-  private queueToast<T extends TextOnlySnackBar>(openFn: ToastFn<T>): void {
+  closeToast(): void {
+    const snackInstance: MatSnackBarRef<ToastComponent> | null = this._snackBar._openedSnackBarRef;
+
+    snackInstance?.dismiss();
+  }
+
+  private queueToast(openFn: ToastFn): void {
     this.addToastToQueue(openFn);
   }
 
-  private addToastToQueue<T extends TextOnlySnackBar>(openFn: ToastFn<T>): void {
+  private addToastToQueue(openFn: ToastFn): void {
     this._toastQueue$.next(openFn);
   }
 
