@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  tma.spa:
+    container_name: ${APP_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${EXTERNAL_PORT}:80"
