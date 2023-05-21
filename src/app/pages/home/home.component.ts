@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { map } from 'rxjs';
 import { Card } from 'src/app/models';
-import { ModalService } from 'src/app/services/modal.service';
-import { homeCards, successModalData } from 'src/app/util';
+import { ToastService } from 'src/app/services';
+import { homeCards } from 'src/app/util';
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,28 @@ import { homeCards, successModalData } from 'src/app/util';
 })
 export class HomeComponent {
   cards: Card[] = homeCards;
+  toastCount$ = this.toastService.toastCount$.pipe(map((count) => count.toString()));
 
-  constructor(private modalService: ModalService) {}
+  constructor(private toastService: ToastService) {}
 
-  openFeedbackModal = () => this.modalService.feedback(successModalData());
+  openToast(): void {
+    const now = new Date().getTime();
+    const randBetween1and4 = Math.floor(Math.random() * 4) + 1;
+    console.log(now);
+    console.log(randBetween1and4);
+    switch (randBetween1and4) {
+      case 1:
+        this.toastService.info('Toast of ' + now);
+        break;
+      case 2:
+        this.toastService.warning('Toast of ' + now);
+        break;
+      case 3:
+        this.toastService.error('Toast of ' + now);
+        break;
+      default:
+        this.toastService.success('Toast of ' + now);
+        break;
+    }
+  }
 }

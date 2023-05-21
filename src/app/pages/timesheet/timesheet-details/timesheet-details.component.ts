@@ -59,7 +59,7 @@ export class TimesheetDetailsComponent
     this.loadData();
   }
 
-  initSubscriptions(): void {
+  private initSubscriptions(): void {
     this.pageService
       .getQueryParamsObservable()
       .pipe(

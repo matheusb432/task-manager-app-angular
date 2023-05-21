@@ -84,7 +84,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     PubSubUtil.completeDestroy(this.destroyed$);
   }
 
-  initSubs(): void {
+  private initSubs(): void {
     this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this._item$.next(undefined);
       this._listItems$.next([]);

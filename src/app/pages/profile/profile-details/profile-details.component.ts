@@ -57,7 +57,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
     this.loadData();
   }
 
-  initSubscriptions(): void {
+  private initSubscriptions(): void {
     this.subscriptions.push(
       this.pageService
         .getQueryParamsObservable()

@@ -76,7 +76,7 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     this.initSubs();
   }
 
-  initSubs(): void {
+  private initSubs(): void {
     this.slides$
       .pipe(
         takeUntil(this.destroyed$),

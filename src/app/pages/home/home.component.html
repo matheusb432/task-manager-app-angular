@@ -1,4 +1,6 @@
 <app-page-layout>
   <app-title titleText="Home"></app-title>
   <app-cards-grid [cards]="cards"></app-cards-grid>
+  <app-button (clicked)="openToast()">Open Toast</app-button>
+  <p>Toast count -> {{ toastCount$ | async }}</p>
 </app-page-layout>

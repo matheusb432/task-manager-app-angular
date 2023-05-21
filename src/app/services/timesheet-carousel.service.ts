@@ -25,7 +25,7 @@ export class TimesheetCarouselService implements OnDestroy {
     this.initSubs();
   }
 
-  initSubs(): void {
+  private initSubs(): void {
     this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this._slides$.next([]);
       this._monthSlides$.next([]);

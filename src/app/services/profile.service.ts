@@ -69,7 +69,7 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
     PubSubUtil.completeDestroy(this.destroyed$);
   }
 
-  initSubs() {
+  private initSubs() {
     this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this._item$.next(undefined);
       this._listItems$.next([]);

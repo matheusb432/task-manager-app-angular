@@ -55,7 +55,7 @@ export class TimesheetsComponent implements OnInit {
     this.initSubs();
   }
 
-  initSubs(): void {
+  private initSubs(): void {
     this.range.valueChanges
       .pipe(
         PubSubUtil.ignoreIrrelevantDateRangeChanges(),
