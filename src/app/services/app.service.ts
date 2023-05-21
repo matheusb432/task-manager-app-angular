@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map } from 'rxjs';
+import { BehaviorSubject, Subject, filter, map } from 'rxjs';
 import { DateRangeValue } from '../components/custom/inputs';
 import { AsNonNullable } from '../models';
 import { DateUtil } from '../util';
@@ -17,6 +17,7 @@ export class AppService {
     DateUtil.formatDateToUniversalFormat(new Date())
   );
   private _dateRange$ = new BehaviorSubject<AsNonNullable<DateRangeValue> | null>(null);
+  private _clearSessionState$ = new Subject<boolean>();
 
   get dateRange$() {
     return this._dateRange$
@@ -33,6 +34,10 @@ export class AppService {
       filter((dateString) => !!dateString),
       map(DateUtil.dateTimeStringToDateString)
     );
+  }
+
+  get clearSessionState$() {
+    return this._clearSessionState$.asObservable();
   }
 
   getActiveDate(): Date {
@@ -59,8 +64,16 @@ export class AppService {
     this._dateRange$.next(value);
   }
 
-  initDateRange(): void {
-    if (this.getDateRange() != null) return;
+  /**
+   * @returns true if the date range was not set before
+   */
+  initDateRange(): boolean {
+    if (this.getDateRange() != null) return false;
     this.setDateRange(this.defaultRange);
+    return true;
+  }
+
+  activateClearSessionState(): void {
+    this._clearSessionState$.next(true);
   }
 }

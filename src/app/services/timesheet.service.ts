@@ -36,10 +36,12 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class TimesheetService extends FormService<Timesheet> implements OnDestroy {
-  private _metricsStore$ = new BehaviorSubject<TimesheetMetricsStore>({
+  private readonly initialMetricsStore = {
     byDate: {},
     dates: [],
-  });
+  };
+
+  private _metricsStore$ = new BehaviorSubject<TimesheetMetricsStore>(this.initialMetricsStore);
   private destroyed$ = new Subject<boolean>();
 
   override get listItems$() {
@@ -83,6 +85,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   }
 
   initSubs(): void {
+    this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this._item$.next(undefined);
+      this._listItems$.next([]);
+      this._metricsStore$.next(this.initialMetricsStore);
+    });
+
     this.item$
       .pipe(
         takeUntil(this.destroyed$),
@@ -267,7 +275,12 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
   };
 
   loadListData = async (): Promise<void> => {
-    this.app.initDateRange();
+    const hasInit = this.app.initDateRange();
+
+    if (!hasInit) {
+      const { start, end } = this.app.getDateRangeOrDefault();
+      this.loadListItemsByRange(start, end);
+    }
   };
 
   loadEditData = async (id: string | null | undefined): Promise<Timesheet | null> => {

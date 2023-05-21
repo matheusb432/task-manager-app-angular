@@ -20,15 +20,17 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class ProfileService extends FormService<Profile> implements OnDestroy {
-  private destroyed$ = new Subject<boolean>();
-  private types$ = new BehaviorSubject<ProfileType[]>([]);
-
-  private _activeProfileIds$ = new BehaviorSubject<ActiveProfileIds>({
+  private readonly initialActiveProfileIds = {
     weekday: null,
     weekend: null,
     holiday: null,
     customDateRanges: [],
-  });
+  };
+
+  private destroyed$ = new Subject<boolean>();
+  private types$ = new BehaviorSubject<ProfileType[]>([]);
+
+  private _activeProfileIds$ = new BehaviorSubject<ActiveProfileIds>(this.initialActiveProfileIds);
   private _profileIdsStore$ = new BehaviorSubject<ProfileIdsStore>(
     ProfileUtil.getInitialProfileIdsStore()
   );
@@ -68,6 +70,13 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   }
 
   initSubs() {
+    this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this._item$.next(undefined);
+      this._listItems$.next([]);
+      this._activeProfileIds$.next(this.initialActiveProfileIds);
+      this._profileIdsStore$.next(ProfileUtil.getInitialProfileIdsStore());
+    });
+
     this.listItems$
       .pipe(
         takeUntil(this.destroyed$),

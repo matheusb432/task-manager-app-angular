@@ -16,6 +16,7 @@ import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
 import { TokenService } from './token.service';
 import { ToastService } from './toast.service';
+import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +48,8 @@ export class AuthService implements OnDestroy {
 
         if (authData != null && loggedIn) {
           this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
+        } else {
+          this.app.activateClearSessionState();
         }
       })
     );
@@ -76,6 +79,7 @@ export class AuthService implements OnDestroy {
   }
 
   constructor(
+    private app: AppService,
     private api: AuthApiService,
     private ts: ToastService,
     private pageService: PageService,
