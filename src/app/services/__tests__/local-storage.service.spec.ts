@@ -77,6 +77,25 @@ describe('Service: LocalStorage', () => {
     });
   });
 
+  describe('getMany', () => {
+    it('should return the values from localStorage', () => {
+      const key = StoreKeys.AccessToken;
+      const key2 = StoreKeys.RefreshToken;
+      const values = ['token-value', 'token-value2'];
+      const expected: Record<string, unknown> = {
+        [StoreKeys.AccessToken]: values[0],
+        [StoreKeys.RefreshToken]: values[1],
+      };
+
+      service.store({ key, value: values[0] });
+      service.store({ key: key2, value: values[1] });
+
+      const result = service.getMany([{ key }, { key: key2 }]);
+
+      expect(result).toEqual(expected);
+    });
+  });
+
   describe('remove', () => {
     it('should remove the value from localStorage', () => {
       const key = StoreKeys.AccessToken;

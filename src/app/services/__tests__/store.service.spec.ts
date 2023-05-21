@@ -16,6 +16,7 @@ describe('Service: Store', () => {
   beforeEach(() => {
     mockStore = {
       get: jasmine.createSpy('get'),
+      getMany: jasmine.createSpy('getMany'),
       store: jasmine.createSpy('store'),
       remove: jasmine.createSpy('remove'),
       clear: jasmine.createSpy('clear'),

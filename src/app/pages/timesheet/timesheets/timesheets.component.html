@@ -1,6 +1,26 @@
 <app-page-layout>
   <app-title titleText="Timesheets"></app-title>
   <header class="search-bar">
+    <div class="slides-container">
+      <app-slide
+        fcName="showList"
+        [control]="showList"
+        labelText="List"
+        elId="cTimesheetListShowList"
+        [fg]="filterForm"
+        (changed)="onShowListChanged($event)"
+      >
+      </app-slide>
+      <app-slide
+        fcName="showCalendar"
+        [control]="showCalendar"
+        labelText="Calendar"
+        elId="cTimesheetListShowCalendar"
+        [fg]="filterForm"
+        (changed)="onShowCalendarChanged($event)"
+      >
+      </app-slide>
+    </div>
     <app-date-range-picker
       fgName="range"
       [controlGroup]="range"
@@ -11,7 +31,19 @@
       [maxDate]="tomorrow"
     ></app-date-range-picker>
   </header>
-  <app-timesheet-carousel (selectedDate)="onSelectDate($event)"></app-timesheet-carousel>
-  <app-timesheet-list></app-timesheet-list>
+  <div
+    class="hideable"
+    *ngIf="enableCalendarAnimation || showCalendar.value"
+    [ngClass]="{ hidden: !showCalendar.value }"
+  >
+    <app-timesheet-carousel (selectedDate)="onSelectDate($event)"></app-timesheet-carousel>
+  </div>
+  <div
+    class="hideable"
+    *ngIf="enableListAnimation || showList.value"
+    [ngClass]="{ hidden: !showList.value }"
+  >
+    <app-timesheet-list></app-timesheet-list>
+  </div>
   <router-outlet></router-outlet>
 </app-page-layout>

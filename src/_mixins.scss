@@ -22,6 +22,17 @@
     position: absolute;
     transform: scale(0);
     visibility: hidden;
+    animation: delay-position calc($duration + 0.5s) ease-in-out;
+  }
+}
+
+@mixin move-out-if-hidden($duration: 0.3s) {
+  transition: all $duration ease-in-out;
+  &.hidden {
+    position: absolute;
+    transform: translateX(-150%);
+    visibility: hidden;
+    animation: delay-position calc($duration + 0.5s) ease-in-out;
   }
 }
 
@@ -53,5 +64,14 @@
     @return #333;
   } @else {
     @return #fff;
+  }
+}
+
+@keyframes delay-position {
+  0% {
+    position: initial;
+  }
+  100% {
+    position: absolute;
   }
 }

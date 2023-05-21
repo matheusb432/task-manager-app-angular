@@ -1,7 +1,24 @@
+@use 'src/_mixins.scss' as mxs;
+
 .search-bar {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   margin-bottom: -1rem;
+}
+
+.slides-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.hideable {
+  @include mxs.move-out-if-hidden(1s);
 }

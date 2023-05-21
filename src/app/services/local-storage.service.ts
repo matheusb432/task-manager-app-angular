@@ -13,6 +13,16 @@ export const LOCAL_STORAGE = new InjectionToken<Storage>('localStorage', {
 export class LocalStorageService implements StoreService {
   constructor(@Inject(LOCAL_STORAGE) private _localStorage: Storage) {}
 
+  getMany<T = unknown>(
+    keyDatas: { key: StoreKeys; type?: StoreDataTypes }[]
+  ): Record<StoreKeys, T | null> {
+    const values: Record<string, T | null> = {};
+    keyDatas.forEach(({ key, type }) => {
+      values[key] = this.get<T>(key, type);
+    });
+    return values;
+  }
+
   get<T = unknown>(key: StoreKeys, type?: StoreDataTypes): T | null {
     this.validate(key);
 

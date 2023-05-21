@@ -7,33 +7,38 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
-  selector: 'app-checkbox [fcName] [control] [fg] [labelText]',
-  template: `<div [formGroup]="fg">
-    <mat-checkbox
-      [formControlName]="fcName"
-      [id]="elId"
-      color="primary"
-      (change)="onChange($event)"
-    >
-      {{ labelText }}
-    </mat-checkbox>
-  </div> `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-slide',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatCheckboxModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatSlideToggleModule],
+  template: `
+    <div [formGroup]="fg">
+      <mat-slide-toggle
+        [formControlName]="fcName"
+        [id]="elId"
+        color="primary"
+        [ngStyle]="styles"
+        (change)="onChange($event)"
+      >
+        {{ labelText }}
+      </mat-slide-toggle>
+    </div>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckboxComponent implements OnChanges {
+export class SlideComponent implements OnChanges {
   @Input() fcName!: string;
   @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
   @Input() canEdit = true;
+  @Input() styles: Record<string, string> = {};
 
   @Output() changed = new EventEmitter<boolean>();
 
@@ -50,7 +55,7 @@ export class CheckboxComponent implements OnChanges {
     else this.control?.disable();
   }
 
-  onChange(event: MatCheckboxChange): void {
+  onChange(event: MatSlideToggleChange): void {
     this.changed.emit(event.checked);
   }
 }
