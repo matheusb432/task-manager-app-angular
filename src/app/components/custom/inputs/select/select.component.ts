@@ -10,7 +10,7 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { SelectOption, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { PubSubUtil, StringUtil } from 'src/app/util';
+import { FormUtil, PubSubUtil, StringUtil } from 'src/app/util';
 import { validationErrorMessages } from '../validation-errors';
 
 @Component({
@@ -44,6 +44,10 @@ export class SelectComponent extends WithDestroyed implements OnDestroy, OnChang
 
   get disabled(): boolean {
     return !!this.control?.disabled;
+  }
+
+  get id(): string {
+    return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

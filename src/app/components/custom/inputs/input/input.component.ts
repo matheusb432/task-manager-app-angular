@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs';
 import { IconConfig, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { validationErrorMessages } from '../validation-errors';
+import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-input [fcName] [fg] [labelText]',
@@ -50,6 +51,10 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
 
   get control() {
     return this.fg.controls[this.fcName];
+  }
+
+  get id(): string {
+    return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

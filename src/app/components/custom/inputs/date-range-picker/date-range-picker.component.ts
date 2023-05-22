@@ -17,6 +17,7 @@ import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
 import { DateRangeForm } from './date-range-form-group';
+import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -55,6 +56,10 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
 
   get controlGroup() {
     return this.fg.controls[this.fgName] as FormGroup<DateRangeForm>;
+  }
+
+  get id(): string {
+    return this.elId || FormUtil.buildId(this.fgName, this.formId);
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

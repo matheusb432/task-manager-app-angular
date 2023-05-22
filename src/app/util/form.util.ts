@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { FormTypes } from '../util';
+import { FormTypes, StringUtil } from '../util';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +46,13 @@ export class FormUtil {
       start: new FormControl<Date | null>(start),
       end: new FormControl<Date | null>(end),
     });
+  }
+
+  static buildId(controlName: string, formId = ''): string {
+    if (!controlName) return '';
+
+    if (!formId) return controlName;
+
+    return [formId, StringUtil.capitalize(controlName)].join('');
   }
 }

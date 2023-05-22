@@ -1,24 +1,24 @@
-<form id="cSignupFormContainer" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [id]="elIds.SignupForm" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-grid">
     <app-input
       fcName="userName"
       labelText="User name"
       placeholder="Enter your user name"
-      elId="cSignupFormUserName"
+      [formId]="elIds.SignupForm"
       [fg]="form"
     ></app-input>
     <app-input
       fcName="name"
       labelText="Name"
       placeholder="Enter your name"
-      elId="cSignupFormName"
+      [formId]="elIds.SignupForm"
       [fg]="form"
     ></app-input>
     <app-input
       fcName="email"
       labelText="Email"
       placeholder="Enter your email"
-      elId="cSignupFormEmail"
+      [formId]="elIds.SignupForm"
       [fg]="form"
     ></app-input>
     <app-input
@@ -26,7 +26,7 @@
       labelText="Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Enter your password"
-      elId="cSignupFormPassword"
+      [formId]="elIds.SignupForm"
       [labelIcon]="visibilityIcon"
       [fg]="form"
       [helpers]="passwordHelpers"
@@ -36,7 +36,7 @@
       labelText="Confirm Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Confirm password"
-      elId="cSignupFormConfirmPassword"
+      [formId]="elIds.SignupForm"
       [labelIcon]="visibilityIcon"
       [fg]="form"
     ></app-input>

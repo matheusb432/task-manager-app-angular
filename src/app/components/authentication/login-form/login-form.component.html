@@ -1,10 +1,10 @@
-<form id="cLoginFormContainer" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [id]="elIds.LoginForm" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-grid">
     <app-input
       fcName="userNameOrEmail"
       labelText="User name or Email"
       placeholder="Enter your user name or email"
-      elId="cLoginFormUserNameOrEmail"
+      [formId]="elIds.LoginForm"
       [fg]="form"
     ></app-input>
     <app-input
@@ -12,8 +12,8 @@
       labelText="Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Enter your password"
-      elId="cLoginFormPassword"
       [labelIcon]="visibilityIcon"
+      [formId]="elIds.LoginForm"
       [fg]="form"
     ></app-input>
 

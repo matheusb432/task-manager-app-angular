@@ -10,6 +10,7 @@ import {
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-checkbox [fcName] [fg] [labelText]',
@@ -32,6 +33,7 @@ export class CheckboxComponent implements OnChanges {
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
+  @Input() formId = '';
   @Input() canEdit = true;
 
   @Output() changed = new EventEmitter<boolean>();
@@ -42,6 +44,10 @@ export class CheckboxComponent implements OnChanges {
 
   get control(): AbstractControl | null {
     return this.fg.get(this.fcName);
+  }
+
+  get id(): string {
+    return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

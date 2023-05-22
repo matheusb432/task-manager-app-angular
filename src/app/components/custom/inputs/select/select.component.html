@@ -10,10 +10,10 @@
     [formControlName]="fcName"
     [multiple]="multiple"
     [compareWith]="compareWithFn"
-    [id]="elId"
+    [id]="id"
   >
     <mat-option
-      [id]="elId + 'Option' + (option.id ?? option.value)"
+      [id]="id + 'Option' + (option.id ?? option.value)"
       *ngFor="let option of options"
       [value]="option.value"
     >

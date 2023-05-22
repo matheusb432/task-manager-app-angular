@@ -14,7 +14,6 @@
       <app-datepicker
         fcName="date"
         labelText="Date"
-        elId="cTimesheetFormDate"
         [fg]="form"
         [canEdit]="canEditDate"
         [formId]="elIds.TimesheetForm"
@@ -130,7 +129,7 @@
     <app-checkbox
       fcName="finished"
       labelText="Finished"
-      elId="cTimesheetFormFinished"
+      [formId]="elIds.TimesheetForm"
       [fg]="form"
       [canEdit]="canEdit"
     >

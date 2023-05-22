@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs';
 import { Nullish, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
+import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-datepicker [fcName] [fg] [labelText]',
@@ -56,6 +57,10 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
 
   get control(): AbstractControl | null {
     return this.fg.get(this.fcName);
+  }
+
+  get id(): string {
+    return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

@@ -114,4 +114,17 @@ describe('Util: Form', () => {
       expect(FormUtil.getSubmitLabel(FormTypes.View)).toBe('');
     });
   });
+
+  describe('buildId', () => {
+    it('should build the id', () => {
+      expect(FormUtil.buildId('title', 'formName')).toBe('formNameTitle');
+      expect(FormUtil.buildId('type', 'cProfileForm')).toBe('cProfileFormType');
+      expect(FormUtil.buildId('type', '')).toBe('type');
+    });
+
+    it('should return an empty string when the input is invalid', () => {
+      expect(FormUtil.buildId('', '')).toBe('');
+      expect(FormUtil.buildId('', 'formName')).toBe('');
+    });
+  });
 });

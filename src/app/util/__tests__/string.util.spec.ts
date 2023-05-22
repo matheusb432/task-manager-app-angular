@@ -20,6 +20,7 @@ describe('Util: String', () => {
 
     it('should capitalize the first letter of a word', () => {
       expect(StringUtil.capitalize('hello')).toEqual('Hello');
+      expect(StringUtil.capitalize('helloWorld')).toEqual('HelloWorld');
     });
   });
 

@@ -16,6 +16,7 @@ import { WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
+import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-textarea',
@@ -49,6 +50,10 @@ export class TextareaComponent extends WithDestroyed implements OnChanges, OnDes
 
   get disabled(): boolean {
     return !!this.control?.disabled;
+  }
+
+  get id(): string {
+    return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
