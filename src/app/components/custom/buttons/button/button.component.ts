@@ -72,4 +72,11 @@ export class ButtonComponent implements OnChanges, OnDestroy {
   }
 
   emitClick = (): void => this.clicked.emit();
+
+  getLinkStyles(): Record<string, string> {
+    return {
+      color: '#fff',
+      ...this.styles,
+    };
+  }
 }

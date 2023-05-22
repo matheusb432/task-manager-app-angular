@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
   MatSnackBar,
+  MatSnackBarConfig,
   MatSnackBarHorizontalPosition,
   MatSnackBarRef,
   MatSnackBarVerticalPosition,
@@ -11,7 +12,7 @@ import { ToastData } from 'src/app/models';
 import { ToastComponent } from '../components/custom/toast/toast.component';
 import { AlertTypes, PubSubUtil } from '../util';
 
-type ToastFn = () => MatSnackBarRef<ToastComponent>;
+type ToastConfig = MatSnackBarConfig<string>;
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class ToastService implements OnDestroy {
   private readonly posYDefault: MatSnackBarVerticalPosition = 'top';
   private readonly durationDefault = 4000;
 
-  private _toastQueue$ = new BehaviorSubject<ToastFn | void>(undefined);
+  private _toastQueue$ = new BehaviorSubject<MatSnackBarConfig<string> | void>(undefined);
   private _toastCount$ = new BehaviorSubject<number>(0);
   private destroyed$ = new Subject<boolean>();
 
@@ -41,16 +42,15 @@ export class ToastService implements OnDestroy {
     this._toastQueue$
       .pipe(
         takeUntil(this.destroyed$),
-        filter((toastQueue): toastQueue is ToastFn => {
-          const isValidToast = toastQueue != null;
+        filter((nextInQueue): nextInQueue is MatSnackBarConfig<string> => {
+          const isValidToast = nextInQueue != null;
 
           if (isValidToast) this.incrementCount();
 
           return isValidToast;
         }),
-        concatMap((toastQueue) => {
-          const toastFn = toastQueue;
-          const ref = toastFn();
+        concatMap((nextInQueue) => {
+          const ref = this.openToast(nextInQueue);
           return ref.afterDismissed().pipe(finalize(() => this.decrementCount()));
         })
       )
@@ -77,19 +77,19 @@ export class ToastService implements OnDestroy {
     const durationToUse = duration === 0 ? undefined : duration || this.durationDefault;
     const typeClass = ['toast', type];
 
-    const openFn = () => {
-      const ref = this._snackBar.openFromComponent(ToastComponent, {
-        horizontalPosition: positionX || this.posXDefault,
-        verticalPosition: positionY || this.posYDefault,
-        duration: durationToUse,
-        panelClass: typeClass,
-        data: message,
-      });
-
-      return ref;
+    const config = {
+      horizontalPosition: positionX || this.posXDefault,
+      verticalPosition: positionY || this.posYDefault,
+      duration: durationToUse,
+      panelClass: typeClass,
+      data: message,
     };
 
-    this.queueToast(openFn);
+    this.queueToast(config);
+  }
+
+  private openToast(config: MatSnackBarConfig<string>) {
+    return this._snackBar.openFromComponent(ToastComponent, config);
   }
 
   closeToast(): void {
@@ -98,12 +98,12 @@ export class ToastService implements OnDestroy {
     snackInstance?.dismiss();
   }
 
-  private queueToast(openFn: ToastFn): void {
-    this.addToastToQueue(openFn);
+  private queueToast(config: ToastConfig): void {
+    this.addToastToQueue(config);
   }
 
-  private addToastToQueue(openFn: ToastFn): void {
-    this._toastQueue$.next(openFn);
+  private addToastToQueue(config: ToastConfig): void {
+    this._toastQueue$.next(config);
   }
 
   private incrementCount() {

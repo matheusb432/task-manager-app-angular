@@ -119,9 +119,15 @@ h3 {
   margin-bottom: 0.5rem;
 }
 
-mat-form-field.input-container {
-  display: flex;
-  margin-bottom: 1rem;
+mat-form-field {
+  .mdc-text-field--filled {
+    background-color: var(--secondary-dark);
+    border-radius: 0;
+  }
+  &.input-container {
+    display: flex;
+    margin-bottom: 1rem;
+  }
 }
 
 .input-loading-container {

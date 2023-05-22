@@ -1,6 +1,9 @@
 @use 'src/_mixins.scss' as mxs;
 @use '../_timesheet-variables.scss' as timesheetVars;
 
+$card-bg: var(--bg-color);
+$border-color: var(--secondary-dark);
+
 .carousel {
   position: relative;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
@@ -21,6 +24,7 @@
 
 .carousel-actions {
   text-align: center;
+  border-top: 1px solid $border-color;
 }
 
 ::ng-deep .owl-nav {

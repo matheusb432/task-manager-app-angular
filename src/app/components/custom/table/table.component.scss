@@ -1,11 +1,11 @@
-$border-color: #43484b;
+$border-color: var(--secondary-dark);
 $table-bg: var(--bg-color);
 
 table.data-table {
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   background: $table-bg;
   border-spacing: 0;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);

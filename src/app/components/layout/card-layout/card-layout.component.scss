@@ -1,7 +1,10 @@
+$card-bg: var(--bg-color);
+$border-color: var(--secondary-dark);
+
 .card {
   width: 280px;
   height: 268px;
-  border: 1px solid var(--secondary);
+  border: 1px solid $border-color;
   border-radius: 5px;
   overflow: hidden;
   display: flex;
@@ -12,7 +15,7 @@
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1) rotate(1deg);
+    transform: scale(1.1) rotate(-1deg);
   }
 
   .card-body {
@@ -21,7 +24,7 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    background: var(--secondary);
+    background: $card-bg;
     overflow-y: auto;
   }
 }

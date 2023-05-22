@@ -20,6 +20,7 @@ const homeCards = [
     url: Pages.Profiles,
     image: {
       src: '/assets/img/profiles.jpg',
+      priority: true,
       width: 278,
       height: 152,
     },
