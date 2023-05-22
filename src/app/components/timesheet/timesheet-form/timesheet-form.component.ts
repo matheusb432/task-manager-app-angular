@@ -37,14 +37,6 @@ export class TimesheetFormComponent {
     return this.form.controls;
   }
 
-  get date() {
-    return this.controls.date;
-  }
-
-  get finished() {
-    return this.controls.finished;
-  }
-
   get noteForms() {
     return this.controls.notes;
   }
@@ -62,7 +54,7 @@ export class TimesheetFormComponent {
   }
 
   get canEditDate(): boolean {
-    return FormUtil.isDuplicateForm(this.formType);
+    return FormUtil.isDuplicateForm(this.formType) || FormUtil.isCreateForm(this.formType);
   }
 
   constructor(

@@ -9,21 +9,20 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs';
 import { IconConfig, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { validationErrorMessages } from '../validation-errors';
 
 @Component({
-  selector: 'app-input [fcName] [control] [fg] [labelText]',
+  selector: 'app-input [fcName] [fg] [labelText]',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent extends WithDestroyed implements OnDestroy, OnChanges {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() labelIcon?: IconConfig<never>;
@@ -47,6 +46,10 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
 
   get disabled(): boolean {
     return !!this.control?.disabled;
+  }
+
+  get control() {
+    return this.fg.controls[this.fcName];
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

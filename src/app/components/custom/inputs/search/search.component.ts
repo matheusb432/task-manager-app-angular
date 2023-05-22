@@ -4,14 +4,13 @@ import { IconConfig } from 'src/app/models';
 import { Icons } from 'src/app/util';
 
 @Component({
-  selector: 'app-search [fcName] [control] [fg] [labelText]',
+  selector: 'app-search [fcName] [fg] [labelText]',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() errText = 'Invalid Filter';
@@ -24,6 +23,10 @@ export class SearchComponent {
   @Output() apply = new EventEmitter<void>();
 
   searchIcon = IconConfig.withClick('cSearchIcon', Icons.Search, () => this.apply.emit());
+
+  get control(): AbstractControl | null {
+    return this.fg.controls[this.fcName];
+  }
 
   get invalid(): boolean {
     return this.isInvalid();

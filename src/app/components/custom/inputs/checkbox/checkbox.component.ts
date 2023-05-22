@@ -12,7 +12,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-checkbox [fcName] [control] [fg] [labelText]',
+  selector: 'app-checkbox [fcName] [fg] [labelText]',
   template: `<div [formGroup]="fg">
     <mat-checkbox
       [formControlName]="fcName"
@@ -29,7 +29,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class CheckboxComponent implements OnChanges {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
@@ -39,6 +38,10 @@ export class CheckboxComponent implements OnChanges {
 
   get disabled(): boolean {
     return !!this.control?.disabled;
+  }
+
+  get control(): AbstractControl | null {
+    return this.fg.get(this.fcName);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

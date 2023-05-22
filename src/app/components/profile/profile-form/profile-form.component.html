@@ -2,7 +2,6 @@
   <div class="form-grid" [appScrollTo]="true">
     <app-input
       fcName="name"
-      [control]="name"
       labelText="Name"
       placeholder="Profile Name"
       elId="cProfileFormName"
@@ -13,7 +12,6 @@
 
     <app-input
       fcName="timeTarget"
-      [control]="timeTarget"
       labelText="Time Target"
       type="time"
       elId="cProfileFormTimeTarget"
@@ -25,7 +23,6 @@
 
     <app-input
       fcName="tasksTarget"
-      [control]="tasksTarget"
       labelText="Tasks Target"
       type="number"
       elId="cProfileFormTasksTarget"
@@ -36,7 +33,6 @@
 
     <app-input
       fcName="priority"
-      [control]="priority"
       labelText="Priority"
       type="number"
       elId="cProfileFormPriority"
@@ -47,7 +43,6 @@
 
     <app-select
       fcName="profileTypeId"
-      [control]="profileTypeId"
       labelText="Type"
       [options]="typeOptions$ | async"
       [elId]="elIds.ProfileFormType"

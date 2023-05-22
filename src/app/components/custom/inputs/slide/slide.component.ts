@@ -33,7 +33,6 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 })
 export class SlideComponent implements OnChanges {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
@@ -41,6 +40,10 @@ export class SlideComponent implements OnChanges {
   @Input() styles: Record<string, string> = {};
 
   @Output() changed = new EventEmitter<boolean>();
+
+  get control(): AbstractControl | null {
+    return this.fg.controls[this.fcName];
+  }
 
   get disabled(): boolean {
     return !!this.control?.disabled;

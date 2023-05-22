@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { IconConfig } from 'src/app/models';
 import { ElementIds, FormUtil, Icons } from 'src/app/util';
-import { SignupForm, SignupFormGroup } from './signup-form-group';
+import { SignupFormGroup } from './signup-form-group';
 
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss'],
 })
-export class SignupFormComponent  {
+export class SignupFormComponent {
   @Input() form!: SignupFormGroup;
 
   @Output() save = new EventEmitter<SignupFormGroup>();
@@ -32,30 +31,6 @@ export class SignupFormComponent  {
     'At least 1 lowercase letter',
     'At least 1 number',
   ];
-
-  get controls(): SignupForm {
-    return this.form.controls;
-  }
-
-  get userName(): AbstractControl {
-    return this.controls.userName;
-  }
-
-  get password(): AbstractControl {
-    return this.controls.password;
-  }
-
-  get confirmPassword(): AbstractControl {
-    return this.controls.confirmPassword;
-  }
-
-  get name(): AbstractControl {
-    return this.controls.name;
-  }
-
-  get email(): AbstractControl {
-    return this.controls.email;
-  }
 
   onSubmit(): void {
     FormUtil.onSubmit(this.form, this.save);

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil, tap } from 'rxjs';
 import {
   TimesheetForm,
   TimesheetFormGroup,
@@ -7,7 +8,7 @@ import {
 } from 'src/app/components/timesheet/timesheet-form';
 import { CanDeactivateForm } from 'src/app/models';
 import { AppService, PageService, TimesheetService, ToastService } from 'src/app/services';
-import { DateUtil, DetailsTypes, FormTypes, paths } from 'src/app/util';
+import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, paths } from 'src/app/util';
 
 @Component({
   selector: 'app-create-timesheet',
@@ -15,7 +16,11 @@ import { DateUtil, DetailsTypes, FormTypes, paths } from 'src/app/util';
   styleUrls: ['./create-timesheet.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<TimesheetForm> {
+export class CreateTimesheetComponent
+  implements OnInit, OnDestroy, CanDeactivateForm<TimesheetForm>
+{
+  private destroyed$ = new Subject<boolean>();
+
   form!: TimesheetFormGroup;
 
   formType = FormTypes.Create;
@@ -29,20 +34,29 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
   ) {}
 
   ngOnInit(): void {
-    this.initSubscriptions();
+    this.initSubs();
+  }
+
+  ngOnDestroy(): void {
+    PubSubUtil.completeDestroy(this.destroyed$);
   }
 
   async runInitMethods(): Promise<void> {
-    this.initForm();
-
     await this.initUrlParams();
-    this.initForm();
   }
 
-  private initSubscriptions(): void {
+  private initSubs(): void {
     this.pageService.getQueryParamsObservableForUrl(paths.timesheetsCreate).subscribe(() => {
       this.runInitMethods();
     });
+    this.app.activeDate$
+      .pipe(
+        takeUntil(this.destroyed$),
+        tap((date) => {
+          this.initForm(date);
+        })
+      )
+      .subscribe();
   }
 
   async initUrlParams(): Promise<void> {
@@ -65,9 +79,12 @@ export class CreateTimesheetComponent implements OnInit, CanDeactivateForm<Times
     this.app.setActiveDate(dateString);
   }
 
-  initForm(): void {
-    const date = this.app.getActiveDate();
-    this.form = TimesheetFormGroup.from(getTimesheetForm(date));
+  initForm(date: Date): void {
+    if (this.form == undefined) {
+      this.form = TimesheetFormGroup.from(getTimesheetForm(date));
+    } else {
+      this.form.patchValue({ date });
+    }
   }
 
   submitForm(): Promise<void> {

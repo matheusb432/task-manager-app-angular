@@ -14,14 +14,13 @@ import { PubSubUtil, StringUtil } from 'src/app/util';
 import { validationErrorMessages } from '../validation-errors';
 
 @Component({
-  selector: 'app-select [fcName] [control] [fg] [labelText] [options]',
+  selector: 'app-select [fcName] [fg] [labelText] [options]',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent extends WithDestroyed implements OnDestroy, OnChanges {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() options!: SelectOption[] | null;
@@ -38,6 +37,10 @@ export class SelectComponent extends WithDestroyed implements OnDestroy, OnChang
     o1 === o2;
 
   isLoading = false;
+
+  get control(): AbstractControl | null {
+    return this.fg.controls[this.fcName];
+  }
 
   get disabled(): boolean {
     return !!this.control?.disabled;

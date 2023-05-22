@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { ElementIds, Icons } from 'src/app/util';
-import { LoginForm, LoginFormGroup } from './login-form-group';
 import { IconConfig } from 'src/app/models';
-import { FormUtil } from 'src/app/util';
+import { ElementIds, FormUtil, Icons } from 'src/app/util';
+import { LoginFormGroup } from './login-form-group';
 
 @Component({
   selector: 'app-login-form',
@@ -18,21 +16,12 @@ export class LoginFormComponent {
   elIds = ElementIds;
 
   passwordVisible = false;
-  visibilityIcon = IconConfig.withClick('cPasswordVisibilityIcon', Icons.RemoveRedEye, () =>
-    this.togglePasswordVisibility(), 'accent'
+  visibilityIcon = IconConfig.withClick(
+    'cPasswordVisibilityIcon',
+    Icons.RemoveRedEye,
+    () => this.togglePasswordVisibility(),
+    'accent'
   );
-
-  get controls(): LoginForm {
-    return this.form.controls;
-  }
-
-  get userNameOrEmail(): AbstractControl {
-    return this.controls.userNameOrEmail;
-  }
-
-  get password(): AbstractControl {
-    return this.controls.password;
-  }
 
   onSubmit(): void {
     FormUtil.onSubmit(this.form, this.save);

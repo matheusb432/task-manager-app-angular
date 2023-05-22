@@ -27,7 +27,6 @@ import { validationErrorMessages } from '../validation-errors';
 })
 export class TextareaComponent extends WithDestroyed implements OnChanges, OnDestroy {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() errText?: string;
@@ -39,6 +38,10 @@ export class TextareaComponent extends WithDestroyed implements OnChanges, OnDes
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   isLoading = false;
+
+  get control(): AbstractControl | null {
+    return this.fg.get(this.fcName);
+  }
 
   get invalid(): boolean {
     return this.isInvalid();

@@ -18,7 +18,7 @@ import { LoadingService } from 'src/app/services';
 import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
-  selector: 'app-datepicker [fcName] [control] [fg] [labelText]',
+  selector: 'app-datepicker [fcName] [fg] [labelText]',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,7 +35,6 @@ import { LoadingComponent } from '../../loading/loading.component';
 })
 export class DatepickerComponent extends WithDestroyed implements OnChanges, OnDestroy {
   @Input() fcName!: string;
-  @Input() control!: AbstractControl | null;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
@@ -53,6 +52,10 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
 
   get disabled(): boolean {
     return !!this.control?.disabled;
+  }
+
+  get control(): AbstractControl | null {
+    return this.fg.get(this.fcName);
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

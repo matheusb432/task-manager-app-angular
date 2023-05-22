@@ -82,13 +82,12 @@
       </ng-container>
     </ng-template>
     <ng-template #noMetrics>
-      <span class="no-metrics">
+      <span class="no-metrics" (click)="onSlideClick(slide)">
         <app-icon
           [matTooltip]="!slide.selected ? 'Add timesheet' : ''"
           [icon]="Icons.AddCircleOutline"
           [size]="48"
           [clickable]="true"
-          (clicked)="onSlideClick(slide)"
         ></app-icon>
       </span>
     </ng-template>

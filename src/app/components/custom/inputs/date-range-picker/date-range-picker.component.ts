@@ -35,7 +35,6 @@ import { DateRangeForm } from './date-range-form-group';
 })
 export class DateRangePickerComponent extends WithDestroyed implements OnChanges {
   @Input() fgName!: string;
-  @Input() controlGroup!: FormGroup<DateRangeForm>;
   @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
@@ -52,6 +51,10 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
 
   get disabled(): boolean {
     return !!this.controlGroup?.disabled;
+  }
+
+  get controlGroup() {
+    return this.fg.controls[this.fgName] as FormGroup<DateRangeForm>;
   }
 
   constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {

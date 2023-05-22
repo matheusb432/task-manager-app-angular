@@ -2,7 +2,6 @@
   <div class="form-grid">
     <app-input
       fcName="userNameOrEmail"
-      [control]="userNameOrEmail"
       labelText="User name or Email"
       placeholder="Enter your user name or email"
       elId="cLoginFormUserNameOrEmail"
@@ -10,7 +9,6 @@
     ></app-input>
     <app-input
       fcName="password"
-      [control]="password"
       labelText="Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Enter your password"
@@ -20,7 +18,9 @@
     ></app-input>
 
     <div class="form-buttons">
-      <app-button model="raised" [elId]="elIds.LoginSubmit" [disabled]="form.invalid" type="submit">Login</app-button>
+      <app-button model="raised" [elId]="elIds.LoginSubmit" [disabled]="form.invalid" type="submit"
+        >Login</app-button
+      >
     </div>
   </div>
 </form>

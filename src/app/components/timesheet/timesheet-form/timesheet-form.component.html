@@ -13,7 +13,6 @@
     >
       <app-datepicker
         fcName="date"
-        [control]="date"
         labelText="Date"
         elId="cTimesheetFormDate"
         [fg]="form"
@@ -39,7 +38,6 @@
       >
         <app-textarea
           fcName="comment"
-          [control]="noteForm.controls.comment"
           labelText="Note"
           [elId]="'cTimesheetFormNote' + i"
           placeholder="Enter a note"
@@ -71,7 +69,6 @@
       >
         <app-input
           fcName="title"
-          [control]="taskForm.controls.title"
           labelText="Task"
           [elId]="'cTimesheetFormTaskTitle' + i"
           placeholder="Enter the task title"
@@ -81,7 +78,6 @@
         </app-input>
         <app-textarea
           fcName="comment"
-          [control]="taskForm.controls.comment"
           labelText="Comment"
           [elId]="'cTimesheetFormTaskComment' + i"
           placeholder="Enter a Comment"
@@ -91,7 +87,6 @@
         </app-textarea>
         <app-input
           fcName="time"
-          [control]="taskForm.controls.time"
           labelText="Time"
           type="time"
           [elId]="'cTimesheetFormTaskTime' + i"
@@ -102,7 +97,6 @@
 
         <app-input
           fcName="rating"
-          [control]="taskForm.controls.rating"
           labelText="Rating"
           type="number"
           [elId]="'cTimesheetFormTaskRating' + i"
@@ -113,7 +107,6 @@
         ></app-input>
         <app-input
           fcName="importance"
-          [control]="taskForm.controls.importance"
           labelText="Importance"
           type="number"
           [elId]="'cTimesheetFormTaskImportance' + i"
@@ -136,7 +129,6 @@
 
     <app-checkbox
       fcName="finished"
-      [control]="finished"
       labelText="Finished"
       elId="cTimesheetFormFinished"
       [fg]="form"

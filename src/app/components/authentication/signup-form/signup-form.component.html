@@ -2,7 +2,6 @@
   <div class="form-grid">
     <app-input
       fcName="userName"
-      [control]="userName"
       labelText="User name"
       placeholder="Enter your user name"
       elId="cSignupFormUserName"
@@ -10,7 +9,6 @@
     ></app-input>
     <app-input
       fcName="name"
-      [control]="name"
       labelText="Name"
       placeholder="Enter your name"
       elId="cSignupFormName"
@@ -18,7 +16,6 @@
     ></app-input>
     <app-input
       fcName="email"
-      [control]="email"
       labelText="Email"
       placeholder="Enter your email"
       elId="cSignupFormEmail"
@@ -26,7 +23,6 @@
     ></app-input>
     <app-input
       fcName="password"
-      [control]="password"
       labelText="Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Enter your password"
@@ -37,7 +33,6 @@
     ></app-input>
     <app-input
       fcName="confirmPassword"
-      [control]="confirmPassword"
       labelText="Confirm Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Confirm password"

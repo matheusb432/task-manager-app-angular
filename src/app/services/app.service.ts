@@ -35,6 +35,10 @@ export class AppService {
     );
   }
 
+  get activeDate$() {
+    return this.activeDateString$.pipe(map(DateUtil.dateStringToDate));
+  }
+
   get clearSessionState$() {
     return this._clearSessionState$.asObservable();
   }
