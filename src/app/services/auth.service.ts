@@ -69,13 +69,7 @@ export class AuthService implements OnDestroy {
   }
 
   get setLoggedUser$(): Observable<UserAuthGet | null | undefined> {
-    return this._setLoggedUser.asObservable().pipe(
-      map((user) => {
-        if (user == null) return user;
-
-        return new Mapper(UserAuthGet).map(user) as UserAuthGet;
-      })
-    );
+    return this._setLoggedUser.asObservable();
   }
 
   constructor(

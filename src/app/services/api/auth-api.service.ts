@@ -33,9 +33,7 @@ export class AuthApiService {
   async getUserByEmail(email: string): Promise<UserAuthGet | null> {
     const res = await this.userApi.getByEmail(email);
 
-    if (res == null) return null;
-
-    return new Mapper(UserAuthGet).map(res) as UserAuthGet;
+    return res as UserAuthGet;
   }
 
   private createAuthApiRequest<T>(endpoint: string, elId: string, data: T): ApiRequest<T> {
