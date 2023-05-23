@@ -1,34 +1,26 @@
-<form [id]="elIds.SignupForm" class="side-form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form
+  app-form-layout
+  [id]="elIds.SignupForm"
+  class="side-form-layout"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
   <div class="form-grid">
     <app-input
       fcName="userName"
       labelText="User name"
       placeholder="Enter your user name"
-      [formId]="elIds.SignupForm"
-      [fg]="form"
     ></app-input>
-    <app-input
-      fcName="name"
-      labelText="Name"
-      placeholder="Enter your name"
-      [formId]="elIds.SignupForm"
-      [fg]="form"
-    ></app-input>
-    <app-input
-      fcName="email"
-      labelText="Email"
-      placeholder="Enter your email"
-      [formId]="elIds.SignupForm"
-      [fg]="form"
-    ></app-input>
+    <app-input fcName="name" labelText="Name" placeholder="Enter your name"></app-input>
+
+    <app-input fcName="email" labelText="Email" placeholder="Enter your email"></app-input>
+
     <app-input
       fcName="password"
       labelText="Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Enter your password"
-      [formId]="elIds.SignupForm"
       [labelIcon]="visibilityIcon"
-      [fg]="form"
       [helpers]="passwordHelpers"
     ></app-input>
     <app-input
@@ -36,9 +28,7 @@
       labelText="Confirm Password"
       [type]="passwordVisible ? 'text' : 'password'"
       placeholder="Confirm password"
-      [formId]="elIds.SignupForm"
       [labelIcon]="visibilityIcon"
-      [fg]="form"
     ></app-input>
 
     <div class="form-buttons">

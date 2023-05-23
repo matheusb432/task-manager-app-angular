@@ -108,6 +108,8 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   }
 
   private onSlideChanges(slides: DateSlide[]): void {
+    if (!slides?.length) return;
+
     const selectedSlidePosition = slides.findIndex((slide) => slide.selected);
     let position = 0;
     if (selectedSlidePosition === -1) {
@@ -159,6 +161,8 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
     const slides = this.carouselService.getSlides();
 
     const startSlide = slides[startPosition];
+
+    if (!startSlide) return;
     const monthSlideId = TimesheetCarouselService.buildMonthSlideId(
       startSlide.month,
       startSlide.year

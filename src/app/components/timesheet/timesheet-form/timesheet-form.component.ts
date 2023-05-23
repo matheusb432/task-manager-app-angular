@@ -54,7 +54,10 @@ export class TimesheetFormComponent {
   }
 
   get canEditDate(): boolean {
-    return FormUtil.isDuplicateForm(this.formType) || FormUtil.isCreateForm(this.formType);
+    return (
+      (this.canEdit && FormUtil.isDuplicateForm(this.formType)) ||
+      FormUtil.isCreateForm(this.formType)
+    );
   }
 
   constructor(

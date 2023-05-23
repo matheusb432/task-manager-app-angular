@@ -1,28 +1,28 @@
 import { DatePipe, NgIf } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { DateFilterFn, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { takeUntil } from 'rxjs';
+import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 import { Nullish, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
-import { LoadingComponent } from '../../loading/loading.component';
 import { FormUtil } from 'src/app/util';
+import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
-  selector: 'app-datepicker [fcName] [fg] [labelText]',
+  selector: 'app-datepicker [fcName] [labelText]',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     NgIf,
@@ -34,18 +34,24 @@ import { FormUtil } from 'src/app/util';
     DatePipe,
   ],
 })
-export class DatepickerComponent extends WithDestroyed implements OnChanges, OnDestroy {
+export class DatepickerComponent extends WithDestroyed implements OnInit, OnChanges, OnDestroy {
   @Input() fcName!: string;
-  @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
-  @Input() canEdit = true;
-  @Input() formId = '';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
+  @Input() canEdit = true;
   @Input() dateFilterFn: DateFilterFn<Date | undefined> | Nullish;
 
   isLoading = false;
+
+  get formId() {
+    return this.formWrapper.id || '';
+  }
+
+  get fg() {
+    return this.formWrapper.formGroup;
+  }
 
   get invalid(): boolean {
     return !!this.control && this.control.invalid && this.control.touched;
@@ -56,30 +62,41 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
   }
 
   get control(): AbstractControl | null {
-    return this.fg.get(this.fcName);
+    return this.fg.controls[this.fcName];
   }
 
   get id(): string {
     return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
-  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+  get canEditSelf(): boolean {
+    return this.canEdit && this.formWrapper.canEdit;
+  }
+
+  constructor(
+    private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
+    public formWrapper: FormLayoutComponent
+  ) {
     super();
   }
 
+  ngOnInit() {
+    FormUtil.updateStatusOnFormChange(this.fg, this.destroyed$, () => this.changeControlEnabled());
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
+    if (changes['elId'] && !!this.elId) {
       this.initLoadingSubscription();
     }
-
-    if (changes['control'] || changes['canEdit']) {
+    if (changes['fcName'] || changes['canEdit']) {
       this.changeControlEnabled();
     }
   }
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isLoadingByIds$([this.elId, this.formId])
+      .isLoadingById$(this.elId)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
@@ -90,7 +107,7 @@ export class DatepickerComponent extends WithDestroyed implements OnChanges, OnD
   }
 
   changeControlEnabled(): void {
-    if (!this.isLoading && this.canEdit) this.control?.enable();
+    if (!this.isLoading && this.canEditSelf) this.control?.enable();
     else this.control?.disable();
   }
 

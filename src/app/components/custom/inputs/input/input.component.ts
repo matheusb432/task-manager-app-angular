@@ -6,25 +6,25 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs';
+import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 import { IconConfig, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { validationErrorMessages } from '../validation-errors';
 import { FormUtil } from 'src/app/util';
+import { validationErrorMessages } from '../validation-errors';
 
 @Component({
-  selector: 'app-input [fcName] [fg] [labelText]',
+  selector: 'app-input [fcName] [labelText]',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputComponent extends WithDestroyed implements OnDestroy, OnChanges {
+export class InputComponent extends WithDestroyed implements OnInit, OnDestroy, OnChanges {
   @Input() fcName!: string;
-  @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() labelIcon?: IconConfig<never>;
   @Input() type = 'text';
@@ -33,13 +33,20 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
   @Input() placeholder = '';
   @Input() elId = '';
   @Input() canEdit = true;
-  @Input() formId = '';
   @Input() appearance: 'fill' | 'outline' = 'fill';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   @Output() keydownPressed = new EventEmitter<KeyboardEvent>();
 
   isLoading = false;
+
+  get formId() {
+    return this.formWrapper.id || '';
+  }
+
+  get fg() {
+    return this.formWrapper.formGroup ?? null;
+  }
 
   get invalid(): boolean {
     return this.isInvalid();
@@ -57,23 +64,35 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
     return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
-  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+  get canEditSelf(): boolean {
+    return this.canEdit && this.formWrapper?.canEdit;
+  }
+
+  constructor(
+    private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
+    public formWrapper: FormLayoutComponent
+  ) {
     super();
   }
 
+  ngOnInit(): void {
+    FormUtil.updateStatusOnFormChange(this.fg, this.destroyed$, () => this.changeControlEnabled());
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
+    if (changes['elId'] && !!this.elId) {
       this.initLoadingSubscription();
     }
 
-    if (changes['control'] || changes['canEdit']) {
+    if (changes['fcName'] || changes['canEdit']) {
       this.changeControlEnabled();
     }
   }
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isLoadingByIds$([this.elId, this.formId])
+      .isLoadingById$(this.elId)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
@@ -84,7 +103,7 @@ export class InputComponent extends WithDestroyed implements OnDestroy, OnChange
   }
 
   changeControlEnabled(): void {
-    if (!this.isLoading && this.canEdit) this.control?.enable();
+    if (!this.isLoading && this.canEditSelf) this.control?.enable();
     else this.control?.disable();
   }
 

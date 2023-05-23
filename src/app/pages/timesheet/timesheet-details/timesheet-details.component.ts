@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
@@ -14,6 +14,7 @@ import { DetailsTypes, FormTypes } from 'src/app/util';
   selector: 'app-timesheet-details',
   templateUrl: './timesheet-details.component.html',
   styleUrls: ['./timesheet-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetDetailsComponent
   extends WithDestroyed
@@ -25,7 +26,6 @@ export class TimesheetDetailsComponent
   }
   set form(value: TimesheetFormGroup) {
     this._form = value;
-    this.disableFormIfView();
   }
 
   get formType(): FormTypes {
@@ -40,10 +40,13 @@ export class TimesheetDetailsComponent
   }
   set pageData(value: PageData | undefined) {
     this._pageData = value;
-    this.disableFormIfView();
   }
 
-  constructor(private service: TimesheetService, private pageService: PageService) {
+  constructor(
+    private service: TimesheetService,
+    private pageService: PageService,
+    private cdRef: ChangeDetectorRef
+  ) {
     super();
     this.initForm();
   }
@@ -66,7 +69,6 @@ export class TimesheetDetailsComponent
         takeUntil(this.destroyed$),
         tap(() => {
           this.runInitMethods();
-          this.disableFormIfView();
         })
       )
       .subscribe();
@@ -84,12 +86,20 @@ export class TimesheetDetailsComponent
       return;
     }
 
-    this.form = this.service.convertToForm(loadedItem);
+    if (this.form == null) {
+      this.form = TimesheetFormGroup.from(getTimesheetForm(new Date()));
+    }
+    this.form.patchValue(this.service.convertToFormValue(loadedItem));
     this.form.markAllAsTouched();
+    this.cdRef.detectChanges();
   }
 
   initForm(): void {
-    this.form = TimesheetFormGroup.from(getTimesheetForm(new Date()));
+    if (this.form == null) {
+      this.form = TimesheetFormGroup.from(getTimesheetForm(new Date()));
+    } else {
+      this.form.patchValue({ date: new Date() });
+    }
   }
 
   submitForm(): Promise<void> {
@@ -118,13 +128,5 @@ export class TimesheetDetailsComponent
 
   onCancel(): Promise<boolean> {
     return this.service.goToList();
-  }
-
-  disableFormIfView(): void {
-    if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) {
-      return;
-    }
-
-    this.form?.disable();
   }
 }

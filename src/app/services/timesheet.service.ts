@@ -3,12 +3,7 @@ import { DateFilterFn } from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, map, takeUntil, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import {
-  TimesheetFormGroup,
-  getTaskItemFormGroup,
-  getTimesheetForm,
-  getTimesheetNoteFormGroup,
-} from '../components/timesheet/timesheet-form';
+import { TimesheetFormGroup, TimesheetFormValue } from '../components/timesheet/timesheet-form';
 import {
   Nullish,
   PaginationOptions,
@@ -20,7 +15,6 @@ import {
 import {
   DateUtil,
   DetailsTypes,
-  FormUtil,
   PubSubUtil,
   QueryUtil,
   StringUtil,
@@ -289,30 +283,25 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
     return this.loadItem(id);
   };
 
-  convertToForm(item: Timesheet): TimesheetFormGroup {
-    const newFg = TimesheetFormGroup.from(getTimesheetForm(new Date()));
-
-    FormUtil.setFormFromItem(newFg, {
+  convertToFormValue(item: Timesheet): Partial<TimesheetFormValue> {
+    const value: Partial<TimesheetFormValue> = {
       ...item,
       date: new Date(item.date ?? ''),
       notes: [],
       tasks: [],
-    });
+    };
 
     if (item?.notes) {
-      newFg.controls.notes = FormUtil.buildFormArray(item.notes, getTimesheetNoteFormGroup);
+      value.notes = item.notes;
     }
     if (item?.tasks) {
-      newFg.controls.tasks = FormUtil.buildFormArray(
-        item.tasks.map((x) => ({
-          ...x,
-          time: StringUtil.numberToTime(x.time as unknown as number),
-        })),
-        getTaskItemFormGroup
-      );
+      value.tasks = item.tasks.map((x) => ({
+        ...x,
+        time: StringUtil.numberToTime(x.time as unknown as number),
+      }));
     }
 
-    return newFg;
+    return value;
   }
 
   toJson(fg: TimesheetFormGroup): Partial<Timesheet> {

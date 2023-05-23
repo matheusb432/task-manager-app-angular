@@ -6,17 +6,19 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { takeUntil } from 'rxjs';
+import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 import { WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
+import { FormUtil } from 'src/app/util';
 import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
-import { FormUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-textarea',
@@ -26,22 +28,28 @@ import { FormUtil } from 'src/app/util';
   styleUrls: ['./textarea.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextareaComponent extends WithDestroyed implements OnChanges, OnDestroy {
+export class TextareaComponent extends WithDestroyed implements OnInit, OnChanges, OnDestroy {
   @Input() fcName!: string;
-  @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() errText?: string;
   @Input() placeholder = '';
   @Input() elId = '';
   @Input() canEdit = true;
-  @Input() formId = '';
   @Input() appearance: 'fill' | 'outline' = 'fill';
   @Input() isInvalid = () => !!this.control && this.control.invalid && this.control.touched;
 
   isLoading = false;
 
+  get fg() {
+    return this.formWrapper.formGroup;
+  }
+
   get control(): AbstractControl | null {
     return this.fg.get(this.fcName);
+  }
+
+  get formId(): string {
+    return this.formWrapper.id || '';
   }
 
   get invalid(): boolean {
@@ -56,23 +64,35 @@ export class TextareaComponent extends WithDestroyed implements OnChanges, OnDes
     return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
 
-  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+  get canEditSelf(): boolean {
+    return this.canEdit && this.formWrapper.canEdit;
+  }
+
+  constructor(
+    private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
+    public formWrapper: FormLayoutComponent
+  ) {
     super();
   }
 
+  ngOnInit(): void {
+    FormUtil.updateStatusOnFormChange(this.fg, this.destroyed$, () => this.changeControlEnabled());
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['formId'] && !!this.formId) || (changes['elId'] && !!this.elId)) {
+    if (changes['elId'] && !!this.elId) {
       this.initLoadingSubscription();
     }
 
-    if (changes['control'] || changes['canEdit']) {
+    if (changes['fcName'] || changes['canEdit']) {
       this.changeControlEnabled();
     }
   }
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isLoadingByIds$([this.elId, this.formId])
+      .isLoadingById$(this.elId)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
@@ -83,7 +103,7 @@ export class TextareaComponent extends WithDestroyed implements OnChanges, OnDes
   }
 
   changeControlEnabled(): void {
-    if (!this.isLoading && this.canEdit) this.control?.enable();
+    if (!this.isLoading && this.canEditSelf) this.control?.enable();
     else this.control?.disable();
   }
 

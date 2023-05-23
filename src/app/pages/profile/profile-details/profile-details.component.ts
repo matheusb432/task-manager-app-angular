@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, tap } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import {
   ProfileForm,
   ProfileFormGroup,
@@ -21,7 +21,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   }
   set form(value: ProfileFormGroup) {
     this._form = value;
-    this.disableFormIfView();
   }
   get formType(): FormTypes {
     if (!this.pageData?.type) return FormTypes.Edit;
@@ -35,12 +34,15 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
   }
   set pageData(value: PageData | undefined) {
     this._pageData = value;
-    this.disableFormIfView();
   }
 
   subscriptions: Subscription[] = [];
 
-  constructor(private service: ProfileService, private pageService: PageService) {}
+  constructor(
+    private service: ProfileService,
+    private pageService: PageService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
@@ -59,16 +61,9 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
 
   private initSubscriptions(): void {
     this.subscriptions.push(
-      this.pageService
-        .getQueryParamsObservable()
-        .pipe(
-          tap(() => {
-            this.disableFormIfView();
-          })
-        )
-        .subscribe(() => {
-          this.runInitMethods();
-        })
+      this.pageService.getQueryParamsObservable().subscribe(() => {
+        this.runInitMethods();
+      })
     );
   }
 
@@ -84,11 +79,20 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
       return;
     }
 
-    this.form = this.service.convertToForm(loadedItem);
+    if (this.form == null) {
+      this.form = ProfileFormGroup.from(getProfileForm());
+    }
+    this.form.patchValue(this.service.convertToFormValue(loadedItem));
+    this.form.markAllAsTouched();
+    this.cdRef.detectChanges();
   }
 
   initForm(): void {
-    this.form = ProfileFormGroup.from(getProfileForm());
+    if (this.form == null) {
+      this.form = ProfileFormGroup.from(getProfileForm());
+    } else {
+      this.form.patchValue({});
+    }
   }
 
   submitForm(): Promise<void> {
@@ -117,11 +121,5 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivate
 
   onCancel(): Promise<boolean> {
     return this.service.goToList();
-  }
-
-  disableFormIfView(): void {
-    if ((this.formType as unknown as DetailsTypes) !== DetailsTypes.View) return;
-
-    this.form?.disable();
   }
 }

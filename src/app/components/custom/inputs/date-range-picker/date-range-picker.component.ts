@@ -5,6 +5,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { LoadingComponent } from '../../loading/loading.component';
 import { validationErrorMessages } from '../validation-errors';
 import { DateRangeForm } from './date-range-form-group';
 import { FormUtil } from 'src/app/util';
+import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -34,13 +36,11 @@ import { FormUtil } from 'src/app/util';
     LoadingComponent,
   ],
 })
-export class DateRangePickerComponent extends WithDestroyed implements OnChanges {
+export class DateRangePickerComponent extends WithDestroyed implements OnInit, OnChanges {
   @Input() fgName!: string;
-  @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
   @Input() canEdit = true;
-  @Input() formId = '';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
 
@@ -62,8 +62,24 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
     return this.elId || FormUtil.buildId(this.fgName, this.formId);
   }
 
-  constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+  get formId() {
+    return this.formWrapper.id || '';
+  }
+
+  get fg() {
+    return this.formWrapper.formGroup;
+  }
+
+  constructor(
+    private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
+    public formWrapper: FormLayoutComponent
+  ) {
     super();
+  }
+
+  ngOnInit() {
+    FormUtil.updateStatusOnFormChange(this.fg, this.destroyed$, () => this.changeControlEnabled());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -78,7 +94,7 @@ export class DateRangePickerComponent extends WithDestroyed implements OnChanges
 
   initLoadingSubscription(): void {
     this.loadingService
-      .isLoadingByIds$([this.elId, this.formId])
+      .isLoadingById$(this.elId)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;

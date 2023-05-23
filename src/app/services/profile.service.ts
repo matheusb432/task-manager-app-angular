@@ -4,10 +4,11 @@ import { map, share, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { BehaviorSubject, Observable, Subject, from } from 'rxjs';
 import { ActiveProfileIds, Profile, ProfileIdsStore, ProfileType } from 'src/app/models';
-import { ProfileFormGroup, getProfileForm } from '../components/profile/profile-form';
+import { ProfileFormGroup } from '../components/profile/profile-form';
+import { ProfileFormValue } from '../components/profile/profile-form/profile-form-group';
 import { PaginationOptions } from '../models/configs/pagination-options';
 import { TimePipe } from '../pipes';
-import { DetailsTypes, ElementIds, FormUtil, PubSubUtil, paths } from '../util';
+import { DetailsTypes, ElementIds, PubSubUtil, paths } from '../util';
 import { ProfileUtil } from '../util/profile.util';
 import { ProfileApiService } from './api';
 import { AppService } from './app.service';
@@ -121,14 +122,11 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
     this._profileIdsStore$.next(store);
   };
 
-  convertToForm(item: Profile): ProfileFormGroup {
-    const newFg = ProfileFormGroup.from(getProfileForm());
-
-    FormUtil.setFormFromItem(newFg, item);
-
-    newFg.controls.timeTarget.setValue(TimePipe.formatTimeHhMm(item.timeTarget));
-
-    return newFg;
+  convertToFormValue(item: Profile): Partial<ProfileFormValue> {
+    return {
+      ...item,
+      timeTarget: TimePipe.formatTimeHhMm(item.timeTarget),
+    };
   }
 
   toJson(fg: ProfileFormGroup): Profile {

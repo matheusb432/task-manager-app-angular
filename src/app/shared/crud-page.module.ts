@@ -14,9 +14,11 @@ import { FormArrayLayoutComponent } from '../components/layout/form-array-layout
 import { DateRangePickerComponent } from '../components/custom/inputs/date-range-picker/date-range-picker.component';
 import { IconComponent } from '../components/custom/icon/icon.component';
 import { SlideComponent } from '../components/custom/inputs/slide/slide.component';
+import { FormLayoutComponent } from '../components/layout/form-layout/form-layout.component';
 
 @NgModule({
   declarations: [InputComponent, SelectComponent, SearchComponent, FormArrayLayoutComponent],
+
   imports: [
     CommonModule,
     SharedModule,
@@ -25,6 +27,7 @@ import { SlideComponent } from '../components/custom/inputs/slide/slide.componen
     CheckboxComponent,
     TextareaComponent,
     SlideComponent,
+    FormLayoutComponent,
     IconComponent,
   ],
   exports: [
@@ -36,6 +39,7 @@ import { SlideComponent } from '../components/custom/inputs/slide/slide.componen
     CheckboxComponent,
     TextareaComponent,
     SlideComponent,
+    FormLayoutComponent,
     FormArrayLayoutComponent,
   ],
 })

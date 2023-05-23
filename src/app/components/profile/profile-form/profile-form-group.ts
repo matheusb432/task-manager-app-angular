@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Profile } from 'src/app/models';
+import { FormValue, Profile } from 'src/app/models';
 import { TimePipe } from 'src/app/pipes/time.pipe';
 
 export class ProfileFormGroup extends FormGroup<ProfileForm> {
@@ -27,6 +27,8 @@ export interface ProfileForm {
   priority: FormControl<number | undefined>;
   profileTypeId: FormControl<number | undefined>;
 }
+
+export type ProfileFormValue = FormValue<ProfileForm>;
 
 export const getProfileForm = (): ProfileForm => ({
   name: new FormControl('', {

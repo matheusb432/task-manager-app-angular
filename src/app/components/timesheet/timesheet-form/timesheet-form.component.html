@@ -1,8 +1,10 @@
 <form
+  app-form-layout
   [id]="elIds.TimesheetForm"
   class="form-layout"
   [formGroup]="form"
   (ngSubmit)="openSaveModal()"
+  [canEdit]="canEdit"
 >
   <div class="form-grid">
     <ng-container
@@ -14,12 +16,10 @@
       <app-datepicker
         fcName="date"
         labelText="Date"
-        [fg]="form"
-        [canEdit]="canEditDate"
-        [formId]="elIds.TimesheetForm"
         [dateFilterFn]="values.dateFilterFn"
         [minDate]="values.dateRange?.start"
         [maxDate]="values.dateRange?.end"
+        [canEdit]="canEditDate"
         [appScrollTo]="true"
       ></app-datepicker>
     </ng-container>
@@ -33,17 +33,13 @@
     >
       <li
         class="form-item"
+        app-form-layout
+        [id]="'cTimesheetFormNote' + i"
+        [formGroup]="noteForm"
+        [canEdit]="canEdit"
         *ngFor="let noteForm of noteForms.controls; let i = index; trackBy: getFormItemId"
       >
-        <app-textarea
-          fcName="comment"
-          labelText="Note"
-          [elId]="'cTimesheetFormNote' + i"
-          placeholder="Enter a note"
-          [fg]="noteForm"
-          [canEdit]="canEdit"
-        >
-        </app-textarea>
+        <app-textarea fcName="comment" labelText="Note" placeholder="Enter a note"> </app-textarea>
         <app-button
           model="raised"
           [elId]="'TimesheetFormRemoveNote' + i"
@@ -63,56 +59,31 @@
       (added)="addTask()"
     >
       <li
+        app-form-layout
+        [id]="'cTimesheetFormTask' + i"
+        [formGroup]="taskForm"
         class="form-item"
+        [canEdit]="canEdit"
         *ngFor="let taskForm of taskForms.controls; let i = index; trackBy: getFormItemId"
       >
-        <app-input
-          fcName="title"
-          labelText="Task"
-          [elId]="'cTimesheetFormTaskTitle' + i"
-          placeholder="Enter the task title"
-          [fg]="taskForm"
-          [canEdit]="canEdit"
-        >
-        </app-input>
-        <app-textarea
-          fcName="comment"
-          labelText="Comment"
-          [elId]="'cTimesheetFormTaskComment' + i"
-          placeholder="Enter a Comment"
-          [fg]="taskForm"
-          [canEdit]="canEdit"
-        >
+        <app-input fcName="title" labelText="Task" placeholder="Enter the task title"> </app-input>
+        <app-textarea fcName="comment" labelText="Comment" placeholder="Enter a Comment">
         </app-textarea>
-        <app-input
-          fcName="time"
-          labelText="Time"
-          type="time"
-          [elId]="'cTimesheetFormTaskTime' + i"
-          [fg]="taskForm"
-          [helpers]="['hh:mm']"
-          [canEdit]="canEdit"
-        ></app-input>
+        <app-input fcName="time" labelText="Time" type="time" [helpers]="['hh:mm']"></app-input>
 
         <app-input
           fcName="rating"
           labelText="Rating"
           type="number"
-          [elId]="'cTimesheetFormTaskRating' + i"
           placeholder="Rate the task"
-          [fg]="taskForm"
           [helpers]="['0-5']"
-          [canEdit]="canEdit"
         ></app-input>
         <app-input
           fcName="importance"
           labelText="Importance"
           type="number"
-          [elId]="'cTimesheetFormTaskImportance' + i"
           placeholder="Rate the importance of the task"
-          [fg]="taskForm"
           [helpers]="['1-3']"
-          [canEdit]="canEdit"
         ></app-input>
 
         <app-button
@@ -126,14 +97,7 @@
       </li>
     </ul>
 
-    <app-checkbox
-      fcName="finished"
-      labelText="Finished"
-      [formId]="elIds.TimesheetForm"
-      [fg]="form"
-      [canEdit]="canEdit"
-    >
-    </app-checkbox>
+    <app-checkbox fcName="finished" labelText="Finished" [canEdit]="canEdit"> </app-checkbox>
     <footer app-fixed-buttons-layout>
       <ng-container leftButtons>
         <app-button

@@ -1,50 +1,30 @@
-<form [id]="elIds.ProfileForm" class="form-layout" [formGroup]="form" (ngSubmit)="openSaveModal()">
+<form
+  app-form-layout
+  [id]="elIds.ProfileForm"
+  class="form-layout"
+  [formGroup]="form"
+  (ngSubmit)="openSaveModal()"
+  [canEdit]="canEdit"
+>
   <div class="form-grid" [appScrollTo]="true">
-    <app-input
-      fcName="name"
-      labelText="Name"
-      placeholder="Profile Name"
-      [fg]="form"
-      [canEdit]="canEdit"
-      [formId]="elIds.ProfileForm"
-    ></app-input>
+    <app-input fcName="name" labelText="Name" placeholder="Profile Name"></app-input>
 
     <app-input
       fcName="timeTarget"
       labelText="Time Target"
       type="time"
-      [fg]="form"
-      [canEdit]="canEdit"
-      [formId]="elIds.ProfileForm"
       [helpers]="['hh:mm']"
     ></app-input>
 
-    <app-input
-      fcName="tasksTarget"
-      labelText="Tasks Target"
-      type="number"
-      [fg]="form"
-      [canEdit]="canEdit"
-      [formId]="elIds.ProfileForm"
-    ></app-input>
+    <app-input fcName="tasksTarget" labelText="Tasks Target" type="number"></app-input>
 
-    <app-input
-      fcName="priority"
-      labelText="Priority"
-      type="number"
-      [fg]="form"
-      [canEdit]="canEdit"
-      [formId]="elIds.ProfileForm"
-    ></app-input>
+    <app-input fcName="priority" labelText="Priority" type="number"></app-input>
 
     <app-select
       fcName="profileTypeId"
       labelText="Type"
       [options]="typeOptions$ | async"
       [elId]="elIds.ProfileFormType"
-      [fg]="form"
-      [canEdit]="canEdit"
-      [formId]="elIds.ProfileForm"
     ></app-select>
 
     <div class="form-buttons">

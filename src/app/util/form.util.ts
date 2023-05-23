@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { FormTypes, StringUtil } from '../util';
 
 @Injectable({
@@ -54,5 +55,17 @@ export class FormUtil {
     if (!formId) return controlName;
 
     return [formId, StringUtil.capitalize(controlName)].join('');
+  }
+
+  static updateStatusOnFormChange(
+    form: FormGroup,
+    destroyed$: Subject<boolean>,
+    changeEnabledFn: () => void
+  ) {
+    return form?.statusChanges
+      .pipe(takeUntil(destroyed$), distinctUntilChanged())
+      .subscribe((st) => {
+        if (st !== 'DISABLED') changeEnabledFn();
+      });
   }
 }

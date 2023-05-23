@@ -1,5 +1,5 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Timesheet } from 'src/app/models';
+import { FormValue, Timesheet } from 'src/app/models';
 import { DateUtil } from 'src/app/util';
 
 export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
@@ -28,6 +28,8 @@ export interface TimesheetForm {
   notes: FormArray<FormGroup<TimesheetNoteForm>>;
   tasks: FormArray<FormGroup<TaskItemForm>>;
 }
+
+export type TimesheetFormValue = FormValue<TimesheetForm>;
 
 export interface TimesheetNoteForm {
   id: FormControl<number | null>;
@@ -86,5 +88,14 @@ export const getTimesheetForm = (initialDate: Date): TimesheetForm => {
     finished: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
     notes: new FormArray([getTimesheetNoteFormGroup()]),
     tasks: new FormArray([getTaskItemFormGroup()]),
+  };
+};
+
+export const getTimesheetFormInitialValues = (initialDate: Date): Partial<TimesheetFormValue> => {
+  return {
+    date: initialDate,
+    finished: false,
+    notes: [],
+    tasks: [],
   };
 };

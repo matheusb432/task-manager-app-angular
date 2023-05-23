@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
+import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 import { IconConfig } from 'src/app/models';
-import { FormUtil, Icons } from 'src/app/util';
+import { Icons } from 'src/app/util';
 
 @Component({
-  selector: 'app-search [fcName] [fg] [labelText]',
+  selector: 'app-search [fcName]  [labelText]',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   @Input() fcName!: string;
-  @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() errText = 'Invalid Filter';
   @Input() placeholder = '';
@@ -24,6 +24,10 @@ export class SearchComponent {
 
   searchIcon = IconConfig.withClick('cSearchIcon', Icons.Search, () => this.apply.emit());
 
+  get fg() {
+    return this.formWrapper?.formGroup ?? null;
+  }
+
   get control(): AbstractControl | null {
     return this.fg.controls[this.fcName];
   }
@@ -35,6 +39,8 @@ export class SearchComponent {
   get disabled(): boolean {
     return !!this.control?.disabled;
   }
+
+  constructor(public formWrapper: FormLayoutComponent) {}
 
   onKeydown(ev: KeyboardEvent): void {
     const searchValue = this.fg.controls[this.fcName].value.trim().toLowerCase();

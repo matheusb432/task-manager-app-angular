@@ -1,20 +1,12 @@
 <app-page-layout>
   <app-title titleText="Timesheets"></app-title>
-  <header class="search-bar">
+  <header app-form-layout [id]="'cTimesheetList'" [formGroup]="filterForm" class="search-bar">
     <div class="slides-container">
-      <app-slide
-        fcName="showList"
-        labelText="List"
-        elId="cTimesheetListShowList"
-        [fg]="filterForm"
-        (changed)="onShowListChanged($event)"
-      >
+      <app-slide fcName="showList" labelText="List" (changed)="onShowListChanged($event)">
       </app-slide>
       <app-slide
         fcName="showCalendar"
         labelText="Calendar"
-        elId="cTimesheetListShowCalendar"
-        [fg]="filterForm"
         (changed)="onShowCalendarChanged($event)"
       >
       </app-slide>
@@ -22,8 +14,6 @@
     <app-date-range-picker
       fgName="range"
       labelText="Date Range"
-      elId="cTimesheetListDateRange"
-      [fg]="filterForm"
       [minDate]="threeMonthsAgo"
       [maxDate]="tomorrow"
     ></app-date-range-picker>

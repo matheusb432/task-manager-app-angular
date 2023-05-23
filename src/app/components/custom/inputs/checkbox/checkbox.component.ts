@@ -10,17 +10,13 @@ import {
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 import { FormUtil } from 'src/app/util';
 
 @Component({
-  selector: 'app-checkbox [fcName] [fg] [labelText]',
+  selector: 'app-checkbox [fcName]  [labelText]',
   template: `<div [formGroup]="fg">
-    <mat-checkbox
-      [formControlName]="fcName"
-      [id]="elId"
-      color="primary"
-      (change)="onChange($event)"
-    >
+    <mat-checkbox [formControlName]="fcName" [id]="id" color="primary" (change)="onChange($event)">
       {{ labelText }}
     </mat-checkbox>
   </div> `,
@@ -30,10 +26,8 @@ import { FormUtil } from 'src/app/util';
 })
 export class CheckboxComponent implements OnChanges {
   @Input() fcName!: string;
-  @Input() fg!: FormGroup;
   @Input() labelText!: string;
   @Input() elId = '';
-  @Input() formId = '';
   @Input() canEdit = true;
 
   @Output() changed = new EventEmitter<boolean>();
@@ -43,12 +37,22 @@ export class CheckboxComponent implements OnChanges {
   }
 
   get control(): AbstractControl | null {
-    return this.fg.get(this.fcName);
+    return this.fg.controls[this.fcName];
   }
 
   get id(): string {
     return this.elId || FormUtil.buildId(this.fcName, this.formId);
   }
+
+  get formId() {
+    return this.formWrapper.id;
+  }
+
+  get fg(): FormGroup {
+    return this.formWrapper.formGroup;
+  }
+
+  constructor(public formWrapper: FormLayoutComponent) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['control'] || changes['canEdit']) this.changeControlEnabled();

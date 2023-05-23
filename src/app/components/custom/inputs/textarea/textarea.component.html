@@ -2,7 +2,7 @@
   <mat-label>
     {{ labelText }}
   </mat-label>
-  <textarea matInput [formControlName]="fcName" [placeholder]="placeholder" [id]="elId"></textarea>
+  <textarea matInput [formControlName]="fcName" [placeholder]="placeholder" [id]="id"></textarea>
   <span *ngIf="isLoading" class="input-loading-container">
     <app-loading [size]="24"> </app-loading>
   </span>
