@@ -16,7 +16,9 @@ export class UserApiService {
   constructor(private api: ApiService) {}
 
   async getByEmail(email: string): Promise<User> {
-    const queryUrl = QueryUtil.buildODataQuery(this.url, { filter: { email } });
+    const queryUrl = QueryUtil.buildODataQuery(this.url, {
+      filter: { email },
+    });
 
     return this.api.get<User>({
       ...ApiRequest.get<User>(queryUrl, User),
