@@ -38,6 +38,11 @@ const routes: Routes = [
     canActivate: [() => canActivateAuth()],
   },
   {
+    path: Pages.Metrics,
+    loadChildren: () => import('./pages/metrics/metrics.module').then((m) => m.MetricsModule),
+    canActivate: [() => canActivateAuth()],
+  },
+  {
     path: Pages.NotFound,
     component: NotFoundComponent,
   },
