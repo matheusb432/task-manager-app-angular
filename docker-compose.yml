@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  tma.spa:
+  spa:
     container_name: ${APP_NAME}
     image: matheusb432/${APP_NAME}
     build:

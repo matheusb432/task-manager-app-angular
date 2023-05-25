@@ -28,12 +28,6 @@ export class SidebarComponent {
       link: Pages.Profiles,
       icon: Icons.Favorite,
     },
-    {
-      id: 'Metrics',
-      label: 'Metrics',
-      link: Pages.Metrics,
-      icon: Icons.BarChart,
-    },
   ];
   hovering = false;
 
