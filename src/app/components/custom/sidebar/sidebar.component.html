@@ -2,7 +2,7 @@
   <mat-sidenav
     #sidenav
     mode="side"
-    opened
+    [opened]="(isMobile$ | async) === false"
     class="sidebar"
     [fixedInViewport]="true"
     (mouseenter)="hovering = true"
@@ -17,12 +17,13 @@
       </h1>
     </div>
 
-    <app-nav-items [items]="navItems" [iconOnly]="!hovering"></app-nav-items>
+    <app-nav-items [items]="navItems" [iconOnly]="!hovering" [onSideNav]="true"></app-nav-items>
     <div class="scrollbar-hider"></div>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">
     <app-main-header></app-main-header>
     <ng-content></ng-content>
+    <app-footer-nav [showNav]="(isMobile$ | async) === true"></app-footer-nav>
   </mat-sidenav-content>
 </mat-sidenav-container>

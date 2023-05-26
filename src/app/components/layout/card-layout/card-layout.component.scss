@@ -6,11 +6,10 @@ $border-color: var(--secondary-dark);
   height: 268px;
   border: 1px solid $border-color;
   border-radius: 5px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 
@@ -24,6 +23,7 @@ $border-color: var(--secondary-dark);
     padding: 10px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     background: $card-bg;
     overflow-y: auto;
   }

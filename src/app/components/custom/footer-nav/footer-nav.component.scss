@@ -1,0 +1,10 @@
+.footer-nav-items {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: var(--bg-color);
+  border-top: 2px solid var(--secondary-dark);
+  height: fit-content;
+}

@@ -1,5 +1,5 @@
 <nav id="cNavItemsNav">
-  <ul id="cNavItemsList" class="side-nav-items">
+  <ul id="cNavItemsList" class="nav-items" [ngClass]="{ side: onSideNav }">
     <li class="nav-item" *ngFor="let item of items">
       <app-button
         model="link"
@@ -7,7 +7,9 @@
         [iconOnly]="iconOnly"
         [url]="'/' + item.link"
         [styles]="{
-          justifyContent: 'flex-start',
+          justifyContent: onSideNav ? 'flex-start' : '',
+          paddingTop: onSideNav ? '16px' : '',
+          paddingBottom: onSideNav ? '16px' : '',
         }"
       >
         <app-icon [icon]="item.icon" labelIcon [styles]="{ color: '#fff' }"></app-icon>

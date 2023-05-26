@@ -1,22 +1,21 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { Mapper } from 'mapper-ts/lib-esm';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
+  AuthData,
   AuthResponse,
+  DecodedAuthToken,
   Login,
   Signup,
   UserAuthGet,
-  AuthData,
-  DecodedAuthToken,
 } from 'src/app/models';
 import { PubSubUtil, StoreKeys } from '../util';
 import { AuthApiService } from './api';
+import { AppService } from './app.service';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
-import { TokenService } from './token.service';
 import { ToastService } from './toast.service';
-import { AppService } from './app.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,9 +1,3 @@
-<mat-grid-list class="cards-grid" cols="5" rowHeight="1:1">
-  <mat-grid-tile *ngFor="let c of cards">
-    <app-card
-      [id]="c.id"
-      [routerLink]="'/' + c.url"
-      [card]="c"
-    ></app-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<section class="cards-grid">
+  <app-card *ngFor="let c of cards" [id]="c.id" [routerLink]="'/' + c.url" [card]="c"></app-card>
+</section>

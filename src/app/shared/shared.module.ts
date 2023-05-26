@@ -9,7 +9,6 @@ import { TitleComponent } from '../components/custom/title/title.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
@@ -39,6 +38,7 @@ import { TimesheetSlideSpanComponent } from '../components/timesheet';
 import { FocusInitialDirective, ScrollToDirective, SetIdDirective } from '../directives';
 import { FinishedPipe, GetPipe, TimePipe } from '../pipes';
 import { DynamicPipe } from '../pipes/dynamic.pipe';
+import { FooterNavComponent } from '../components/custom/footer-nav/footer-nav.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +48,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     TitleComponent,
     CardComponent,
     CardsGridComponent,
-    NavItemsComponent,
     TableComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
@@ -65,7 +64,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     RouterModule,
     ReactiveFormsModule,
     MatSidenavModule,
-    MatGridListModule,
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -81,6 +79,8 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     TimesheetSlideSpanComponent,
     IconComponent,
     ButtonComponent,
+    NavItemsComponent,
+    FooterNavComponent,
     ScrollToDirective,
   ],
   exports: [
@@ -92,6 +92,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     ImageComponent,
     CardsGridComponent,
     NavItemsComponent,
+    FooterNavComponent,
     TableComponent,
     ModalLayoutComponent,
     ModalConfirmComponent,
@@ -99,7 +100,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     BreadcrumbComponent,
     PaginationComponent,
     MatSidenavModule,
-    MatGridListModule,
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -111,6 +111,7 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     LoadingComponent,
     FixedButtonsLayoutComponent,
     ButtonComponent,
+    NavItemsComponent,
     FocusInitialDirective,
     SetIdDirective,
     ScrollToDirective,

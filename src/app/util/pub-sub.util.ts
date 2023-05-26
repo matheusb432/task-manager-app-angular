@@ -3,10 +3,12 @@ import {
   Observable,
   Subject,
   Subscription,
+  distinctUntilChanged,
   filter,
   fromEvent,
   map,
   pairwise,
+  startWith,
   takeUntil,
 } from 'rxjs';
 import { DateRangeValue } from '../components/custom/inputs';
@@ -53,7 +55,17 @@ export class PubSubUtil {
     return isIrrelevantChange;
   }
 
-  static windowResize$(): Observable<Event> {
-    return fromEvent(window, 'resize');
+  static windowResize$(): Observable<number> {
+    return fromEvent(window, 'resize').pipe(
+      startWith(() => window.innerWidth),
+      map(() => window.innerWidth)
+    );
+  }
+
+  static isMobile$(): Observable<boolean> {
+    return PubSubUtil.windowResize$().pipe(
+      map(() => window.innerWidth <= 768),
+      distinctUntilChanged()
+    );
   }
 }
