@@ -8,11 +8,11 @@ import { FormLayoutComponent } from '../../layout/form-layout/form-layout.compon
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-signup-form',
-    templateUrl: './signup-form.component.html',
-    styleUrls: ['./signup-form.component.scss'],
-    standalone: true,
-    imports: [ReactiveFormsModule, FormLayoutComponent, InputComponent, ButtonComponent]
+  selector: 'app-signup-form',
+  templateUrl: './signup-form.component.html',
+  styleUrls: ['./signup-form.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormLayoutComponent, InputComponent, ButtonComponent],
 })
 export class SignupFormComponent {
   @Input() form!: SignupFormGroup;

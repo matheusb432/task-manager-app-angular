@@ -1,4 +1,4 @@
-import { ODataFilter } from "./odata-filter";
+import { ODataFilter } from './odata-filter';
 import { ODataOrderBy } from './odata-types';
 
 export interface ODataOptions {

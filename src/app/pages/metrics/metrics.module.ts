@@ -5,6 +5,6 @@ import { MetricsRoutingModule } from './metrics-routing.module';
 import { SharedModule } from 'src/app/shared';
 
 @NgModule({
-    imports: [CommonModule, SharedModule, MetricsRoutingModule, MetricsComponent]
+  imports: [CommonModule, SharedModule, MetricsRoutingModule, MetricsComponent],
 })
 export class MetricsModule {}

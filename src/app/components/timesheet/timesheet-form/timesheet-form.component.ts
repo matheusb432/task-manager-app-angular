@@ -23,12 +23,26 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FormLayoutComponent } from '../../layout/form-layout/form-layout.component';
 
 @Component({
-    selector: 'app-timesheet-form',
-    templateUrl: './timesheet-form.component.html',
-    styleUrls: ['./timesheet-form.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [ReactiveFormsModule, FormLayoutComponent, NgIf, DatepickerComponent, ScrollToDirective, FormArrayLayoutComponent, NgFor, TextareaComponent, ButtonComponent, InputComponent, CheckboxComponent, FixedButtonsLayoutComponent, AsyncPipe]
+  selector: 'app-timesheet-form',
+  templateUrl: './timesheet-form.component.html',
+  styleUrls: ['./timesheet-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FormLayoutComponent,
+    NgIf,
+    DatepickerComponent,
+    ScrollToDirective,
+    FormArrayLayoutComponent,
+    NgFor,
+    TextareaComponent,
+    ButtonComponent,
+    InputComponent,
+    CheckboxComponent,
+    FixedButtonsLayoutComponent,
+    AsyncPipe,
+  ],
 })
 export class TimesheetFormComponent {
   @Input() form!: TimesheetFormGroup;

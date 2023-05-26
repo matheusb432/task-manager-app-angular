@@ -12,12 +12,12 @@ import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, paths } from 'src/app/ut
 import { TimesheetFormComponent } from '../../../components/timesheet/timesheet-form/timesheet-form.component';
 
 @Component({
-    selector: 'app-create-timesheet',
-    templateUrl: './create-timesheet.component.html',
-    styleUrls: ['./create-timesheet.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [TimesheetFormComponent]
+  selector: 'app-create-timesheet',
+  templateUrl: './create-timesheet.component.html',
+  styleUrls: ['./create-timesheet.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [TimesheetFormComponent],
 })
 export class CreateTimesheetComponent
   implements OnInit, OnDestroy, CanDeactivateForm<TimesheetForm>

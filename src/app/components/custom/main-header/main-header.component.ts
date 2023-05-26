@@ -11,12 +11,12 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 @Component({
-    selector: 'app-main-header',
-    templateUrl: './main-header.component.html',
-    styleUrls: ['./main-header.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [BreadcrumbComponent, NgIf, IconComponent, SetIdDirective, MatTooltipModule, AsyncPipe]
+  selector: 'app-main-header',
+  templateUrl: './main-header.component.html',
+  styleUrls: ['./main-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [BreadcrumbComponent, NgIf, IconComponent, SetIdDirective, MatTooltipModule, AsyncPipe],
 })
 export class MainHeaderComponent implements OnInit {
   Icons = Icons;

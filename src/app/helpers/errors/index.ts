@@ -1,2 +1,2 @@
-export { InvalidStoreError } from "./invalid-store-error";
-export { InvalidTableConfigError } from "./invalid-table-config-error";
+export { InvalidStoreError } from './invalid-store-error';
+export { InvalidTableConfigError } from './invalid-table-config-error';

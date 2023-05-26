@@ -7,7 +7,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { CarouselComponent, OwlOptions, SlidesOutputData, CarouselModule } from 'ngx-owl-carousel-o';
+import {
+  CarouselComponent,
+  OwlOptions,
+  SlidesOutputData,
+  CarouselModule,
+} from 'ngx-owl-carousel-o';
 import { Observable, takeUntil, tap } from 'rxjs';
 import { DateSlide, MonthSlide, WithDestroyed } from 'src/app/models';
 import { TimesheetCarouselService } from 'src/app/services';
@@ -19,12 +24,21 @@ import { MonthSlideComponent } from '../month-slide/month-slide.component';
 import { NgFor, NgClass, AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-timesheet-carousel',
-    templateUrl: './timesheet-carousel.component.html',
-    styleUrls: ['./timesheet-carousel.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [CarouselModule, NgFor, MonthSlideComponent, NgClass, IconComponent, TimesheetSlideComponent, ButtonComponent, AsyncPipe]
+  selector: 'app-timesheet-carousel',
+  templateUrl: './timesheet-carousel.component.html',
+  styleUrls: ['./timesheet-carousel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CarouselModule,
+    NgFor,
+    MonthSlideComponent,
+    NgClass,
+    IconComponent,
+    TimesheetSlideComponent,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class TimesheetCarouselComponent extends WithDestroyed implements OnInit {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;

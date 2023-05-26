@@ -35,4 +35,11 @@ const successModalData = (): ModalConfirmData => ({
   message: 'Your changes have been saved successfully!',
 });
 
-export { cancelModalData, deleteModalData, unsavedChangesModalData, saveModalData, successModalData, logoutModalData };
+export {
+  cancelModalData,
+  deleteModalData,
+  unsavedChangesModalData,
+  saveModalData,
+  successModalData,
+  logoutModalData,
+};

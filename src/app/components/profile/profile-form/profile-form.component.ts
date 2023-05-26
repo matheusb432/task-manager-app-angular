@@ -13,12 +13,21 @@ import { FormLayoutComponent } from '../../layout/form-layout/form-layout.compon
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-profile-form [form] [formType] [cancel]',
-    templateUrl: './profile-form.component.html',
-    styleUrls: ['./profile-form.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [ReactiveFormsModule, FormLayoutComponent, ScrollToDirective, InputComponent, SelectComponent, NgIf, ButtonComponent, AsyncPipe]
+  selector: 'app-profile-form [form] [formType] [cancel]',
+  templateUrl: './profile-form.component.html',
+  styleUrls: ['./profile-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FormLayoutComponent,
+    ScrollToDirective,
+    InputComponent,
+    SelectComponent,
+    NgIf,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class ProfileFormComponent {
   @Input() form!: ProfileFormGroup;

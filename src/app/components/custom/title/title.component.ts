@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-title [titleText]',
-    template: `
+  selector: 'app-title [titleText]',
+  template: `
     <header>
       <h1 class="title">{{ titleText }}</h1>
       <h2 *ngIf="subtitle" class="subtitle">{{ subtitle }}</h2>
     </header>
   `,
-    styles: [
-        `
+  styles: [
+    `
       header {
         .title {
           font-size: 1.875rem;
@@ -27,10 +27,10 @@ import { NgIf } from '@angular/common';
         }
       }
     `,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgIf]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf],
 })
 export class TitleComponent {
   @Input() titleText!: string;

@@ -6,10 +6,10 @@ import { ButtonComponent } from '../../buttons/button/button.component';
 import { ModalLayoutComponent } from '../../../layout/modal-layout/modal-layout.component';
 
 @Component({
-    selector: 'app-modal-confirm',
-    templateUrl: './modal-confirm.component.html',
-    standalone: true,
-    imports: [ModalLayoutComponent, ButtonComponent, FocusInitialDirective, MatDialogModule]
+  selector: 'app-modal-confirm',
+  templateUrl: './modal-confirm.component.html',
+  standalone: true,
+  imports: [ModalLayoutComponent, ButtonComponent, FocusInitialDirective, MatDialogModule],
 })
 export class ModalConfirmComponent {
   constructor(

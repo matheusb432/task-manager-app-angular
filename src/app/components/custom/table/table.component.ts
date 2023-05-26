@@ -29,12 +29,22 @@ import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
 import { SetIdDirective } from '../../../directives/set-id.directive';
 
 @Component({
-    selector: 'app-table [items] [config]',
-    templateUrl: './table.component.html',
-    styleUrls: ['./table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [SetIdDirective, NgFor, NgClass, NgIf, IconComponent, MatTooltipModule, LoadingComponent, AsyncPipe, DynamicPipe]
+  selector: 'app-table [items] [config]',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    SetIdDirective,
+    NgFor,
+    NgClass,
+    NgIf,
+    IconComponent,
+    MatTooltipModule,
+    LoadingComponent,
+    AsyncPipe,
+    DynamicPipe,
+  ],
 })
 export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() items!: T[];

@@ -17,12 +17,12 @@ import { PaginationComponent } from '../../custom/pagination/pagination.componen
 import { TableComponent } from '../../custom/table/table.component';
 
 @Component({
-    selector: 'app-timesheet-list',
-    templateUrl: './timesheet-list.component.html',
-    styleUrls: ['./timesheet-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [TableComponent, PaginationComponent, AsyncPipe]
+  selector: 'app-timesheet-list',
+  templateUrl: './timesheet-list.component.html',
+  styleUrls: ['./timesheet-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [TableComponent, PaginationComponent, AsyncPipe],
 })
 export class TimesheetListComponent extends WithDestroyed {
   listItems$: Observable<Timesheet[]>;

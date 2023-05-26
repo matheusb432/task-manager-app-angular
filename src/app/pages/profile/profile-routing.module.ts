@@ -14,12 +14,12 @@ const routes: Routes = [
       {
         path: PageStates.Create,
         component: CreateProfileComponent,
-        canDeactivate: [canDeactivateForm]
+        canDeactivate: [canDeactivateForm],
       },
       {
         path: PageStates.Details,
         component: ProfileDetailsComponent,
-        canDeactivate: [canDeactivateForm]
+        canDeactivate: [canDeactivateForm],
       },
     ],
   },

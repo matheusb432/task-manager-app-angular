@@ -3,5 +3,5 @@ export class GoalStep {
   title?: string;
   description?: string;
   finished?: boolean;
-  goalId?: number
+  goalId?: number;
 }

@@ -16,12 +16,19 @@ import { SearchComponent } from '../../custom/inputs/search/search.component';
 import { FormLayoutComponent } from '../../layout/form-layout/form-layout.component';
 
 @Component({
-    selector: 'app-profile-list',
-    templateUrl: './profile-list.component.html',
-    styleUrls: ['./profile-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [FormLayoutComponent, ReactiveFormsModule, SearchComponent, TableComponent, PaginationComponent, AsyncPipe]
+  selector: 'app-profile-list',
+  templateUrl: './profile-list.component.html',
+  styleUrls: ['./profile-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FormLayoutComponent,
+    ReactiveFormsModule,
+    SearchComponent,
+    TableComponent,
+    PaginationComponent,
+    AsyncPipe,
+  ],
 })
 export class ProfileListComponent implements OnInit {
   listItems$: Observable<Profile[]>;

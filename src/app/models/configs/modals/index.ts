@@ -1,1 +1,1 @@
-export { ModalConfirmData } from "./modal-confirm-data";
+export { ModalConfirmData } from './modal-confirm-data';

@@ -1,4 +1,3 @@
-
 export class AuthData {
   token: string;
   decodedToken: DecodedAuthToken;

@@ -17,12 +17,24 @@ import { TitleComponent } from '../../../components/custom/title/title.component
 import { PageLayoutComponent } from '../../../components/layout/page-layout/page-layout.component';
 
 @Component({
-    selector: 'app-timesheets',
-    templateUrl: './timesheets.component.html',
-    styleUrls: ['./timesheets.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [PageLayoutComponent, TitleComponent, FormLayoutComponent, ReactiveFormsModule, SlideComponent, DateRangePickerComponent, NgIf, NgClass, TimesheetCarouselComponent, TimesheetListComponent, RouterOutlet]
+  selector: 'app-timesheets',
+  templateUrl: './timesheets.component.html',
+  styleUrls: ['./timesheets.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    PageLayoutComponent,
+    TitleComponent,
+    FormLayoutComponent,
+    ReactiveFormsModule,
+    SlideComponent,
+    DateRangePickerComponent,
+    NgIf,
+    NgClass,
+    TimesheetCarouselComponent,
+    TimesheetListComponent,
+    RouterOutlet,
+  ],
 })
 export class TimesheetsComponent implements OnInit {
   paths = paths;

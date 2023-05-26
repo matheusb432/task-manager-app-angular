@@ -24,12 +24,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'app-input [fcName] [labelText]',
-    templateUrl: './input.component.html',
-    styleUrls: ['./input.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [MatFormFieldModule, ReactiveFormsModule, MatInputModule, NgIf, IconComponent, LoadingComponent, NgFor, NgClass]
+  selector: 'app-input [fcName] [labelText]',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    NgIf,
+    IconComponent,
+    LoadingComponent,
+    NgFor,
+    NgClass,
+  ],
 })
 export class InputComponent extends WithDestroyed implements OnInit, OnDestroy, OnChanges {
   @Input() fcName!: string;

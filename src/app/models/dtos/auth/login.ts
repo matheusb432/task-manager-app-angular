@@ -1,9 +1,5 @@
 export class Login {
-  private constructor(
-    public password: string,
-    public email?: string,
-    public userName?: string
-  ) {}
+  private constructor(public password: string, public email?: string, public userName?: string) {}
 
   static withEmail(email: string, password: string): Login {
     return new Login(password, email);

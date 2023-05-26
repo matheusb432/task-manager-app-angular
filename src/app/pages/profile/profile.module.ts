@@ -9,10 +9,16 @@ import { CrudPageModule } from 'src/app/shared/crud-page.module';
 import { ProfileFormComponent, ProfileListComponent } from 'src/app/components/profile';
 
 @NgModule({
-    imports: [CommonModule, SharedModule, CrudPageModule, ProfileRoutingModule, ProfilesComponent,
-        CreateProfileComponent,
-        ProfileDetailsComponent,
-        ProfileFormComponent,
-        ProfileListComponent]
+  imports: [
+    CommonModule,
+    SharedModule,
+    CrudPageModule,
+    ProfileRoutingModule,
+    ProfilesComponent,
+    CreateProfileComponent,
+    ProfileDetailsComponent,
+    ProfileFormComponent,
+    ProfileListComponent,
+  ],
 })
 export class ProfileModule {}

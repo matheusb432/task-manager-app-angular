@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  LoginFormGroup,
-  getLoginForm
-} from 'src/app/components/authentication/login-form';
+import { LoginFormGroup, getLoginForm } from 'src/app/components/authentication/login-form';
 import { AuthService, PageService, ToastService } from 'src/app/services';
 import { StringUtil } from 'src/app/util';
 import { LoginFormComponent } from '../../../components/authentication/login-form/login-form.component';
@@ -10,10 +7,10 @@ import { TitleComponent } from '../../../components/custom/title/title.component
 import { AuthPageLayoutComponent } from '../../../components/layout/auth-page-layout/auth-page-layout.component';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    standalone: true,
-    imports: [AuthPageLayoutComponent, TitleComponent, LoginFormComponent]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  standalone: true,
+  imports: [AuthPageLayoutComponent, TitleComponent, LoginFormComponent],
 })
 export class LoginComponent implements OnInit {
   form!: LoginFormGroup;

@@ -81,12 +81,11 @@ describe('Util: Query', () => {
       });
 
       const expectedParams = {
-        filter: "$filter=(date eq 2023-05-01)",
+        filter: '$filter=(date eq 2023-05-01)',
       };
 
       expect(result.length).toEqual(
-        "https://example.com/odata?$filter=(date eq 2023-05-01)"
-          .length
+        'https://example.com/odata?$filter=(date eq 2023-05-01)'.length
       );
       for (const param of Object.values(expectedParams)) {
         expect(result).toContain(param);

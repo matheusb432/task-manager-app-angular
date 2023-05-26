@@ -1,8 +1,7 @@
-import { FormGroup } from "@angular/forms";
+import { FormGroup } from '@angular/forms';
 
 export interface FormControlConfig {
   fg: FormGroup;
   canEdit: boolean;
   formId?: string;
 }
-

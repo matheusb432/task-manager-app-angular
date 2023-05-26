@@ -8,11 +8,11 @@ import { FormLayoutComponent } from '../../layout/form-layout/form-layout.compon
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-login-form',
-    templateUrl: './login-form.component.html',
-    styleUrls: ['./login-form.component.scss'],
-    standalone: true,
-    imports: [ReactiveFormsModule, FormLayoutComponent, InputComponent, ButtonComponent]
+  selector: 'app-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormLayoutComponent, InputComponent, ButtonComponent],
 })
 export class LoginFormComponent {
   @Input() form!: LoginFormGroup;

@@ -3,12 +3,12 @@ import { MonthSlide } from 'src/app/models';
 import { NgClass } from '@angular/common';
 
 @Component({
-    selector: 'app-month-slide [slide]',
-    templateUrl: './month-slide.component.html',
-    styleUrls: ['./month-slide.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgClass]
+  selector: 'app-month-slide [slide]',
+  templateUrl: './month-slide.component.html',
+  styleUrls: ['./month-slide.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass],
 })
 export class MonthSlideComponent {
   @Input() slide!: MonthSlide;

@@ -6,12 +6,12 @@ import { Icons } from 'src/app/util';
 import { InputComponent } from '../input/input.component';
 
 @Component({
-    selector: 'app-search [fcName]  [labelText]',
-    templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [InputComponent]
+  selector: 'app-search [fcName]  [labelText]',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [InputComponent],
 })
 export class SearchComponent {
   @Input() fcName!: string;

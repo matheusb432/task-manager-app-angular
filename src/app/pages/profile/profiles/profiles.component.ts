@@ -8,12 +8,18 @@ import { TitleComponent } from '../../../components/custom/title/title.component
 import { PageLayoutComponent } from '../../../components/layout/page-layout/page-layout.component';
 
 @Component({
-    selector: 'app-profiles',
-    templateUrl: './profiles.component.html',
-    styleUrls: ['./profiles.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [PageLayoutComponent, TitleComponent, ButtonComponent, ProfileListComponent, RouterOutlet]
+  selector: 'app-profiles',
+  templateUrl: './profiles.component.html',
+  styleUrls: ['./profiles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    PageLayoutComponent,
+    TitleComponent,
+    ButtonComponent,
+    ProfileListComponent,
+    RouterOutlet,
+  ],
 })
 export class ProfilesComponent implements OnInit {
   paths = paths;

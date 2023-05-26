@@ -21,12 +21,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-    selector: 'app-select [fcName] [labelText] [options]',
-    templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgIf, MatFormFieldModule, ReactiveFormsModule, MatSelectModule, NgFor, MatOptionModule, LoadingComponent]
+  selector: 'app-select [fcName] [labelText] [options]',
+  templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    NgFor,
+    MatOptionModule,
+    LoadingComponent,
+  ],
 })
 export class SelectComponent extends WithDestroyed implements OnInit, OnDestroy, OnChanges {
   @Input() fcName!: string;

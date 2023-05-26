@@ -20,11 +20,11 @@ export class ImageComponent {
     return this.image?.alt ?? 'placeholder';
   }
 
-  get width(): number |undefined {
+  get width(): number | undefined {
     return this.image?.width ?? undefined;
   }
 
-  get height(): number |undefined {
+  get height(): number | undefined {
     return this.image?.height ?? undefined;
   }
 

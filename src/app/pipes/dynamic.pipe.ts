@@ -2,8 +2,8 @@ import { Injector, Pipe, PipeTransform, ProviderToken } from '@angular/core';
 import { Nullish } from '../models';
 
 @Pipe({
-    name: 'dynamic',
-    standalone: true
+  name: 'dynamic',
+  standalone: true,
 })
 export class DynamicPipe<P extends PipeTransform> implements PipeTransform {
   constructor(private injector: Injector) {}

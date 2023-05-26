@@ -44,7 +44,7 @@ describe('Service: ProfileApi', () => {
       };
 
       service.getPaginated(mockPaginationOptions).then((result) => {
-        assertAreEqual(result, mockPaginatedResult)
+        assertAreEqual(result, mockPaginatedResult);
       });
 
       const req = httpMock.expectOne(
@@ -60,7 +60,7 @@ describe('Service: ProfileApi', () => {
       const mockProfile: Profile = { name: 'John Doe', timeTarget: '10:00' };
       const mockPostReturn = { id: 1 };
       service.insert(mockProfile).then((result) => {
-        assertAreEqual(result, mockPostReturn)
+        assertAreEqual(result, mockPostReturn);
       });
 
       const req = httpMock.expectOne(service['url']);
@@ -75,7 +75,7 @@ describe('Service: ProfileApi', () => {
       const mockProfile: Profile = { id: 1, name: 'John Doe', userId: 1, timeTarget: '10:00' };
       const mockPostReturn = { id: 2 };
       service.duplicate(mockProfile).then((result) => {
-        assertAreEqual(result, mockPostReturn)
+        assertAreEqual(result, mockPostReturn);
       });
 
       const req = httpMock.expectOne(service['url']);

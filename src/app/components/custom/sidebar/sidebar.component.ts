@@ -8,12 +8,19 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
-    selector: 'app-sidebar',
-    templateUrl: './sidebar.component.html',
-    styleUrls: ['./sidebar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [MatSidenavModule, NgIf, NavItemsComponent, MainHeaderComponent, FooterNavComponent, AsyncPipe]
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    NavItemsComponent,
+    MainHeaderComponent,
+    FooterNavComponent,
+    AsyncPipe,
+  ],
 })
 export class SidebarComponent {
   navItems = defaultNavItems;

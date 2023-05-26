@@ -10,15 +10,14 @@ import { IconComponent } from '../icon/icon.component';
 import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-breadcrumb',
-    templateUrl: './breadcrumb.component.html',
-    styleUrls: ['./breadcrumb.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgFor, NgClass, RouterLink, NgIf, IconComponent, AsyncPipe]
+  selector: 'app-breadcrumb',
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgFor, NgClass, RouterLink, NgIf, IconComponent, AsyncPipe],
 })
 export class BreadcrumbComponent implements OnInit {
-
   crumbs$!: Observable<Crumb[]>;
 
   Icons = Icons;
@@ -40,7 +39,4 @@ export class BreadcrumbComponent implements OnInit {
       )
       .subscribe();
   }
-
-
-
 }

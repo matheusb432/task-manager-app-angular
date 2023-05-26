@@ -7,11 +7,11 @@ import { ButtonComponent } from '../../custom/buttons/button/button.component';
 import { ImageComponent } from '../../custom/image/image.component';
 
 @Component({
-    selector: 'app-auth-page-layout',
-    templateUrl: './auth-page-layout.component.html',
-    styleUrls: ['./auth-page-layout.component.scss'],
-    standalone: true,
-    imports: [ImageComponent, ButtonComponent]
+  selector: 'app-auth-page-layout',
+  templateUrl: './auth-page-layout.component.html',
+  styleUrls: ['./auth-page-layout.component.scss'],
+  standalone: true,
+  imports: [ImageComponent, ButtonComponent],
 })
 export class AuthPageLayoutComponent implements OnInit {
   switchPageLabel = 'Already have an account? Login';
@@ -31,7 +31,7 @@ export class AuthPageLayoutComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.setSwitchPageLabel()
+    this.setSwitchPageLabel();
     this.router.events
       .pipe(
         filter((ev) => ev instanceof NavigationEnd),
@@ -45,8 +45,8 @@ export class AuthPageLayoutComponent implements OnInit {
   }
 
   setSwitchPageLabel(): void {
-      this.switchPageLabel = this.isLoginPage
-        ? "Don't have an account? Sign up"
-        : 'Already have an account? Login';
+    this.switchPageLabel = this.isLoginPage
+      ? "Don't have an account? Sign up"
+      : 'Already have an account? Login';
   }
 }

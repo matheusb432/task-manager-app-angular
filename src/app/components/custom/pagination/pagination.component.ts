@@ -4,12 +4,12 @@ import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { Constants } from 'src/app/util';
 
 @Component({
-    selector: 'app-pagination [totalItems] [pageChanged]',
-    templateUrl: './pagination.component.html',
-    styleUrls: ['./pagination.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [MatPaginatorModule]
+  selector: 'app-pagination [totalItems] [pageChanged]',
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatPaginatorModule],
 })
 export class PaginationComponent {
   @Input() totalItems!: number | null;

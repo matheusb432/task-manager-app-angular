@@ -1,1 +1,1 @@
-export * from './with-destroyed'
+export * from './with-destroyed';

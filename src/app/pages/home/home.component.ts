@@ -6,12 +6,12 @@ import { TitleComponent } from '../../components/custom/title/title.component';
 import { PageLayoutComponent } from '../../components/layout/page-layout/page-layout.component';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [PageLayoutComponent, TitleComponent, CardsGridComponent]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [PageLayoutComponent, TitleComponent, CardsGridComponent],
 })
 export class HomeComponent {
   cards: Card[] = homeCards;

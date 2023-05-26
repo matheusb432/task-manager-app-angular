@@ -11,11 +11,11 @@ import { DetailsTypes, FormTypes, PubSubUtil } from 'src/app/util';
 import { ProfileFormComponent } from '../../../components/profile/profile-form/profile-form.component';
 
 @Component({
-    selector: 'app-profile-details',
-    templateUrl: './profile-details.component.html',
-    styleUrls: ['./profile-details.component.scss'],
-    standalone: true,
-    imports: [ProfileFormComponent]
+  selector: 'app-profile-details',
+  templateUrl: './profile-details.component.html',
+  styleUrls: ['./profile-details.component.scss'],
+  standalone: true,
+  imports: [ProfileFormComponent],
 })
 export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivateForm<ProfileForm> {
   private _form!: ProfileFormGroup;

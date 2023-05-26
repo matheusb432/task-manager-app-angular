@@ -2,8 +2,8 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { StringUtil } from '../util';
 
 @Directive({
-    selector: '[appSetId]',
-    standalone: true
+  selector: '[appSetId]',
+  standalone: true,
 })
 export class SetIdDirective implements OnInit {
   @Input() appSetId: unknown;
