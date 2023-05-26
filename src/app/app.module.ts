@@ -19,25 +19,26 @@ import { TOKEN_DECODER_FN } from './services/token.service';
 import { SharedModule } from './shared';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatNativeDateModule,
-  ],
-  exports: [SharedModule],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
-    { provide: STORE_SERVICE, useClass: LocalStorageService },
-    { provide: TOKEN_DECODER_FN, useValue: jwtDecode },
-  ],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatNativeDateModule,
+        HomeComponent, NotFoundComponent
+    ],
+    exports: [SharedModule],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+        { provide: STORE_SERVICE, useClass: LocalStorageService },
+        { provide: TOKEN_DECODER_FN, useValue: jwtDecode },
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

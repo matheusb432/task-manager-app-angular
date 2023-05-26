@@ -4,12 +4,21 @@ import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ElementIds, FormTypes, FormUtil, deleteModalData, saveModalData } from 'src/app/util';
 import { ProfileFormGroup } from './profile-form-group';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SelectComponent } from '../../custom/inputs/select/select.component';
+import { InputComponent } from '../../custom/inputs/input/input.component';
+import { ScrollToDirective } from '../../../directives/scroll-to.directive';
+import { FormLayoutComponent } from '../../layout/form-layout/form-layout.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-profile-form [form] [formType] [cancel]',
-  templateUrl: './profile-form.component.html',
-  styleUrls: ['./profile-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-profile-form [form] [formType] [cancel]',
+    templateUrl: './profile-form.component.html',
+    styleUrls: ['./profile-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ReactiveFormsModule, FormLayoutComponent, ScrollToDirective, InputComponent, SelectComponent, NgIf, ButtonComponent, AsyncPipe]
 })
 export class ProfileFormComponent {
   @Input() form!: ProfileFormGroup;

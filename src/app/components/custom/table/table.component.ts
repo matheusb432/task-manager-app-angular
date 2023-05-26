@@ -21,12 +21,20 @@ import {
 } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
 import { ArrayUtil, DetailsTypes, Icons, StringUtil } from 'src/app/util';
+import { DynamicPipe } from '../../../pipes/dynamic.pipe';
+import { LoadingComponent } from '../loading/loading.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { IconComponent } from '../icon/icon.component';
+import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { SetIdDirective } from '../../../directives/set-id.directive';
 
 @Component({
-  selector: 'app-table [items] [config]',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-table [items] [config]',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [SetIdDirective, NgFor, NgClass, NgIf, IconComponent, MatTooltipModule, LoadingComponent, AsyncPipe, DynamicPipe]
 })
 export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   @Input() items!: T[];

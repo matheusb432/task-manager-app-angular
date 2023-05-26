@@ -1,11 +1,16 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { ModalConfirmData } from 'src/app/models';
+import { FocusInitialDirective } from '../../../../directives/focus-initial.directive';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { ModalLayoutComponent } from '../../../layout/modal-layout/modal-layout.component';
 
 @Component({
-  selector: 'app-modal-feedback',
-  templateUrl: './modal-feedback.component.html',
-  styleUrls: ['./modal-feedback.component.scss']
+    selector: 'app-modal-feedback',
+    templateUrl: './modal-feedback.component.html',
+    styleUrls: ['./modal-feedback.component.scss'],
+    standalone: true,
+    imports: [ModalLayoutComponent, ButtonComponent, FocusInitialDirective, MatDialogModule]
 })
 export class ModalFeedbackComponent  {
 

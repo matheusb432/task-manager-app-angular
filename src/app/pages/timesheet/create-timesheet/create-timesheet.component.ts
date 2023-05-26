@@ -9,12 +9,15 @@ import {
 import { CanDeactivateForm } from 'src/app/models';
 import { AppService, PageService, TimesheetService, ToastService } from 'src/app/services';
 import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, paths } from 'src/app/util';
+import { TimesheetFormComponent } from '../../../components/timesheet/timesheet-form/timesheet-form.component';
 
 @Component({
-  selector: 'app-create-timesheet',
-  templateUrl: './create-timesheet.component.html',
-  styleUrls: ['./create-timesheet.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-create-timesheet',
+    templateUrl: './create-timesheet.component.html',
+    styleUrls: ['./create-timesheet.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [TimesheetFormComponent]
 })
 export class CreateTimesheetComponent
   implements OnInit, OnDestroy, CanDeactivateForm<TimesheetForm>

@@ -12,12 +12,17 @@ import {
   ToastService,
 } from 'src/app/services';
 import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
+import { AsyncPipe } from '@angular/common';
+import { PaginationComponent } from '../../custom/pagination/pagination.component';
+import { TableComponent } from '../../custom/table/table.component';
 
 @Component({
-  selector: 'app-timesheet-list',
-  templateUrl: './timesheet-list.component.html',
-  styleUrls: ['./timesheet-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-timesheet-list',
+    templateUrl: './timesheet-list.component.html',
+    styleUrls: ['./timesheet-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [TableComponent, PaginationComponent, AsyncPipe]
 })
 export class TimesheetListComponent extends WithDestroyed {
   listItems$: Observable<Timesheet[]>;

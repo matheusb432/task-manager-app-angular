@@ -9,14 +9,17 @@ import { AuthPageLayoutComponent } from 'src/app/components/layout/auth-page-lay
 import { LoginFormComponent, SignupFormComponent } from 'src/app/components/authentication';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    AuthenticationRoutingModule,
+    SharedModule,
+    CrudPageModule,
     LoginComponent,
     SignupComponent,
     LoginFormComponent,
     SignupFormComponent,
     AuthPageLayoutComponent,
   ],
-  imports: [CommonModule, AuthenticationRoutingModule, SharedModule, CrudPageModule],
   exports: [LoginFormComponent, SignupFormComponent],
 })
 export class AuthenticationModule {}

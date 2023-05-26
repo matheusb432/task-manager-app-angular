@@ -9,12 +9,15 @@ import {
 import { CanDeactivateForm, PageData, WithDestroyed } from 'src/app/models';
 import { PageService, TimesheetService } from 'src/app/services';
 import { DetailsTypes, FormTypes } from 'src/app/util';
+import { TimesheetFormComponent } from '../../../components/timesheet/timesheet-form/timesheet-form.component';
 
 @Component({
-  selector: 'app-timesheet-details',
-  templateUrl: './timesheet-details.component.html',
-  styleUrls: ['./timesheet-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-timesheet-details',
+    templateUrl: './timesheet-details.component.html',
+    styleUrls: ['./timesheet-details.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [TimesheetFormComponent]
 })
 export class TimesheetDetailsComponent
   extends WithDestroyed

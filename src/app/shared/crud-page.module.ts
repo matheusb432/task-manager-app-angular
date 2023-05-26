@@ -17,8 +17,6 @@ import { SlideComponent } from '../components/custom/inputs/slide/slide.componen
 import { FormLayoutComponent } from '../components/layout/form-layout/form-layout.component';
 
 @NgModule({
-  declarations: [InputComponent, SelectComponent, SearchComponent, FormArrayLayoutComponent],
-
   imports: [
     CommonModule,
     SharedModule,
@@ -29,6 +27,10 @@ import { FormLayoutComponent } from '../components/layout/form-layout/form-layou
     SlideComponent,
     FormLayoutComponent,
     IconComponent,
+    InputComponent,
+    SelectComponent,
+    SearchComponent,
+    FormArrayLayoutComponent,
   ],
   exports: [
     InputComponent,

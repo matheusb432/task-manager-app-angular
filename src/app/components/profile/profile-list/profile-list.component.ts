@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { ODataOperators } from 'src/app/helpers/odata';
@@ -9,12 +9,19 @@ import { ProfileService, ToastService } from 'src/app/services';
 import { FilterService } from 'src/app/services/filter.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
+import { AsyncPipe } from '@angular/common';
+import { PaginationComponent } from '../../custom/pagination/pagination.component';
+import { TableComponent } from '../../custom/table/table.component';
+import { SearchComponent } from '../../custom/inputs/search/search.component';
+import { FormLayoutComponent } from '../../layout/form-layout/form-layout.component';
 
 @Component({
-  selector: 'app-profile-list',
-  templateUrl: './profile-list.component.html',
-  styleUrls: ['./profile-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-profile-list',
+    templateUrl: './profile-list.component.html',
+    styleUrls: ['./profile-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FormLayoutComponent, ReactiveFormsModule, SearchComponent, TableComponent, PaginationComponent, AsyncPipe]
 })
 export class ProfileListComponent implements OnInit {
   listItems$: Observable<Profile[]>;

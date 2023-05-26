@@ -3,11 +3,15 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, tap } from 'rxjs/operators';
 import { Image } from 'src/app/models';
 import { paths } from 'src/app/util';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { ImageComponent } from '../../custom/image/image.component';
 
 @Component({
-  selector: 'app-auth-page-layout',
-  templateUrl: './auth-page-layout.component.html',
-  styleUrls: ['./auth-page-layout.component.scss'],
+    selector: 'app-auth-page-layout',
+    templateUrl: './auth-page-layout.component.html',
+    styleUrls: ['./auth-page-layout.component.scss'],
+    standalone: true,
+    imports: [ImageComponent, ButtonComponent]
 })
 export class AuthPageLayoutComponent implements OnInit {
   switchPageLabel = 'Already have an account? Login';

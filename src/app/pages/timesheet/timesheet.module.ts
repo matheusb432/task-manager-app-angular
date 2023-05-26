@@ -17,23 +17,21 @@ import { CrudPageModule } from 'src/app/shared/crud-page.module';
 import { IconComponent } from 'src/app/components/custom/icon/icon.component';
 
 @NgModule({
-  declarations: [
-    TimesheetsComponent,
-    CreateTimesheetComponent,
-    TimesheetDetailsComponent,
-    MonthSlideComponent,
-    TimesheetCarouselComponent,
-    TimesheetListComponent,
-    TimesheetFormComponent,
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    CrudPageModule,
-    TimesheetRoutingModule,
-    CarouselModule,
-    IconComponent,
-    TimesheetSlideComponent,
-  ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        CrudPageModule,
+        TimesheetRoutingModule,
+        CarouselModule,
+        IconComponent,
+        TimesheetSlideComponent,
+        TimesheetsComponent,
+        CreateTimesheetComponent,
+        TimesheetDetailsComponent,
+        MonthSlideComponent,
+        TimesheetCarouselComponent,
+        TimesheetListComponent,
+        TimesheetFormComponent
+    ]
 })
 export class TimesheetModule {}

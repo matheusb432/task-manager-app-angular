@@ -3,12 +3,15 @@ import { AbstractControl } from '@angular/forms';
 import { FormLayoutComponent } from 'src/app/components/layout/form-layout/form-layout.component';
 import { IconConfig } from 'src/app/models';
 import { Icons } from 'src/app/util';
+import { InputComponent } from '../input/input.component';
 
 @Component({
-  selector: 'app-search [fcName]  [labelText]',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-search [fcName]  [labelText]',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [InputComponent]
 })
 export class SearchComponent {
   @Input() fcName!: string;

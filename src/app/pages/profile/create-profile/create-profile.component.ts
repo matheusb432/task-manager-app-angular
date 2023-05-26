@@ -7,11 +7,14 @@ import {
 import { CanDeactivateForm } from 'src/app/models';
 import { ProfileService } from 'src/app/services/profile.service';
 import { DetailsTypes, FormTypes } from 'src/app/util';
+import { ProfileFormComponent } from '../../../components/profile/profile-form/profile-form.component';
 
 @Component({
-  selector: 'app-create-profile',
-  templateUrl: './create-profile.component.html',
-  styleUrls: ['./create-profile.component.scss'],
+    selector: 'app-create-profile',
+    templateUrl: './create-profile.component.html',
+    styleUrls: ['./create-profile.component.scss'],
+    standalone: true,
+    imports: [ProfileFormComponent]
 })
 export class CreateProfileComponent implements OnInit, CanDeactivateForm<ProfileForm> {
   form!: ProfileFormGroup;

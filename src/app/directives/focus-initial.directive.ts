@@ -2,7 +2,8 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { AsyncUtil } from '../util';
 
 @Directive({
-  selector: '[appFocusInitial]',
+    selector: '[appFocusInitial]',
+    standalone: true
 })
 export class FocusInitialDirective implements OnInit {
   @Input() focusChild = false;

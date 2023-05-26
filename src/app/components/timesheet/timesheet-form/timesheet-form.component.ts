@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AppService, ModalService, TimesheetService } from 'src/app/services';
 import { ElementIds, FormTypes, FormUtil, deleteModalData, saveModalData } from 'src/app/util';
@@ -11,12 +11,24 @@ import {
   getTaskItemFormGroup,
   getTimesheetNoteFormGroup,
 } from './timesheet-form-group';
+import { FixedButtonsLayoutComponent } from '../../layout/fixed-buttons-layout/fixed-buttons-layout.component';
+import { CheckboxComponent } from '../../custom/inputs/checkbox/checkbox.component';
+import { InputComponent } from '../../custom/inputs/input/input.component';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { TextareaComponent } from '../../custom/inputs/textarea/textarea.component';
+import { FormArrayLayoutComponent } from '../../layout/form-array-layout/form-array-layout.component';
+import { ScrollToDirective } from '../../../directives/scroll-to.directive';
+import { DatepickerComponent } from '../../custom/inputs/datepicker/datepicker.component';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FormLayoutComponent } from '../../layout/form-layout/form-layout.component';
 
 @Component({
-  selector: 'app-timesheet-form',
-  templateUrl: './timesheet-form.component.html',
-  styleUrls: ['./timesheet-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-timesheet-form',
+    templateUrl: './timesheet-form.component.html',
+    styleUrls: ['./timesheet-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ReactiveFormsModule, FormLayoutComponent, NgIf, DatepickerComponent, ScrollToDirective, FormArrayLayoutComponent, NgFor, TextareaComponent, ButtonComponent, InputComponent, CheckboxComponent, FixedButtonsLayoutComponent, AsyncPipe]
 })
 export class TimesheetFormComponent {
   @Input() form!: TimesheetFormGroup;

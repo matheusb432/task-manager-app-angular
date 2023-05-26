@@ -2,11 +2,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IconConfig } from 'src/app/models';
 import { ElementIds, FormUtil, Icons } from 'src/app/util';
 import { SignupFormGroup } from './signup-form-group';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { InputComponent } from '../../custom/inputs/input/input.component';
+import { FormLayoutComponent } from '../../layout/form-layout/form-layout.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-signup-form',
-  templateUrl: './signup-form.component.html',
-  styleUrls: ['./signup-form.component.scss'],
+    selector: 'app-signup-form',
+    templateUrl: './signup-form.component.html',
+    styleUrls: ['./signup-form.component.scss'],
+    standalone: true,
+    imports: [ReactiveFormsModule, FormLayoutComponent, InputComponent, ButtonComponent]
 })
 export class SignupFormComponent {
   @Input() form!: SignupFormGroup;

@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { SignupFormGroup, getSignupForm } from 'src/app/components/authentication/signup-form';
 import { AuthService, PageService, ToastService } from 'src/app/services';
+import { SignupFormComponent } from '../../../components/authentication/signup-form/signup-form.component';
+import { TitleComponent } from '../../../components/custom/title/title.component';
+import { AuthPageLayoutComponent } from '../../../components/layout/auth-page-layout/auth-page-layout.component';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    standalone: true,
+    imports: [AuthPageLayoutComponent, TitleComponent, SignupFormComponent]
 })
 export class SignupComponent implements OnInit {
   form!: SignupFormGroup;

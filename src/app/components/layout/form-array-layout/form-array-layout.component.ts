@@ -1,11 +1,15 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ButtonComponent } from '../../custom/buttons/button/button.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'ul[app-form-array-layout] [titleText]',
-  templateUrl: './form-array-layout.component.html',
-  styleUrls: ['./form-array-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ul[app-form-array-layout] [titleText]',
+    templateUrl: './form-array-layout.component.html',
+    styleUrls: ['./form-array-layout.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgIf, ButtonComponent]
 })
 export class FormArrayLayoutComponent {
   @Input() titleText!: string;

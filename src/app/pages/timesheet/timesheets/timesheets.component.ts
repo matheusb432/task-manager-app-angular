@@ -1,17 +1,28 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs';
 import { DateRangeForm, DateRangeValue } from 'src/app/components/custom/inputs';
 import { AsNonNullable } from 'src/app/models';
 import { AppService, ProfileService, TimesheetService } from 'src/app/services';
 import { STORE_SERVICE, StoreService } from 'src/app/services/interfaces';
 import { DateUtil, FormUtil, PubSubUtil, StoreKeys, paths } from 'src/app/util';
+import { RouterOutlet } from '@angular/router';
+import { TimesheetListComponent } from '../../../components/timesheet/timesheet-list/timesheet-list.component';
+import { TimesheetCarouselComponent } from '../../../components/timesheet/timesheet-carousel/timesheet-carousel.component';
+import { NgIf, NgClass } from '@angular/common';
+import { DateRangePickerComponent } from '../../../components/custom/inputs/date-range-picker/date-range-picker.component';
+import { SlideComponent } from '../../../components/custom/inputs/slide/slide.component';
+import { FormLayoutComponent } from '../../../components/layout/form-layout/form-layout.component';
+import { TitleComponent } from '../../../components/custom/title/title.component';
+import { PageLayoutComponent } from '../../../components/layout/page-layout/page-layout.component';
 
 @Component({
-  selector: 'app-timesheets',
-  templateUrl: './timesheets.component.html',
-  styleUrls: ['./timesheets.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-timesheets',
+    templateUrl: './timesheets.component.html',
+    styleUrls: ['./timesheets.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [PageLayoutComponent, TitleComponent, FormLayoutComponent, ReactiveFormsModule, SlideComponent, DateRangePickerComponent, NgIf, NgClass, TimesheetCarouselComponent, TimesheetListComponent, RouterOutlet]
 })
 export class TimesheetsComponent implements OnInit {
   paths = paths;

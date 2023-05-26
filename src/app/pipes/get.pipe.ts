@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ObjectUtil } from '../util';
 
 @Pipe({
-  name: 'get',
+    name: 'get',
+    standalone: true
 })
 /**
  * @class GetPipe
