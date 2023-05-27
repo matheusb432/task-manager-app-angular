@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SignupFormGroup, getSignupForm } from 'src/app/components/authentication/signup-form';
-import { AuthService, PageService, ToastService } from 'src/app/services';
+import { AuthService, ToastService } from 'src/app/services';
 import { SignupFormComponent } from '../../../components/authentication/signup-form/signup-form.component';
 import { TitleComponent } from '../../../components/custom/title/title.component';
 import { AuthPageLayoutComponent } from '../../../components/layout/auth-page-layout/auth-page-layout.component';
@@ -14,11 +14,7 @@ import { AuthPageLayoutComponent } from '../../../components/layout/auth-page-la
 export class SignupComponent implements OnInit {
   form!: SignupFormGroup;
 
-  constructor(
-    private service: AuthService,
-    private pageService: PageService,
-    private ts: ToastService
-  ) {}
+  constructor(private service: AuthService, private ts: ToastService) {}
 
   ngOnInit(): void {
     this.initForm();
