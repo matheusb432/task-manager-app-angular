@@ -1,3 +1,5 @@
+$bgGradient: linear-gradient(15deg, var(--bg-color), var(--primary));
+
 .not-found-container {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,7 @@
   justify-content: center;
   width: 100%;
   height: calc(100vh);
-  background: linear-gradient(45deg, var(--primary), var(--accent));
+  background: $bgGradient;
 }
 
 .not-found-card {
@@ -30,10 +32,8 @@ header {
     font-weight: 700;
     letter-spacing: 0.05rem;
     text-align: center;
-    background: linear-gradient(45deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
+    background: $bgGradient;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .subtitle {

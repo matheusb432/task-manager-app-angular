@@ -2,7 +2,6 @@ import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { AppRoutingModule } from './app/app-routing.module';
 import { SharedModule } from './app/shared';
-import { ReactiveFormsModule } from '@angular/forms';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { TOKEN_DECODER_FN } from './app/services/token.service';
@@ -17,13 +16,7 @@ import jwtDecode from 'jwt-decode';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      BrowserModule,
-      ReactiveFormsModule,
-      SharedModule,
-      AppRoutingModule,
-      MatNativeDateModule
-    ),
+    importProvidersFrom(BrowserModule, SharedModule, AppRoutingModule, MatNativeDateModule),
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

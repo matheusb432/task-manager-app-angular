@@ -23,23 +23,22 @@ const routes: Routes = [
   },
   {
     path: Pages.Auth,
-    loadChildren: () =>
-      import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule),
+    loadChildren: () => import('./pages/authentication/routes').then((m) => m.AUTH_ROUTES),
     canActivateChild: [() => canActivateAuthPage()],
   },
   {
     path: Pages.Timesheets,
-    loadChildren: () => import('./pages/timesheet/timesheet.module').then((m) => m.TimesheetModule),
+    loadChildren: () => import('./pages/timesheet/routes').then((m) => m.TIMESHEET_ROUTES),
     canActivate: [() => canActivateAuth()],
   },
   {
     path: Pages.Profiles,
-    loadChildren: () => import('./pages/profile/profile.module').then((m) => m.ProfileModule),
+    loadChildren: () => import('./pages/profile/routes').then((m) => m.PROFILE_ROUTES),
     canActivate: [() => canActivateAuth()],
   },
   {
     path: Pages.Metrics,
-    loadChildren: () => import('./pages/metrics/metrics.module').then((m) => m.MetricsModule),
+    loadChildren: () => import('./pages/metrics/routes').then((m) => m.METRICS_ROUTES),
     canActivate: [() => canActivateAuth()],
   },
   {

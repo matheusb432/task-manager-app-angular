@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PageStates } from 'src/app/util';
-import { TimesheetsComponent } from './timesheets/timesheets.component';
-import { CreateTimesheetComponent } from './create-timesheet/create-timesheet.component';
-import { TimesheetDetailsComponent } from './timesheet-details/timesheet-details.component';
+import { Routes } from '@angular/router';
 import { canDeactivateForm } from 'src/app/guards/form.guard';
+import { TimesheetDetailsComponent } from './timesheet-details/timesheet-details.component';
+import { PageStates } from 'src/app/util';
+import { CreateTimesheetComponent } from './create-timesheet/create-timesheet.component';
+import { TimesheetsComponent } from './timesheets/timesheets.component';
 
-const routes: Routes = [
+export const TIMESHEET_ROUTES: Routes = [
   {
     path: '',
     component: TimesheetsComponent,
@@ -24,9 +23,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class TimesheetRoutingModule {}

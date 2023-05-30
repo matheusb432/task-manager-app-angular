@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
+import { ProfilesComponent } from './profiles/profiles.component';
 import { PageStates } from 'src/app/util';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
-import { ProfileDetailsComponent } from './profile-details/profile-details.component';
-import { ProfilesComponent } from './profiles/profiles.component';
 import { canDeactivateForm } from 'src/app/guards/form.guard';
+import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 
-const routes: Routes = [
+export const PROFILE_ROUTES: Routes = [
   {
     path: '',
     component: ProfilesComponent,
@@ -24,9 +23,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class ProfileRoutingModule {}
