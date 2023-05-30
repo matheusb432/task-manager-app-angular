@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { ButtonComponent } from 'src/app/shared/components/buttons';
 import { paths } from 'src/app/util';
-import { ButtonComponent } from '../../components/custom/buttons/button/button.component';
 
 @Component({
   selector: 'app-not-found',

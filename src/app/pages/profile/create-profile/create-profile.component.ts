@@ -3,11 +3,11 @@ import {
   ProfileForm,
   ProfileFormGroup,
   getProfileForm,
-} from 'src/app/components/profile/profile-form';
+} from 'src/app/pages/profile/components/profile-form';
 import { CanDeactivateForm } from 'src/app/models';
-import { ProfileService } from 'src/app/services/profile.service';
+import { ProfileService } from 'src/app/pages/profile/services/profile.service';
 import { DetailsTypes, FormTypes } from 'src/app/util';
-import { ProfileFormComponent } from '../../../components/profile/profile-form/profile-form.component';
+import { ProfileFormComponent } from '../components/profile-form/profile-form.component';
 
 @Component({
   selector: 'app-create-profile',

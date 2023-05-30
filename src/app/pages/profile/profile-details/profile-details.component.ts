@@ -4,11 +4,12 @@ import {
   ProfileForm,
   ProfileFormGroup,
   getProfileForm,
-} from 'src/app/components/profile/profile-form';
+} from 'src/app/pages/profile/components/profile-form';
 import { CanDeactivateForm, PageData } from 'src/app/models';
-import { PageService, ProfileService } from 'src/app/services';
+import { PageService } from 'src/app/services';
 import { DetailsTypes, FormTypes, PubSubUtil } from 'src/app/util';
-import { ProfileFormComponent } from '../../../components/profile/profile-form/profile-form.component';
+import { ProfileFormComponent } from '../components/profile-form/profile-form.component';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-profile-details',

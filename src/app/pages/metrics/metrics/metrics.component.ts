@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TitleComponent } from '../../../components/custom/title/title.component';
-import { PageLayoutComponent } from '../../../components/layout/page-layout/page-layout.component';
+import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
+import { TitleComponent } from 'src/app/shared/components/title/title.component';
 
 @Component({
   selector: 'app-metrics',

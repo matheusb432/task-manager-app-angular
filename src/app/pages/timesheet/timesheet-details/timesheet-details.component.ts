@@ -1,15 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+import { CanDeactivateForm, PageData, WithDestroyed } from 'src/app/models';
+import { PageService } from 'src/app/services';
+import { DetailsTypes, FormTypes } from 'src/app/util';
 import {
+  TimesheetFormComponent,
   TimesheetForm,
   TimesheetFormGroup,
   getTimesheetForm,
-} from 'src/app/components/timesheet/timesheet-form';
-import { CanDeactivateForm, PageData, WithDestroyed } from 'src/app/models';
-import { PageService, TimesheetService } from 'src/app/services';
-import { DetailsTypes, FormTypes } from 'src/app/util';
-import { TimesheetFormComponent } from '../../../components/timesheet/timesheet-form/timesheet-form.component';
+} from '../components/timesheet-form';
+import { TimesheetService } from '../services/timesheet.service';
 
 @Component({
   selector: 'app-timesheet-details',

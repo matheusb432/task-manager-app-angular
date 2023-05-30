@@ -1,15 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
+
+import { CanDeactivateForm } from 'src/app/models';
+import { AppService, PageService, ToastService } from 'src/app/services';
+import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, paths } from 'src/app/util';
 import {
+  TimesheetFormComponent,
   TimesheetForm,
   TimesheetFormGroup,
   getTimesheetForm,
-} from 'src/app/components/timesheet/timesheet-form';
-import { CanDeactivateForm } from 'src/app/models';
-import { AppService, PageService, TimesheetService, ToastService } from 'src/app/services';
-import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, paths } from 'src/app/util';
-import { TimesheetFormComponent } from '../../../components/timesheet/timesheet-form/timesheet-form.component';
+} from '../components/timesheet-form';
+import { TimesheetService } from '../services/timesheet.service';
 
 @Component({
   selector: 'app-create-timesheet',

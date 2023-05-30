@@ -16,7 +16,6 @@ import { DynamicPipe } from '../pipes/dynamic.pipe';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-
     MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,

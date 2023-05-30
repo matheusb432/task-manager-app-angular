@@ -8,10 +8,10 @@ import {
   ProfileDateValues,
   ProfileType,
 } from '../models';
-import { DateRangeValue } from '../components/custom/inputs';
 import { ArrayUtil } from './array.util';
 import { StringUtil } from './string.util';
 import { DateUtil } from './date.util';
+import { DateRangeValue } from '../shared/components/inputs/date-range-picker/date-range-form-group';
 
 @Injectable({
   providedIn: 'root',

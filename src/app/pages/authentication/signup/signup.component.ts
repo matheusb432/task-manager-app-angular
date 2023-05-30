@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SignupFormGroup, getSignupForm } from 'src/app/components/authentication/signup-form';
 import { AuthService, ToastService } from 'src/app/services';
-import { SignupFormComponent } from '../../../components/authentication/signup-form/signup-form.component';
-import { TitleComponent } from '../../../components/custom/title/title.component';
-import { AuthPageLayoutComponent } from '../../../components/layout/auth-page-layout/auth-page-layout.component';
+import { SignupFormComponent } from '../components';
+import { SignupFormGroup, getSignupForm } from '../components/signup-form';
+import { AuthPageLayoutComponent } from 'src/app/shared/components/layouts/auth-page-layout/auth-page-layout.component';
+import { TitleComponent } from 'src/app/shared/components/title/title.component';
 
 @Component({
   selector: 'app-signup',

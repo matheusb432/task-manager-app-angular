@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { filter, tap } from 'rxjs';
 import { ModalConfirmData } from 'src/app/models';
-import { ModalConfirmComponent, ModalFeedbackComponent } from '../components/custom/modals';
+import { ModalConfirmComponent, ModalFeedbackComponent } from '../shared/components/modals';
 
 @Injectable({
   providedIn: 'root',

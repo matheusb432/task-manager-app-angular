@@ -1,5 +1,3 @@
-export { TimesheetService } from './timesheet.service';
-export { TimesheetCarouselService } from './timesheet-carousel.service';
 export { TokenService } from './token.service';
 export { AppService } from './app.service';
 export { RequestService } from './request.service';
@@ -11,5 +9,3 @@ export { ModalService } from './modal.service';
 export { LocalStorageService, LOCAL_STORAGE } from './local-storage.service';
 export { ToastService } from './toast.service';
 export { PageService } from './page.service';
-export { ProfileService } from './profile.service';
-export { ProfileTypeService } from './profile-type.service';

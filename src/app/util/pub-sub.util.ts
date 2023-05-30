@@ -11,7 +11,7 @@ import {
   startWith,
   takeUntil,
 } from 'rxjs';
-import { DateRangeValue } from '../components/custom/inputs';
+import { DateRangeValue } from '../shared/components/inputs/date-range-picker/date-range-form-group';
 
 @Injectable({
   providedIn: 'root',

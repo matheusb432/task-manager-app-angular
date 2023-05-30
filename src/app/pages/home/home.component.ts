@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Card } from 'src/app/models';
+import { CardsGridComponent } from 'src/app/shared/components/cards-grid/cards-grid.component';
+import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
+import { TitleComponent } from 'src/app/shared/components/title/title.component';
 import { homeCards } from 'src/app/util';
-import { CardsGridComponent } from '../../components/custom/cards-grid/cards-grid.component';
-import { TitleComponent } from '../../components/custom/title/title.component';
-import { PageLayoutComponent } from '../../components/layout/page-layout/page-layout.component';
 
 @Component({
   selector: 'app-home',

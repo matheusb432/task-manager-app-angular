@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, filter, map } from 'rxjs';
-import { DateRangeValue } from '../components/custom/inputs';
 import { AsNonNullable } from '../models';
 import { DateUtil } from '../util';
+import { DateRangeValue } from '../shared/components/inputs/date-range-picker/date-range-form-group';
 
 @Injectable({
   providedIn: 'root',

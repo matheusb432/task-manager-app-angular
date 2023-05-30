@@ -9,8 +9,8 @@ import {
 import { BehaviorSubject, Subject, concatMap, filter, takeUntil } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ToastData } from 'src/app/models';
-import { ToastComponent } from '../components/custom/toast/toast.component';
 import { AlertTypes, PubSubUtil } from '../util';
+import { ToastComponent } from '../shared/components/toast/toast.component';
 
 type ToastConfig = MatSnackBarConfig<string>;
 

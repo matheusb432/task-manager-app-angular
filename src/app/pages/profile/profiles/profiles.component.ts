@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ProfileService } from 'src/app/services';
 import { paths } from 'src/app/util';
 import { RouterOutlet } from '@angular/router';
-import { ProfileListComponent } from '../../../components/profile/profile-list/profile-list.component';
-import { ButtonComponent } from '../../../components/custom/buttons/button/button.component';
-import { TitleComponent } from '../../../components/custom/title/title.component';
-import { PageLayoutComponent } from '../../../components/layout/page-layout/page-layout.component';
+import { ButtonComponent } from 'src/app/shared/components/buttons';
+import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
+import { TitleComponent } from 'src/app/shared/components/title/title.component';
+import { ProfileListComponent } from '../components/profile-list/profile-list.component';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-profiles',
