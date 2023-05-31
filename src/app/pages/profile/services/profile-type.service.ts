@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiRequest, SelectOption, ProfileType, RequestData } from 'src/app/models';
-import { ApiService } from 'src/app/services/api';
+import { ApiService } from 'src/app/services/api/api.service';
 import { QueryUtil, ApiEndpoints, DateUtil } from 'src/app/util';
 
 @Injectable({

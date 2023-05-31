@@ -1,6 +1,7 @@
 import { NavItem } from 'src/app/models';
 import { Pages } from './pages';
 import { Icons } from './icons.enum';
+import { UserRoles } from './user-roles.enum';
 
 export const defaultNavItems: NavItem[] = [
   {
@@ -26,5 +27,12 @@ export const defaultNavItems: NavItem[] = [
     label: 'Metrics',
     link: Pages.Metrics,
     icon: Icons.BarChart,
+  },
+  {
+    id: 'Users',
+    label: 'Users',
+    link: Pages.Users,
+    icon: Icons.AccountCircle,
+    roles: [UserRoles.Admin],
   },
 ];

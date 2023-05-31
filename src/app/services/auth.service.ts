@@ -1,3 +1,4 @@
+import { UserRoles } from './../util/constants/user-roles.enum';
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -10,12 +11,12 @@ import {
   UserAuthGet,
 } from 'src/app/models';
 import { PubSubUtil, StoreKeys } from '../util';
-import { AuthApiService } from './api';
 import { AppService } from './app.service';
 import { STORE_SERVICE, StoreService } from './interfaces';
 import { PageService } from './page.service';
 import { ToastService } from './toast.service';
 import { TokenService } from './token.service';
+import { AuthApiService } from './api/auth-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +66,18 @@ export class AuthService implements OnDestroy {
 
   get isLoggedIn(): boolean {
     return !!this._authData?.isValid;
+  }
+
+  get isAdmin(): boolean {
+    return this.currentUserRoles.includes(UserRoles.Admin);
+  }
+
+  get currentUserRoles(): string[] {
+    const decodedToken = this._authData?.decodedToken;
+
+    if (decodedToken?.role) return [decodedToken.role];
+
+    return decodedToken?.roles ?? [];
   }
 
   get setLoggedUser$(): Observable<UserAuthGet | null | undefined> {
@@ -119,6 +132,12 @@ export class AuthService implements OnDestroy {
   }
 
   goToLogin = () => this.pageService.goToLogin();
+
+  hasRoles(roles: string[] | undefined): boolean {
+    if (!roles) return true;
+
+    return roles.every((role) => this.currentUserRoles.includes(role));
+  }
 
   private emptyAuthData(): void {
     this.store.remove(this.accessTokenKey);

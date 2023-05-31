@@ -34,4 +34,6 @@ export interface DecodedAuthToken {
   nbf: number;
   exp: number;
   iat: number;
+  role?: string;
+  roles?: string[];
 }

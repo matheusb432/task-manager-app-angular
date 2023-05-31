@@ -37,6 +37,33 @@ const profileDetailsCrumbs: Crumb[] = [
   },
 ];
 
+const userCrumbs: Crumb[] = [
+  ...homeCrumbs,
+  {
+    label: 'Users',
+    url: paths.users,
+    icon: Icons.AccountCircle,
+  },
+];
+
+const userCreateCrumbs: Crumb[] = [
+  ...userCrumbs,
+  {
+    label: 'Create',
+    url: paths.usersCreate,
+    icon: Icons.Add,
+  },
+];
+
+const userDetailsCrumbs: Crumb[] = [
+  ...userCrumbs,
+  {
+    label: 'Details',
+    url: paths.usersDetails,
+    icon: Icons.PageView,
+  },
+];
+
 const timesheetCrumbs: Crumb[] = [
   ...homeCrumbs,
   {
@@ -78,8 +105,11 @@ export const crumbDefaults = {
   [paths.profiles]: profileCrumbs,
   [paths.profilesCreate]: profileCreateCrumbs,
   [paths.profilesDetails]: profileDetailsCrumbs,
+  [paths.users]: userCrumbs,
+  [paths.usersCreate]: userCreateCrumbs,
+  [paths.usersDetails]: userDetailsCrumbs,
   [paths.timesheets]: timesheetCrumbs,
   [paths.timesheetsCreate]: timesheetCreateCrumbs,
   [paths.timesheetsDetails]: timesheetDetailsCrumbs,
   [paths.metrics]: metricCrumbs,
-};
+} as const;

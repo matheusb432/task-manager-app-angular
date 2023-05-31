@@ -11,7 +11,7 @@ import {
 } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { LoadingService } from 'src/app/services';
-import { ApiService } from 'src/app/services/api';
+import { ApiService } from 'src/app/services/api/api.service';
 import { FormApiService } from 'src/app/services/interfaces';
 import { ApiEndpoints, ElementIds, QueryUtil, StringUtil } from 'src/app/util';
 

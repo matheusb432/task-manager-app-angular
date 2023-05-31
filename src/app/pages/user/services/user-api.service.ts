@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 import { ElementIds, QueryUtil } from 'src/app/util';
-import { PaginationOptions } from '../../models/configs/pagination-options';
+import { PaginationOptions } from '../../../models/configs/pagination-options';
 import { ApiRequest, User, PaginatedResult } from 'src/app/models';
-import { LoadingService } from '../loading.service';
-import { ApiService } from './api.service';
+import { LoadingService } from '../../../services/loading.service';
+import { ApiService } from '../../../services/api/api.service';
 
 @Injectable({
   providedIn: 'root',

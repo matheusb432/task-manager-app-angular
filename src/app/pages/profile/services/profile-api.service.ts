@@ -11,8 +11,8 @@ import {
   ProfilePutDto,
 } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
-import { ApiService } from 'src/app/services/api';
 import { FormApiService } from 'src/app/services/interfaces';
+import { ApiService } from 'src/app/services/api/api.service';
 
 @Injectable({
   providedIn: 'root',

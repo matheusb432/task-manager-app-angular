@@ -6,7 +6,7 @@ import { AuthResponse, Login, Signup, UserAuthGet } from 'src/app/models';
 import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
 import { LoadingService } from '../loading.service';
 import { ApiService } from './api.service';
-import { UserApiService } from './user-api.service';
+import { UserApiService } from '../../pages/user/services/user-api.service';
 
 @Injectable({
   providedIn: 'root',

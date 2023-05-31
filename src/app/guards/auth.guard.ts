@@ -13,6 +13,15 @@ export const canActivateAuth = (service = inject(AuthService)): true | UrlTree =
   return router.parseUrl(paths.login);
 };
 
+export const canActivateAuthAdmin = (service = inject(AuthService)): boolean => {
+  const ts = inject(ToastService);
+  if (service.isAdmin) return true;
+
+  ts.warning('You do not have permission to access this page');
+
+  return false;
+};
+
 export const canActivateAuthPage = (service = inject(AuthService)): true | UrlTree => {
   const router = inject(Router);
   const ts = inject(ToastService);

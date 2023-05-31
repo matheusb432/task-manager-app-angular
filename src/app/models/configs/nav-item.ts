@@ -5,4 +5,5 @@ export interface NavItem {
   link: string;
   label: string;
   icon: Icons;
+  roles?: string[];
 }

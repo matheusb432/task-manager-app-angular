@@ -2,6 +2,7 @@ export enum Pages {
   Home = 'home',
   Timesheets = 'timesheets',
   Profiles = 'profiles',
+  Users = 'users',
   Metrics = 'metrics',
   NotFound = 'not-found',
   Auth = 'auth',
@@ -31,5 +32,8 @@ export const paths = Object.freeze({
   profiles: `/${Pages.Profiles}`,
   profilesCreate: `/${Pages.Profiles}/${PageStates.Create}`,
   profilesDetails: `/${Pages.Profiles}/${PageStates.Details}`,
+  users: `/${Pages.Users}`,
+  usersCreate: `/${Pages.Users}/${PageStates.Create}`,
+  usersDetails: `/${Pages.Users}/${PageStates.Details}`,
   metrics: `/${Pages.Metrics}`,
 });

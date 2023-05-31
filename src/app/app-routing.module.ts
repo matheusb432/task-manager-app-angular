@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Pages, paths } from './util';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
-import { canActivateAuth, canActivateAuthPage } from './guards';
+import { canActivateAuth, canActivateAuthPage, canActivateAuthAdmin } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -35,6 +35,11 @@ const routes: Routes = [
     path: Pages.Profiles,
     loadChildren: () => import('./pages/profile/routes').then((m) => m.PROFILE_ROUTES),
     canActivate: [() => canActivateAuth()],
+  },
+  {
+    path: Pages.Users,
+    loadChildren: () => import('./pages/user/routes').then((m) => m.USER_ROUTES),
+    canActivate: [() => canActivateAuthAdmin()],
   },
   {
     path: Pages.Metrics,
