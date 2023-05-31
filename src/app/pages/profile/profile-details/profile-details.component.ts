@@ -19,25 +19,14 @@ import { ProfileService } from '../services/profile.service';
   imports: [ProfileFormComponent],
 })
 export class ProfileDetailsComponent implements OnInit, OnDestroy, CanDeactivateForm<ProfileForm> {
-  private _form!: ProfileFormGroup;
-  get form(): ProfileFormGroup {
-    return this._form;
-  }
-  set form(value: ProfileFormGroup) {
-    this._form = value;
-  }
+  form!: ProfileFormGroup;
+
+  pageData?: PageData | undefined;
+
   get formType(): FormTypes {
     if (!this.pageData?.type) return FormTypes.Edit;
 
     return this.pageData?.type as unknown as FormTypes;
-  }
-
-  private _pageData?: PageData | undefined;
-  get pageData(): PageData | undefined {
-    return this._pageData;
-  }
-  set pageData(value: PageData | undefined) {
-    this._pageData = value;
   }
 
   subscriptions: Subscription[] = [];
