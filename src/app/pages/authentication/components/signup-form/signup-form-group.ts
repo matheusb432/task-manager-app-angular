@@ -11,8 +11,8 @@ export class SignupFormGroup extends FormGroup<SignupForm> {
     return ['userName', 'email', 'name', 'password'];
   }
 
-  static toJson(value: SignupFormGroup): Signup {
-    return value.getRawValue();
+  static toJson(fg: SignupFormGroup): Signup {
+    return fg.getRawValue();
   }
 }
 

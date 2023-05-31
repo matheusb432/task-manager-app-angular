@@ -121,13 +121,18 @@ h3 {
 
 mat-form-field {
   .mdc-text-field--filled {
-    background-color: var(--secondary-dark);
+    background-color: var(--secondary-dark) !important;
     border-radius: 0;
   }
   &.input-container {
     display: flex;
     margin-bottom: 1rem;
   }
+}
+
+// NOTE: This is a workaround for the autofill background color on inputs
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--primary-lighter) inset !important;
 }
 
 .input-loading-container {

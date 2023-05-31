@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from 'src/app/shared/components/buttons';
 import { InputComponent } from 'src/app/shared/components/inputs/input/input.component';
 import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
+import { UserUtil } from 'src/app/pages/user/services/user.util';
 
 @Component({
   selector: 'app-login-form',
@@ -22,12 +23,7 @@ export class LoginFormComponent {
   elIds = ElementIds;
 
   passwordVisible = false;
-  visibilityIcon = IconConfig.withClick(
-    'cPasswordVisibilityIcon',
-    Icons.RemoveRedEye,
-    () => this.togglePasswordVisibility(),
-    'accent'
-  );
+  visibilityIcon = UserUtil.getVisibilityIcon(() => this.togglePasswordVisibility());
 
   onSubmit(): void {
     FormUtil.onSubmit(this.form, this.save);

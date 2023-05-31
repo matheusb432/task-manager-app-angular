@@ -1,3 +1,3 @@
 export { UserAuthGet } from './user-auth-get';
-export * from './role-dto';
-export * from './user-role-dto';
+export * from '../../entities/role';
+export * from '../../entities/user-role';

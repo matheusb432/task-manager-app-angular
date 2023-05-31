@@ -119,6 +119,8 @@ export abstract class FormService<TEntity extends TableItem> {
   };
 
   duplicate = async (item: Partial<TEntity>): Promise<PostReturn> => {
+    if (this.api.duplicate == null) throw new Error('Api Service Duplicate is not implemented!');
+
     const res = await this.api.duplicate(item);
 
     this.ts.success(this.toastMessages.duplicateSuccess);

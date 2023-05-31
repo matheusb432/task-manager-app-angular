@@ -32,6 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     const errorMessages: { [key: number]: string; default: string } = {
       401: 'Unauthorized access',
       404: 'Resource not found',
+      409: 'Resource already exists',
       400: 'Bad request',
       default: 'Internal Server error',
     };
