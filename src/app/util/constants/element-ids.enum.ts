@@ -9,6 +9,8 @@ export enum ElementIds {
   UserSubmit = 'cUserFormSubmit',
   UserDelete = 'cUserFormDelete',
   UserFormRoles = 'cUserFormRoles',
+  MyProfileForm = 'cMyProfileForm',
+  MyProfileSubmit = 'cMyProfileFormSubmit',
   HeaderUser = 'cHeaderUser',
   LoginForm = 'cLoginForm',
   LoginSubmit = 'cLoginSubmit',

@@ -80,6 +80,10 @@ export class AuthService implements OnDestroy {
     return decodedToken?.roles ?? [];
   }
 
+  get currentUserId(): string | undefined {
+    return this._authData?.decodedToken?.UserId;
+  }
+
   get setLoggedUser$(): Observable<UserAuthGet | null | undefined> {
     return this._setLoggedUser.asObservable();
   }

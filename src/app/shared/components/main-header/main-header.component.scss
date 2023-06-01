@@ -10,11 +10,23 @@
 }
 
 .user-data {
-  span {
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+
+  .user-profile-edit {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    column-gap: 16px;
+    transition: opacity 0.15s ease-in-out;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
-  & :not(:first-child) {
-    margin-left: 16px;
+  span {
+    font-weight: bold;
   }
 }

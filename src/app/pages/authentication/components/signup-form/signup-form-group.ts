@@ -29,10 +29,17 @@ export const passwordValidators: ValidatorFn[] = [
   passwordStrengthValidator(),
 ];
 
+export const nameValidators: ValidatorFn[] = [Validators.required, Validators.maxLength(100)];
+export const userNameValidators: ValidatorFn[] = [
+  Validators.required,
+  Validators.maxLength(100),
+  userNameValidator(),
+];
+
 export const getSignupForm = (): SignupForm => ({
   userName: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required, Validators.maxLength(100), userNameValidator()],
+    validators: userNameValidators,
   }),
   email: new FormControl('', {
     nonNullable: true,
@@ -40,7 +47,7 @@ export const getSignupForm = (): SignupForm => ({
   }),
   name: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required, Validators.maxLength(100)],
+    validators: nameValidators,
   }),
   password: new FormControl('', {
     nonNullable: true,

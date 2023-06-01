@@ -42,6 +42,11 @@ const routes: Routes = [
     canActivate: [() => canActivateAuthAdmin()],
   },
   {
+    path: Pages.Settings,
+    loadChildren: () => import('./pages/settings/routes').then((m) => m.SETTINGS_ROUTES),
+    canActivate: [() => canActivateAuth()],
+  },
+  {
     path: Pages.Metrics,
     loadChildren: () => import('./pages/metrics/routes').then((m) => m.METRICS_ROUTES),
     canActivate: [() => canActivateAuth()],

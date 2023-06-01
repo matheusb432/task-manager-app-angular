@@ -1,5 +1,5 @@
 import { NavItem } from 'src/app/models';
-import { Pages } from './pages';
+import { Pages, paths } from './pages';
 import { Icons } from './icons.enum';
 import { UserRoles } from './user-roles.enum';
 
@@ -34,5 +34,14 @@ export const defaultNavItems: NavItem[] = [
     link: Pages.Users,
     icon: Icons.AccountCircle,
     roles: [UserRoles.Admin],
+  },
+];
+
+export const userNavItems: NavItem[] = [
+  {
+    id: 'MyProfile',
+    label: 'My Profile',
+    link: paths.myProfile,
+    icon: Icons.Settings,
   },
 ];

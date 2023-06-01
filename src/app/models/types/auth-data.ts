@@ -31,6 +31,7 @@ export class AuthData {
 export interface DecodedAuthToken {
   unique_name: string;
   email: string;
+  UserId: string;
   nbf: number;
   exp: number;
   iat: number;

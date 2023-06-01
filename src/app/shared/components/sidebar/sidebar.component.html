@@ -18,7 +18,16 @@
     </div>
 
     <app-nav-items [items]="navItems" [iconOnly]="!hovering" [onSideNav]="true"></app-nav-items>
-    <div class="scrollbar-hider"></div>
+    <div class="scrollbar-hider">
+      <!-- TODO move inner z-index -->
+      <div class="scrollbar-hider-inner">
+        <app-nav-items
+          [items]="userNavItems"
+          [iconOnly]="!hovering"
+          [onSideNav]="true"
+        ></app-nav-items>
+      </div>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">

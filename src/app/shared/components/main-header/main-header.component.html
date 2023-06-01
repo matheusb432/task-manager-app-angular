@@ -2,14 +2,15 @@
   <app-breadcrumb></app-breadcrumb>
 
   <section class="user-data" *ngIf="setLoggedUser$ | async as loggedUser">
-    <span>{{ loggedUser.name }}</span>
-    <app-icon [icon]="Icons.AccountCircle" [color]="undefined"></app-icon>
+    <div class="user-profile-edit" matTooltip="Edit Your Profile" [routerLink]="paths.myProfile">
+      <span>{{ loggedUser.name }}</span>
+      <app-icon [icon]="Icons.AccountCircle" [color]="undefined"></app-icon>
+    </div>
     <app-icon
       appSetId="cMainHeaderLogout"
       [icon]="Icons.Logout"
       [clickable]="true"
       [color]="undefined"
-      matTooltip="Logout"
       (clicked)="logout()"
     ></app-icon>
   </section>
