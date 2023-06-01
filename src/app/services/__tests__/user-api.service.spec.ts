@@ -2,9 +2,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { PaginationOptions } from '../../models/configs/pagination-options';
 import { User, PaginatedResult } from 'src/app/models';
-import { UserApiService } from '../api';
 import { assertAreEqual } from './test-utils';
 import { QueryUtil } from 'src/app/util';
+import { UserApiService } from 'src/app/pages/user/services/user-api.service';
 
 describe('Service: UserApi', () => {
   let service: UserApiService;

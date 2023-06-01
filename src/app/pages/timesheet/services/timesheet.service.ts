@@ -22,7 +22,6 @@ import {
 } from '../../../util';
 import { AppService } from '../../../services/app.service';
 import { FormService } from '../../../services/base/form.service';
-import { ToastService } from '../../../services/toast.service';
 import {
   TimesheetFormGroup,
   TimesheetFormValue,
@@ -67,11 +66,10 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
   constructor(
     protected override api: TimesheetApiService,
-    protected override ts: ToastService,
     private app: AppService,
     private router: Router
   ) {
-    super(ts, api);
+    super(api);
     this.setToastMessages();
 
     this.initSubs();
@@ -183,7 +181,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
         },
       })
       .catch((err) => {
-        this.ts.error('Error loading timesheet metrics!');
+        this.toaster.error('Error loading timesheet metrics!');
         throw err;
       });
 
@@ -198,7 +196,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
         },
       })
       .catch((err) => {
-        this.ts.error('Error reloading timesheet metrics!');
+        this.toaster.error('Error reloading timesheet metrics!');
         throw err;
       });
 
@@ -351,11 +349,11 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
   private findTimesheetToNavigate = async (date: Date): Promise<Timesheet | null> => {
     const item = await this.api.getByDate(date).catch((err) => {
-      this.ts.error('Error loading timesheet!');
+      this.toaster.error('Error loading timesheet!');
       throw err;
     });
     if (item?.id == null) {
-      this.ts.warning(`Timesheet of date ${date} not found!`);
+      this.toaster.warning(`Timesheet of date ${date} not found!`);
       return null;
     }
     return item;

@@ -7,6 +7,7 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -37,6 +38,10 @@ import { FormLayoutComponent } from '../../layouts/form-layout/form-layout.compo
   ],
 })
 export class DateRangePickerComponent extends WithDestroyed implements OnInit, OnChanges {
+  private loadingService = inject(LoadingService);
+  private cdRef = inject(ChangeDetectorRef);
+  public formWrapper = inject(FormLayoutComponent);
+
   @Input() fgName!: string;
   @Input() labelText!: string;
   @Input() elId = '';
@@ -68,14 +73,6 @@ export class DateRangePickerComponent extends WithDestroyed implements OnInit, O
 
   get fg() {
     return this.formWrapper.formGroup;
-  }
-
-  constructor(
-    private loadingService: LoadingService,
-    private cdRef: ChangeDetectorRef,
-    public formWrapper: FormLayoutComponent
-  ) {
-    super();
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService, ToastService } from 'src/app/services';
 import { SignupFormComponent } from '../components';
 import { SignupFormGroup, getSignupForm } from '../components/signup-form';
@@ -12,9 +12,10 @@ import { TitleComponent } from 'src/app/shared/components/title/title.component'
   imports: [AuthPageLayoutComponent, TitleComponent, SignupFormComponent],
 })
 export class SignupComponent implements OnInit {
-  form!: SignupFormGroup;
+  private service = inject(AuthService);
+  private toaster = inject(ToastService);
 
-  constructor(private service: AuthService, private toaster: ToastService) {}
+  form!: SignupFormGroup;
 
   ngOnInit(): void {
     this.initForm();

@@ -1,14 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subject, map, takeUntil, distinctUntilChanged } from 'rxjs';
-import { PaginationOptions, Role, SelectOption, User, UserRole } from 'src/app/models';
-import { ToastService, AppService } from 'src/app/services';
+import { BehaviorSubject, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { PaginationOptions, Role, User } from 'src/app/models';
+import { AppService } from 'src/app/services';
 import { FormService } from 'src/app/services/base/form.service';
 import { PubSubUtil } from 'src/app/util';
 import { DetailsTypes, paths } from 'src/app/util/constants/pages';
+import { UserFormValue } from '../components/user-form/user-form-group';
 import { UserApiService } from './user-api.service';
-import { UserFormValue, UserFormGroup } from '../components/user-form/user-form-group';
-import { filter } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root',
@@ -32,11 +31,10 @@ export class UserService extends FormService<User> implements OnDestroy {
 
   constructor(
     protected override api: UserApiService,
-    protected override ts: ToastService,
     private app: AppService,
     private router: Router
   ) {
-    super(ts, api);
+    super(api);
     this.setToastMessages();
     this.initSubs();
   }

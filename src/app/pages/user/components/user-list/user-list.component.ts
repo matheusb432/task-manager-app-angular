@@ -1,19 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable } from 'rxjs';
 import { ODataOperators } from 'src/app/helpers/odata';
-import { User, TableConfig } from 'src/app/models';
+import { TableConfig, User } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
 import { ToastService } from 'src/app/services';
 import { FilterService } from 'src/app/services/filter.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
-import { AsyncPipe } from '@angular/common';
 import { SearchComponent } from 'src/app/shared/components/inputs/search/search.component';
 import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
 import { PaginationComponent } from 'src/app/shared/components/pagination/pagination.component';
 import { TableComponent } from 'src/app/shared/components/table/table.component';
+import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -32,9 +31,14 @@ import { UserService } from '../../services/user.service';
   ],
 })
 export class UserListComponent implements OnInit {
-  listItems$: Observable<User[]>;
-  total$: Observable<number>;
-  lastOptions$: Observable<PaginationOptions>;
+  private service = inject(UserService);
+  private toaster = inject(ToastService);
+  private modalService = inject(ModalService);
+  private filterService = inject(FilterService);
+
+  listItems$ = this.service.listItems$;
+  total$ = this.service.total$;
+  lastOptions$ = this.service.lastOptions$;
 
   filterForm!: FormGroup<{
     name: FormControl<string>;
@@ -52,17 +56,6 @@ export class UserListComponent implements OnInit {
   prevFilter?: string;
 
   elIds = ElementIds;
-
-  constructor(
-    private service: UserService,
-    private toaster: ToastService,
-    private modalService: ModalService,
-    private filterService: FilterService
-  ) {
-    this.listItems$ = this.service.listItems$;
-    this.total$ = this.service.total$;
-    this.lastOptions$ = this.service.lastOptions$;
-  }
 
   ngOnInit(): void {
     this.initFilterForm();

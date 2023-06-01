@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
 import { distinct, distinctUntilChanged, map, of, share } from 'rxjs';
@@ -53,6 +54,8 @@ import { RouterModule } from '@angular/router';
   ],
 })
 export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
+  private loadingService = inject(LoadingService);
+
   @Input() items!: T[];
   @Input() config!: TableConfig<T>;
   @Input() elId = 'cTableContainer';
@@ -69,8 +72,6 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
   Icons = Icons;
 
   isSmallScreen$ = PubSubUtil.isInnerWidthLessThan$(1024);
-
-  constructor(private loadingService: LoadingService) {}
 
   get itemConfigs(): TableItemConfig<T>[] {
     return this.config.itemConfigs;

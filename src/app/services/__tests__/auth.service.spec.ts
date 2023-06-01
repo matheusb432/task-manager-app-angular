@@ -30,7 +30,7 @@ describe('Service: Auth', () => {
   };
   const mockToken = 'token';
   const mockResponse: AuthResponse = {
-    user: mockSignup,
+    user: { ...mockSignup, id: 1, userRoles: [] },
     token: mockToken,
   };
 

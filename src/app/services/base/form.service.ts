@@ -1,3 +1,4 @@
+import { InjectionToken, inject } from '@angular/core';
 import { BehaviorSubject, Observable, filter, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Nullish, PaginationOptions, PostReturn, TableItem } from 'src/app/models';
@@ -6,6 +7,8 @@ import { FormApiService } from '../interfaces/form-api-service';
 import { ToastService } from '../toast.service';
 
 export abstract class FormService<TEntity extends TableItem> {
+  protected toaster = inject(ToastService);
+
   protected _item$ = new BehaviorSubject<TEntity | undefined>(undefined);
   protected _listItems$ = new BehaviorSubject<TEntity[]>([]);
   protected _total$ = new BehaviorSubject(0);
@@ -38,7 +41,7 @@ export abstract class FormService<TEntity extends TableItem> {
     duplicateSuccess: 'Item duplicated successfully!',
   };
 
-  constructor(protected ts: ToastService, protected api: FormApiService<TEntity>) {}
+  constructor(protected api: FormApiService<TEntity>) {}
 
   async loadListItems(options?: PaginationOptions): Promise<void> {
     if (options == null) {
@@ -55,7 +58,7 @@ export abstract class FormService<TEntity extends TableItem> {
 
   async loadItem(id: number | string | Nullish): Promise<TEntity | null> {
     if (!id) {
-      this.ts.error(this.toastMessages.noId);
+      this.toaster.error(this.toastMessages.noId);
 
       return null;
     }
@@ -69,20 +72,20 @@ export abstract class FormService<TEntity extends TableItem> {
 
     this.setItem(res);
 
-    if (res == null) this.ts.error(this.toastMessages.noItem);
+    if (res == null) this.toaster.error(this.toastMessages.noItem);
 
     return res;
   }
 
   update = async (id: string | Nullish, item: Partial<TEntity>): Promise<void> => {
     if (id == null) {
-      this.ts.error(this.toastMessages.updateIdError);
+      this.toaster.error(this.toastMessages.updateIdError);
       return;
     }
 
     await this.api.update({ ...item, id: +id });
 
-    this.ts.success(this.toastMessages.updateSuccess);
+    this.toaster.success(this.toastMessages.updateSuccess);
 
     this.reloadItem(id);
     await this.loadListItems();
@@ -95,7 +98,7 @@ export abstract class FormService<TEntity extends TableItem> {
       const item = await this.api.getById(+id);
       this.setItem(item);
     } catch (error) {
-      this.ts.error(this.toastMessages.reloadError);
+      this.toaster.error(this.toastMessages.reloadError);
     }
   };
 
@@ -111,7 +114,7 @@ export abstract class FormService<TEntity extends TableItem> {
   insert = async (item: Partial<TEntity>): Promise<PostReturn> => {
     const res = await this.api.insert(item);
 
-    this.ts.success(this.toastMessages.createSuccess);
+    this.toaster.success(this.toastMessages.createSuccess);
 
     await this.loadListItems();
 
@@ -123,7 +126,7 @@ export abstract class FormService<TEntity extends TableItem> {
 
     const res = await this.api.duplicate(item);
 
-    this.ts.success(this.toastMessages.duplicateSuccess);
+    this.toaster.success(this.toastMessages.duplicateSuccess);
 
     await this.loadListItems();
 
@@ -132,7 +135,7 @@ export abstract class FormService<TEntity extends TableItem> {
 
   deleteItem = async (id: string | number | Nullish): Promise<void> => {
     if (!id) {
-      this.ts.error(this.toastMessages.noId);
+      this.toaster.error(this.toastMessages.noId);
 
       return;
     }
@@ -141,7 +144,7 @@ export abstract class FormService<TEntity extends TableItem> {
     await this.api.remove(parsedId);
     this.removeFromMemory(parsedId);
 
-    this.ts.success(this.toastMessages.deleteSuccess);
+    this.toaster.success(this.toastMessages.deleteSuccess);
   };
 
   getItemsPerPage = (): number => {

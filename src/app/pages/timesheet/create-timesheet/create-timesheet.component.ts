@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -24,19 +24,17 @@ import { TimesheetService } from '../services/timesheet.service';
 export class CreateTimesheetComponent
   implements OnInit, OnDestroy, CanDeactivateForm<TimesheetForm>
 {
+  private service = inject(TimesheetService);
+  private app = inject(AppService);
+  private toaster = inject(ToastService);
+  private route = inject(ActivatedRoute);
+  private pageService = inject(PageService);
+
   private destroyed$ = new Subject<boolean>();
 
   form!: TimesheetFormGroup;
 
   formType = FormTypes.Create;
-
-  constructor(
-    private service: TimesheetService,
-    private app: AppService,
-    private toaster: ToastService,
-    private route: ActivatedRoute,
-    private pageService: PageService
-  ) {}
 
   ngOnInit(): void {
     this.initSubs();

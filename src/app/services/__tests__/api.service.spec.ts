@@ -1,11 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
-import { ApiService } from '../api';
 import { RequestService } from '../request.service';
 import { ApiRequest } from 'src/app/models';
 import { assertAreEqual } from './test-utils';
 import { QueryUtil } from 'src/app/util';
+import { ApiService } from '../api/api.service';
 
 class MockItem {
   id?: number;

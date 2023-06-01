@@ -87,7 +87,7 @@ export class AuthService implements OnDestroy {
   constructor(
     private app: AppService,
     private api: AuthApiService,
-    private ts: ToastService,
+    private toaster: ToastService,
     private pageService: PageService,
     @Inject(STORE_SERVICE) private store: StoreService,
     private tokenService: TokenService
@@ -171,7 +171,7 @@ export class AuthService implements OnDestroy {
     try {
       const newUser = await this.api.getUserByEmail(email);
       if (!newUser) {
-        this.ts.info('Your user was not found. Please login again.');
+        this.toaster.info('Your user was not found. Please login again.');
         return this.logout();
       }
       this._setLoggedUser.next(newUser);

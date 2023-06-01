@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { Observable } from 'rxjs';
-import { Profile, TableConfig, Timesheet, WithDestroyed } from 'src/app/models';
-import { PaginationOptions } from 'src/app/models/configs/pagination-options';
-import { AppService, FilterService, ModalService, ToastService } from 'src/app/services';
-import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
 import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { TableConfig, Timesheet, WithDestroyed } from 'src/app/models';
+import { PaginationOptions } from 'src/app/models/configs/pagination-options';
+import { ProfileService } from 'src/app/pages/profile/services/profile.service';
+import { AppService, FilterService, ModalService, ToastService } from 'src/app/services';
 import { PaginationComponent } from 'src/app/shared/components/pagination/pagination.component';
 import { TableComponent } from 'src/app/shared/components/table/table.component';
+import { ElementIds, QueryUtil, deleteModalData, paths } from 'src/app/util';
 import { TimesheetService } from '../../services/timesheet.service';
-import { ProfileService } from 'src/app/pages/profile/services/profile.service';
 
 @Component({
   selector: 'app-timesheet-list',
@@ -20,10 +19,17 @@ import { ProfileService } from 'src/app/pages/profile/services/profile.service';
   imports: [TableComponent, PaginationComponent, AsyncPipe],
 })
 export class TimesheetListComponent extends WithDestroyed {
-  listItems$: Observable<Timesheet[]>;
-  profiles$: Observable<Profile[]>;
-  total$: Observable<number>;
-  lastOptions$: Observable<PaginationOptions>;
+  private app = inject(AppService);
+  private service = inject(TimesheetService);
+  private profileService = inject(ProfileService);
+  private toaster = inject(ToastService);
+  private modalService = inject(ModalService);
+  private filterService = inject(FilterService);
+
+  listItems$ = this.service.listItems$;
+  total$ = this.service.total$;
+  lastOptions$ = this.service.lastOptions$;
+  profiles$ = this.profileService.listItems$;
 
   config: TableConfig<Timesheet> = {
     itemConfigs: Timesheet.tableItems(),
@@ -37,21 +43,6 @@ export class TimesheetListComponent extends WithDestroyed {
   };
 
   elIds = ElementIds;
-
-  constructor(
-    private app: AppService,
-    private service: TimesheetService,
-    private profileService: ProfileService,
-    private toaster: ToastService,
-    private modalService: ModalService,
-    private filterService: FilterService
-  ) {
-    super();
-    this.listItems$ = this.service.listItems$;
-    this.total$ = this.service.total$;
-    this.lastOptions$ = this.service.lastOptions$;
-    this.profiles$ = this.profileService.listItems$;
-  }
 
   onFilter(): void {
     this.filterService.filterDebounced(this.loadItems.bind(this));

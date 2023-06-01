@@ -14,7 +14,6 @@ import { AppService } from '../../../services/app.service';
 import { FormService } from '../../../services/base/form.service';
 import { LoadingService } from '../../../services/loading.service';
 import { ProfileTypeService } from './profile-type.service';
-import { ToastService } from '../../../services/toast.service';
 import { ProfileApiService } from './profile-api.service';
 
 @Injectable({
@@ -56,12 +55,11 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
 
   constructor(
     protected override api: ProfileApiService,
-    protected override ts: ToastService,
     private app: AppService,
     private router: Router,
     private profileTypeService: ProfileTypeService
   ) {
-    super(ts, api);
+    super(api);
     this.setToastMessages();
     this.initSubs();
   }

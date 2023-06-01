@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable } from 'rxjs';
 import { ODataOperators } from 'src/app/helpers/odata';
 import { Profile, TableConfig } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
@@ -32,9 +31,14 @@ import { ProfileService } from '../../services/profile.service';
   ],
 })
 export class ProfileListComponent implements OnInit {
-  listItems$: Observable<Profile[]>;
-  total$: Observable<number>;
-  lastOptions$: Observable<PaginationOptions>;
+  private service = inject(ProfileService);
+  private toaster = inject(ToastService);
+  private modalService = inject(ModalService);
+  private filterService = inject(FilterService);
+
+  listItems$ = this.service.listItems$;
+  total$ = this.service.total$;
+  lastOptions$ = this.service.lastOptions$;
 
   filterForm!: FormGroup<{
     name: FormControl<string>;
@@ -53,17 +57,6 @@ export class ProfileListComponent implements OnInit {
   prevFilter?: string;
 
   elIds = ElementIds;
-
-  constructor(
-    private service: ProfileService,
-    private toaster: ToastService,
-    private modalService: ModalService,
-    private filterService: FilterService
-  ) {
-    this.listItems$ = this.service.listItems$;
-    this.total$ = this.service.total$;
-    this.lastOptions$ = this.service.lastOptions$;
-  }
 
   ngOnInit(): void {
     this.initFilterForm();
