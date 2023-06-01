@@ -11,7 +11,7 @@ import {
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { SelectOption, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { FormUtil, PubSubUtil, StringUtil } from 'src/app/util';
+import { ArrayUtil, FormUtil, PubSubUtil, StringUtil } from 'src/app/util';
 import { validationErrorMessages } from '../validation-errors';
 import { LoadingComponent } from '../../loading/loading.component';
 import { MatOptionModule } from '@angular/material/core';
@@ -112,9 +112,16 @@ export class SelectComponent extends WithDestroyed implements OnInit, OnDestroy,
   }
 
   changeControlEnabled(): void {
-    if (!this.isLoading && StringUtil.notEmpty(this.options) && this.canEditSelf)
+    const canEnable = !this.isLoading && this.hasOptions() && this.canEditSelf;
+    if (canEnable) {
       this.control?.enable();
-    else this.control?.disable();
+    } else {
+      this.control?.disable();
+    }
+  }
+
+  hasOptions(): boolean {
+    return !ArrayUtil.isEmpty(this.options);
   }
 
   getErrText(): string {

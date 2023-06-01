@@ -106,7 +106,14 @@ export class UserDetailsComponent implements OnInit, OnDestroy, CanDeactivateFor
   }
 
   async editItem(): Promise<void> {
-    await this.service.update(this.pageData?.id, UserFormGroup.toJson(this.form));
+    const value = UserFormGroup.toJson(this.form);
+
+    await this.service.update(this.pageData?.id, {
+      ...value,
+      userRoles: value.roleIds?.map((x) => ({
+        roleId: x,
+      })),
+    });
   }
 
   async onRemove(): Promise<void> {

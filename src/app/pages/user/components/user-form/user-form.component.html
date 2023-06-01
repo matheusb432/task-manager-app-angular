@@ -33,10 +33,11 @@
     ></app-input>
 
     <app-select
-      fcName="profileTypeId"
-      labelText="Type"
-      [options]="typeOptions$ | async"
-      [elId]="elIds.ProfileFormType"
+      fcName="roleIds"
+      labelText="Roles"
+      [options]="roleOptions$ | async"
+      [elId]="elIds.UserFormRoles"
+      [multiple]="true"
     ></app-select>
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">

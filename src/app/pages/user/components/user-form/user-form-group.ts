@@ -1,7 +1,6 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormValue } from 'src/app/models';
 import {
-  SignupForm,
   SignupFormGroup,
   getSignupForm,
 } from 'src/app/pages/authentication/components/signup-form';
@@ -48,14 +47,14 @@ export const getUserForm = () => {
 
   return {
     ...optionalPasswordSignup,
-    userRoles: new FormControl<string[]>([]),
+    roleIds: new FormControl<number[]>([]),
   };
 };
 
 export const getUserCreateForm = () => {
   return {
     ...getSignupForm(),
-    userRoles: new FormControl<string[]>([]),
+    roleIds: new FormControl<number[]>([]),
   };
 };
 

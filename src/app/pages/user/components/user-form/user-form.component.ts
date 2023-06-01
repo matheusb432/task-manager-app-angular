@@ -62,6 +62,10 @@ export class UserFormComponent {
     return FormUtil.isCreateForm(this.formType);
   }
 
+  get roleOptions$() {
+    return this.service.roleOptions$;
+  }
+
   constructor(private service: UserService, private modalService: ModalService) {}
 
   showDelete(): boolean {

@@ -43,7 +43,14 @@ export class CreateUserComponent implements OnInit, CanDeactivateForm<UserCreate
   }
 
   async create(): Promise<void> {
-    const { id } = await this.service.insert(UserCreateFormGroup.toJson(this.form));
+    const value = UserCreateFormGroup.toJson(this.form);
+
+    const { id } = await this.service.insert({
+      ...value,
+      userRoles: value.roleIds?.map((x) => ({
+        roleId: x,
+      })),
+    });
 
     this.service.goToDetails(id, DetailsTypes.View);
   }

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subject, map, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, takeUntil, distinctUntilChanged } from 'rxjs';
 import { PaginationOptions, Role, SelectOption, User, UserRole } from 'src/app/models';
 import { ToastService, AppService } from 'src/app/services';
 import { FormService } from 'src/app/services/base/form.service';
@@ -21,15 +21,14 @@ export class UserService extends FormService<User> implements OnDestroy {
     return this._roles$.asObservable();
   }
 
-  get roleOptions$(): Observable<SelectOption[]> {
-    return this.roles$.pipe(
-      map((roles) =>
-        roles
-          .filter((role): role is Required<Role> => !!role.id && !!role.name)
-          .map(({ id, name }, index) => ({ value: id ?? index, label: name }))
-      )
-    );
-  }
+  roleOptions$ = this.roles$.pipe(
+    map((roles) => {
+      return roles
+        .filter((role): role is Required<Role> => !!role.id && !!role.name)
+        .map(({ id, name }, index) => ({ value: id ?? index, label: name }));
+    }),
+    distinctUntilChanged()
+  );
 
   constructor(
     protected override api: UserApiService,
@@ -50,6 +49,7 @@ export class UserService extends FormService<User> implements OnDestroy {
     this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this._item$.next(undefined);
       this._listItems$.next([]);
+      this._roles$.next([]);
     });
   }
 

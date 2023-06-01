@@ -15,6 +15,7 @@ import { LoadingService } from '../../../services/loading.service';
 })
 export class UserApiService implements FormApiService<User> {
   private url = QueryUtil.buildApiUrl(ApiEndpoints.Users);
+  private rolesUrl = QueryUtil.buildApiUrl(ApiEndpoints.Roles);
 
   constructor(private api: ApiService) {}
 
@@ -65,7 +66,7 @@ export class UserApiService implements FormApiService<User> {
 
   async getRoles(): Promise<Role[]> {
     return this.api.getOData<Role>({
-      ...ApiRequest.get<Role>(this.url, Role),
+      ...ApiRequest.get<Role>(this.rolesUrl, Role),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.UserFormRoles) },
     });
   }
