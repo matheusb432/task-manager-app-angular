@@ -1,13 +1,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subject, map, takeUntil } from 'rxjs';
-import { PaginationOptions, Role, User, UserRole } from 'src/app/models';
+import { BehaviorSubject, Observable, Subject, map, takeUntil } from 'rxjs';
+import { PaginationOptions, Role, SelectOption, User, UserRole } from 'src/app/models';
 import { ToastService, AppService } from 'src/app/services';
 import { FormService } from 'src/app/services/base/form.service';
 import { PubSubUtil } from 'src/app/util';
 import { DetailsTypes, paths } from 'src/app/util/constants/pages';
 import { UserApiService } from './user-api.service';
 import { UserFormValue, UserFormGroup } from '../components/user-form/user-form-group';
+import { filter } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,16 @@ export class UserService extends FormService<User> implements OnDestroy {
 
   get roles$() {
     return this._roles$.asObservable();
+  }
+
+  get roleOptions$(): Observable<SelectOption[]> {
+    return this.roles$.pipe(
+      map((roles) =>
+        roles
+          .filter((role): role is Required<Role> => !!role.id && !!role.name)
+          .map(({ id, name }, index) => ({ value: id ?? index, label: name }))
+      )
+    );
   }
 
   constructor(
@@ -62,24 +73,12 @@ export class UserService extends FormService<User> implements OnDestroy {
 
   convertToFormValue(item: User): Partial<UserFormValue> {
     const value: Partial<UserFormValue> = {
-      signup: {
-        name: item.name ?? '',
-        userName: item.userName ?? '',
-        email: item.email ?? '',
-        password: '',
-        confirmPassword: '',
-      },
+      name: item.name,
+      userName: item.userName,
+      email: item.email,
     };
 
     return value;
-  }
-
-  toJson(fg: UserFormGroup): User {
-    const value = UserFormGroup.toJson(fg);
-
-    return {
-      ...value.signup,
-    };
   }
 
   goToList = () => this.router.navigateByUrl(paths.users);

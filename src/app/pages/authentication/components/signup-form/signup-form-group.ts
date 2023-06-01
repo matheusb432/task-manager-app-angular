@@ -24,8 +24,7 @@ export interface SignupForm {
   confirmPassword: FormControl<string>;
 }
 
-const passwordValidators: ValidatorFn[] = [
-  Validators.required,
+export const passwordValidators: ValidatorFn[] = [
   Validators.minLength(10),
   passwordStrengthValidator(),
 ];
@@ -45,11 +44,11 @@ export const getSignupForm = (): SignupForm => ({
   }),
   password: new FormControl('', {
     nonNullable: true,
-    validators: passwordValidators,
+    validators: [Validators.required, ...passwordValidators],
   }),
   confirmPassword: new FormControl('', {
     nonNullable: true,
-    validators: passwordValidators,
+    validators: [Validators.required, ...passwordValidators],
   }),
 });
 

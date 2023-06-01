@@ -1,10 +1,11 @@
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormValue } from 'src/app/models';
 import {
   SignupForm,
   SignupFormGroup,
   getSignupForm,
 } from 'src/app/pages/authentication/components/signup-form';
+import { passwordValidators } from 'src/app/pages/authentication/components/signup-form/signup-form-group';
 
 export class UserFormGroup extends FormGroup<UserForm> {
   static from(form: UserForm): UserFormGroup {
@@ -12,7 +13,7 @@ export class UserFormGroup extends FormGroup<UserForm> {
   }
 
   static getFormKeys(): (keyof UserForm)[] {
-    return ['signup'];
+    return [...SignupFormGroup.getFormKeys()];
   }
 
   static toJson = (fg: UserFormGroup) => {
@@ -20,12 +21,46 @@ export class UserFormGroup extends FormGroup<UserForm> {
   };
 }
 
-export interface UserForm {
-  signup: FormGroup<SignupForm>;
+export class UserCreateFormGroup extends FormGroup<UserCreateForm> {
+  static from(form: UserCreateForm): UserCreateFormGroup {
+    return new UserCreateFormGroup(form);
+  }
+
+  static getFormKeys(): (keyof UserCreateForm)[] {
+    return [...SignupFormGroup.getFormKeys()];
+  }
+
+  static toJson = (fg: UserCreateFormGroup) => {
+    return fg.getRawValue();
+  };
 }
 
+export const getUserForm = () => {
+  const optionalPasswordSignup = {
+    ...getSignupForm(),
+    confirmPassword: new FormControl('', {
+      validators: passwordValidators,
+    }),
+    password: new FormControl('', {
+      validators: passwordValidators,
+    }),
+  };
+
+  return {
+    ...optionalPasswordSignup,
+    userRoles: new FormControl<string[]>([]),
+  };
+};
+
+export const getUserCreateForm = () => {
+  return {
+    ...getSignupForm(),
+    userRoles: new FormControl<string[]>([]),
+  };
+};
+
+export type UserForm = ReturnType<typeof getUserForm>;
 export type UserFormValue = FormValue<UserForm>;
 
-export const getUserForm = (): UserForm => ({
-  signup: SignupFormGroup.from(getSignupForm()),
-});
+export type UserCreateForm = ReturnType<typeof getUserCreateForm>;
+export type UserCreateFormValue = FormValue<UserCreateForm>;

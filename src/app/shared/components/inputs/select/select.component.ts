@@ -44,7 +44,7 @@ export class SelectComponent extends WithDestroyed implements OnInit, OnDestroy,
   @Input() invalid?: boolean;
   @Input() helpers?: string;
   @Input() errText?: string;
-  @Input() multiple?: boolean = false;
+  @Input() multiple = false;
   @Input() canEdit = true;
   @Input() elId = '';
   @Input() appearance: 'fill' | 'outline' = 'fill';

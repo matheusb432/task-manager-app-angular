@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormTypes, DetailsTypes } from 'src/app/util';
-import { UserForm, UserFormGroup, getUserForm } from '../components/user-form/user-form-group';
-import { UserService } from '../services/user.service';
-import { UserFormComponent } from '../components/user-form/user-form.component';
 import { CanDeactivateForm } from 'src/app/models';
+import { DetailsTypes, FormTypes } from 'src/app/util';
+import {
+  UserCreateForm,
+  UserCreateFormGroup,
+  getUserCreateForm,
+} from '../components/user-form/user-form-group';
+import { UserFormComponent } from '../components/user-form/user-form.component';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-create-user',
@@ -13,8 +17,8 @@ import { CanDeactivateForm } from 'src/app/models';
   styleUrls: ['./create-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateUserComponent implements OnInit, CanDeactivateForm<UserForm> {
-  form!: UserFormGroup;
+export class CreateUserComponent implements OnInit, CanDeactivateForm<UserCreateForm> {
+  form!: UserCreateFormGroup;
 
   formType = FormTypes.Create;
 
@@ -27,7 +31,7 @@ export class CreateUserComponent implements OnInit, CanDeactivateForm<UserForm> 
   }
 
   initForm(): void {
-    this.form = UserFormGroup.from(getUserForm());
+    this.form = UserCreateFormGroup.from(getUserCreateForm());
   }
 
   async loadData(): Promise<void> {
@@ -39,7 +43,7 @@ export class CreateUserComponent implements OnInit, CanDeactivateForm<UserForm> 
   }
 
   async create(): Promise<void> {
-    const { id } = await this.service.insert(this.service.toJson(this.form));
+    const { id } = await this.service.insert(UserCreateFormGroup.toJson(this.form));
 
     this.service.goToDetails(id, DetailsTypes.View);
   }

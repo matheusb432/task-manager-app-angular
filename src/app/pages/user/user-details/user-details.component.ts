@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -5,14 +6,18 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { CanDeactivateForm, PageData } from 'src/app/models';
 import { PageService } from 'src/app/services';
 import { FormTypes, PubSubUtil } from 'src/app/util';
-import { UserForm, UserFormGroup, getUserForm } from '../components/user-form/user-form-group';
-import { UserService } from '../services/user.service';
+import {
+  UserForm,
+  UserFormGroup,
+  getUserCreateForm,
+  getUserForm,
+} from '../components/user-form/user-form-group';
 import { UserFormComponent } from '../components/user-form/user-form.component';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user-details',
@@ -77,7 +82,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy, CanDeactivateFor
     }
 
     if (this.form == null) {
-      this.form = UserFormGroup.from(getUserForm());
+      this.form = UserFormGroup.from(getUserCreateForm());
     }
     this.form.patchValue(this.service.convertToFormValue(loadedItem));
     this.form.markAllAsTouched();
@@ -101,7 +106,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy, CanDeactivateFor
   }
 
   async editItem(): Promise<void> {
-    await this.service.update(this.pageData?.id, this.service.toJson(this.form));
+    await this.service.update(this.pageData?.id, UserFormGroup.toJson(this.form));
   }
 
   async onRemove(): Promise<void> {

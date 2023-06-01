@@ -6,6 +6,8 @@ export class UserPutDto {
   name?: string;
   email?: string;
   userName?: string;
+  @AddMap('password')
+  passwordReset?: string;
   @AddMap(UserRolePutDto)
   userRoles?: UserRolePutDto[];
 }
