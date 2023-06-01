@@ -15,7 +15,7 @@ import { TitleComponent } from 'src/app/shared/components/title/title.component'
 export class LoginComponent implements OnInit {
   form!: LoginFormGroup;
 
-  constructor(private service: AuthService, private ts: ToastService) {}
+  constructor(private service: AuthService, private toaster: ToastService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -32,6 +32,6 @@ export class LoginComponent implements OnInit {
 
     await this.service.login(login);
 
-    this.ts.success('Login successful!');
+    this.toaster.success('Login successful!');
   }
 }

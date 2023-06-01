@@ -19,12 +19,12 @@ export class Profile implements TableItem {
   profilePresetTaskItems?: ProfilePresetTaskItem[];
 
   static tableItems = (): TableItemConfig<Profile>[] => [
-    { header: '#', key: 'id' },
+    { header: '#', key: 'id', hiddenInLowRes: true },
     { header: 'Name', key: 'name' },
-    { header: 'Type', key: ['profileType', 'name'] },
-    { header: 'Time Target', key: 'timeTarget', pipe: TimePipe },
-    { header: 'Tasks Target', key: 'tasksTarget' },
-    { header: 'Priority', key: 'priority' },
+    { header: 'Type', key: ['profileType', 'name'], hiddenInLowRes: true },
+    { header: 'Time', key: 'timeTarget', pipe: TimePipe },
+    { header: 'Tasks', key: 'tasksTarget' },
+    { header: 'Priority', key: 'priority', hiddenInLowRes: true },
   ];
 }
 

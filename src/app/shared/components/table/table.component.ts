@@ -9,8 +9,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Mapper } from 'mapper-ts/lib-esm';
-import { of } from 'rxjs';
-import { ObjectUtil } from 'src/app/util';
+import { distinct, distinctUntilChanged, map, of, share } from 'rxjs';
+import { ObjectUtil, PubSubUtil } from 'src/app/util';
 import {
   IconConfig,
   OrderByConfig,
@@ -27,6 +27,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { IconComponent } from '../icon/icon.component';
 import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
 import { SetIdDirective } from '../../../directives/set-id.directive';
+import { MatMenuModule } from '@angular/material/menu';
+import { IconButtonComponent } from '../buttons';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-table [items] [config]',
@@ -40,8 +43,11 @@ import { SetIdDirective } from '../../../directives/set-id.directive';
     NgClass,
     NgIf,
     IconComponent,
+    IconButtonComponent,
     MatTooltipModule,
+    MatMenuModule,
     LoadingComponent,
+    RouterModule,
     AsyncPipe,
     DynamicPipe,
   ],
@@ -62,10 +68,24 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
 
   Icons = Icons;
 
+  isSmallScreen$ = PubSubUtil.isInnerWidthLessThan$(1024);
+
   constructor(private loadingService: LoadingService) {}
 
   get itemConfigs(): TableItemConfig<T>[] {
     return this.config.itemConfigs;
+  }
+
+  get itemConfigsToRender$() {
+    return this.isSmallScreen$.pipe(
+      map((isSmallScreen) => {
+        if (isSmallScreen) return this.itemConfigs.filter((x) => !x.hiddenInLowRes);
+
+        return this.itemConfigs;
+      }),
+      distinctUntilChanged(),
+      share()
+    );
   }
 
   get orderBy(): OrderByConfig<T> | null {
@@ -174,4 +194,13 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
 
     return ArrayUtil.orderItems(items, orderBy.key, orderBy.direction);
   }
+
+  buildQueryParams = (id: number | undefined, type: DetailsTypes | undefined) => {
+    if (!id || !type) return undefined;
+
+    return {
+      id: id.toString(),
+      type,
+    };
+  };
 }

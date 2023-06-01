@@ -42,7 +42,7 @@ export class TimesheetListComponent extends WithDestroyed {
     private app: AppService,
     private service: TimesheetService,
     private profileService: ProfileService,
-    private ts: ToastService,
+    private toaster: ToastService,
     private modalService: ModalService,
     private filterService: FilterService
   ) {
@@ -68,7 +68,7 @@ export class TimesheetListComponent extends WithDestroyed {
 
   async paginate(event: PageEvent): Promise<void> {
     if (event == null) {
-      this.ts.error('Error while paginating');
+      this.toaster.error('Error while paginating');
       return;
     }
 

@@ -17,9 +17,9 @@ export class User {
   userRoles?: UserRole[];
 
   static tableItems = (): TableItemConfig<User>[] => [
-    { header: '#', key: 'id' },
+    { header: '#', key: 'id', hiddenInLowRes: true },
     { header: 'Name', key: 'name' },
-    { header: 'Email', key: 'email' },
+    { header: 'Email', key: 'email', hiddenInLowRes: true },
     { header: 'Username', key: 'userName' },
   ];
 }

@@ -14,7 +14,7 @@ import { TitleComponent } from 'src/app/shared/components/title/title.component'
 export class SignupComponent implements OnInit {
   form!: SignupFormGroup;
 
-  constructor(private service: AuthService, private ts: ToastService) {}
+  constructor(private service: AuthService, private toaster: ToastService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -29,6 +29,6 @@ export class SignupComponent implements OnInit {
 
     await this.service.signup(signup);
 
-    this.ts.success('Sign up successful!');
+    this.toaster.success('Sign up successful!');
   }
 }

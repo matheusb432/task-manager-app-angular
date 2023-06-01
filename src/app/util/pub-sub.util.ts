@@ -63,8 +63,12 @@ export class PubSubUtil {
   }
 
   static isMobile$(): Observable<boolean> {
+    return this.isInnerWidthLessThan$(768);
+  }
+
+  static isInnerWidthLessThan$(width: number): Observable<boolean> {
     return PubSubUtil.windowResize$().pipe(
-      map(() => window.innerWidth <= 768),
+      map(() => window.innerWidth <= width),
       distinctUntilChanged()
     );
   }

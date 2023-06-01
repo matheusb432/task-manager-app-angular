@@ -5,31 +5,31 @@ import { paths } from '../util';
 
 export const canActivateAuth = (service = inject(AuthService)): true | UrlTree => {
   const router = inject(Router);
-  const ts = inject(ToastService);
+  const toaster = inject(ToastService);
   if (service.isLoggedIn) return true;
 
-  ts.info('Login to access other pages');
+  toaster.info('Login to access other pages');
 
   return router.parseUrl(paths.login);
 };
 
 export const canActivateAuthAdmin = (service = inject(AuthService)): true | UrlTree => {
-  const ts = inject(ToastService);
+  const toaster = inject(ToastService);
   const router = inject(Router);
   if (service.isAdmin) return true;
 
-  ts.warning('You do not have permission to access this page');
+  toaster.warning('You do not have permission to access this page');
 
   return router.parseUrl(paths.home);
 };
 
 export const canActivateAuthPage = (service = inject(AuthService)): true | UrlTree => {
   const router = inject(Router);
-  const ts = inject(ToastService);
+  const toaster = inject(ToastService);
 
   if (!service.isLoggedIn) return true;
 
-  ts.info('You are already logged in! Logout if you want to enter with another account.');
+  toaster.info('You are already logged in! Logout if you want to enter with another account.');
 
   return router.parseUrl(paths.home);
 };

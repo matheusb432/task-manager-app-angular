@@ -33,7 +33,7 @@ export class CreateTimesheetComponent
   constructor(
     private service: TimesheetService,
     private app: AppService,
-    private ts: ToastService,
+    private toaster: ToastService,
     private route: ActivatedRoute,
     private pageService: PageService
   ) {}
@@ -76,7 +76,7 @@ export class CreateTimesheetComponent
     const existingItem = await this.service.loadItemByDate(DateUtil.dateStringToDate(dateString));
 
     if (existingItem?.id != null) {
-      this.ts.info(`Timesheet of date ${dateString} already exists! Redirecting...`);
+      this.toaster.info(`Timesheet of date ${dateString} already exists! Redirecting...`);
       await this.service.goToDetails(existingItem.id, DetailsTypes.Edit);
       return;
     }

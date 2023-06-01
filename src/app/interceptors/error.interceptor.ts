@@ -13,7 +13,7 @@ import { ToastService } from '../services';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private ts: ToastService) {}
+  constructor(private toaster: ToastService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(catchError(this.handleHttpError.bind(this)));
@@ -37,7 +37,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       default: 'Internal Server error',
     };
 
-    this.ts.error(errorMessages[code] || errorMessages.default);
+    this.toaster.error(errorMessages[code] || errorMessages.default);
   }
 
   logErrors(err: HttpErrorResponse): void {

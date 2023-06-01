@@ -17,6 +17,11 @@
   padding: 1rem;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+
+  @media (max-width: 568px) {
+    flex-direction: column;
+    align-items: start;
+  }
 }
 
 .hideable {

@@ -20,10 +20,16 @@ export class Timesheet implements TableItem {
   metrics?: TimesheetMetricsDto;
 
   static tableItems = (): TableItemConfig<Timesheet>[] => [
-    { header: '#', key: 'id' },
+    { header: '#', key: 'id', hiddenInLowRes: true },
     { header: 'Date', key: 'date', pipe: DatePipe },
-    { header: 'Completion', key: 'finished', pipe: FinishedPipe },
-    { header: 'Total Tasks', key: ['metrics', 'totalTasks'], defaultsTo: 0, disabledOrderBy: true },
+    { header: 'Completion', key: 'finished', pipe: FinishedPipe, hiddenInLowRes: true },
+    {
+      header: 'Tasks',
+      key: ['metrics', 'totalTasks'],
+      hiddenInLowRes: true,
+      defaultsTo: 0,
+      disabledOrderBy: true,
+    },
     {
       header: 'Hours',
       key: ['metrics', 'workedHours'],

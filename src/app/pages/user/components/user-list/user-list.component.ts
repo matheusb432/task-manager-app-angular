@@ -55,7 +55,7 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private service: UserService,
-    private ts: ToastService,
+    private toaster: ToastService,
     private modalService: ModalService,
     private filterService: FilterService
   ) {
@@ -95,7 +95,7 @@ export class UserListComponent implements OnInit {
 
   async paginate(event: PageEvent): Promise<void> {
     if (event == null) {
-      this.ts.error('Error while paginating');
+      this.toaster.error('Error while paginating');
       return;
     }
 
