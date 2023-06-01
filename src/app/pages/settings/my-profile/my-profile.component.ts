@@ -16,14 +16,15 @@ import {
   getMyProfileForm,
   MyProfileFormGroup,
 } from '../components/my-profile-form/my-profile-form-group';
+import { TitleComponent } from '../../../shared/components/title/title.component';
 
 @Component({
   selector: 'app-my-profile',
   standalone: true,
-  imports: [CommonModule, PageLayoutComponent, MyProfileFormComponent],
   templateUrl: './my-profile.component.html',
   styleUrls: ['./my-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, PageLayoutComponent, MyProfileFormComponent, TitleComponent],
 })
 export class MyProfileComponent implements OnInit {
   private service = inject(SettingsService);

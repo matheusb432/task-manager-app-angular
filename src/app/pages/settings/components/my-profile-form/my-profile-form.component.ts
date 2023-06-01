@@ -38,11 +38,11 @@ export class MyProfileFormComponent {
   private modalService = inject(ModalService);
 
   @Input() form!: MyProfileFormGroup;
-  formType = FormTypes.Edit;
 
   @Output() save = new EventEmitter<MyProfileFormGroup>();
   @Output() cancel = new EventEmitter<void>();
 
+  formType = FormTypes.Edit;
   elIds = ElementIds;
 
   get submitLabel(): string {
