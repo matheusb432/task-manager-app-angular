@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,9 +10,11 @@ import {
   SimpleChanges,
   inject,
 } from '@angular/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
 import { Mapper } from 'mapper-ts/lib-esm';
-import { distinct, distinctUntilChanged, map, of, share } from 'rxjs';
-import { ObjectUtil, PubSubUtil } from 'src/app/util';
+import { distinctUntilChanged, map, of, share } from 'rxjs';
 import {
   IconConfig,
   OrderByConfig,
@@ -21,16 +24,12 @@ import {
   TableKey,
 } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { ArrayUtil, DetailsTypes, Icons, StringUtil } from 'src/app/util';
+import { ArrayUtil, DetailsTypes, Icons, ObjectUtil, PubSubUtil, StringUtil } from 'src/app/util';
+import { SetIdDirective } from '../../../directives/set-id.directive';
 import { DynamicPipe } from '../../../pipes/dynamic.pipe';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { IconComponent } from '../icon/icon.component';
-import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
-import { SetIdDirective } from '../../../directives/set-id.directive';
-import { MatMenuModule } from '@angular/material/menu';
 import { IconButtonComponent } from '../buttons';
-import { RouterModule } from '@angular/router';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-table [items] [config]',

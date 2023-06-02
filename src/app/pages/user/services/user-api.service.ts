@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ODataOptions } from 'src/app/helpers/odata';
-import { ApiRequest, PaginatedResult, PostReturn, RequestData, Role, User } from 'src/app/models';
+import { ApiRequest, PaginatedResult, PostReturn, Role, User } from 'src/app/models';
 import { UserPostDto } from 'src/app/models/dtos/user/user-post-dto';
 import { UserPutDto } from 'src/app/models/dtos/user/user-put-dto';
 import { FormApiService } from 'src/app/services/interfaces';

@@ -70,10 +70,12 @@ export class UserService extends FormService<User> implements OnDestroy {
   };
 
   convertToFormValue(item: User): Partial<UserFormValue> {
+    const userRoles = item.userRoles ?? [];
     const value: Partial<UserFormValue> = {
       name: item.name,
       userName: item.userName,
       email: item.email,
+      roleIds: userRoles.map((x) => x.roleId).filter((id): id is number => id != null),
     };
 
     return value;

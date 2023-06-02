@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IconConfig } from 'src/app/models';
-import { ElementIds, FormUtil, Icons } from 'src/app/util';
-import { SignupFormGroup } from './signup-form-group';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserUtil } from 'src/app/pages/user/services/user.util';
 import { ButtonComponent } from 'src/app/shared/components/buttons';
 import { InputComponent } from 'src/app/shared/components/inputs/input/input.component';
 import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
-import { UserUtil } from 'src/app/pages/user/services/user.util';
+import { ElementIds, FormUtil } from 'src/app/util';
+import { SignupFormGroup } from './signup-form-group';
 
 @Component({
   selector: 'app-signup-form',

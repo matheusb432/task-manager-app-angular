@@ -1,4 +1,4 @@
-import { InjectionToken, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { BehaviorSubject, Observable, filter, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Nullish, PaginationOptions, PostReturn, TableItem } from 'src/app/models';

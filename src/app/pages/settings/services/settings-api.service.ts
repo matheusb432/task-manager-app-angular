@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { ODataOptions } from 'src/app/helpers/odata';
-import { ApiRequest, PaginatedResult, PostReturn, RequestData, Role, User } from 'src/app/models';
-import { UserPostDto } from 'src/app/models/dtos/user/user-post-dto';
-import { UserPutDto } from 'src/app/models/dtos/user/user-put-dto';
-import { FormApiService } from 'src/app/services/interfaces';
+import { ApiRequest } from 'src/app/models';
 import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
-import { PaginationOptions } from '../../../models/configs/pagination-options';
 import { ApiService } from '../../../services/api/api.service';
 import { LoadingService } from '../../../services/loading.service';
 import { MyProfileFormValue } from '../components/my-profile-form/my-profile-form-group';

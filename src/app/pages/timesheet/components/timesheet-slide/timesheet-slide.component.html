@@ -64,7 +64,7 @@
           {{ metrics.totalTasks }}
         </app-timesheet-slide-span>
         <app-timesheet-slide-span
-          [titleText]="'Time spent: ' + metrics.workedHours"
+          [titleText]="'Time spent: ' + (metrics.workedHours | time)"
           [ngClass]="getTotalHoursClasses(metrics, profile)"
           [profileText]="profile?.timeTarget | time"
           [icon]="Icons.Timelapse"

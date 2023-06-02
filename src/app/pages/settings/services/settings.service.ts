@@ -23,7 +23,6 @@ export class SettingsService {
       return;
     }
 
-    // TODO backend must validate request sender
     await this.api.updateMyProfile({ ...item, id: +id });
     await this.authService.refreshLoggedUser();
 

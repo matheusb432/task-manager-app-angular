@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,16 +10,15 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { SelectOption, WithDestroyed } from 'src/app/models';
 import { LoadingService } from 'src/app/services/loading.service';
-import { ArrayUtil, FormUtil, PubSubUtil, StringUtil } from 'src/app/util';
-import { validationErrorMessages } from '../validation-errors';
-import { LoadingComponent } from '../../loading/loading.component';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgIf, NgFor } from '@angular/common';
+import { ArrayUtil, FormUtil, PubSubUtil } from 'src/app/util';
 import { FormLayoutComponent } from '../../layouts/form-layout/form-layout.component';
+import { LoadingComponent } from '../../loading/loading.component';
+import { validationErrorMessages } from '../validation-errors';
 
 @Component({
   selector: 'app-select [fcName] [labelText] [options]',
