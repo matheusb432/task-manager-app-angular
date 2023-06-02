@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { CanDeactivateForm } from 'src/app/models';
 import {
   ProfileForm,
   ProfileFormGroup,
   getProfileForm,
 } from 'src/app/pages/profile/components/profile-form';
-import { CanDeactivateForm } from 'src/app/models';
 import { ProfileService } from 'src/app/pages/profile/services/profile.service';
 import { DetailsTypes, FormTypes } from 'src/app/util';
 import { ProfileFormComponent } from '../components/profile-form/profile-form.component';

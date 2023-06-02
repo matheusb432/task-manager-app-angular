@@ -1,0 +1,77 @@
+import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { PresetTaskItem, PaginationOptions } from 'src/app/models';
+import { TimePipe } from 'src/app/pipes';
+import { AppService } from 'src/app/services';
+import { FormService } from 'src/app/services/base/form.service';
+import { PubSubUtil, paths, DetailsTypes } from 'src/app/util';
+import {
+  PresetTaskItemFormGroup,
+  PresetTaskItemFormValue,
+} from '../components/preset-task-item-form/preset-task-item-form-group';
+import { PresetTaskItemApiService } from './preset-task-item-api.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PresetTaskItemService extends FormService<PresetTaskItem> implements OnDestroy {
+  private destroyed$ = new Subject<boolean>();
+  constructor(
+    protected override api: PresetTaskItemApiService,
+    private app: AppService,
+    private router: Router
+  ) {
+    super(api);
+    this.setToastMessages();
+    this.initSubs();
+  }
+
+  ngOnDestroy(): void {
+    PubSubUtil.completeDestroy(this.destroyed$);
+  }
+
+  private initSubs() {
+    this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this._item$.next(undefined);
+      this._listItems$.next([]);
+    });
+  }
+
+  loadListData = async (): Promise<void> => {
+    await this.loadListItems(PaginationOptions.default());
+  };
+
+  loadEditData = async (id: string | null | undefined): Promise<PresetTaskItem | null> => {
+    return this.loadItem(id);
+  };
+
+  convertToFormValue(item: PresetTaskItem): Partial<PresetTaskItemFormValue> {
+    return {
+      ...item,
+      time: TimePipe.formatTimeHhMm(item.time),
+    };
+  }
+
+  toJson(fg: PresetTaskItemFormGroup): PresetTaskItem {
+    return PresetTaskItemFormGroup.toJson(fg);
+  }
+
+  goToList = () => this.router.navigateByUrl(paths.presetTaskItems);
+  goToCreate = () => this.router.navigateByUrl(paths.presetTaskItemsCreate);
+  goToDetails = async (id: number, type: DetailsTypes) => {
+    this.router.navigate([paths.presetTaskItemsDetails], { queryParams: { id, type } });
+  };
+
+  private setToastMessages = () => {
+    this.toastMessages = {
+      ...this.toastMessages,
+      noItem: "Couldn't fetch task!",
+      createSuccess: 'Task created successfully!',
+      updateSuccess: 'Task updated successfully!',
+      updateIdError: "Couldn't update task, couldn't fetch ID!",
+      deleteSuccess: 'Task deleted successfully!',
+      duplicateSuccess: 'Task duplicated successfully!',
+    };
+  };
+}
