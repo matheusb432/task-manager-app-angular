@@ -25,6 +25,7 @@ export class SettingsService {
 
     // TODO backend must validate request sender
     await this.api.updateMyProfile({ ...item, id: +id });
+    await this.authService.refreshLoggedUser();
 
     this.toaster.success('Your profile was updated successfully!');
   }

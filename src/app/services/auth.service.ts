@@ -25,7 +25,7 @@ export class AuthService implements OnDestroy {
   private accessTokenKey = StoreKeys.AccessToken;
 
   private _setAuthData = new BehaviorSubject<AuthData | null | undefined>(undefined);
-  private _setLoggedUser = new BehaviorSubject<UserAuthGet | null | undefined>(undefined);
+  private _loggedUser = new BehaviorSubject<UserAuthGet | null | undefined>(undefined);
 
   private _authData: AuthData | null = null;
 
@@ -84,8 +84,8 @@ export class AuthService implements OnDestroy {
     return this._authData?.decodedToken?.UserId;
   }
 
-  get setLoggedUser$(): Observable<UserAuthGet | null | undefined> {
-    return this._setLoggedUser.asObservable();
+  get loggedUser$(): Observable<UserAuthGet | null | undefined> {
+    return this._loggedUser.asObservable();
   }
 
   constructor(
@@ -145,7 +145,7 @@ export class AuthService implements OnDestroy {
 
   private emptyAuthData(): void {
     this.store.remove(this.accessTokenKey);
-    this._setLoggedUser.next(null);
+    this._loggedUser.next(null);
     this.setAuthData(null);
   }
 
@@ -160,7 +160,7 @@ export class AuthService implements OnDestroy {
     if (user == null) {
       this.fetchUser(decodedToken.email);
     } else {
-      this._setLoggedUser.next(user);
+      this._loggedUser.next(user);
     }
 
     this.setAuthData(AuthData.fromToken(token as string, decodedToken));
@@ -169,6 +169,13 @@ export class AuthService implements OnDestroy {
   private setAuthData(data: AuthData | null): void {
     this._setAuthData.next(data);
   }
+
+  async refreshLoggedUser(email?: string) {
+    const emailToFetch = email || this._loggedUser.getValue()?.email;
+
+    this.fetchUser(emailToFetch ?? '');
+  }
+
   private async fetchUser(email: string): Promise<void> {
     if (!email) return;
 
@@ -178,7 +185,7 @@ export class AuthService implements OnDestroy {
         this.toaster.info('Your user was not found. Please login again.');
         return this.logout();
       }
-      this._setLoggedUser.next(newUser);
+      this._loggedUser.next(newUser);
     } catch {
       this.logout();
     }

@@ -20,7 +20,7 @@ export class SettingsApiService {
   constructor(private api: ApiService) {}
 
   updateMyProfile = async (item: MyProfileFormValue & { id: number }): Promise<void> =>
-    this.api.update({
+    this.api.patch({
       ...ApiRequest.put(this.myProfileUrl, item.id, item),
       customData: { loadings: LoadingService.createManyFromId(ElementIds.MyProfileSubmit) },
     });

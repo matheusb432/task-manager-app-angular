@@ -4,9 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
 import { FormTypes } from 'src/app/util';
 import { getUserForm, UserFormGroup } from '../../user/components/user-form/user-form-group';
@@ -17,6 +18,8 @@ import {
   MyProfileFormGroup,
 } from '../components/my-profile-form/my-profile-form-group';
 import { TitleComponent } from '../../../shared/components/title/title.component';
+import { AuthService } from 'src/app/services';
+import { UserAuthGet } from 'src/app/models';
 
 @Component({
   selector: 'app-my-profile',
@@ -26,9 +29,16 @@ import { TitleComponent } from '../../../shared/components/title/title.component
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, PageLayoutComponent, MyProfileFormComponent, TitleComponent],
 })
-export class MyProfileComponent implements OnInit {
+export class MyProfileComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
   private service = inject(SettingsService);
+  private authService = inject(AuthService);
   private cdRef = inject(ChangeDetectorRef);
+  private destroyed$ = new Subject<boolean>();
+
+  loggedUser$ = this.authService.loggedUser$;
 
   form!: MyProfileFormGroup;
 
@@ -42,8 +52,18 @@ export class MyProfileComponent implements OnInit {
 
   runInitMethods(): void {
     this.initForm();
+    this.initSubs();
 
     // this.loadData();
+  }
+
+  initSubs(): void {
+    this.loggedUser$.pipe(takeUntil(this.destroyed$)).subscribe((user) => {
+      this.initForm(user ?? undefined);
+      // if (user == null) {
+      //   this.service.goToLogin();
+      // }
+    });
   }
 
   // TODO implement
@@ -63,30 +83,29 @@ export class MyProfileComponent implements OnInit {
   //   this.cdRef.detectChanges();
   // }
 
-  initForm(): void {
+  initForm(loggedUser?: UserAuthGet): void {
     if (this.form == null) {
       this.form = MyProfileFormGroup.from(getMyProfileForm());
-    } else {
-      this.form.patchValue({});
     }
+    console.log(loggedUser);
+    this.form.patchValue(loggedUser ?? {});
   }
 
   submitForm(): Promise<void> {
-    // TODO add submit logic
-    return {} as any;
-    // return this.editItem();
+    return this.editItem();
   }
 
-  // async editItem(): Promise<void> {
-  //   const value = MyProfileFormGroup.toJson(this.form);
-
-  //   await this.service.update(this.pageData?.id, {
-  //     ...value,
-  //     userRoles: value.roleIds?.map((x) => ({
-  //       roleId: x,
-  //     })),
-  //   });
-  // }
+  async editItem(): Promise<void> {
+    const value = MyProfileFormGroup.toJson(this.form);
+    console.warn('my-profile.component', value);
+    return this.service.updateMyProfile(value);
+    // await this.service.update(this.pageData?.id, {
+    //   ...value,
+    //   userRoles: value.roleIds?.map((x) => ({
+    //     roleId: x,
+    //   })),
+    // });
+  }
 
   onCancel(): Promise<boolean> {
     return this.service.goToIndex();

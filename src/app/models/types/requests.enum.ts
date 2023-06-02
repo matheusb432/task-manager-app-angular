@@ -4,5 +4,6 @@ export enum Requests {
   GetFiltered,
   Post,
   Put,
+  Patch,
   Delete,
 }

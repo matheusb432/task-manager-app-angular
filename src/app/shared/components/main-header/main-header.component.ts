@@ -37,7 +37,7 @@ export class MainHeaderComponent implements OnInit {
   constructor(private authService: AuthService, private modalService: ModalService) {}
 
   ngOnInit(): void {
-    this.setLoggedUser$ = this.authService.setLoggedUser$;
+    this.setLoggedUser$ = this.authService.loggedUser$;
   }
 
   logout(): void {

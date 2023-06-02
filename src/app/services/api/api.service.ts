@@ -60,7 +60,7 @@ export class ApiService {
       return this.handleInvalidServiceRequest(apiReq);
     }
 
-    const req$ = this._postRequest<TBody>(apiReq);
+    const req$ = this.postRequest<TBody>(apiReq);
 
     return this._returnAsync(req$, apiReq) as Promise<TReturn>;
   }
@@ -70,7 +70,17 @@ export class ApiService {
       return this.handleInvalidServiceRequest(apiReq);
     }
     const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
-    const req$ = this._putRequest<T>(reqData);
+    const req$ = this.putRequest<T>(reqData);
+
+    return this._returnAsync(req$, reqData) as Promise<void>;
+  }
+
+  async patch<T>(apiReq: ApiRequest<T>): Promise<void> {
+    if (!this.isValidRequest[Requests.Patch](apiReq)) {
+      return this.handleInvalidServiceRequest(apiReq);
+    }
+    const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
+    const req$ = this.patchRequest<T>(reqData);
 
     return this._returnAsync(req$, reqData) as Promise<void>;
   }
@@ -80,7 +90,7 @@ export class ApiService {
       return this.handleInvalidServiceRequest(apiReq);
     }
     const reqData = { ...apiReq, url: this.urlWithId(apiReq) };
-    const req$ = this._deleteRequest<T>(reqData);
+    const req$ = this.deleteRequest<T>(reqData);
 
     return this._returnAsync(req$, reqData) as Promise<void>;
   }
@@ -120,19 +130,25 @@ export class ApiService {
     ) as unknown as Observable<PaginatedResult<T>>;
   }
 
-  private _postRequest<T>({ url, item, postDto }: ApiRequest<T>): Observable<T> {
+  private postRequest<T>({ url, item, postDto }: ApiRequest<T>): Observable<T> {
     if (!item) throw new Error(ErrorMessages.InvalidServiceRequest);
 
     return this.http.post<T>(url, this._mapOrSelf(item, postDto));
   }
 
-  private _putRequest<T>({ url, item, putDto }: ApiRequest<T>): Observable<T> {
+  private putRequest<T>({ url, item, putDto }: ApiRequest<T>): Observable<T> {
     if (!item) throw new Error(ErrorMessages.InvalidServiceRequest);
 
     return this.http.put<T>(url, this._mapOrSelf(item, putDto));
   }
 
-  private _deleteRequest<T>({ url }: ApiRequest<T>): Observable<T> {
+  private patchRequest<T>({ url, item, putDto }: ApiRequest<T>): Observable<T> {
+    if (!item) throw new Error(ErrorMessages.InvalidServiceRequest);
+
+    return this.http.patch<T>(url, this._mapOrSelf(item, putDto));
+  }
+
+  private deleteRequest<T>({ url }: ApiRequest<T>): Observable<T> {
     return this.http.delete<T>(url);
   }
 
@@ -162,6 +178,7 @@ export class ApiService {
     [Requests.GetById]: ({ url, id }: ApiRequest) => url && id,
     [Requests.Post]: ({ url, item }: ApiRequest) => url && item,
     [Requests.Put]: ({ url, id, item }: ApiRequest) => url && id && item,
+    [Requests.Patch]: ({ url, id, item }: ApiRequest) => url && id && item,
     [Requests.Delete]: ({ url, id }: ApiRequest) => url && id,
   };
 }
