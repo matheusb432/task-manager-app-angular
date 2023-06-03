@@ -23,6 +23,12 @@ export const defaultNavItems: NavItem[] = [
     icon: Icons.Favorite,
   },
   {
+    id: 'Tasks',
+    label: 'Preset Tasks',
+    link: paths.presetTaskItems,
+    icon: Icons.Assignment,
+  },
+  {
     id: 'Metrics',
     label: 'Metrics',
     link: Pages.Metrics,
