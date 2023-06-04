@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil, share, shareReplay } from 'rxjs';
 import { DateSlide, MonthSlide } from 'src/app/models';
 import { AppService } from 'src/app/services';
 import { PubSubUtil, DateUtil, ElementIds } from 'src/app/util';
@@ -14,7 +14,7 @@ export class TimesheetCarouselService implements OnDestroy {
   private destroyed$ = new Subject<boolean>();
 
   get slides$() {
-    return this._slides$.asObservable();
+    return this._slides$.asObservable().pipe(shareReplay(1));
   }
 
   get monthSlides$() {
@@ -34,7 +34,13 @@ export class TimesheetCarouselService implements OnDestroy {
       this.selectSlideByDate(dateString);
     });
     this.app.dateRange$.pipe(takeUntil(this.destroyed$)).subscribe(({ start, end }) => {
-      this.setSlides(TimesheetCarouselService.buildDatesCarouselFromRange(start, end));
+      const today = new Date();
+      const slides = TimesheetCarouselService.buildDatesCarouselFromRangeWithCenterDateOrDefault(
+        start,
+        end,
+        today
+      );
+      this.setSlides(slides);
     });
   }
 
@@ -90,6 +96,21 @@ export class TimesheetCarouselService implements OnDestroy {
 
     return TimesheetCarouselService.buildDatesCarousel(from, size);
   };
+
+  static buildDatesCarouselFromRangeWithCenterDateOrDefault(
+    from: Date,
+    to: Date,
+    centerDate: Date
+  ): DateSlide[] {
+    const slides = this.buildDatesCarouselFromRange(from, to);
+    const centerId = slides.find(
+      (slide) => slide.date === DateUtil.formatDateToUniversalFormat(centerDate)
+    )?.id;
+
+    if (centerId == null) return slides;
+
+    return TimesheetCarouselService.buildNewSlidesSelectingSlideById(centerId, slides) ?? slides;
+  }
 
   static buildDatesCarouselFromCenterDate(centerDate: Date, size: number): DateSlide[] {
     if (centerDate == null) return [];
@@ -177,8 +198,14 @@ export class TimesheetCarouselService implements OnDestroy {
     return `${ElementIds.MonthCarouselSlide}${month}${year}`;
   }
 
-  private selectSlideByIdWithSlides(id: string, slides: DateSlide[]): void {
-    const newSlides = slides ?? this._slides$.getValue();
+  /**
+   * @description
+   * Builds a new array of slides with the slide with the given id selected.
+   *
+   * This method mutates the given slides array.
+   */
+  static buildNewSlidesSelectingSlideById(id: string, slides: DateSlide[]) {
+    const newSlides = slides;
     const slideToSelectIndex = newSlides.findIndex((slide) => slide.id === id);
 
     if (slideToSelectIndex < 0) return;
@@ -192,6 +219,17 @@ export class TimesheetCarouselService implements OnDestroy {
     }
 
     newSlides[slideToSelectIndex] = { ...newSlides[slideToSelectIndex], selected: true };
+    return newSlides;
+  }
+
+  private selectSlideByIdWithSlides(id: string, slides: DateSlide[]): void {
+    const newSlides = TimesheetCarouselService.buildNewSlidesSelectingSlideById(
+      id,
+      slides ?? this._slides$.getValue()
+    );
+
+    if (newSlides == null) return;
+
     this.setSlides(newSlides);
   }
 

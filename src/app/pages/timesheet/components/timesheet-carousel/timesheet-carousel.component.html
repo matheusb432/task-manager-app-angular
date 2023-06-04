@@ -36,7 +36,7 @@
       ></app-icon>
     </div>
   </article>
-  <footer class="carousel-actions">
+  <footer class="carousel-actions" *ngIf="todaySlideExists$ | async">
     <app-button (clicked)="goToToday()">Go To Today</app-button>
   </footer>
 </section>

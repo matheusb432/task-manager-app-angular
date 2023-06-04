@@ -1,4 +1,6 @@
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -9,19 +11,18 @@ import {
 } from '@angular/core';
 import {
   CarouselComponent,
+  CarouselModule,
   OwlOptions,
   SlidesOutputData,
-  CarouselModule,
 } from 'ngx-owl-carousel-o';
-import { Observable, takeUntil, tap } from 'rxjs';
+import { Observable, map, takeUntil, tap } from 'rxjs';
 import { DateSlide, MonthSlide, WithDestroyed } from 'src/app/models';
-import { DateUtil, Icons } from 'src/app/util';
-import { TimesheetSlideComponent } from '../timesheet-slide/timesheet-slide.component';
-import { MonthSlideComponent } from '../month-slide/month-slide.component';
-import { NgFor, NgClass, AsyncPipe } from '@angular/common';
-import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { ButtonComponent } from 'src/app/shared/components/buttons';
+import { IconComponent } from 'src/app/shared/components/icon/icon.component';
+import { DateUtil, Icons } from 'src/app/util';
 import { TimesheetCarouselService } from '../../services/timesheet-carousel.service';
+import { MonthSlideComponent } from '../month-slide/month-slide.component';
+import { TimesheetSlideComponent } from '../timesheet-slide/timesheet-slide.component';
 @Component({
   selector: 'app-timesheet-carousel',
   templateUrl: './timesheet-carousel.component.html',
@@ -29,23 +30,23 @@ import { TimesheetCarouselService } from '../../services/timesheet-carousel.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    CommonModule,
     CarouselModule,
-    NgFor,
     MonthSlideComponent,
-    NgClass,
     IconComponent,
     TimesheetSlideComponent,
     ButtonComponent,
     AsyncPipe,
   ],
 })
-export class TimesheetCarouselComponent extends WithDestroyed implements OnInit {
+export class TimesheetCarouselComponent extends WithDestroyed implements OnInit, AfterViewInit {
   @ViewChild('carousel', { static: false }) carousel?: CarouselComponent;
   @ViewChild('carouselHeader', { static: false }) carouselHeader?: CarouselComponent;
 
   @Output() selectedDate = new EventEmitter<Date>();
 
   slides$: Observable<DateSlide[]>;
+  todaySlideExists$: Observable<boolean>;
   monthSlides$: Observable<MonthSlide[]>;
 
   slideWidth = 160;
@@ -89,11 +90,18 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   constructor(private carouselService: TimesheetCarouselService, private cdRef: ChangeDetectorRef) {
     super();
     this.slides$ = this.carouselService.slides$;
+    this.todaySlideExists$ = this.slides$.pipe(
+      map((slides) => slides.some((slide) => slide.isToday))
+    );
     this.monthSlides$ = this.carouselService.monthSlides$;
   }
 
   ngOnInit(): void {
     this.initSubs();
+  }
+
+  ngAfterViewInit(): void {
+    this.centerSelected();
   }
 
   private initSubs(): void {
@@ -217,13 +225,32 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit 
   }
 
   moveToSelected(): void {
-    const slides = this.carouselService.getSlides();
-
-    const selectedSlide = slides.find((slide) => slide.selected);
+    const selectedSlide = this.getSelectedSlide();
 
     if (!selectedSlide) return;
 
     this.carousel?.to(selectedSlide.id);
+  }
+
+  private getSelectedSlide() {
+    const slides = this.carouselService.getSlides();
+
+    return slides.find((slide) => slide.selected);
+  }
+
+  private getSelectedSlideIndex() {
+    const slides = this.carouselService.getSlides();
+
+    return slides.findIndex((slide) => slide.selected);
+  }
+
+  centerSelected(): void {
+    const index = this.getSelectedSlideIndex();
+    const slideToCenter = this.carouselService.getSlides()[this.getCenterPosition(index)];
+
+    if (slideToCenter == null) return;
+
+    this.carousel?.to(slideToCenter.id);
   }
 
   moveToIndex(index: number): void {

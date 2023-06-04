@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { DateSlide, DaysOfWeek } from 'src/app/models';
-import { ElementIds } from 'src/app/util';
+import { ElementIds, ObjectUtil } from 'src/app/util';
 import { TimesheetCarouselService } from '../timesheet-carousel.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
@@ -171,6 +171,84 @@ describe('Service: TimesheetCarousel', () => {
       expect(result.length).toBe(expectedSize);
       expect(result[0].date).toEqual(expectedStartDate);
       expect(result[result.length - 1].date).toEqual(expectedEndDate);
+    });
+  });
+
+  describe('buildNewSlidesSelectingSlideById', () => {
+    it('should return the date slides with selected slide', () => {
+      const idToSelect = `${ElementIds.DateCarouselSlide}2`;
+      const slides: DateSlide[] = [
+        {
+          id: `${ElementIds.DateCarouselSlide}1`,
+          date: '2021-12-30',
+          day: '30',
+          dayOfWeek: DaysOfWeek.Wednesday,
+          month: 'December',
+          isWeekend: false,
+          selected: false,
+          year: 2020,
+        },
+        {
+          id: idToSelect,
+          date: '2021-12-31',
+          day: '31',
+          dayOfWeek: DaysOfWeek.Thursday,
+          month: 'December',
+          isWeekend: false,
+          selected: false,
+          year: 2020,
+        },
+        {
+          id: `${ElementIds.DateCarouselSlide}3`,
+          date: '2021-01-01',
+          day: '01',
+          dayOfWeek: DaysOfWeek.Friday,
+          month: 'January',
+          isWeekend: false,
+          selected: true,
+          year: 2021,
+        },
+        {
+          id: `${ElementIds.DateCarouselSlide}4`,
+          date: '2021-01-02',
+          day: '02',
+          dayOfWeek: DaysOfWeek.Saturday,
+          month: 'January',
+          isWeekend: true,
+          selected: false,
+          year: 2021,
+        },
+      ];
+
+      const result = TimesheetCarouselService.buildNewSlidesSelectingSlideById(idToSelect, slides);
+
+      if (result == null) {
+        fail();
+        return;
+      }
+      expect(result.length).toBe(slides.length);
+      expect(result.filter((slide) => slide.selected).length).toBe(1);
+      expect(result.find((slide) => slide.id === idToSelect)?.selected).toBeTrue();
+    });
+
+    it('should return undefined if the id is not found', () => {
+      const idToSelect = `${ElementIds.DateCarouselSlide}5`;
+      const slides: DateSlide[] = [
+        {
+          id: `${ElementIds.DateCarouselSlide}1`,
+          date: '2021-12-30',
+          day: '30',
+          dayOfWeek: DaysOfWeek.Wednesday,
+          month: 'December',
+          isWeekend: false,
+          selected: false,
+          year: 2020,
+        },
+      ];
+
+      const result = TimesheetCarouselService.buildNewSlidesSelectingSlideById(idToSelect, slides);
+
+      expect(result).toBeUndefined();
     });
   });
 });

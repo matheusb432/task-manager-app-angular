@@ -52,8 +52,8 @@ export class TimesheetsComponent implements OnInit {
   }>;
 
   today = new Date();
-  threeMonthsAgo = DateUtil.addMonths(this.today, -3);
-  tomorrow = DateUtil.addDays(this.today, 1);
+  twoMonthsAgo = DateUtil.addMonths(this.today, -2);
+  twoMonthsFromNow = DateUtil.addMonths(this.today, 2);
 
   get range() {
     return this.filterForm.controls.range;

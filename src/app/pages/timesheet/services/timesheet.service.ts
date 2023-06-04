@@ -58,6 +58,7 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
       map((unavailableDates) => {
         return (date) => {
           if (!date) return false;
+
           return !DateUtil.isDateInDates(date, unavailableDates);
         };
       })
