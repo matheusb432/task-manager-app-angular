@@ -12,6 +12,35 @@ describe('Util: String', () => {
     expect(service).toBeTruthy();
   }));
 
+  describe('replaceAll', () => {
+    it('should replace all instances of a string', () => {
+      const str = 'hello world';
+      const expected = 'hello universe';
+
+      const result = StringUtil.replaceAll(str, 'world', 'universe');
+
+      expect(result).toBe(expected);
+    });
+
+    it('should replace all instances of a char', () => {
+      const str = '----h-el-lo- worl-d--';
+      const expected = 'hello world';
+
+      const result = StringUtil.replaceAll(str, '-', '');
+
+      expect(result).toBe(expected);
+    });
+
+    it('should return the original string when no matches are found', () => {
+      const str = 'hello world';
+      const expected = 'hello world';
+
+      const result = StringUtil.replaceAll(str, '_', '==');
+
+      expect(result).toBe(expected);
+    });
+  });
+
   describe('capitalize', () => {
     it('should return an empty string when given a falsy value', () => {
       expect(StringUtil.capitalize(undefined)).toEqual('');

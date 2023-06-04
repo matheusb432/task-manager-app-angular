@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, takeUntil, share, shareReplay } from 'rxjs';
+import { BehaviorSubject, Subject, shareReplay, takeUntil } from 'rxjs';
 import { DateSlide, MonthSlide } from 'src/app/models';
 import { AppService } from 'src/app/services';
-import { PubSubUtil, DateUtil, ElementIds } from 'src/app/util';
+import { DateUtil, ElementIds, PubSubUtil, StringUtil } from 'src/app/util';
 
 @Injectable({
   providedIn: 'root',
@@ -132,6 +132,7 @@ export class TimesheetCarouselService implements OnDestroy {
 
       slides.push({
         id: `${ElementIds.DateCarouselSlide}${days + 1}`,
+        key: this.keyFromDate(dateValues.date),
         ...dateValues,
         selected: days + daysToAdd === 0,
         firstOfMonth: dateValues.month !== lastMonth,
@@ -188,10 +189,19 @@ export class TimesheetCarouselService implements OnDestroy {
   private static buildMonthSlide(month: string, year: number): MonthSlide {
     return {
       id: TimesheetCarouselService.buildMonthSlideId(month, year),
+      key: this.keyFromMonthYear(month, year),
       month,
       year,
       selected: false,
     };
+  }
+
+  static keyFromDate(dateStr: string): string {
+    return StringUtil.replaceAll(dateStr, '-', '');
+  }
+
+  static keyFromMonthYear(month: string, year: number): string {
+    return `${month}${year}`;
   }
 
   static buildMonthSlideId(month: string, year: number): string {

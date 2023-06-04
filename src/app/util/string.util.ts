@@ -74,4 +74,8 @@ export class StringUtil {
   static stringsEqual(str1: string, str2: string): boolean {
     return str1.toLowerCase() === str2.toLowerCase();
   }
+
+  static replaceAll(str: string, search: string, replacement: string): string {
+    return str.replace(new RegExp(search, 'g'), replacement);
+  }
 }

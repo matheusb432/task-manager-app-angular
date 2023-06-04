@@ -85,4 +85,9 @@ export class TimesheetSlideComponent {
   onSlideMenuClick(type: DetailsTypes): void {
     this.service.handleSlideMenuClick(this.slide.date, type);
   }
+
+  getTitleTooltip(): string {
+    const { isToday, month, year } = this.slide;
+    return `${isToday ? 'Today, ' : ' '} ${month} ${year}`;
+  }
 }

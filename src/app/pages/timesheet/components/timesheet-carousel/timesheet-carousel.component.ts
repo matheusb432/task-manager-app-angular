@@ -220,8 +220,8 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit,
     return Math.min(3, monthSlides.length);
   }
 
-  getItemId<T extends { id: string }>(index: number, item: T): string {
-    return item.id;
+  getItemKey<T extends { key: string }>(index: number, item: T): string {
+    return item.key;
   }
 
   moveToSelected(): void {

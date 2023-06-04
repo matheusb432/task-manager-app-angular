@@ -9,11 +9,7 @@
   [id]="'cTimesheetSlide' + slide.date"
 >
   <header class="slide-header">
-    <div
-      class="title"
-      [matTooltip]="slide.isToday ? 'Today' : ''"
-      [ngClass]="{ today: slide.isToday }"
-    >
+    <div class="title" [matTooltip]="getTitleTooltip()" [ngClass]="{ today: slide.isToday }">
       <span class="day">
         {{ slide.day }}
       </span>

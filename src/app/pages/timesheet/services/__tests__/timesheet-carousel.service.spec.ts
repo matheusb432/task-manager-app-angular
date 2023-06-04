@@ -1,11 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { DateSlide, DaysOfWeek } from 'src/app/models';
-import { ElementIds, ObjectUtil } from 'src/app/util';
-import { TimesheetCarouselService } from '../timesheet-carousel.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { DateSlide, DaysOfWeek } from 'src/app/models';
 import { ToastService } from 'src/app/services';
 import { mockToastService } from 'src/app/services/__tests__/test-utils';
+import { ElementIds } from 'src/app/util';
+import { TimesheetCarouselService } from '../timesheet-carousel.service';
 import { TimesheetService } from '../timesheet.service';
 
 describe('Service: TimesheetCarousel', () => {
@@ -39,6 +39,29 @@ describe('Service: TimesheetCarousel', () => {
     expect(service).toBeTruthy();
   }));
 
+  describe('keyFromDate', () => {
+    it('should remove unnecessary characters from date', () => {
+      const date = '2021-01-01';
+      const expected = '20210101';
+
+      const result = TimesheetCarouselService.keyFromDate(date);
+
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('keyFromMonthYear', () => {
+    it('should remove unnecessary characters from date', () => {
+      const month = 'January';
+      const year = 2021;
+      const expected = 'January2021';
+
+      const result = TimesheetCarouselService.keyFromMonthYear(month, year);
+
+      expect(result).toBe(expected);
+    });
+  });
+
   describe('buildDatesCarouselFromCenterDate', () => {
     it('should return the date slides on odd sizes', () => {
       const mockBaseDate = new Date(2021, 0, 1);
@@ -70,7 +93,7 @@ describe('Service: TimesheetCarousel', () => {
           isWeekend: true,
           year: 2021,
         },
-      ];
+      ].map((slide) => ({ ...slide, key: slide.date }));
       const expectedSize = 3;
 
       const result = TimesheetCarouselService.buildDatesCarouselFromCenterDate(
@@ -126,7 +149,7 @@ describe('Service: TimesheetCarousel', () => {
           isWeekend: true,
           year: 2021,
         },
-      ];
+      ].map((slide) => ({ ...slide, key: slide.date }));
       const expectedSize = 4;
 
       const result = TimesheetCarouselService.buildDatesCarouselFromCenterDate(
@@ -218,7 +241,7 @@ describe('Service: TimesheetCarousel', () => {
           selected: false,
           year: 2021,
         },
-      ];
+      ].map((slide) => ({ ...slide, key: slide.date }));
 
       const result = TimesheetCarouselService.buildNewSlidesSelectingSlideById(idToSelect, slides);
 
@@ -236,6 +259,7 @@ describe('Service: TimesheetCarousel', () => {
       const slides: DateSlide[] = [
         {
           id: `${ElementIds.DateCarouselSlide}1`,
+          key: '2021-12-30',
           date: '2021-12-30',
           day: '30',
           dayOfWeek: DaysOfWeek.Wednesday,
