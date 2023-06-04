@@ -79,7 +79,9 @@ export class TimesheetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFilterForm();
-    this.profileService.loadListItems();
+    // TODO remove, should load users profile instead (by odata q)
+    // this.profileService.loadListItems();
+    this.profileService.loadUserProfiles();
     this.service.loadListData();
     this.initSubs();
   }

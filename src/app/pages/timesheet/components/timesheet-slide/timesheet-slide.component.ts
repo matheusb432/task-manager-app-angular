@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Observable, map } from 'rxjs';
 import { DateSlide, Profile, TimesheetMetrics } from 'src/app/models';
-import { TimePipe } from 'src/app/pipes';
-import { DetailsTypes, Icons, StringUtil } from 'src/app/util';
-import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { IconComponent } from 'src/app/shared/components/icon/icon.component';
-import { ButtonComponent, IconButtonComponent } from 'src/app/shared/components/buttons';
-import { TimesheetService } from '../../services/timesheet.service';
 import { ProfileService } from 'src/app/pages/profile/services/profile.service';
+import { TimePipe } from 'src/app/pipes';
+import { ButtonComponent, IconButtonComponent } from 'src/app/shared/components/buttons';
+import { IconComponent } from 'src/app/shared/components/icon/icon.component';
+import { DetailsTypes, Icons, StringUtil } from 'src/app/util';
+import { TimesheetService } from '../../services/timesheet.service';
+import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
 
 @Component({
   selector: 'app-timesheet-slide [slide]',

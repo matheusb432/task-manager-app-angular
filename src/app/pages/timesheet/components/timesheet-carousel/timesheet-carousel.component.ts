@@ -117,8 +117,6 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit,
   }
 
   onSlideClick(slide: DateSlide): void {
-    if (slide.selected) return;
-
     this.onSlideSelect(slide);
   }
 

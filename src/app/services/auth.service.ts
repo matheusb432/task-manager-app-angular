@@ -1,5 +1,5 @@
 import { UserRoles } from './../util/constants/user-roles.enum';
-import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { Inject, Injectable, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -17,11 +17,20 @@ import { PageService } from './page.service';
 import { ToastService } from './toast.service';
 import { TokenService } from './token.service';
 import { AuthApiService } from './api/auth-api.service';
+import { ProfileService } from '../pages/profile/services/profile.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
+  private app = inject(AppService);
+  private api = inject(AuthApiService);
+  private toaster = inject(ToastService);
+  private pageService = inject(PageService);
+  private store = inject(STORE_SERVICE);
+  private tokenService = inject(TokenService);
+  private profileService = inject(ProfileService);
+
   private accessTokenKey = StoreKeys.AccessToken;
 
   private _setAuthData = new BehaviorSubject<AuthData | null | undefined>(undefined);
@@ -48,6 +57,7 @@ export class AuthService implements OnDestroy {
 
         if (authData != null && loggedIn) {
           this.store.store<string>({ key: this.accessTokenKey, value: authData.token });
+          this.profileService.reloadUserProfiles();
         } else {
           this.app.activateClearSessionState();
         }
@@ -88,14 +98,7 @@ export class AuthService implements OnDestroy {
     return this._loggedUser.asObservable();
   }
 
-  constructor(
-    private app: AppService,
-    private api: AuthApiService,
-    private toaster: ToastService,
-    private pageService: PageService,
-    @Inject(STORE_SERVICE) private store: StoreService,
-    private tokenService: TokenService
-  ) {
+  constructor() {
     this.initSubscriptions();
     this.retrieveTokenFromStore();
   }

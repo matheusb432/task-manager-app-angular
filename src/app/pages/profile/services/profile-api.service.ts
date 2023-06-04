@@ -9,6 +9,7 @@ import {
   Profile,
   ProfilePostDto,
   ProfilePutDto,
+  RequestData,
 } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
 import { FormApiService } from 'src/app/services/interfaces';
@@ -40,6 +41,16 @@ export class ProfileApiService implements FormApiService<Profile> {
     });
 
     return res;
+  }
+
+  async getItems(): Promise<Profile[]> {
+    return this.api.getOData<Profile>({
+      ...ApiRequest.get<Profile>(this.url, Profile),
+    });
+  }
+
+  async getUserProfiles(): Promise<Profile[]> {
+    return this.getItems();
   }
 
   insert = async (item: Profile): Promise<PostReturn> =>

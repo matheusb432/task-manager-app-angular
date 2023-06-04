@@ -1,14 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, Subscription, filter, of, takeUntil, tap } from 'rxjs';
 
-import { CanDeactivateForm } from 'src/app/models';
+import { CanDeactivateForm, PresetTaskItem } from 'src/app/models';
 import { AppService, PageService, ToastService } from 'src/app/services';
-import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, paths } from 'src/app/util';
+import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, StringUtil, paths } from 'src/app/util';
+import { ProfileService } from '../../profile/services/profile.service';
 import {
-  TimesheetFormComponent,
   TimesheetForm,
+  TimesheetFormComponent,
   TimesheetFormGroup,
+  getTaskItemFormGroup,
   getTimesheetForm,
 } from '../components/timesheet-form';
 import { TimesheetService } from '../services/timesheet.service';
@@ -25,6 +27,7 @@ export class CreateTimesheetComponent
   implements OnInit, OnDestroy, CanDeactivateForm<TimesheetForm>
 {
   private service = inject(TimesheetService);
+  private profileService = inject(ProfileService);
   private app = inject(AppService);
   private toaster = inject(ToastService);
   private route = inject(ActivatedRoute);
@@ -35,6 +38,27 @@ export class CreateTimesheetComponent
   form!: TimesheetFormGroup;
 
   formType = FormTypes.Create;
+
+  tasksByDateSub: Subscription | null = null;
+
+  private _tasksByDate$: Observable<PresetTaskItem[] | null> = of([]);
+  get tasksByDate$(): Observable<PresetTaskItem[] | null> {
+    return this._tasksByDate$;
+  }
+  set tasksByDate$(value: Observable<PresetTaskItem[] | null>) {
+    this.tasksByDateSub?.unsubscribe();
+
+    this._tasksByDate$ = value;
+    this.tasksByDateSub = this._tasksByDate$
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((tasks): tasks is PresetTaskItem[] => tasks != null),
+        tap((tasks) => {
+          this.addPresetTasksToForm(tasks);
+        })
+      )
+      .subscribe();
+  }
 
   ngOnInit(): void {
     this.initSubs();
@@ -56,7 +80,9 @@ export class CreateTimesheetComponent
       .pipe(
         takeUntil(this.destroyed$),
         tap((date) => {
+          const formattedDate = DateUtil.formatDateToUniversalFormat(date);
           this.initForm(date);
+          this.tasksByDate$ = this.profileService.tasksByDate$(formattedDate);
         })
       )
       .subscribe();
@@ -102,5 +128,16 @@ export class CreateTimesheetComponent
 
   onCancel(): Promise<boolean> {
     return this.service.goToList();
+  }
+
+  addPresetTasksToForm(tasks: PresetTaskItem[]): void {
+    const tasksFormArray = this.form.controls.tasks;
+    tasksFormArray.clear();
+
+    tasks.forEach((task) => {
+      const fg = getTaskItemFormGroup();
+      fg.patchValue({ ...task, time: StringUtil.numberToTime(task.time) });
+      tasksFormArray.push(fg);
+    });
   }
 }

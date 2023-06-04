@@ -1,21 +1,29 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, share, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-import { BehaviorSubject, Observable, Subject, from } from 'rxjs';
-import { ActiveProfileIds, Profile, ProfileIdsStore, ProfileType } from 'src/app/models';
-import { ProfileFormGroup } from '../components/profile-form';
-import { ProfileFormValue } from '../components/profile-form/profile-form-group';
+import { BehaviorSubject, Observable, Subject, from, of } from 'rxjs';
+import {
+  ActiveProfileIds,
+  Nullish,
+  PresetTaskItem,
+  Profile,
+  ProfileIdsStore,
+  ProfileType,
+} from 'src/app/models';
+import { AuthService } from 'src/app/services';
 import { PaginationOptions } from '../../../models/configs/pagination-options';
 import { TimePipe } from '../../../pipes';
-import { DetailsTypes, ElementIds, PubSubUtil, paths } from '../../../util';
-import { ProfileUtil } from '../../../util/profile.util';
 import { AppService } from '../../../services/app.service';
 import { FormService } from '../../../services/base/form.service';
 import { LoadingService } from '../../../services/loading.service';
-import { ProfileTypeService } from './profile-type.service';
-import { ProfileApiService } from './profile-api.service';
+import { ArrayUtil, DetailsTypes, ElementIds, PubSubUtil, paths } from '../../../util';
+import { ProfileUtil } from '../../../util/profile.util';
+import { ProfileFormGroup } from '../components/profile-form';
+import { ProfileFormValue } from '../components/profile-form/profile-form-group';
 import { PresetTaskItemService } from './preset-task-item.service';
+import { ProfileApiService } from './profile-api.service';
+import { ProfileTypeService } from './profile-type.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,22 +44,16 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   private destroyed$ = new Subject<boolean>();
   private types$ = new BehaviorSubject<ProfileType[]>([]);
 
+  private _activeProfiles$ = new BehaviorSubject<Profile[]>([]);
+
+  get activeProfiles$() {
+    return this._activeProfiles$.asObservable();
+  }
+
   private _activeProfileIds$ = new BehaviorSubject<ActiveProfileIds>(this.initialActiveProfileIds);
   private _profileIdsStore$ = new BehaviorSubject<ProfileIdsStore>(
     ProfileUtil.getInitialProfileIdsStore()
   );
-
-  get weekdayProfileId$() {
-    return this._activeProfileIds$.pipe(map((ids) => ids.weekday));
-  }
-
-  get weekendProfileId$() {
-    return this._activeProfileIds$.pipe(map((ids) => ids.weekend));
-  }
-
-  get holidayProfileId$() {
-    return this._activeProfileIds$.pipe(map((ids) => ids.holiday));
-  }
 
   get profileIdsStore$() {
     return this._profileIdsStore$.asObservable();
@@ -75,9 +77,19 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
       this._listItems$.next([]);
       this._activeProfileIds$.next(this.initialActiveProfileIds);
       this._profileIdsStore$.next(ProfileUtil.getInitialProfileIdsStore());
+      this._activeProfiles$.next([]);
     });
 
-    this.listItems$
+    this.listItems$.pipe(takeUntil(this.destroyed$)).subscribe((items) => {
+      const loadedProfiles = this._activeProfiles$.getValue();
+      const loadedProfileIds = loadedProfiles.map((x) => x.id);
+      const profilesNotAlreadyLoaded = items.filter((x) => !loadedProfileIds.includes(x.id));
+
+      if (ArrayUtil.isEmpty(profilesNotAlreadyLoaded)) return;
+      this._activeProfiles$.next([...loadedProfiles, ...profilesNotAlreadyLoaded]);
+    });
+
+    this.activeProfiles$
       .pipe(
         takeUntil(this.destroyed$),
         switchMap((profiles) => {
@@ -108,6 +120,23 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   loadEditData = async (id: string | null | undefined): Promise<Profile | null> => {
     await this.loadCreateData();
     return this.loadItem(id);
+  };
+
+  loadUserProfiles = async (): Promise<void> => {
+    if (this.hasUserProfiles()) return;
+
+    this.reloadUserProfiles();
+  };
+
+  reloadUserProfiles = async (): Promise<void> => {
+    const res = await this.api.getUserProfiles();
+
+    this._activeProfiles$.next(res);
+  };
+
+  hasUserProfiles = (): boolean => {
+    const profiles = this._activeProfiles$.getValue();
+    return !ArrayUtil.isEmpty(profiles);
   };
 
   loadProfileTypes = async (): Promise<void> => {
@@ -149,15 +178,36 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   };
 
   /**
-   * @description Builds an observable stream from a given date in 'yyyy-MM-dd' format
+   * @description Builds a stream that gets a profile from a given date in 'yyyy-MM-dd' format
    */
   byDate$(date: string): Observable<Profile | null> {
     return this.profileIdsStore$.pipe(
       map((m) => m.byDate[date]),
-      switchMap((id) => this.itemByIdFromCache$(id)),
-      share()
+      switchMap((id) => this.userProfileByIdFromCache$(id)),
+      shareReplay(1)
     );
   }
+
+  tasksByDate$(date: string): Observable<PresetTaskItem[] | null> {
+    return this.byDate$(date).pipe(
+      map((profile) => {
+        const profilePresetTasks = profile?.profilePresetTaskItems ?? [];
+
+        return profilePresetTasks
+          .map((x) => x.presetTaskItem)
+          .filter((task): task is PresetTaskItem => !!task);
+      })
+    );
+  }
+
+  userProfileByIdFromCache$ = (id: number | string | Nullish): Observable<Profile | null> => {
+    if (typeof id !== 'number') return of(null);
+
+    return this.activeProfiles$.pipe(
+      switchMap((items) => items),
+      filter((x) => x.id === +id)
+    );
+  };
 
   private setActiveProfileIds = (profiles: Profile[]) => {
     const baseProfiles = profiles.filter(
