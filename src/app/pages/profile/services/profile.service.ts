@@ -11,7 +11,6 @@ import {
   ProfileIdsStore,
   ProfileType,
 } from 'src/app/models';
-import { AuthService } from 'src/app/services';
 import { PaginationOptions } from '../../../models/configs/pagination-options';
 import { TimePipe } from '../../../pipes';
 import { AppService } from '../../../services/app.service';

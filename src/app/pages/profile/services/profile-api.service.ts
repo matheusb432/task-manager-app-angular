@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
 import {
   ApiRequest,
   PaginatedResult,
@@ -9,11 +8,11 @@ import {
   Profile,
   ProfilePostDto,
   ProfilePutDto,
-  RequestData,
 } from 'src/app/models';
 import { LoadingService } from 'src/app/services';
-import { FormApiService } from 'src/app/services/interfaces';
 import { ApiService } from 'src/app/services/api/api.service';
+import { FormApiService } from 'src/app/services/interfaces';
+import { ApiEndpoints, ElementIds, QueryUtil } from 'src/app/util';
 
 @Injectable({
   providedIn: 'root',

@@ -1,11 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subject, map, takeUntil } from 'rxjs';
-import { PresetTaskItem, PaginationOptions, SelectOption } from 'src/app/models';
+import { BehaviorSubject, Subject, map, takeUntil } from 'rxjs';
+import { PaginationOptions, PresetTaskItem, SelectOption } from 'src/app/models';
 import { TimePipe } from 'src/app/pipes';
 import { AppService, LoadingService } from 'src/app/services';
 import { FormService } from 'src/app/services/base/form.service';
-import { PubSubUtil, paths, DetailsTypes, ElementIds, ArrayUtil } from 'src/app/util';
+import { ArrayUtil, DetailsTypes, ElementIds, PubSubUtil, paths } from 'src/app/util';
 import {
   PresetTaskItemFormGroup,
   PresetTaskItemFormValue,

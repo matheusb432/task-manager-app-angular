@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { FormTypes, StringUtil } from '../util';
+import { FormValue } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,20 @@ export class FormUtil {
         return fg;
       })
     );
+  }
+
+  static addItemsToFormArray<TForm extends { [K in keyof TForm]: AbstractControl }>(
+    items: Partial<FormValue<TForm>>[],
+    formArray: FormArray<FormGroup<TForm>>,
+    getFg: () => FormGroup<TForm>
+  ): void {
+    formArray.clear();
+
+    items.forEach((item) => {
+      const fg = getFg();
+      fg.patchValue(item as never);
+      formArray.push(fg);
+    });
   }
 
   static buildDateRangeGroup(start: Date | null = null, end: Date | null = null) {

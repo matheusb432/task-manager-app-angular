@@ -4,7 +4,15 @@ import { Observable, Subject, Subscription, filter, of, takeUntil, tap } from 'r
 
 import { CanDeactivateForm, PresetTaskItem } from 'src/app/models';
 import { AppService, PageService, ToastService } from 'src/app/services';
-import { DateUtil, DetailsTypes, FormTypes, PubSubUtil, StringUtil, paths } from 'src/app/util';
+import {
+  DateUtil,
+  DetailsTypes,
+  FormTypes,
+  FormUtil,
+  PubSubUtil,
+  StringUtil,
+  paths,
+} from 'src/app/util';
 import { ProfileService } from '../../profile/services/profile.service';
 import {
   TimesheetForm,
@@ -131,13 +139,11 @@ export class CreateTimesheetComponent
   }
 
   addPresetTasksToForm(tasks: PresetTaskItem[]): void {
+    const mappedTasks = tasks.map((task) => ({
+      ...task,
+      time: StringUtil.numberToTime(task.time),
+    }));
     const tasksFormArray = this.form.controls.tasks;
-    tasksFormArray.clear();
-
-    tasks.forEach((task) => {
-      const fg = getTaskItemFormGroup();
-      fg.patchValue({ ...task, time: StringUtil.numberToTime(task.time) });
-      tasksFormArray.push(fg);
-    });
+    FormUtil.addItemsToFormArray(mappedTasks, tasksFormArray, getTaskItemFormGroup);
   }
 }

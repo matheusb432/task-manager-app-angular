@@ -2,14 +2,16 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { CanDeactivateForm, PageData, WithDestroyed } from 'src/app/models';
+import { CanDeactivateForm, FormValue, PageData, WithDestroyed } from 'src/app/models';
 import { PageService } from 'src/app/services';
-import { DetailsTypes, FormTypes } from 'src/app/util';
+import { DetailsTypes, FormTypes, FormUtil } from 'src/app/util';
 import {
   TimesheetFormComponent,
   TimesheetForm,
   TimesheetFormGroup,
   getTimesheetForm,
+  getTaskItemFormGroup,
+  getTimesheetNoteFormGroup,
 } from '../components/timesheet-form';
 import { TimesheetService } from '../services/timesheet.service';
 
@@ -94,7 +96,9 @@ export class TimesheetDetailsComponent
     if (this.form == null) {
       this.form = TimesheetFormGroup.from(getTimesheetForm(new Date()));
     }
-    this.form.patchValue(this.service.convertToFormValue(loadedItem));
+    const value = this.service.convertToFormValue(loadedItem);
+    this.setForm(value);
+
     this.form.markAllAsTouched();
     this.cdRef.detectChanges();
   }
@@ -105,6 +109,15 @@ export class TimesheetDetailsComponent
     } else {
       this.form.patchValue({ date: new Date() });
     }
+  }
+
+  setForm(value: Partial<FormValue<TimesheetForm>>) {
+    this.form.patchValue(value);
+    const tasksFormArray = this.form.controls.tasks;
+    FormUtil.addItemsToFormArray(value?.tasks ?? [], tasksFormArray, getTaskItemFormGroup);
+
+    const notesFormArray = this.form.controls.notes;
+    FormUtil.addItemsToFormArray(value?.notes ?? [], notesFormArray, getTimesheetNoteFormGroup);
   }
 
   submitForm(): Promise<void> {

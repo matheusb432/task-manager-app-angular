@@ -1,5 +1,4 @@
-import { UserRoles } from './../util/constants/user-roles.enum';
-import { Inject, Injectable, OnDestroy, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -10,14 +9,15 @@ import {
   Signup,
   UserAuthGet,
 } from 'src/app/models';
+import { ProfileService } from '../pages/profile/services/profile.service';
 import { PubSubUtil, StoreKeys } from '../util';
+import { UserRoles } from './../util/constants/user-roles.enum';
+import { AuthApiService } from './api/auth-api.service';
 import { AppService } from './app.service';
-import { STORE_SERVICE, StoreService } from './interfaces';
+import { STORE_SERVICE } from './interfaces';
 import { PageService } from './page.service';
 import { ToastService } from './toast.service';
 import { TokenService } from './token.service';
-import { AuthApiService } from './api/auth-api.service';
-import { ProfileService } from '../pages/profile/services/profile.service';
 
 @Injectable({
   providedIn: 'root',
