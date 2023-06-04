@@ -8,25 +8,20 @@
     (mouseenter)="hovering = true"
     (mouseleave)="hovering = false"
   >
-    <div class="logo-container">
-      <h1 class="logo" title="Task Manager App">
-        <span *ngIf="!hovering; else fullLogo">TMA</span>
-        <ng-template #fullLogo>
-          <span>Task Manager App </span>
-        </ng-template>
-      </h1>
-    </div>
+    <h1 class="logo" title="Task Manager App">
+      <span *ngIf="!hovering; else fullLogo">TMA</span>
+      <ng-template #fullLogo>
+        <span>Task Manager App </span>
+      </ng-template>
+    </h1>
 
     <app-nav-items [items]="navItems" [iconOnly]="!hovering" [onSideNav]="true"></app-nav-items>
     <div class="scrollbar-hider">
-      <!-- TODO move inner z-index -->
-      <div class="scrollbar-hider-inner">
-        <app-nav-items
-          [items]="userNavItems"
-          [iconOnly]="!hovering"
-          [onSideNav]="true"
-        ></app-nav-items>
-      </div>
+      <app-nav-items
+        [items]="userNavItems"
+        [iconOnly]="!hovering"
+        [onSideNav]="true"
+      ></app-nav-items>
     </div>
   </mat-sidenav>
 

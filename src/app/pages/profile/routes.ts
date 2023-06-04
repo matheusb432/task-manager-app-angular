@@ -13,11 +13,6 @@ export const PROFILE_ROUTES: Routes = [
     path: '',
     component: ProfilesComponent,
     children: [
-      // {
-      //   path: Pages.PresetTaskItems,
-      //   component: CreatePresetTaskItemComponent,
-      //   canDeactivate: [canDeactivateForm],
-      // },
       {
         path: PageStates.Create,
         component: CreateProfileComponent,
@@ -30,7 +25,6 @@ export const PROFILE_ROUTES: Routes = [
       },
     ],
   },
-  // TODO implement
   {
     path: Pages.PresetTaskItems,
     component: PresetTaskItemsComponent,

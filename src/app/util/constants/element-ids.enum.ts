@@ -8,6 +8,7 @@ export enum ElementIds {
   PresetTaskItemForm = 'cPresetTaskItemForm',
   PresetTaskItemSubmit = 'cPresetTaskItemFormSubmit',
   PresetTaskItemDelete = 'cPresetTaskItemFormDelete',
+  PresetTaskItemFormTasks = 'cPresetTaskItemFormTasks',
   UserTable = 'cUserTableContainer',
   UserForm = 'cUserForm',
   UserSubmit = 'cUserFormSubmit',

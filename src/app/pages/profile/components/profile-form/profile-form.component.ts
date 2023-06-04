@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ModalService } from 'src/app/services/modal.service';
 import { ProfileService } from 'src/app/pages/profile/services/profile.service';
@@ -11,6 +18,7 @@ import { ButtonComponent } from 'src/app/shared/components/buttons';
 import { InputComponent } from 'src/app/shared/components/inputs/input/input.component';
 import { SelectComponent } from 'src/app/shared/components/inputs/select/select.component';
 import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
+import { PresetTaskItemService } from '../../services/preset-task-item.service';
 
 @Component({
   selector: 'app-profile-form [form] [formType] [cancel]',
@@ -30,6 +38,11 @@ import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layo
   ],
 })
 export class ProfileFormComponent {
+  private service = inject(ProfileService);
+  private taskService = inject(PresetTaskItemService);
+
+  private modalService = inject(ModalService);
+
   @Input() form!: ProfileFormGroup;
   @Input() formType!: FormTypes;
 
@@ -41,6 +54,9 @@ export class ProfileFormComponent {
 
   subscriptions: Subscription[] = [];
 
+  taskOptions$ = this.taskService.taskOptions$;
+  typeOptions$ = this.service.typeOptions$;
+
   get submitLabel(): string {
     return FormUtil.getSubmitLabel(this.formType);
   }
@@ -48,12 +64,6 @@ export class ProfileFormComponent {
   get canEdit(): boolean {
     return !FormUtil.isViewForm(this.formType);
   }
-
-  get typeOptions$() {
-    return this.service.typeOptions$;
-  }
-
-  constructor(private service: ProfileService, private modalService: ModalService) {}
 
   showDelete(): boolean {
     return FormUtil.isEditForm(this.formType);

@@ -1,11 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { PresetTaskItem, PaginationOptions } from 'src/app/models';
+import { BehaviorSubject, Subject, map, takeUntil } from 'rxjs';
+import { PresetTaskItem, PaginationOptions, SelectOption } from 'src/app/models';
 import { TimePipe } from 'src/app/pipes';
-import { AppService } from 'src/app/services';
+import { AppService, LoadingService } from 'src/app/services';
 import { FormService } from 'src/app/services/base/form.service';
-import { PubSubUtil, paths, DetailsTypes } from 'src/app/util';
+import { PubSubUtil, paths, DetailsTypes, ElementIds, ArrayUtil } from 'src/app/util';
 import {
   PresetTaskItemFormGroup,
   PresetTaskItemFormValue,
@@ -17,6 +17,9 @@ import { PresetTaskItemApiService } from './preset-task-item-api.service';
 })
 export class PresetTaskItemService extends FormService<PresetTaskItem> implements OnDestroy {
   private destroyed$ = new Subject<boolean>();
+  private tasks$ = new BehaviorSubject<PresetTaskItem[]>([]);
+  taskOptions$ = this.tasks$.pipe(map((tasks) => PresetTaskItemService.toOptions(tasks)));
+
   constructor(
     protected override api: PresetTaskItemApiService,
     private app: AppService,
@@ -46,6 +49,22 @@ export class PresetTaskItemService extends FormService<PresetTaskItem> implement
     return this.loadItem(id);
   };
 
+  loadTasks = async (): Promise<void> => {
+    if (this.hasTasks()) return;
+
+    this.reloadTasks();
+  };
+
+  reloadTasks = async (): Promise<void> => {
+    const res = await this.api.getItems({
+      loadings: LoadingService.createManyFromId(ElementIds.PresetTaskItemFormTasks),
+    });
+
+    this.tasks$.next(res);
+  };
+
+  hasTasks = () => !ArrayUtil.isEmpty(this.tasks$.getValue());
+
   convertToFormValue(item: PresetTaskItem): Partial<PresetTaskItemFormValue> {
     return {
       ...item,
@@ -74,4 +93,13 @@ export class PresetTaskItemService extends FormService<PresetTaskItem> implement
       duplicateSuccess: 'Task duplicated successfully!',
     };
   };
+
+  static toOptions(items: PresetTaskItem[]): SelectOption<number>[] {
+    return items
+      .filter((item): item is Required<PresetTaskItem> => item.id != null && item.title != null)
+      .map(({ id, title }) => ({
+        value: id,
+        label: title,
+      }));
+  }
 }

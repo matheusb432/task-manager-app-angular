@@ -6,6 +6,7 @@ import {
   PaginatedResult,
   PostReturn,
   PresetTaskItemPostDto,
+  RequestData,
 } from 'src/app/models';
 import { PresetTaskItemPutDto } from 'src/app/models/dtos/task-item/preset-task-item-put-dto';
 import { LoadingService } from 'src/app/services';
@@ -20,6 +21,13 @@ export class PresetTaskItemApiService implements FormApiService<PresetTaskItem> 
   private url = QueryUtil.buildApiUrl(ApiEndpoints.PresetTaskItems);
 
   constructor(private api: ApiService) {}
+
+  async getItems(customData?: RequestData): Promise<PresetTaskItem[]> {
+    return this.api.getOData<PresetTaskItem>({
+      ...ApiRequest.get<PresetTaskItem>(this.url, PresetTaskItem),
+      customData,
+    });
+  }
 
   async getById(id: number): Promise<PresetTaskItem> {
     const res = await this.api.getById<PresetTaskItem>({

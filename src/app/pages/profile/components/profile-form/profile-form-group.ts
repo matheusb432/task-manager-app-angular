@@ -26,6 +26,7 @@ export interface ProfileForm {
   tasksTarget: FormControl<number | undefined>;
   priority: FormControl<number | undefined>;
   profileTypeId: FormControl<number | undefined>;
+  taskIds: FormControl<number[] | null>;
 }
 
 export type ProfileFormValue = FormValue<ProfileForm>;
@@ -45,4 +46,5 @@ export const getProfileForm = (): ProfileForm => ({
     nonNullable: true,
     validators: [Validators.required, Validators.min(0)],
   }),
+  taskIds: new FormControl<number[]>([]),
 });

@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, share, switchMap, takeUntil, tap } from 'rxjs/operators';
 
@@ -15,11 +15,17 @@ import { FormService } from '../../../services/base/form.service';
 import { LoadingService } from '../../../services/loading.service';
 import { ProfileTypeService } from './profile-type.service';
 import { ProfileApiService } from './profile-api.service';
+import { PresetTaskItemService } from './preset-task-item.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService extends FormService<Profile> implements OnDestroy {
+  private taskService = inject(PresetTaskItemService);
+  private app = inject(AppService);
+  private router = inject(Router);
+  private profileTypeService = inject(ProfileTypeService);
+
   private readonly initialActiveProfileIds = {
     weekday: null,
     weekend: null,
@@ -53,12 +59,7 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
 
   typeOptions$ = this.types$.pipe(map((types) => ProfileTypeService.toOptions(types)));
 
-  constructor(
-    protected override api: ProfileApiService,
-    private app: AppService,
-    private router: Router,
-    private profileTypeService: ProfileTypeService
-  ) {
+  constructor(protected override api: ProfileApiService) {
     super(api);
     this.setToastMessages();
     this.initSubs();
@@ -96,7 +97,12 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   };
 
   loadCreateData = async () => {
-    await this.loadProfileTypes();
+    const promises: Promise<void>[] = [];
+
+    promises.push(this.taskService.loadTasks());
+    promises.push(this.loadProfileTypes());
+
+    await Promise.all(promises);
   };
 
   loadEditData = async (id: string | null | undefined): Promise<Profile | null> => {

@@ -27,6 +27,14 @@
       [elId]="elIds.ProfileFormType"
     ></app-select>
 
+    <app-select
+      fcName="taskIds"
+      labelText="Preset Tasks"
+      [options]="taskOptions$ | async"
+      [elId]="elIds.PresetTaskItemFormTasks"
+      [multiple]="true"
+    ></app-select>
+
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
         <app-button

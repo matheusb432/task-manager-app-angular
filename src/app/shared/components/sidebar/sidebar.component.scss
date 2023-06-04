@@ -8,11 +8,11 @@ $sidebar-bg: var(--bg-color);
   left: 0;
   right: 0;
   height: 100vh;
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 * {
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -21,13 +21,12 @@ $sidebar-bg: var(--bg-color);
   justify-content: center;
   background: $sidebar-bg;
   border-right-color: $sidebar-bg;
-  padding: 0;
   overflow-x: hidden;
   transition: all 0.3s ease-in-out;
-
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
   width: 42px;
+  padding: 0;
   &:hover {
     width: 240px;
     padding: 0 16px;
@@ -39,17 +38,15 @@ $sidebar-bg: var(--bg-color);
   overflow-x: hidden;
 }
 
-.logo-container {
-  .logo {
-    @include mxs.dash(bottom, 4px, 2px);
-    @include mxs.scale-out-if-hidden();
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    height: 56px;
-    font-size: 1rem;
-  }
+.logo {
+  @include mxs.dash(bottom, 4px, 2px);
+  @include mxs.scale-out-if-hidden();
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  height: 56px;
+  font-size: 1rem;
 }
 
 .scrollbar-hider {

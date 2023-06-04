@@ -23,7 +23,7 @@ export class PresetTaskItemFormGroup extends FormGroup<PresetTaskItemForm> {
 
 export interface PresetTaskItemForm {
   id: FormControl<number | null>;
-  title: FormControl<string | null>;
+  title: FormControl<string>;
   comment: FormControl<string | null>;
   time: FormControl<string | null>;
   importance: FormControl<number | null>;
@@ -38,7 +38,7 @@ export const getPresetTaskItemFormGroup = (): FormGroup<PresetTaskItemForm> => {
 export const getPresetTaskItemForm = () => {
   return {
     id: new FormControl(0),
-    title: new FormControl(''),
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     comment: new FormControl(''),
     time: new FormControl('00:00'),
     importance: new FormControl(1, {
