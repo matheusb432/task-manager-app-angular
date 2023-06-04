@@ -2,7 +2,16 @@
   <mat-label>
     {{ labelText }}
   </mat-label>
-  <textarea matInput [formControlName]="fcName" [placeholder]="placeholder" [id]="id"></textarea>
+  <textarea
+    matInput
+    cdkTextareaAutosize
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="20"
+    [formControlName]="fcName"
+    [placeholder]="placeholder"
+    [id]="id"
+  ></textarea>
   <span *ngIf="isLoading" class="input-loading-container">
     <app-loading [size]="24"> </app-loading>
   </span>

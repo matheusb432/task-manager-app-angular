@@ -57,7 +57,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     if (this.form == null) {
       this.form = MyProfileFormGroup.from(getMyProfileForm());
     }
-    console.log(loggedUser);
     this.form.patchValue(loggedUser ?? {});
   }
 

@@ -16,6 +16,7 @@ export class ProfileFormGroup extends FormGroup<ProfileForm> {
     return {
       ...value,
       timeTarget: TimePipe.formatTimeHhMm(value.timeTarget),
+      profilePresetTaskItems: value.taskIds?.map((id) => ({ presetTaskItemId: id })),
     } as Partial<Profile>;
   };
 }

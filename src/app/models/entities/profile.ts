@@ -23,7 +23,6 @@ export class Profile implements TableItem {
     { header: 'Name', key: 'name' },
     { header: 'Type', key: ['profileType', 'name'], hiddenInLowRes: true },
     { header: 'Time', key: 'timeTarget', pipe: TimePipe },
-    { header: 'Tasks', key: 'tasksTarget' },
     { header: 'Priority', key: 'priority', hiddenInLowRes: true },
   ];
 }

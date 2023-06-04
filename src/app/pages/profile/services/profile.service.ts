@@ -127,9 +127,14 @@ export class ProfileService extends FormService<Profile> implements OnDestroy {
   };
 
   convertToFormValue(item: Profile): Partial<ProfileFormValue> {
+    const taskIds = item.profilePresetTaskItems
+      ?.map((x) => x.presetTaskItemId)
+      .filter((id): id is number => !!id);
+
     return {
       ...item,
       timeTarget: TimePipe.formatTimeHhMm(item.timeTarget),
+      taskIds: taskIds ?? [],
     };
   }
 
