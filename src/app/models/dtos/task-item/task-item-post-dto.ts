@@ -8,4 +8,5 @@ export class TaskItemPostDto {
   importance?: number;
   timesheetId?: number;
   comment?: string;
+  presetTaskItemId?: number;
 }

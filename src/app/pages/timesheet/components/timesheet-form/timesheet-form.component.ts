@@ -1,8 +1,25 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { AppService, ModalService } from 'src/app/services';
-import { ElementIds, FormTypes, FormUtil, deleteModalData, saveModalData } from 'src/app/util';
+import {
+  ElementIds,
+  FormTypes,
+  FormUtil,
+  PubSubUtil,
+  deleteModalData,
+  saveModalData,
+} from 'src/app/util';
 import {
   TaskItemForm,
   TimesheetForm,
@@ -12,14 +29,17 @@ import {
   getTimesheetNoteFormGroup,
 } from './timesheet-form-group';
 
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ScrollToDirective } from 'src/app/directives';
 
-import { TextareaComponent } from 'src/app/shared/components/inputs/textarea/textarea.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { PresetTaskItem } from 'src/app/models';
+import { PresetTaskItemService } from 'src/app/pages/profile/services/preset-task-item.service';
 import { ButtonComponent } from 'src/app/shared/components/buttons';
 import { CheckboxComponent } from 'src/app/shared/components/inputs/checkbox/checkbox.component';
 import { DatepickerComponent } from 'src/app/shared/components/inputs/datepicker/datepicker.component';
 import { InputComponent } from 'src/app/shared/components/inputs/input/input.component';
+import { TextareaComponent } from 'src/app/shared/components/inputs/textarea/textarea.component';
 import { FixedButtonsLayoutComponent } from 'src/app/shared/components/layouts/fixed-buttons-layout/fixed-buttons-layout.component';
 import { FormArrayLayoutComponent } from 'src/app/shared/components/layouts/form-array-layout/form-array-layout.component';
 import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
@@ -40,6 +60,7 @@ import { TimesheetService } from '../../services/timesheet.service';
     FormArrayLayoutComponent,
     NgFor,
     TextareaComponent,
+    MatTooltipModule,
     ButtonComponent,
     InputComponent,
     CheckboxComponent,
@@ -47,7 +68,13 @@ import { TimesheetService } from '../../services/timesheet.service';
     AsyncPipe,
   ],
 })
-export class TimesheetFormComponent {
+export class TimesheetFormComponent implements OnInit, OnDestroy {
+  private service = inject(TimesheetService);
+  private modalService = inject(ModalService);
+  private app = inject(AppService);
+  private taskService = inject(PresetTaskItemService);
+  private cdRef = inject(ChangeDetectorRef);
+
   @Input() form!: TimesheetFormGroup;
   @Input() formType!: FormTypes;
 
@@ -57,6 +84,8 @@ export class TimesheetFormComponent {
 
   dateRangeOrDefault$ = this.app.dateRangeOrDefault$;
   dateFilterFn$ = this.service.dateFilterFn$;
+
+  destroyed$ = new Subject<boolean>();
 
   elIds = ElementIds;
 
@@ -89,11 +118,19 @@ export class TimesheetFormComponent {
     );
   }
 
-  constructor(
-    private service: TimesheetService,
-    private modalService: ModalService,
-    private app: AppService
-  ) {}
+  private presetTasks: PresetTaskItem[] = [];
+
+  ngOnInit(): void {
+    this.taskService.loadTasks();
+    this.taskService.tasks$.pipe(takeUntil(this.destroyed$)).subscribe((tasks) => {
+      this.presetTasks = tasks;
+      this.cdRef.detectChanges();
+    });
+  }
+
+  ngOnDestroy(): void {
+    PubSubUtil.completeDestroy(this.destroyed$);
+  }
 
   addNote(): void {
     this.noteForms.push(getTimesheetNoteFormGroup());
@@ -127,10 +164,20 @@ export class TimesheetFormComponent {
     this.modalService.confirmation(saveModalData(), () => FormUtil.onSubmit(this.form, this.save));
   }
 
-  getFormItemId(
-    index: number,
-    item: FormGroup<TaskItemForm> | FormGroup<TimesheetNoteForm>
-  ): number {
+  getFormItemId(index: number, item: FormGroup<TimesheetNoteForm>): number {
     return item.controls.id.value ?? index;
+  }
+
+  isPresetTask(taskForm: FormGroup<TaskItemForm>) {
+    const presetTaskItemControl = taskForm.controls.presetTaskItemId;
+    return presetTaskItemControl.getRawValue() != null;
+  }
+
+  getPresetTaskTitle(taskForm: FormGroup<TaskItemForm>) {
+    const presetTaskItemId = taskForm.controls.presetTaskItemId.getRawValue();
+    const presetTaskItem = this.presetTasks.find(
+      (presetTask) => presetTask.id === presetTaskItemId
+    );
+    return presetTaskItem?.title;
   }
 }

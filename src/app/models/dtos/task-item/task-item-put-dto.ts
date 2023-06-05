@@ -6,4 +6,5 @@ export class TaskItemPutDto {
   importance?: number;
   timesheetId?: number;
   comment?: string;
+  presetTaskItemId?: number;
 }

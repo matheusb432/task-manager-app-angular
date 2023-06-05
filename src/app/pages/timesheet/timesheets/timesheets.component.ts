@@ -1,26 +1,26 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
 import { tap } from 'rxjs';
 import { AsNonNullable } from 'src/app/models';
-import { STORE_SERVICE, StoreService } from 'src/app/services/interfaces';
+import { STORE_SERVICE } from 'src/app/services/interfaces';
 import { DateUtil, FormUtil, PubSubUtil, StoreKeys, paths } from 'src/app/util';
-import { RouterOutlet } from '@angular/router';
-import { NgIf, NgClass } from '@angular/common';
 import { TitleComponent } from '../../../shared/components/title/title.component';
 
-import { SlideComponent } from 'src/app/shared/components/inputs/slide/slide.component';
+import { AppService } from 'src/app/services';
 import { DateRangePickerComponent } from 'src/app/shared/components/inputs/date-range-picker';
-import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
-import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
-import { TimesheetCarouselComponent } from '../components/timesheet-carousel/timesheet-carousel.component';
 import {
   DateRangeForm,
   DateRangeValue,
 } from 'src/app/shared/components/inputs/date-range-picker/date-range-form-group';
-import { AppService } from 'src/app/services';
+import { SlideComponent } from 'src/app/shared/components/inputs/slide/slide.component';
+import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
+import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
 import { ProfileService } from '../../profile/services/profile.service';
-import { TimesheetService } from '../services/timesheet.service';
+import { TimesheetCarouselComponent } from '../components/timesheet-carousel/timesheet-carousel.component';
 import { TimesheetListComponent } from '../components/timesheet-list/timesheet-list.component';
+import { TimesheetService } from '../services/timesheet.service';
 
 @Component({
   selector: 'app-timesheets',
@@ -43,6 +43,11 @@ import { TimesheetListComponent } from '../components/timesheet-list/timesheet-l
   ],
 })
 export class TimesheetsComponent implements OnInit {
+  private service = inject(TimesheetService);
+  private app = inject(AppService);
+  private store = inject(STORE_SERVICE);
+  private profileService = inject(ProfileService);
+
   paths = paths;
 
   filterForm!: FormGroup<{
@@ -69,13 +74,6 @@ export class TimesheetsComponent implements OnInit {
 
   enableListAnimation = true;
   enableCalendarAnimation = true;
-
-  constructor(
-    private service: TimesheetService,
-    private app: AppService,
-    @Inject(STORE_SERVICE) private store: StoreService,
-    private profileService: ProfileService
-  ) {}
 
   ngOnInit(): void {
     this.initFilterForm();

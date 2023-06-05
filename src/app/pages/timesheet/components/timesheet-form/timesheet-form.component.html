@@ -25,33 +25,6 @@
     </ng-container>
     <ul
       app-form-array-layout
-      titleText="Notes"
-      formArrayName="notes"
-      [showButtons]="canEdit"
-      buttonId="Note"
-      (added)="addNote()"
-    >
-      <li
-        class="form-item"
-        app-form-layout
-        [id]="'cTimesheetFormNote' + i"
-        [formGroup]="noteForm"
-        [canEdit]="canEdit"
-        *ngFor="let noteForm of noteForms.controls; let i = index; trackBy: getFormItemId"
-      >
-        <app-textarea fcName="comment" labelText="Note" placeholder="Enter a note"> </app-textarea>
-        <app-button
-          model="raised"
-          [elId]="'TimesheetFormRemoveNote' + i"
-          (clicked)="removeNote(i)"
-          *ngIf="canEdit"
-          color="warn"
-          >Remove Note</app-button
-        >
-      </li>
-    </ul>
-    <ul
-      app-form-array-layout
       titleText="Tasks"
       formArrayName="tasks"
       [showButtons]="canEdit"
@@ -64,9 +37,15 @@
         [formGroup]="taskForm"
         class="form-item"
         [canEdit]="canEdit"
-        *ngFor="let taskForm of taskForms.controls; let i = index; trackBy: getFormItemId"
+        *ngFor="let taskForm of taskForms.controls; let i = index"
       >
-        <app-input fcName="title" labelText="Task" placeholder="Enter the task title"> </app-input>
+        <span class="preset-task" [matTooltip]="'Preset Task'" *ngIf="isPresetTask(taskForm)">
+          {{ getPresetTaskTitle(taskForm) }}
+        </span>
+        <ng-container *ngIf="!isPresetTask(taskForm)">
+          <app-input fcName="title" labelText="Task" placeholder="Enter the task title">
+          </app-input>
+        </ng-container>
         <app-textarea fcName="comment" labelText="Comment" placeholder="Enter a Comment">
         </app-textarea>
         <app-input fcName="time" labelText="Time" type="time" [helpers]="['hh:mm']"></app-input>
@@ -93,6 +72,33 @@
           *ngIf="canEdit"
           color="warn"
           >Remove Task</app-button
+        >
+      </li>
+    </ul>
+    <ul
+      app-form-array-layout
+      titleText="Notes"
+      formArrayName="notes"
+      [showButtons]="canEdit"
+      buttonId="Note"
+      (added)="addNote()"
+    >
+      <li
+        class="form-item"
+        app-form-layout
+        [id]="'cTimesheetFormNote' + i"
+        [formGroup]="noteForm"
+        [canEdit]="canEdit"
+        *ngFor="let noteForm of noteForms.controls; let i = index; trackBy: getFormItemId"
+      >
+        <app-textarea fcName="comment" labelText="Note" placeholder="Enter a note"> </app-textarea>
+        <app-button
+          model="raised"
+          [elId]="'TimesheetFormRemoveNote' + i"
+          (clicked)="removeNote(i)"
+          *ngIf="canEdit"
+          color="warn"
+          >Remove Note</app-button
         >
       </li>
     </ul>

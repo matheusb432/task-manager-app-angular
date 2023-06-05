@@ -13,10 +13,22 @@ export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
 
   static toJson = (fg: TimesheetFormGroup): Partial<Timesheet> => {
     const value = fg.getRawValue();
+    const tasks = value.tasks.map((task) => {
+      let title = '';
+      if (!task.presetTaskItemId) {
+        title = task.title;
+      }
+      return {
+        ...task,
+        title,
+        rating: task.rating ?? 0,
+      };
+    });
 
     return {
       ...value,
       date: DateUtil.formatDateToUniversalFormat(value.date),
+      tasks,
     } as Partial<Timesheet>;
   };
 }
@@ -42,13 +54,14 @@ export const getTimesheetNoteFormGroup = (): FormGroup<TimesheetNoteForm> => {
 
 export const getTimesheetNoteForm = (): TimesheetNoteForm => {
   return {
-    id: new FormControl(0),
+    id: new FormControl(null),
     comment: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   };
 };
 
 export interface TaskItemForm {
   id: FormControl<number | null>;
+  presetTaskItemId: FormControl<number | null>;
   title: FormControl<string>;
   comment: FormControl<string | null>;
   time: FormControl<string>;
@@ -62,7 +75,8 @@ export const getTaskItemFormGroup = (): FormGroup<TaskItemForm> => {
 
 export const getTaskItemForm = (): TaskItemForm => {
   return {
-    id: new FormControl(0),
+    id: new FormControl(null),
+    presetTaskItemId: new FormControl<number | null>(null),
     title: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(100)],
@@ -80,13 +94,13 @@ export const getTaskItemForm = (): TaskItemForm => {
 
 export const getTimesheetForm = (initialDate: Date): TimesheetForm => {
   return {
-    id: new FormControl(0),
+    id: new FormControl(null),
     date: new FormControl(initialDate, {
       nonNullable: true,
       validators: [Validators.required],
     }),
     finished: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
-    notes: new FormArray([getTimesheetNoteFormGroup()]),
+    notes: new FormArray<FormGroup<TimesheetNoteForm>>([]),
     tasks: new FormArray([getTaskItemFormGroup()]),
   };
 };

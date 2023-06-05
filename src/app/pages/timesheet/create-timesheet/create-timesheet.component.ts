@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, Subscription, filter, of, takeUntil, tap } from 'rxjs';
 
@@ -40,6 +47,7 @@ export class CreateTimesheetComponent
   private toaster = inject(ToastService);
   private route = inject(ActivatedRoute);
   private pageService = inject(PageService);
+  private cdRef = inject(ChangeDetectorRef);
 
   private destroyed$ = new Subject<boolean>();
 
@@ -63,6 +71,7 @@ export class CreateTimesheetComponent
         filter((tasks): tasks is PresetTaskItem[] => tasks != null),
         tap((tasks) => {
           this.addPresetTasksToForm(tasks);
+          this.cdRef.detectChanges();
         })
       )
       .subscribe();
@@ -122,6 +131,7 @@ export class CreateTimesheetComponent
     } else {
       this.form.patchValue({ date });
     }
+    this.cdRef.detectChanges();
   }
 
   submitForm(): Promise<void> {
@@ -138,10 +148,12 @@ export class CreateTimesheetComponent
     return this.service.goToList();
   }
 
-  addPresetTasksToForm(tasks: PresetTaskItem[]): void {
-    const mappedTasks = tasks.map((task) => ({
-      ...task,
-      time: StringUtil.numberToTime(task.time),
+  addPresetTasksToForm(presetTasks: PresetTaskItem[]): void {
+    const mappedTasks = presetTasks.map((x) => ({
+      ...x,
+      id: 0,
+      time: StringUtil.numberToTime(x.time),
+      presetTaskItemId: x.id,
     }));
     const tasksFormArray = this.form.controls.tasks;
     FormUtil.addItemsToFormArray(mappedTasks, tasksFormArray, getTaskItemFormGroup);

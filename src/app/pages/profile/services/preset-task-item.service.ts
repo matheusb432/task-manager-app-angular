@@ -17,7 +17,12 @@ import { PresetTaskItemApiService } from './preset-task-item-api.service';
 })
 export class PresetTaskItemService extends FormService<PresetTaskItem> implements OnDestroy {
   private destroyed$ = new Subject<boolean>();
-  private tasks$ = new BehaviorSubject<PresetTaskItem[]>([]);
+  private _tasks$ = new BehaviorSubject<PresetTaskItem[]>([]);
+
+  get tasks$() {
+    return this._tasks$.asObservable();
+  }
+
   taskOptions$ = this.tasks$.pipe(map((tasks) => PresetTaskItemService.toOptions(tasks)));
 
   constructor(
@@ -38,6 +43,15 @@ export class PresetTaskItemService extends FormService<PresetTaskItem> implement
     this.app.clearSessionState$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this._item$.next(undefined);
       this._listItems$.next([]);
+    });
+
+    this.listItems$.pipe(takeUntil(this.destroyed$)).subscribe((items) => {
+      const loaded = this._tasks$.getValue();
+      const loadedIds = loaded.map((x) => x.id);
+      const notAlreadyLoaded = items.filter((x) => !loadedIds.includes(x.id));
+
+      if (ArrayUtil.isEmpty(notAlreadyLoaded)) return;
+      this._tasks$.next([...loaded, ...notAlreadyLoaded]);
     });
   }
 
@@ -60,10 +74,10 @@ export class PresetTaskItemService extends FormService<PresetTaskItem> implement
       loadings: LoadingService.createManyFromId(ElementIds.PresetTaskItemFormTasks),
     });
 
-    this.tasks$.next(res);
+    this._tasks$.next(res);
   };
 
-  hasTasks = () => !ArrayUtil.isEmpty(this.tasks$.getValue());
+  hasTasks = () => !ArrayUtil.isEmpty(this._tasks$.getValue());
 
   convertToFormValue(item: PresetTaskItem): Partial<PresetTaskItemFormValue> {
     return {
@@ -93,6 +107,9 @@ export class PresetTaskItemService extends FormService<PresetTaskItem> implement
       duplicateSuccess: 'Task duplicated successfully!',
     };
   };
+
+  taskTitleById$ = (id: number | null | undefined) =>
+    this.tasks$.pipe(map((tasks) => tasks.find((task) => task.id === id)?.title));
 
   static toOptions(items: PresetTaskItem[]): SelectOption<number>[] {
     return items
