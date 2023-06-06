@@ -8,6 +8,7 @@
     [formControlName]="fcName"
     [placeholder]="placeholder"
     [id]="id"
+    onmousewheel="blur()"
     (keydown)="keydownPressed.emit($event)"
   />
   <app-icon

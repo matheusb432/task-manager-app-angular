@@ -129,6 +129,7 @@ export class TimesheetFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.form.reset();
     PubSubUtil.completeDestroy(this.destroyed$);
   }
 

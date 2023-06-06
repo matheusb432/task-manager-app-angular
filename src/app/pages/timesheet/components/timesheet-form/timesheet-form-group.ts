@@ -16,7 +16,7 @@ export class TimesheetFormGroup extends FormGroup<TimesheetForm> {
     const tasks = value.tasks.map((task) => {
       let title = '';
       if (!task.presetTaskItemId) {
-        title = task.title;
+        title = task.title ?? '';
       }
       return {
         ...task,
@@ -62,7 +62,7 @@ export const getTimesheetNoteForm = (): TimesheetNoteForm => {
 export interface TaskItemForm {
   id: FormControl<number | null>;
   presetTaskItemId: FormControl<number | null>;
-  title: FormControl<string>;
+  title: FormControl<string | null>;
   comment: FormControl<string | null>;
   time: FormControl<string>;
   rating: FormControl<number | null>;
@@ -78,11 +78,10 @@ export const getTaskItemForm = (): TaskItemForm => {
     id: new FormControl(null),
     presetTaskItemId: new FormControl<number | null>(null),
     title: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(100)],
+      validators: [Validators.maxLength(100)],
     }),
     comment: new FormControl(''),
-    time: new FormControl('00:00', { nonNullable: true, validators: [Validators.required] }),
+    time: new FormControl('00:00', { nonNullable: true }),
     rating: new FormControl<number | null>(null, {
       validators: [Validators.min(0), Validators.max(5)],
     }),
@@ -101,7 +100,7 @@ export const getTimesheetForm = (initialDate: Date): TimesheetForm => {
     }),
     finished: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
     notes: new FormArray<FormGroup<TimesheetNoteForm>>([]),
-    tasks: new FormArray([getTaskItemFormGroup()]),
+    tasks: new FormArray<FormGroup<TaskItemForm>>([]),
   };
 };
 

@@ -70,7 +70,7 @@
           [titleText]="metrics.averageRating + ' average rating'"
           [icon]="Icons.Star"
         >
-          {{ metrics.averageRating }}
+          {{ metrics.averageRating | number : '1.0-1' }}
         </app-timesheet-slide-span>
       </ng-template>
       <ng-container *ngTemplateOutlet="slideBodyTemplate; context: { $implicit: profile$ | async }">
