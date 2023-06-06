@@ -24,7 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormLayoutComponent } from '../../layouts/form-layout/form-layout.component';
 
 @Component({
-  selector: 'app-input [fcName] [labelText]',
+  selector: 'app-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,8 +41,8 @@ import { FormLayoutComponent } from '../../layouts/form-layout/form-layout.compo
   ],
 })
 export class InputComponent extends WithDestroyed implements OnInit, OnDestroy, OnChanges {
-  @Input() fcName!: string;
-  @Input() labelText!: string;
+  @Input({ required: true }) fcName!: string;
+  @Input({ required: true }) labelText!: string;
   @Input() labelIcon?: IconConfig<never>;
   @Input() type = 'text';
   @Input() helpers?: string[];

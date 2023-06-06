@@ -3,7 +3,7 @@ import { MonthSlide } from 'src/app/models';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-month-slide [slide]',
+  selector: 'app-month-slide',
   templateUrl: './month-slide.component.html',
   styleUrls: ['./month-slide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,7 +11,7 @@ import { NgClass } from '@angular/common';
   imports: [NgClass],
 })
 export class MonthSlideComponent {
-  @Input() slide!: MonthSlide;
+  @Input({ required: true }) slide!: MonthSlide;
 
   @Output() selectedSlide = new EventEmitter<MonthSlide>();
 

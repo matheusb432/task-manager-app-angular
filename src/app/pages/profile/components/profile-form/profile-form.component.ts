@@ -21,7 +21,7 @@ import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layo
 import { PresetTaskItemService } from '../../services/preset-task-item.service';
 
 @Component({
-  selector: 'app-profile-form [form] [formType] [cancel]',
+  selector: 'app-profile-form [cancel]',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,8 +43,8 @@ export class ProfileFormComponent {
 
   private modalService = inject(ModalService);
 
-  @Input() form!: ProfileFormGroup;
-  @Input() formType!: FormTypes;
+  @Input({ required: true }) form!: ProfileFormGroup;
+  @Input({ required: true }) formType!: FormTypes;
 
   @Output() save = new EventEmitter<ProfileFormGroup>();
   @Output() cancel = new EventEmitter<void>();

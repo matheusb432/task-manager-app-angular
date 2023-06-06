@@ -13,7 +13,7 @@ import { TimesheetService } from '../../services/timesheet.service';
 import { TimesheetSlideSpanComponent } from '../timesheet-slide-span/timesheet-slide-span.component';
 
 @Component({
-  selector: 'app-timesheet-slide [slide]',
+  selector: 'app-timesheet-slide',
   templateUrl: './timesheet-slide.component.html',
   styleUrls: ['./timesheet-slide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +39,7 @@ export class TimesheetSlideComponent {
 
   @Output() selectedSlide = new EventEmitter<DateSlide>();
 
-  @Input()
+  @Input({ required: true })
   get slide(): DateSlide {
     return this._slide;
   }
