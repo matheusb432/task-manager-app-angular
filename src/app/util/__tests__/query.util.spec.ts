@@ -17,60 +17,61 @@ describe('Util: Query', () => {
 
   describe('buildODataQuery', () => {
     it('should build an OData query string', () => {
-      const result1 = QueryUtil.buildODataQuery('https://example.com', {
+      const result = QueryUtil.buildODataQuery('https://example.com', {
         filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
         orderBy: ['name', 'asc'],
       });
 
-      const expectedParams1 = {
+      const expectedParams = {
         filter: "$filter=(name eq 'John') and (age ge 20)",
         orderBy: '$orderby=name asc',
       };
 
-      expect(result1.length).toEqual(
+      expect(result.length).toEqual(
         "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=name asc"
           .length
       );
-      for (const param of Object.values(expectedParams1)) {
-        expect(result1).toContain(param);
+      for (const param of Object.values(expectedParams)) {
+        expect(result).toContain(param);
       }
+    });
 
-      const result2 = QueryUtil.buildODataQuery('https://example.com', {
-        filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
-        orderBy: [['nested', 'prop', 'test'], 'asc'],
+    it('should remove undefined filters', () => {
+      const result = QueryUtil.buildODataQuery('https://example.com', {
+        filter: { name: 'John', age: undefined, lastName: [[ODataOperators.Contains, undefined]] },
+        orderBy: ['name', 'asc'],
       });
 
-      const expectedParams2 = {
-        filter: "$filter=(name eq 'John') and (age ge 20)",
-        orderBy: '$orderby=nested/prop/test asc',
+      const expectedParams = {
+        filter: "$filter=(name eq 'John')",
+        orderBy: '$orderby=name asc',
       };
 
-      expect(result2.length).toEqual(
-        "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=nested/prop/test asc"
-          .length
+      expect(result.length).toEqual(
+        "https://example.com/odata?$filter=(name eq 'John')&$orderby=name asc".length
       );
-      for (const param of Object.values(expectedParams2)) {
-        expect(result2).toContain(param);
+      for (const param of Object.values(expectedParams)) {
+        expect(result).toContain(param);
       }
     });
 
     it('should handle nested orderby props', () => {
-      const result2 = QueryUtil.buildODataQuery('https://example.com', {
+      const result = QueryUtil.buildODataQuery('https://example.com', {
         filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
         orderBy: [['nested', 'prop', 'test'], 'asc'],
       });
 
-      const expectedParams2 = {
+      const expectedParams = {
         filter: "$filter=(name eq 'John') and (age ge 20)",
         orderBy: '$orderby=nested/prop/test asc',
       };
 
-      expect(result2.length).toEqual(
+      expect(result.length).toEqual(
         "https://example.com/odata?$filter=(name eq 'John') and (age ge 20)&$orderby=nested/prop/test asc"
           .length
       );
-      for (const param of Object.values(expectedParams2)) {
-        expect(result2).toContain(param);
+      for (const param of Object.values(expectedParams)) {
+        expect(result).toContain(param);
       }
     });
 

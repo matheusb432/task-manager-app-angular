@@ -13,6 +13,8 @@ import { assertAreEqual } from './test-utils';
 import { AuthApiService } from '../api/auth-api.service';
 import { PageService } from '../page.service';
 import { ToastService } from '../toast.service';
+import { ProfileService } from 'src/app/pages/profile/services/profile.service';
+import { noop } from 'rxjs';
 
 describe('Service: Auth', () => {
   let service: AuthService;
@@ -50,6 +52,12 @@ describe('Service: Auth', () => {
         AuthService,
         AuthApiService,
         PageService,
+        {
+          provide: ProfileService,
+          useValue: {
+            reloadUserProfiles: () => noop(),
+          },
+        },
         { provide: ToastService, useValue: toastService },
         { provide: STORE_SERVICE, useClass: LocalStorageService },
         { provide: TOKEN_DECODER_FN, useValue: (token: string, _: unknown) => token },

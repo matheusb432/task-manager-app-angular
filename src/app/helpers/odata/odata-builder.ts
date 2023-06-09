@@ -46,23 +46,29 @@ export class ODataBuilder {
 
       if (value instanceof Array) {
         value.forEach(([operator, filter]) => {
+          const normalized = this.normalizeValue(filter);
+
+          if (normalized === undefined) return;
           if (operator === ODataOperators.Contains) {
-            filterString += `contains(${key}, ${this.normalizeValue(filter)}) and `;
+            filterString += `contains(${key}, ${normalized}) and `;
 
             return;
           }
 
-          filterString += `(${key} ${operator} ${this.normalizeValue(filter)}) and `;
+          filterString += `(${key} ${operator} ${normalized}) and `;
         });
       } else {
-        filterString += `(${key} eq ${this.normalizeValue(value)}) and `;
+        const normalized = this.normalizeValue(value);
+        filterString += normalized !== undefined ? `(${key} eq ${normalized}) and ` : '';
       }
     }
 
     return filterString.slice(0, -5);
   }
 
-  private normalizeValue(value: ODataFilterValue): string {
+  private normalizeValue(value: ODataFilterValue): string | undefined {
+    if (value == null) return undefined;
+
     if (value instanceof Date) return DateUtil.formatDateToUniversalFormat(value);
 
     return typeof value === 'string' ? `'${value}'` : `${value}`;
