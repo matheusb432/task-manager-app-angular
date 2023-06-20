@@ -138,6 +138,12 @@ export class DateUtil {
     return result;
   };
 
+  static addWeeks = (date: Date, weeks: number): Date => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + weeks * 7);
+    return result;
+  };
+
   static daysDiff = (startDate: Date, endDate: Date): number => {
     const oneDay = 24 * 60 * 60 * 1000;
     return Math.round(Math.abs((startDate.getTime() - endDate.getTime()) / oneDay));

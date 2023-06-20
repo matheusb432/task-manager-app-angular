@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, map, takeUntil, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import {
+  TimesheetAverageMetrics,
   Nullish,
   PaginationOptions,
   Timesheet,
@@ -46,6 +47,57 @@ export class TimesheetService extends FormService<Timesheet> implements OnDestro
 
   get metricsStore$() {
     return this._metricsStore$.asObservable();
+  }
+
+  get metricsList$() {
+    return this.metricsStore$.pipe(
+      map((metricsStore) => {
+        const { byDate } = metricsStore;
+
+        return Object.values(byDate);
+      })
+    );
+  }
+
+  get avgMetrics$(): Observable<TimesheetAverageMetrics | null> {
+    return this.metricsList$.pipe(
+      map((metricsList) => {
+        if (!metricsList.length) return null;
+
+        let totalTasks = 0;
+        let workedHours = 0;
+        let averageRating = 0;
+        const total = metricsList.length;
+
+        for (const metrics of metricsList) {
+          if (metrics == null) continue;
+
+          totalTasks += metrics.totalTasks ?? 0;
+          workedHours += metrics.workedHours ?? 0;
+          averageRating += metrics.averageRating ?? 0;
+        }
+        const dayAvgs = {
+          totalTasks: totalTasks / total,
+          workedHours: workedHours / total,
+          averageRating: averageRating / total,
+        };
+
+        const result: TimesheetAverageMetrics = {
+          total,
+          totalTasks,
+          workedHours,
+          averageRating,
+          dayAvgs,
+          weekAvgs: {
+            totalTasks: dayAvgs.totalTasks * 7,
+            workedHours: dayAvgs.workedHours * 7,
+            averageRating: dayAvgs.averageRating * 7,
+          },
+        };
+
+        return result;
+      })
+    );
   }
 
   get unavailableDates$() {

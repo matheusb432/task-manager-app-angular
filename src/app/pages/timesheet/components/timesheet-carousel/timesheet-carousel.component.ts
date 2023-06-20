@@ -56,7 +56,7 @@ export class TimesheetCarouselComponent extends WithDestroyed implements OnInit,
     items: this.calculateDateItemsFor24PxMargin(),
     nav: true,
     lazyLoad: true,
-    lazyLoadEager: 10,
+    // lazyLoadEager: 10,
     freeDrag: true,
     navSpeed: 350,
   };

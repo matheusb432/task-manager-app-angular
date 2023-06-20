@@ -80,6 +80,23 @@ describe('Util: Date', () => {
     });
   });
 
+  describe('addWeeks', () => {
+    it('should return the date with the added weeks', () => {
+      const date = new Date(2023, 4, 1);
+      expect(DateUtil.addWeeks(date, 1)).toEqual(new Date(2023, 4, 8));
+    });
+
+    it('should move to the next month', () => {
+      const date = new Date(2023, 4, 31);
+      expect(DateUtil.addWeeks(date, 1)).toEqual(new Date(2023, 5, 7));
+    });
+
+    it('should not modify the original date', () => {
+      const date = new Date(2023, 4, 1);
+      DateUtil.addWeeks(date, 1);
+      expect(date).toEqual(new Date(2023, 4, 1));
+    });
+  });
   describe('formatDay', () => {
     it('should return the day with a leading zero', () => {
       expect(DateUtil.formatDay(new Date(2023, 4, 1))).toEqual('01');

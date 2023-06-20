@@ -10,8 +10,15 @@ import {
   pairwise,
   startWith,
   takeUntil,
+  tap,
 } from 'rxjs';
-import { DateRangeValue } from '../shared/components/inputs/date-range-picker/date-range-form-group';
+import {
+  DateRangeForm,
+  DateRangeValue,
+} from '../shared/components/inputs/date-range-picker/date-range-form-group';
+import { FormGroup } from '@angular/forms';
+import { AppService } from '../services';
+import { AsNonNullable } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +52,20 @@ export class PubSubUtil {
         filter(PubSubUtil.filterFromPair),
         map(([, curr]) => curr)
       );
+  }
+
+  static createAppDateRangeSub(
+    range: FormGroup<DateRangeForm>,
+    app: AppService,
+    destroyed$: Subject<boolean>
+  ) {
+    return range.valueChanges
+      .pipe(
+        PubSubUtil.ignoreIrrelevantDateRangeChanges(),
+        takeUntil(destroyed$),
+        tap((value) => app.setDateRange(value as AsNonNullable<DateRangeValue>))
+      )
+      .subscribe();
   }
 
   private static filterFromPair<T extends Partial<DateRangeValue>>(pair: [T, T]) {

@@ -1,19 +1,15 @@
 import { NgClass, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { tap } from 'rxjs';
-import { AsNonNullable } from 'src/app/models';
+import { Subject } from 'rxjs';
 import { STORE_SERVICE } from 'src/app/services/interfaces';
 import { DateUtil, FormUtil, PubSubUtil, StoreKeys, paths } from 'src/app/util';
 import { TitleComponent } from '../../../shared/components/title/title.component';
 
 import { AppService } from 'src/app/services';
 import { DateRangePickerComponent } from 'src/app/shared/components/inputs/date-range-picker';
-import {
-  DateRangeForm,
-  DateRangeValue,
-} from 'src/app/shared/components/inputs/date-range-picker/date-range-form-group';
+import { DateRangeForm } from 'src/app/shared/components/inputs/date-range-picker/date-range-form-group';
 import { SlideComponent } from 'src/app/shared/components/inputs/slide/slide.component';
 import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
 import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
@@ -42,11 +38,13 @@ import { TimesheetService } from '../services/timesheet.service';
     RouterOutlet,
   ],
 })
-export class TimesheetsComponent implements OnInit {
+export class TimesheetsComponent implements OnInit, OnDestroy {
   private service = inject(TimesheetService);
   private app = inject(AppService);
   private store = inject(STORE_SERVICE);
   private profileService = inject(ProfileService);
+
+  private destroyed$ = new Subject<boolean>();
 
   paths = paths;
 
@@ -82,13 +80,12 @@ export class TimesheetsComponent implements OnInit {
     this.initSubs();
   }
 
+  ngOnDestroy(): void {
+    PubSubUtil.completeDestroy(this.destroyed$);
+  }
+
   private initSubs(): void {
-    this.range.valueChanges
-      .pipe(
-        PubSubUtil.ignoreIrrelevantDateRangeChanges(),
-        tap((value) => this.app.setDateRange(value as AsNonNullable<DateRangeValue>))
-      )
-      .subscribe();
+    PubSubUtil.createAppDateRangeSub(this.range, this.app, this.destroyed$);
   }
 
   initFilterForm(): void {

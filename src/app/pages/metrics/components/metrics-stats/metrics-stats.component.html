@@ -1,0 +1,33 @@
+<article class="stats" *ngIf="avgMetrics; else noMetrics">
+  <div class="stat">
+    <header class="title">Total tasks</header>
+    <div class="content">
+      <span>
+        {{ avgMetrics.totalTasks }}
+      </span>
+      <app-icon [icon]="Icons.Assignment" [size]="48"></app-icon>
+    </div>
+  </div>
+  <div class="stat">
+    <header class="title">Total hours</header>
+    <div class="content">
+      <span>
+        {{ avgMetrics.workedHours }}
+      </span>
+      <app-icon [icon]="Icons.Timelapse" [size]="48"></app-icon>
+    </div>
+  </div>
+  <div class="stat" style="border-right: none">
+    <header class="title">Average rating</header>
+    <div class="content">
+      <span>
+        {{ avgMetrics.averageRating }}
+      </span>
+      <app-icon [icon]="Icons.Star" [size]="48"></app-icon>
+    </div>
+  </div>
+</article>
+<ng-template #noMetrics>
+  <h2>No metrics found!</h2>
+  <p>Create a timesheet with any profile to see your metrics here</p>
+</ng-template>

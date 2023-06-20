@@ -14,6 +14,14 @@ export interface TimesheetMetrics {
   averageRating: number;
 }
 
+type Metrics = Omit<TimesheetMetrics, 'id' | 'date'>;
+
+export type TimesheetAverageMetrics = Metrics & {
+  total: number;
+  dayAvgs: Metrics;
+  weekAvgs: Metrics;
+};
+
 export interface TimesheetMetricsStore {
   byDate: Record<string, TimesheetMetrics | undefined>;
   dates: string[];
