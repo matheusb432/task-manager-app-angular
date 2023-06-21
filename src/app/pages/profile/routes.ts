@@ -25,8 +25,11 @@ export const PROFILE_ROUTES: Routes = [
       },
     ],
   },
+];
+
+export const PRESET_TASK_ITEM_ROUTES: Routes = [
   {
-    path: Pages.PresetTaskItems,
+    path: '',
     component: PresetTaskItemsComponent,
     children: [
       {

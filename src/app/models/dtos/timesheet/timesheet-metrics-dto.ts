@@ -14,7 +14,7 @@ export interface TimesheetMetrics {
   averageRating: number;
 }
 
-type Metrics = Omit<TimesheetMetrics, 'id' | 'date'>;
+export type Metrics = Omit<TimesheetMetrics, 'id' | 'date'>;
 
 export type TimesheetAverageMetrics = Metrics & {
   total: number;

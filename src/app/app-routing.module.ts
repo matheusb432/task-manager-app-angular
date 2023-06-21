@@ -37,6 +37,11 @@ const routes: Routes = [
     canActivate: [() => canActivateAuth()],
   },
   {
+    path: Pages.PresetTaskItems,
+    loadChildren: () => import('./pages/profile/routes').then((m) => m.PRESET_TASK_ITEM_ROUTES),
+    canActivate: [() => canActivateAuth()],
+  },
+  {
     path: Pages.Users,
     loadChildren: () => import('./pages/user/routes').then((m) => m.USER_ROUTES),
     canActivate: [() => canActivateAuthAdmin()],

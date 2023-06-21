@@ -1,21 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { AppService } from 'src/app/services';
+import { IconComponent } from 'src/app/shared/components/icon/icon.component';
+import { DateRangePickerComponent } from 'src/app/shared/components/inputs/date-range-picker';
+import { DateRangeForm } from 'src/app/shared/components/inputs/date-range-picker/date-range-form-group';
+import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
 import { PageLayoutComponent } from 'src/app/shared/components/layouts/page-layout/page-layout.component';
 import { TitleComponent } from 'src/app/shared/components/title/title.component';
+import { DateUtil, FormUtil, Icons, PubSubUtil } from 'src/app/util';
 import { ProfileService } from '../../profile/services/profile.service';
 import { TimesheetService } from '../../timesheet/services/timesheet.service';
-import { CommonModule } from '@angular/common';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DateRangePickerComponent } from 'src/app/shared/components/inputs/date-range-picker';
-import {
-  DateRangeForm,
-  DateRangeValue,
-} from 'src/app/shared/components/inputs/date-range-picker/date-range-form-group';
-import { DateUtil, FormUtil, Icons, PubSubUtil } from 'src/app/util';
-import { Subject, takeUntil, tap } from 'rxjs';
-import { AsNonNullable } from 'src/app/models';
-import { AppService } from 'src/app/services';
-import { FormLayoutComponent } from 'src/app/shared/components/layouts/form-layout/form-layout.component';
-import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { MetricsStatsComponent } from '../components/metrics-stats/metrics-stats.component';
 
 @Component({

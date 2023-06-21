@@ -1,31 +1,16 @@
-<article class="stats" *ngIf="avgMetrics; else noMetrics">
-  <div class="stat">
-    <header class="title">Total tasks</header>
-    <div class="content">
-      <span>
-        {{ avgMetrics.totalTasks }}
-      </span>
-      <app-icon [icon]="Icons.Assignment" [size]="48"></app-icon>
-    </div>
+<article class="stat-contents" *ngIf="avgMetrics; else noMetrics">
+  <div class="stat-section">
+    <h2 class="stat-title">Totals</h2>
+    <app-stats [stats]="stats"></app-stats>
+    <app-stats [stats]="tasksStats"></app-stats>
   </div>
-  <div class="stat">
-    <header class="title">Total hours</header>
-    <div class="content">
-      <span>
-        {{ avgMetrics.workedHours }}
-      </span>
-      <app-icon [icon]="Icons.Timelapse" [size]="48"></app-icon>
-    </div>
+  <div class="divider"></div>
+  <div class="stat-section">
+    <h2 class="stat-title">Averages</h2>
+    <app-stats [stats]="dayStats"></app-stats>
+    <app-stats [stats]="weekStats"></app-stats>
   </div>
-  <div class="stat" style="border-right: none">
-    <header class="title">Average rating</header>
-    <div class="content">
-      <span>
-        {{ avgMetrics.averageRating }}
-      </span>
-      <app-icon [icon]="Icons.Star" [size]="48"></app-icon>
-    </div>
-  </div>
+  <div class="divider"></div>
 </article>
 <ng-template #noMetrics>
   <h2>No metrics found!</h2>

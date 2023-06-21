@@ -41,12 +41,18 @@ $sidebar-bg: var(--bg-color);
 .logo {
   @include mxs.dash(bottom, 4px, 2px);
   @include mxs.scale-out-if-hidden();
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
   height: 56px;
   font-size: 1rem;
+  transition: scale 0.15s ease-in-out;
+
+  &:active {
+    scale: 0.95;
+  }
 }
 
 .scrollbar-hider {

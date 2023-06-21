@@ -8,15 +8,11 @@ import { DateRangeValue } from '../shared/components/inputs/date-range-picker/da
   providedIn: 'root',
 })
 export class AppService {
-  // TODO uncomment
-  // private readonly defaultRange = {
-  //   start: DateUtil.addWeeks(new Date(), -2),
-  //   end: DateUtil.addWeeks(new Date(), 1),
-  // };
   private readonly defaultRange = {
-    start: DateUtil.addMonths(new Date(), -2),
+    start: DateUtil.addWeeks(new Date(), -2),
     end: DateUtil.addWeeks(new Date(), 1),
   };
+
   private readonly initialDateString = DateUtil.formatDateToUniversalFormat(new Date());
 
   private _activeDateString$ = new BehaviorSubject<string>(this.initialDateString);

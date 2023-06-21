@@ -3,14 +3,5 @@
 }
 
 .action-icon {
-  transition: all 0.15s;
   cursor: pointer;
-
-  &:hover {
-    filter: brightness(0.7);
-  }
-
-  &:active {
-    filter: brightness(0.5);
-  }
 }

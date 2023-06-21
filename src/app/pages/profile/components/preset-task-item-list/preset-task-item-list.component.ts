@@ -104,7 +104,7 @@ export class PresetTaskItemListComponent implements OnInit {
 
   private getPaginationQuery(page: number, itemsPerPage?: number): PaginationOptions {
     return PaginationOptions.from(page, itemsPerPage ?? this.service.getItemsPerPage(), {
-      filter: { name: this.prevFilter ? [[ODataOperators.Contains, this.prevFilter]] : undefined },
+      filter: { title: this.prevFilter ? [[ODataOperators.Contains, this.prevFilter]] : undefined },
       orderBy: QueryUtil.orderByToOData(this.config.orderBy),
     });
   }

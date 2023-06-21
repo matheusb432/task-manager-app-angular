@@ -8,7 +8,7 @@
     (mouseenter)="hovering = true"
     (mouseleave)="hovering = false"
   >
-    <h1 class="logo" title="Task Manager App">
+    <h1 class="logo" title="Task Manager App" [routerLink]="paths.home">
       <span *ngIf="!hovering; else fullLogo">TMA</span>
       <ng-template #fullLogo>
         <span>Task Manager App </span>

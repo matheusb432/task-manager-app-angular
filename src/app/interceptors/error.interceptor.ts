@@ -34,7 +34,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       404: 'Resource not found',
       409: 'Resource already exists',
       400: 'Bad request',
-      default: 'Internal Server error',
+      default: 'Internal server error',
     };
 
     this.toaster.error(errorMessages[code] || errorMessages.default);
@@ -44,7 +44,5 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (environment.production) return;
 
     console.table(err?.error?.errors);
-
-    console.error(err);
   }
 }
