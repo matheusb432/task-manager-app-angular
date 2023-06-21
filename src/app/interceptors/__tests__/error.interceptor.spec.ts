@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { map } from 'rxjs/operators';
 import { ErrorInterceptor } from 'src/app/interceptors';
-import { ToastService } from 'src/app/services';
+import { ToastService } from 'src/app/services/toast.service';
 
 describe('Interceptor: Error', () => {
   let mockToastService: ToastService;

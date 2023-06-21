@@ -7,5 +7,4 @@ export { FilterService } from './filter.service';
 export { LoadingService } from './loading.service';
 export { ModalService } from './modal.service';
 export { LocalStorageService, LOCAL_STORAGE } from './local-storage.service';
-export { ToastService } from './toast.service';
 export { PageService } from './page.service';

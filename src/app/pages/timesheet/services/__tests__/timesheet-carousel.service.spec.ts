@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { DateSlide, DaysOfWeek } from 'src/app/models';
-import { ToastService } from 'src/app/services';
+import { ToastService } from 'src/app/services/toast.service';
 import { mockToastService } from 'src/app/services/__tests__/test-utils';
 import { ElementIds } from 'src/app/util';
 import { TimesheetCarouselService } from '../timesheet-carousel.service';

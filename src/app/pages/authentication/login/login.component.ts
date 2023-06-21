@@ -1,10 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AuthService, ToastService } from 'src/app/services';
+import { AuthService } from 'src/app/services';
 import { StringUtil } from 'src/app/util';
 import { LoginFormComponent } from '../components';
 import { LoginFormGroup, getLoginForm } from '../components/login-form';
 import { AuthPageLayoutComponent } from 'src/app/shared/components/layouts/auth-page-layout/auth-page-layout.component';
 import { TitleComponent } from 'src/app/shared/components/title/title.component';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-login',

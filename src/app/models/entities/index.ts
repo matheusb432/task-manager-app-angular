@@ -1,6 +1,3 @@
-export * from './goal-step';
-export * from './goal-task-item';
-export * from './goal';
 export * from './preset-task-item';
 export * from './profile-preset-task-item';
 export * from './profile-type';

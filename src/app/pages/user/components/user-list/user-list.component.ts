@@ -5,7 +5,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ODataOperators } from 'src/app/helpers/odata';
 import { TableConfig, User } from 'src/app/models';
 import { PaginationOptions } from 'src/app/models/configs/pagination-options';
-import { ToastService } from 'src/app/services';
+import { ToastService } from 'src/app/services/toast.service';
 import { FilterService } from 'src/app/services/filter.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { SearchComponent } from 'src/app/shared/components/inputs/search/search.component';

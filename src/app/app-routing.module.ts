@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Pages, paths } from './util';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { canActivateAuth, canActivateAuthPage, canActivateAuthAdmin } from './guards/auth.guard';
 import { RootPageComponent } from './pages/root-page/root-page.component';
@@ -68,10 +67,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/authentication/routes').then((m) => m.AUTH_ROUTES),
     canActivateChild: [() => canActivateAuthPage()],
   },
-  // {
-  //   path: Pages.NotFound,
-  //   component: NotFoundComponent,
-  // },
   {
     path: '**',
     redirectTo: paths.notFound,

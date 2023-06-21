@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService } from 'src/app/services';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { IconButtonComponent } from '../buttons/icon-button/icon-button.component';
 import { Icons } from 'src/app/util';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-toast',
@@ -14,7 +14,7 @@ import { Icons } from 'src/app/util';
       <span class="data">{{ data }}</span>
       <span class="actions">
         <ng-template [ngIf]="count$ | async" let-count>
-          <span *ngIf="count > 1"> 1 / {{ count }} </span>
+          <span *ngIf="count > 1"> 1 of {{ count }} </span>
         </ng-template>
         <app-icon-button
           (clicked)="close()"
@@ -42,20 +42,21 @@ import { Icons } from 'src/app/util';
         display: flex;
         justify-content: flex-end;
         align-items: center;
+      }
 
-        app-icon-button {
-          margin-left: 0.5rem;
-        }
+      app-icon-button {
+        margin-left: 0.5rem;
       }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastComponent {
+  private service = inject(ToastService);
   Icons = Icons;
   count$ = this.service.toastCount$;
 
-  constructor(private service: ToastService, @Inject(MAT_SNACK_BAR_DATA) public data: string) {}
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {}
 
   close(): void {
     this.service.closeToast();

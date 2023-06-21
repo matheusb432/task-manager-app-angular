@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Metrics, Nullish, TimesheetAverageMetrics } from 'src/app/models';
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { Icons, StringUtil } from 'src/app/util';
 import { StatsComponent } from 'src/app/shared/components/stats/stats.component';
 import { Stat } from 'src/app/shared/components/stats/types';
+import { AppService } from 'src/app/services';
 
 @Component({
   selector: 'app-metrics-stats',
@@ -15,6 +16,10 @@ import { Stat } from 'src/app/shared/components/stats/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MetricsStatsComponent {
+  private app = inject(AppService);
+
+  dateRange$ = this.app.dateRange$;
+
   @Input({ required: true }) avgMetrics!: TimesheetAverageMetrics | null;
 
   Icons = Icons;

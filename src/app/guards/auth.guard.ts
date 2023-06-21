@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
-import { AuthService, ToastService } from '../services';
+import { AuthService } from '../services';
 import { paths } from '../util';
+import { ToastService } from '../services/toast.service';
 
 export const canActivateAuth = (service = inject(AuthService)): true | UrlTree => {
   const router = inject(Router);

@@ -9,8 +9,8 @@ import {
 import { BehaviorSubject, Subject, concatMap, filter, takeUntil } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ToastData } from 'src/app/models';
-import { AlertTypes, PubSubUtil } from '../util';
 import { ToastComponent } from '../shared/components/toast/toast.component';
+import { AlertTypes, PubSubUtil } from '../util';
 
 type ToastConfig = MatSnackBarConfig<string>;
 
@@ -42,12 +42,18 @@ export class ToastService implements OnDestroy {
     this._toastQueue$
       .pipe(
         takeUntil(this.destroyed$),
+
         filter((nextInQueue): nextInQueue is MatSnackBarConfig<string> => {
-          const isValidToast = nextInQueue != null;
+          const isValid = nextInQueue != null;
 
-          if (isValidToast) this.incrementCount();
+          if (!isValid) return false;
 
-          return isValidToast;
+          const currentToastText = this._snackBar._openedSnackBarRef?.instance?.data;
+          const alreadyOpen = currentToastText === nextInQueue?.data;
+          if (alreadyOpen) return false;
+          this.incrementCount();
+
+          return true;
         }),
         concatMap((nextInQueue) => {
           const ref = this.openToast(nextInQueue);
