@@ -72,6 +72,10 @@ export class TableComponent<T extends TableItem> implements OnInit, OnChanges {
 
   isSmallScreen$ = PubSubUtil.isInnerWidthLessThan$(1024);
 
+  get hasItems(): boolean {
+    return this.items?.length > 0;
+  }
+
   get itemConfigs(): TableItemConfig<T>[] {
     return this.config.itemConfigs;
   }

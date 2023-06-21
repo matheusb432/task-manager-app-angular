@@ -19,7 +19,7 @@
       <th *ngIf="canShowActions()"></th>
     </tr>
   </thead>
-  <tbody id="cTableBody">
+  <tbody id="cTableBody" *ngIf="hasItems">
     <tr
       *ngFor="let item of orderedItems; let itemIndex = index; trackBy: getItemId"
       class="table-row"
@@ -81,3 +81,7 @@
     <app-loading [size]="48"> </app-loading>
   </div>
 </table>
+<div *ngIf="!hasItems" class="empty-table">
+  <span class="empty-title">No items found!</span>
+  <span class="empty-text">Search for other filters or create an item to see them here.</span>
+</div>

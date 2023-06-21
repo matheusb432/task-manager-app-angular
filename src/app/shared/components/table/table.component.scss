@@ -1,14 +1,16 @@
 $border-color: var(--secondary-dark);
 $table-bg: var(--bg-color);
+$box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+$bottom-margin: 1rem;
 
-table.data-table {
+.data-table {
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: $bottom-margin;
   background: $table-bg;
   border-spacing: 0;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: $box-shadow;
 }
 
 .table-header {
@@ -35,11 +37,11 @@ table.data-table {
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
   z-index: 100;
+}
 
-  app-loading {
-    position: absolute;
-    z-index: 1000;
-  }
+app-loading {
+  position: absolute;
+  z-index: 1000;
 }
 
 th {
@@ -97,4 +99,28 @@ td {
     font-size: 1.25rem;
     margin-right: 1.5rem;
   }
+}
+
+.empty-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  row-gap: 12px;
+  background: $table-bg;
+  padding: 2rem;
+  margin-top: -$bottom-margin;
+  margin-bottom: $bottom-margin;
+  box-shadow: $box-shadow;
+}
+
+.empty-title {
+  font-size: 2.5rem;
+  color: var(--primary);
+}
+
+.empty-text {
+  opacity: 0.6;
 }

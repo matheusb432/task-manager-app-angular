@@ -1,13 +1,8 @@
-$bgGradient: linear-gradient(15deg, var(--bg-color), var(--primary));
-
 .not-found-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: calc(100vh);
-  background: $bgGradient;
 }
 
 .not-found-card {
@@ -21,24 +16,23 @@ $bgGradient: linear-gradient(15deg, var(--bg-color), var(--primary));
   max-height: 440px;
   padding: 2rem;
   border-radius: 0.5rem;
-  background: #fff;
-  color: var(--primary-darker);
+  background-color: var(--bg-color);
+  border: 1px solid var(--secondary-dark);
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
 }
 
-header {
-  .title {
-    font-size: 5rem;
-    font-weight: 700;
-    letter-spacing: 0.05rem;
-    text-align: center;
-  }
+.title {
+  font-size: 5rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  text-align: center;
+  color: var(--danger);
+}
 
-  .subtitle {
-    font-size: 1.25rem;
-    font-weight: 400;
-    letter-spacing: 0.1rem;
-  }
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
 }
 
 .button-label {

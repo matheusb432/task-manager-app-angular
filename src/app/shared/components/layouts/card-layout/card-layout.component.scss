@@ -10,11 +10,11 @@ $border-color: var(--secondary-dark);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: all 0.2s ease-in-out;
+  transition: scale 0.2s ease-in-out;
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1) rotate(-1deg);
+    scale: 1.1;
   }
 
   .card-body {

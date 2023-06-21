@@ -30,11 +30,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   notifyErrorByCode(code: number): void {
     const errorMessages: { [key: number]: string; default: string } = {
-      401: 'Unauthorized access',
-      404: 'Resource not found',
-      409: 'Resource already exists',
-      400: 'Bad request',
-      default: 'Internal server error',
+      401: 'Unauthorized access, please login or request access for this resource',
+      404: 'The resource you are looking for does not exist',
+      409: 'The resource you are trying to create already exists',
+      400: 'Bad request, please check your input',
+      default: 'Internal server error, please try again later',
     };
 
     this.toaster.error(errorMessages[code] || errorMessages.default);

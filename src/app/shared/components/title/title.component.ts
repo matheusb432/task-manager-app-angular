@@ -11,20 +11,18 @@ import { NgIf } from '@angular/common';
   `,
   styles: [
     `
-      header {
-        .title {
-          font-size: 1.875rem;
-          font-weight: 700;
-          line-height: 1.2;
-          letter-spacing: 0.05rem;
-        }
+      .title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.05rem;
+      }
 
-        .subtitle {
-          font-size: 1.25rem;
-          font-weight: 400;
-          letter-spacing: 0.1rem;
-          opacity: 0.6;
-        }
+      .subtitle {
+        font-size: 1.25rem;
+        font-weight: 400;
+        letter-spacing: 0.1rem;
+        opacity: 0.6;
       }
     `,
   ],
