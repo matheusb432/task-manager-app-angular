@@ -93,7 +93,7 @@ export class MetricsStatsComponent {
       {
         id: 2,
         title: 'Average hours per ' + perText,
-        content: StringUtil.numberToTime(metrics.workedHours),
+        content: StringUtil.numberToTime(+metrics.workedHours.toFixed(0)),
         icon: Icons.Timelapse,
       },
     ];

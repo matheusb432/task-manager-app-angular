@@ -81,7 +81,7 @@
     <app-loading [size]="48"> </app-loading>
   </div>
 </table>
-<div *ngIf="!hasItems" class="empty-table">
+<div *ngIf="!hasItems && (isLoading$ | async) === false" class="empty-table">
   <span class="empty-title">No items found!</span>
   <span class="empty-text">Search for other filters or create an item to see them here.</span>
 </div>

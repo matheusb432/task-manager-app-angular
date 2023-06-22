@@ -37,6 +37,33 @@ const profileDetailsCrumbs: Crumb[] = [
   },
 ];
 
+const taskCrumbs: Crumb[] = [
+  ...homeCrumbs,
+  {
+    label: 'Tasks',
+    url: paths.presetTaskItems,
+    icon: Icons.Assignment,
+  },
+];
+
+const taskCreateCrumbs: Crumb[] = [
+  ...taskCrumbs,
+  {
+    label: 'Create',
+    url: paths.presetTaskItemsCreate,
+    icon: Icons.Add,
+  },
+];
+
+const taskDetailsCrumbs: Crumb[] = [
+  ...taskCrumbs,
+  {
+    label: 'Details',
+    url: paths.presetTaskItemsDetails,
+    icon: Icons.PageView,
+  },
+];
+
 const userCrumbs: Crumb[] = [
   ...homeCrumbs,
   {
@@ -105,6 +132,9 @@ export const crumbDefaults = {
   [paths.profiles]: profileCrumbs,
   [paths.profilesCreate]: profileCreateCrumbs,
   [paths.profilesDetails]: profileDetailsCrumbs,
+  [paths.presetTaskItems]: taskCrumbs,
+  [paths.presetTaskItemsCreate]: taskCreateCrumbs,
+  [paths.presetTaskItemsDetails]: taskDetailsCrumbs,
   [paths.users]: userCrumbs,
   [paths.usersCreate]: userCreateCrumbs,
   [paths.usersDetails]: userDetailsCrumbs,
