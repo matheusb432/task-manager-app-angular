@@ -11,12 +11,13 @@ import { RouterModule } from '@angular/router';
     `
       .link {
         text-decoration: none;
-        color: var(--primary);
+        color: var(--primary-dark);
+        font-size: 20px;
         font-family: 'Poppins', sans-serif;
         transition: color 0.2s ease-in-out;
 
         &:hover {
-          color: var(--primary-darker);
+          color: var(--primary);
         }
       }
     `,

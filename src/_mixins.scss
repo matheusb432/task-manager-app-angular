@@ -40,7 +40,7 @@
 
 @mixin sticky-container($paddingX) {
   position: sticky;
-  z-index: 100;
+  z-index: 10;
   width: calc(100% + $paddingX * 2);
   margin-left: -$paddingX;
   padding-right: $paddingX;
