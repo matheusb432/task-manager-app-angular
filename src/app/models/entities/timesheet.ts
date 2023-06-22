@@ -20,8 +20,19 @@ export class Timesheet implements TableItem {
   metrics?: TimesheetMetricsDto;
 
   static tableItems = (): TableItemConfig<Timesheet>[] => [
-    { header: '#', key: 'id', hiddenInLowRes: true },
-    { header: 'Date', key: 'date', pipe: DatePipe },
+    {
+      header: '#',
+      key: 'id',
+      hiddenInLowRes: true,
+    },
+    {
+      header: 'Date',
+      key: 'date',
+      pipe: DatePipe,
+      styles: {
+        minWidth: '160px',
+      },
+    },
     { header: 'Completion', key: 'finished', pipe: FinishedPipe, hiddenInLowRes: true },
     {
       header: 'Tasks',
@@ -42,7 +53,6 @@ export class Timesheet implements TableItem {
       key: ['metrics', 'averageRating'],
       disabledOrderBy: true,
       pipe: DecimalPipe,
-      defaultsTo: 0,
       pipeArgs: ['1.1-2'],
     },
   ];

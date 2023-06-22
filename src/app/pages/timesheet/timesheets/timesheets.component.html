@@ -1,10 +1,16 @@
-<app-title titleText="Timesheets"></app-title>
 <header app-form-layout [id]="'cTimesheetList'" [formGroup]="filterForm" class="search-bar">
-  <div class="slides-container">
-    <app-slide fcName="showList" labelText="List" (changed)="onShowListChanged($event)">
-    </app-slide>
-    <app-slide fcName="showCalendar" labelText="Calendar" (changed)="onShowCalendarChanged($event)">
-    </app-slide>
+  <div class="title">
+    <app-title titleText="Timesheets"></app-title>
+    <div class="slides-container">
+      <app-slide fcName="showList" labelText="List" (changed)="onShowListChanged($event)">
+      </app-slide>
+      <app-slide
+        fcName="showCalendar"
+        labelText="Calendar"
+        (changed)="onShowCalendarChanged($event)"
+      >
+      </app-slide>
+    </div>
   </div>
   <app-date-range-picker
     fgName="range"

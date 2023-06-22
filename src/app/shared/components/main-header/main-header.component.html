@@ -3,16 +3,23 @@
 
   <section class="user-data" *ngIf="setLoggedUser$ | async as loggedUser">
     <div class="user-profile-edit" matTooltip="Edit Your Profile" [routerLink]="paths.myProfile">
-      <span>{{ loggedUser.name }}</span>
-      <app-icon [icon]="Icons.AccountCircle" [color]="undefined"></app-icon>
+      <span class="user-name">{{ loggedUser.name }}</span>
+      <app-icon
+        [icon]="Icons.AccountCircle"
+        [color]="undefined"
+        [forceLargeSizeOnSm]="true"
+      ></app-icon>
     </div>
-    <app-icon
-      appSetId="cMainHeaderLogout"
-      [icon]="Icons.Logout"
-      [clickable]="true"
-      [color]="undefined"
-      matTooltip="Logout"
-      (clicked)="logout()"
-    ></app-icon>
+    <div class="user-profile-edit" (click)="logout()">
+      <span class="logout">Logout</span>
+      <app-icon
+        appSetId="cMainHeaderLogout"
+        [icon]="Icons.Logout"
+        [clickable]="true"
+        [color]="undefined"
+        matTooltip="Logout"
+        [forceLargeSizeOnSm]="true"
+      ></app-icon>
+    </div>
   </section>
 </header>

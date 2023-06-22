@@ -142,7 +142,8 @@ input:-webkit-autofill {
 
 ::-webkit-scrollbar {
   width: 8px;
-  background: var(--secondary);
+  height: 8px;
+  // background: var(--secondary);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {

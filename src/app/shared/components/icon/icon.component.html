@@ -12,7 +12,7 @@
       [color]="color"
       (click)="clicked.emit()"
       [matTooltip]="title"
-      [ngClass]="{ 'action-icon': clickable }"
+      [ngClass]="{ 'action-icon': clickable, 'large-on-sm': forceLargeSizeOnSm }"
       [ngStyle]="getStyles()"
     ></mat-icon>
   </i>

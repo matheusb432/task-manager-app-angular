@@ -28,6 +28,7 @@ export class IconComponent implements OnChanges {
   @Input() ariaLabelText = 'Icon';
   @Input() url?: string;
   @Input() size = 24;
+  @Input() forceLargeSizeOnSm?: boolean;
   @Input() clickable = false;
   @Input() urlType?: DetailsTypes;
   @Input() title = '';

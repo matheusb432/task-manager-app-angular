@@ -43,11 +43,4 @@ export const defaultNavItems: NavItem[] = [
   },
 ];
 
-export const userNavItems: NavItem[] = [
-  {
-    id: 'MyProfile',
-    label: 'My Profile',
-    link: paths.myProfile,
-    icon: Icons.Settings,
-  },
-];
+export const userNavItems: NavItem[] = [];

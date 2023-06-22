@@ -11,7 +11,13 @@ export class PresetTaskItem implements TableItem {
   userId?: number;
 
   static tableItems = (): TableItemConfig<PresetTaskItem>[] => [
-    { header: 'Title', key: 'title' },
+    {
+      header: 'Title',
+      key: 'title',
+      styles: {
+        minWidth: '160px',
+      },
+    },
     { header: 'Time', key: 'time', pipe: TimePipe },
     { header: 'Importance', key: 'importance' },
   ];

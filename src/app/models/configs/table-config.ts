@@ -20,6 +20,9 @@ export interface TableItemConfig<T = unknown> {
   defaultsTo?: unknown;
   pipe?: ProviderToken<PipeTransform>;
   pipeArgs?: unknown[];
+  styles?: {
+    [key: string]: string;
+  };
 }
 
 export interface OrderByConfig<T = unknown> {

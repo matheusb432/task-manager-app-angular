@@ -12,22 +12,37 @@
 .user-data {
   display: flex;
   align-items: center;
-  column-gap: 16px;
-
-  .user-profile-edit {
-    display: flex;
-    align-items: center;
-    text-transform: capitalize;
-    cursor: pointer;
-    column-gap: 16px;
-    transition: opacity 0.15s ease-in-out;
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
+  column-gap: 24px;
 
   span {
     font-weight: bold;
+  }
+}
+
+.user-profile-edit,
+.logout-contianer {
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+  cursor: pointer;
+  column-gap: 8px;
+  transition: opacity 0.15s ease-in-out;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.logout {
+  margin-right: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .user-name {
+    display: none;
+  }
+
+  .logout {
+    display: none;
   }
 }

@@ -48,3 +48,10 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .stat {
+    // font-size: 32px;
+    width: 280px;
+  }
+}

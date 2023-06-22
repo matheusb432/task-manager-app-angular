@@ -26,11 +26,14 @@
   }
 }
 
-@mixin move-out-if-hidden($duration: 0.3s) {
+@mixin move-out-if-hidden($duration: 0.15s) {
   transition: all $duration ease-in-out;
+  opacity: 1;
   &.hidden {
     position: absolute;
+    // transform: translateX(-150%);
     transform: translateX(-150%);
+    opacity: 0;
     visibility: hidden;
     animation: delay-position calc($duration + 0.5s) ease-in-out;
   }

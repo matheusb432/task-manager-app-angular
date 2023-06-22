@@ -7,9 +7,10 @@ $bottom-margin: 1rem;
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin-bottom: $bottom-margin;
   background: $table-bg;
   border-spacing: 0;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+
   box-shadow: $box-shadow;
 }
 
@@ -20,6 +21,11 @@ $bottom-margin: 1rem;
 
 .table-row {
   position: relative;
+  transition: background 0.15s ease-in-out;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
 
   &:last-child td {
     border-bottom: none;
@@ -99,6 +105,11 @@ td {
     font-size: 1.25rem;
     margin-right: 1.5rem;
   }
+}
+
+.scrollable-table {
+  overflow: auto;
+  margin-bottom: $bottom-margin;
 }
 
 .empty-table {

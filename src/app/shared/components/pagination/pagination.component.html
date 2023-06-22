@@ -3,7 +3,7 @@
   [pageSize]="itemsPerPage"
   [pageSizeOptions]="pageSizeOptions"
   [color]="color"
-  [showFirstLastButtons]="true"
+  [showFirstLastButtons]="(isMobile$ | async) === false"
   (page)="pageChanged.emit($event)"
   aria-label="Select page"
   class="pagination"

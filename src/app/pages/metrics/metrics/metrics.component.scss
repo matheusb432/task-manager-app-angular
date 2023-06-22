@@ -1,5 +1,11 @@
 .search-bar {
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+}
+
+app-date-range-picker {
+  width: 100%;
 }

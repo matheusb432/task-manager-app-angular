@@ -5,5 +5,5 @@
     [minDate]="twoMonthsAgo"
     [maxDate]="twoMonthsFromNow"
   ></app-date-range-picker>
+  <app-metrics-stats [avgMetrics]="avgMetrics$ | async"></app-metrics-stats>
 </header>
-<app-metrics-stats [avgMetrics]="avgMetrics$ | async"></app-metrics-stats>

@@ -1,7 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
-import { Constants } from 'src/app/util';
+import { Constants, PubSubUtil } from 'src/app/util';
 
 @Component({
   selector: 'app-pagination [totalItems] [pageChanged]',
@@ -9,7 +10,7 @@ import { Constants } from 'src/app/util';
   styleUrls: ['./pagination.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatPaginatorModule],
+  imports: [MatPaginatorModule, CommonModule],
 })
 export class PaginationComponent {
   @Input() totalItems!: number | null;
@@ -18,6 +19,8 @@ export class PaginationComponent {
   @Input() currentPage = 1;
 
   @Output() pageChanged = new EventEmitter<PageEvent>();
+
+  isMobile$ = PubSubUtil.isMobile$();
 
   get total(): number {
     return this.totalItems ?? 0;
