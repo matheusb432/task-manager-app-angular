@@ -29,6 +29,7 @@ export enum Icons {
   Settings = 'settings',
   ContentCopy = 'content_copy',
   PageView = 'pageview',
+  Group = 'group',
   CalendarToday = 'calendar_today',
   RemoveRedEye = 'remove_red_eye',
   Undo = 'undo',
@@ -40,5 +41,6 @@ export enum Icons {
   CheckBox = 'check_box',
   Assignment = 'assignment',
   OpenInBrowser = 'open_in_browser',
+  ContactSupport = 'contact_support',
   Today = 'today',
 }

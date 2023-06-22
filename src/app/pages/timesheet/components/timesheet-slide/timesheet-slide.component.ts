@@ -62,7 +62,7 @@ export class TimesheetSlideComponent {
     if (profile == null) return {};
     const timeTarget = StringUtil.timeToNumber(profile.timeTarget);
     const workedHours = metrics.workedHours ?? 0;
-    const success = timeTarget < workedHours;
+    const success = timeTarget <= workedHours;
 
     return {
       success,
@@ -74,7 +74,7 @@ export class TimesheetSlideComponent {
     if (profile == null) return {};
     const tasksTarget = profile.tasksTarget ?? 0;
     const totalTasks = metrics.totalTasks ?? 0;
-    const success = tasksTarget < totalTasks;
+    const success = tasksTarget <= totalTasks;
 
     return {
       success,

@@ -1,5 +1,6 @@
 import { PipeTransform, ProviderToken } from '@angular/core';
 import { Ctor } from './api-request';
+import { CSSProps } from '../types';
 
 export interface TableConfig<T = unknown> {
   itemConfigs: TableItemConfig<T>[];
@@ -20,9 +21,7 @@ export interface TableItemConfig<T = unknown> {
   defaultsTo?: unknown;
   pipe?: ProviderToken<PipeTransform>;
   pipeArgs?: unknown[];
-  styles?: {
-    [key: string]: string;
-  };
+  styles?: CSSProps;
 }
 
 export interface OrderByConfig<T = unknown> {

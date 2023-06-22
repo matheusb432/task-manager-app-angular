@@ -1,41 +1,41 @@
+import { Card } from 'src/app/models';
 import { Pages } from './pages';
 
-const homeCards = [
+const imgConfig = (src: string) => ({
+  src,
+  priority: true,
+  width: 152,
+  height: 152,
+});
+
+const homeCards: Card[] = [
   {
     id: 'cCardTimesheet',
     title: 'Timesheets',
-    content: 'Your registered timesheets',
+    content: 'Register your daily tasks and effort hours',
     url: Pages.Timesheets,
-    image: {
-      src: '/assets/img/timesheets.jpg',
-      priority: true,
-      width: 278,
-      height: 152,
-    },
+    image: imgConfig('/assets/icons/material-edit-calendar.svg'),
   },
   {
     id: 'cCardProfile',
     title: 'Profiles',
-    content: 'Create and edit your productivity profiles',
+    content: 'Manage your productivity profiles',
     url: Pages.Profiles,
-    image: {
-      src: '/assets/img/profiles.jpg',
-      priority: true,
-      width: 278,
-      height: 152,
-    },
+    image: imgConfig('/assets/icons/material-favorite.svg'),
   },
   {
     id: 'cCardMetric',
     title: 'Metrics',
-    content: 'Your weekly productivity metrics',
+    content: 'View your productivity metrics totals and averages',
     url: Pages.Metrics,
-    image: {
-      src: '/assets/img/metrics.jpg',
-      priority: true,
-      width: 278,
-      height: 152,
-    },
+    image: imgConfig('/assets/icons/material-bar-chart.svg'),
+  },
+  {
+    id: 'cCardFaq',
+    title: 'FAQs',
+    content: 'Frequently asked questions & tips on how to best use the app',
+    url: Pages.Metrics,
+    image: imgConfig('/assets/icons/material-contact-support.svg'),
   },
 ];
 

@@ -5,6 +5,7 @@ export enum Pages {
   PresetTaskItems = 'tasks',
   Settings = 'settings',
   MyProfile = 'my-profile',
+  Faqs = 'faqs',
   Users = 'users',
   Metrics = 'metrics',
   NotFound = 'not-found',

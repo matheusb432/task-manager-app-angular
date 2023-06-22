@@ -69,7 +69,7 @@ const userCrumbs: Crumb[] = [
   {
     label: 'Users',
     url: paths.users,
-    icon: Icons.AccountCircle,
+    icon: Icons.Group,
   },
 ];
 

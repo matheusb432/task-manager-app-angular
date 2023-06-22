@@ -3,7 +3,7 @@
     <li
       *ngFor="let crumb of crumbs$ | async; let last = last; let first = first"
       class="breadcrumb-item"
-      [ngClass]="{ 'clickable-crumb': !last }"
+      [ngClass]="{ 'clickable-crumb': first || !last }"
     >
       <a [routerLink]="last && !first ? undefined : crumb.url">
         <app-icon

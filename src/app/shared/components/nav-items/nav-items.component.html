@@ -13,7 +13,9 @@
         }"
       >
         <app-icon [icon]="item.icon" labelIcon [styles]="{ color: '#fff' }"></app-icon>
-        {{ item.label }}
+        <span class="label">
+          {{ item.label }}
+        </span>
       </app-button>
     </li>
   </ul>

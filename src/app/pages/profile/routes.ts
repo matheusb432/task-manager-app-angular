@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { ProfilesComponent } from './profiles/profiles.component';
-import { PageStates, Pages } from 'src/app/util';
-import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { canDeactivateForm } from 'src/app/guards/form.guard';
-import { ProfileDetailsComponent } from './profile-details/profile-details.component';
+import { PageStates } from 'src/app/util';
 import { CreatePresetTaskItemComponent } from './create-preset-task-item/create-preset-task-item.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { PresetTaskItemDetailsComponent } from './preset-task-item-details/preset-task-item-details.component';
 import { PresetTaskItemsComponent } from './preset-task-items/preset-task-items.component';
+import { ProfileDetailsComponent } from './profile-details/profile-details.component';
+import { ProfilesComponent } from './profiles/profiles.component';
 
 export const PROFILE_ROUTES: Routes = [
   {

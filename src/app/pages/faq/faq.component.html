@@ -1,0 +1,73 @@
+<app-title
+  titleText="FAQs"
+  subtitle="Frequently asked questions & tips on how to best use the app"
+></app-title>
+<section class="faqs">
+  <div class="faqs-card">
+    <app-collapsible>
+      <h2 class="question" collapsibleTitle>How do I setup a productivity profile?</h2>
+      <article class="answer">
+        You can setup a productivity profile by clicking on the "Add Profile" button on the top
+        right corner of the <app-link [to]="paths.profiles">Profiles page</app-link>. You can then
+        add preset tasks to the profile by selecting them in the 'Preset Tasks Input' field.
+      </article>
+    </app-collapsible>
+    <app-collapsible>
+      <h2 class="question" collapsibleTitle>How do I create preset tasks?</h2>
+      <article class="answer">
+        You can add preset tasks by clicking on the "Add Task" button on the top right corner of the
+        <app-link [to]="paths.presetTaskItems">Tasks page</app-link>
+      </article>
+    </app-collapsible>
+    <app-collapsible>
+      <h2 class="question" collapsibleTitle>How do I create timesheets?</h2>
+      <article class="answer">
+        You can add timesheets by clicking on the "+" icon in any day on the interactive calendar in
+        the <app-link [to]="paths.timesheets">Timesheets Page</app-link>, you can also click on
+        'Open' icon in the header of a calendar date
+      </article>
+    </app-collapsible>
+    <app-collapsible>
+      <h2 class="question" collapsibleTitle>How do I see my metrics by date?</h2>
+      <article class="answer">
+        After creating a timesheet, you can see your metrics by each date on the
+        <app-link [to]="paths.timesheets">Timesheets Page</app-link>, with metrics for each date the
+        metrics are read as follows:
+        <article class="metrics-spans">
+          <app-timesheet-slide-span
+            [titleText]="'Hi!'"
+            [profileText]="'{PROFILE_TARGET}'"
+            [icon]="Icons.Assignment"
+          >
+            {{ '{RESULT}' }}
+          </app-timesheet-slide-span>
+          <app-timesheet-slide-span
+            [titleText]="'Hi!'"
+            [ngClass]="{ success: true }"
+            [profileText]="'{PROFILE_TARGET}'"
+            [icon]="Icons.Assignment"
+          >
+            {{ '{SUCCESFUL_RESULT}' }}
+          </app-timesheet-slide-span>
+          <app-timesheet-slide-span
+            [titleText]="'Hi!'"
+            [ngClass]="{ fail: true }"
+            [profileText]="'{PROFILE_TARGET}'"
+            [icon]="Icons.Assignment"
+          >
+            {{ '{FAILED_RESULT}' }}
+          </app-timesheet-slide-span>
+        </article>
+        Hovering also gives you a tooltip with more details
+      </article>
+    </app-collapsible>
+    <app-collapsible>
+      <h2 class="question" collapsibleTitle>How do I see my all my metrics?</h2>
+      <article class="answer">
+        After creating some timesheets, you can see your metrics on the
+        <app-link [to]="paths.timesheets">Metrics Page</app-link>, with total and average metrics
+        data
+      </article>
+    </app-collapsible>
+  </div>
+</section>

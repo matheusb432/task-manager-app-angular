@@ -5,5 +5,5 @@ export interface Card {
   title: string;
   content: string;
   url: string;
-  image?: Image;
+  image: Image;
 }

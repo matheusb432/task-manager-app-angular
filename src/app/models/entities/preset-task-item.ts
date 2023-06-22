@@ -15,7 +15,7 @@ export class PresetTaskItem implements TableItem {
       header: 'Title',
       key: 'title',
       styles: {
-        minWidth: '160px',
+        minWidth: '240px',
       },
     },
     { header: 'Time', key: 'time', pipe: TimePipe },

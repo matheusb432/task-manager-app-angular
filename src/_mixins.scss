@@ -31,7 +31,6 @@
   opacity: 1;
   &.hidden {
     position: absolute;
-    // transform: translateX(-150%);
     transform: translateX(-150%);
     opacity: 0;
     visibility: hidden;

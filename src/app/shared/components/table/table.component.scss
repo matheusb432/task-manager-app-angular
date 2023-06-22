@@ -1,6 +1,6 @@
 $border-color: var(--secondary-dark);
 $table-bg: var(--bg-color);
-$box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+$table-border: 2px solid rgba(0, 0, 0, 0.2);
 $bottom-margin: 1rem;
 
 .data-table {
@@ -9,9 +9,7 @@ $bottom-margin: 1rem;
   overflow: hidden;
   background: $table-bg;
   border-spacing: 0;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-
-  box-shadow: $box-shadow;
+  border: $table-border;
 }
 
 .table-header {
@@ -124,7 +122,7 @@ td {
   padding: 2rem;
   margin-top: -$bottom-margin;
   margin-bottom: $bottom-margin;
-  box-shadow: $box-shadow;
+  border: $table-border;
 }
 
 .empty-title {

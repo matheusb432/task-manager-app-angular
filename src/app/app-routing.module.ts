@@ -51,6 +51,11 @@ const routes: Routes = [
         canActivate: [() => canActivateAuth()],
       },
       {
+        path: Pages.Faqs,
+        loadComponent: () => import('./pages/faq/faq.component').then((m) => m.FaqComponent),
+        canActivate: [() => canActivateAuth()],
+      },
+      {
         path: Pages.NotFound,
         loadComponent: () =>
           import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent),

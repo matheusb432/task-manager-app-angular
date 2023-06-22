@@ -5,12 +5,6 @@ import { UserRoles } from './user-roles.enum';
 
 export const defaultNavItems: NavItem[] = [
   {
-    id: 'Home',
-    label: 'Home',
-    link: Pages.Home,
-    icon: Icons.Home,
-  },
-  {
     id: 'Timesheets',
     label: 'Timesheets',
     link: Pages.Timesheets,
@@ -35,10 +29,16 @@ export const defaultNavItems: NavItem[] = [
     icon: Icons.BarChart,
   },
   {
+    id: 'Faq',
+    label: 'FAQs',
+    link: Pages.Faqs,
+    icon: Icons.ContactSupport,
+  },
+  {
     id: 'Users',
     label: 'Users',
     link: Pages.Users,
-    icon: Icons.AccountCircle,
+    icon: Icons.Group,
     roles: [UserRoles.Admin],
   },
 ];
