@@ -8,7 +8,7 @@ export class PresetTaskItemFormGroup extends FormGroup<PresetTaskItemForm> {
   }
 
   static getFormKeys(): (keyof PresetTaskItemForm)[] {
-    return ['title', 'comment', 'time', 'importance'];
+    return ['title', 'comment', 'time'];
   }
 
   static toJson = (fg: PresetTaskItemFormGroup): Partial<PresetTaskItem> => {
@@ -26,7 +26,6 @@ export interface PresetTaskItemForm {
   title: FormControl<string>;
   comment: FormControl<string | null>;
   time: FormControl<string | null>;
-  importance: FormControl<number | null>;
 }
 
 export type PresetTaskItemFormValue = FormValue<PresetTaskItemForm>;
@@ -41,8 +40,5 @@ export const getPresetTaskItemForm = () => {
     title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     comment: new FormControl(''),
     time: new FormControl('00:00'),
-    importance: new FormControl(1, {
-      validators: [Validators.min(1), Validators.max(3)],
-    }),
   };
 };

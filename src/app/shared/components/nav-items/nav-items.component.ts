@@ -14,6 +14,7 @@ import { IconComponent } from '../icon/icon.component';
 })
 export class NavItemsComponent {
   @Input() items!: NavItem[];
+  @Input() hiddenLabel = false;
   @Input() iconOnly = false;
   @Input() onSideNav = false;
 }

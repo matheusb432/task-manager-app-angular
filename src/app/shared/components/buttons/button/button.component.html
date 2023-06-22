@@ -100,7 +100,7 @@
 <ng-template #labelTemplate>
   <div class="button-content">
     <ng-content select="[labelIcon]"></ng-content>
-    <span class="label" [ngClass]="{ hidden: iconOnly }">
+    <span *ngIf="!iconOnly" class="label" [ngClass]="{ hidden: hiddenLabel }">
       <ng-content></ng-content>
     </span>
     <ng-container *ngIf="isLoading">

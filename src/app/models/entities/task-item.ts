@@ -3,7 +3,6 @@ export class TaskItem {
   title?: string;
   time?: string;
   rating?: number;
-  importance?: number;
   timesheetId?: number;
   comment?: string;
   presetTaskItemId?: number;

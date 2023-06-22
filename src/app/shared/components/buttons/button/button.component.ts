@@ -35,6 +35,7 @@ export class ButtonComponent implements OnChanges, OnDestroy {
   @Input() model: 'raised' | 'stroked' | 'flat' | 'icon' | 'fab' | 'mini-fab' | 'link' | '' = '';
   @Input() elId?: string;
   @Input() styles: Record<string, string> = {};
+  @Input() hiddenLabel = false;
   @Input() iconOnly = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();

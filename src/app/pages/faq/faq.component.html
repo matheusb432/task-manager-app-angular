@@ -43,28 +43,24 @@
         <app-link [to]="paths.timesheets">Timesheets Page</app-link>. There you'll see how you did
         for each day in an easy-to-read format in the calendar. they can be read like so:
         <article class="metrics-spans">
-          <app-timesheet-slide-span
-            [titleText]="'Hi!'"
-            [profileText]="'{PROFILE_TARGET}'"
-            [icon]="Icons.Assignment"
-          >
-            {{ '{RESULT}' }}
+          <app-timesheet-slide-span [titleText]="'Hi!'" [icon]="Icons.Assignment">
+            10 (no target set)
           </app-timesheet-slide-span>
           <app-timesheet-slide-span
             [titleText]="'Hi!'"
             [ngClass]="{ success: true }"
-            [profileText]="'{PROFILE_TARGET}'"
+            [profileText]="'10 (hit target)'"
             [icon]="Icons.Assignment"
           >
-            {{ '{SUCCESFUL_RESULT}' }}
+            15
           </app-timesheet-slide-span>
           <app-timesheet-slide-span
             [titleText]="'Hi!'"
             [ngClass]="{ fail: true }"
-            [profileText]="'{PROFILE_TARGET}'"
+            [profileText]="'10 (less than target)'"
             [icon]="Icons.Assignment"
           >
-            {{ '{FAILED_RESULT}' }}
+            5
           </app-timesheet-slide-span>
         </article>
       </article>

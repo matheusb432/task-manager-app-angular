@@ -6,7 +6,6 @@ export class PresetTaskItem implements TableItem {
   id?: number;
   title?: string;
   time?: number;
-  importance?: number;
   comment?: string;
   userId?: number;
 
@@ -19,6 +18,5 @@ export class PresetTaskItem implements TableItem {
       },
     },
     { header: 'Time', key: 'time', pipe: TimePipe },
-    { header: 'Importance', key: 'importance' },
   ];
 }

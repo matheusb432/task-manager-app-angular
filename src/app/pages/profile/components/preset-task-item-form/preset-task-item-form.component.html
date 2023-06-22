@@ -12,14 +12,6 @@
     </app-textarea>
     <app-input fcName="time" labelText="Time" type="time" [helpers]="['hh:mm']"></app-input>
 
-    <app-input
-      fcName="importance"
-      labelText="Importance"
-      type="number"
-      placeholder="Rate the importance of the task"
-      [helpers]="['1-3']"
-    ></app-input>
-
     <div class="form-buttons">
       <div *ngIf="showDelete()" class="left-buttons">
         <app-button

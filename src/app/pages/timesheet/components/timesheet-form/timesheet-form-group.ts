@@ -66,7 +66,6 @@ export interface TaskItemForm {
   comment: FormControl<string | null>;
   time: FormControl<string>;
   rating: FormControl<number | null>;
-  importance: FormControl<number | null>;
 }
 
 export const getTaskItemFormGroup = (): FormGroup<TaskItemForm> => {
@@ -84,9 +83,6 @@ export const getTaskItemForm = (): TaskItemForm => {
     time: new FormControl('00:00', { nonNullable: true }),
     rating: new FormControl<number | null>(null, {
       validators: [Validators.min(0), Validators.max(5)],
-    }),
-    importance: new FormControl(1, {
-      validators: [Validators.required, Validators.min(1), Validators.max(3)],
     }),
   };
 };

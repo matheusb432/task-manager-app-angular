@@ -23,6 +23,10 @@
   }
 }
 
+.label {
+  white-space: nowrap;
+}
+
 .nav-item {
   transition: all 0.15s ease-in-out;
   border-radius: 4px;

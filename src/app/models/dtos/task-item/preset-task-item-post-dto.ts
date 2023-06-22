@@ -4,6 +4,5 @@ import { IgnoreMap } from 'mapper-ts/lib-esm';
 export class PresetTaskItemPostDto {
   title?: string;
   time?: number;
-  importance?: number;
   comment?: string;
 }

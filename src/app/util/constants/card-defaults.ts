@@ -34,7 +34,7 @@ const homeCards: Card[] = [
     id: 'cCardFaq',
     title: 'FAQs',
     content: 'Frequently asked questions & tips on how to best use the app',
-    url: Pages.Metrics,
+    url: Pages.Faqs,
     image: imgConfig('/assets/icons/material-contact-support.svg'),
   },
 ];
